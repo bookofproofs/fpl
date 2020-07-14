@@ -1,9 +1,11 @@
-# FPL
-FPL - the "Formal Proving Language" is a project to create a universal, 
-human-readable language to formulate mathematical definitions, theorems, 
-and proofs. 
+# fpl
+fpl is a project to create FPL (the "Formal Proving Language") - a universal, 
+human-readable, easy to learn and read formal language for writing 
+mathematical definitions, theorems, and proofs 
+independently from any natural language. 
 
-These is the main goal of the project and you are invited to collaborate.
+These is the main goal of the project and you are invited to collaborate on
+conception and design.
 
 FPL is not (!)
 * yet another automated prove assistant 
@@ -20,32 +22,35 @@ implement FPL tools that are able to:
 local language,
 * verify, if code written in FPL is logically
 consistent (i.e. without contradictions), 
-* find a proof for a theorem written in FPL, given a theory written in FPL, 
-i.e. other theorems, definitions, and axioms written in FPL, and  
+* help to find a proof for a theorem written in FPL, given a theory written 
+in FPL, i.e. other theorems, definitions, and axioms written in FPL, and  
 * generate theories based on axioms written in FPL.
 
 The FPL specification follows some seemingly contradicting principles:
 
 ### Principle 1: Readability
 
-Code written in FPL should be not only human-readable but also catchy, 
-memorable, and easy to learn so that FPL can be learned even by 
-non-programmers.
+Code written in FPL should be not only human-readable but also catchy, memorable, and easy to learn so that FPL can be learned even by non-programmers.
 
-### Principle 2: Richness
+### Principle 2: Richness of Notation
 
-The syntax of FPL should be inspired by modern mathematical notation while 
-preserving the readability principle.
+The syntax of FPL should be inspired by modern mathematical notation while preserving the readability principle.
 
+### Principle 3: Axiomatic Method 
 
-### Principle 3: Extendability
+FPL should be based on the axiomatic method i.e. every theory written in FPL should start with some definitions of mathematical concepts, axioms about these concepts asserting that they are true, and deriving new theorems based on given logical rules of inference while interpreting them also as true when they are derivable using the rules of inference.
 
-The syntax of FPL should allow adding any new definitions and theorems, 
-while encouraging standard notation for common mathematical concepts.
+### Principle 4: Theory Independence
 
-### Principle 4: Formalism
+While using the axiomatic method, FPL should not stick to a pre-defined set of axioms and rules of inference. Its meta syntax and semantics should allow developing any theory using the axiomatic method.
 
-The syntax of FPL should facilitate automated aids and solutions.
+### Principle 5: Theory Standardization
+
+The FPL framework should encourage using some standard sets of axioms and rules of inference that were written in FPL to promote standard notation for widely agreed mathematical concepts and a common sense of what is currently perceived as a consistent mathematical theory. To facilitate using these standards, the FPL syntax should establish an explicit notation (or namespaces) for these standards, allowing to easily distinguish between a standard and non-standard FPL notation for widely agreed mathematical concepts 
+
+### Principle 6: Formalism
+
+The syntax and semantics of FPL should enable the creation of automated aids and tools.
    
 
    
