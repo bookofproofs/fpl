@@ -29,26 +29,15 @@ to mention only some possible applications.
 
 ### 1.2 Why FPL?
 
-FPL is not yet another automated prove assistant or yet another automated 
-theorem proving tool. It attempts to set an international standard for 
-notating existing mathematical theories, developing new mathematical theories,
-and writing mathematical proofs, while encouraging programming automated tools 
-based on FPL. 
+FPL is not yet another automated prove assistant or yet another automated theorem proving tool. It attempts to set a standard for writing mathematical definitions, theorems, and proofs while encouraging programming automated tools based on FPL. 
 
-The syntax of existing formal systems and automated tools is computer-friendly, 
-i.e. primarily designed to be compiled and processed by automated tools, not by humans. 
-Only as an additional feature, some of these systems are (if needed) human-readable.
-Because of the advantages some of these automated tools provide 
-(e.g. automatic correctness checking of proofs), attempts have been made to establish
-the language used by the tools as a standard syntax to be used by humans
-(e.g. in teaching how to write mathematical proofs using this notation). However, 
-these attempts have been rejected by the community, claiming that it was too
-complicated for humans to write mathematical proofs like this.
+The syntax of existing formal systems and automated tools is computer-friendly, i.e. primarily designed to be compiled and processed by automated tools, not by humans. Therefore, the language used by these tools is hard to read and to understand, even by mathematicians. The communities using these tools are small communities of specialists. Despite that, such automated tools provide many advantages. In particular, they help to write correct mathematical proofs and help to avoid errors. 
 
-FPL primarily aims at being human-readable and only then at being compiled and processed by
-computers. By this human-centric approach, FPL should enjoy a better user acceptance, while
-providing comparable advantages that automated formal language tools provide.   
+Therefore, it would be great if there would be tools using a formal language that is readable, catchy, and easy to learn, even for non-programmers. Such Tools could be (ideally) also used for educational purposes to teach mathematics. 
 
+FPL wants to close to this gap. FPL is going to have a human-friendly syntax while being formal enough to develop tools based on it that can assist in writing and developing correct mathematical theories. In particular, FPL should be easy enough to be used in mathematical education. 
+
+Thus, FPL primarily aims at being human-readable and only then at being compiled and processed by computers. By this human-centric approach, FPL should enjoy a better user acceptance, while providing comparable advantages that automated formal language tools provide.
 ### 1.3 About this Document
 
 This document provides a main draft conceptual design of FPL. 
@@ -131,14 +120,14 @@ together with matrix addition and matrix multiplication.
 or other systems but still mean the same real number. 
   * Any irrational number (like the constant 
 $Pi=3.1415\ldots$) cannot be represented in its whole precision. Thus, an agreed notation 
-(the Greek capital Pi) is used to denote this constant. But in other contexts, the same Greek
+(the Greek capital Pi) is used to denote such constants. But in other contexts, the same Greek
 capital $Pi$ could mean any variable or element of any arbitrary set or class. 
-Things become even more complicated when we use these symbols as indices of variables, e.g. $x_\Pi.$ 
+Things become even more complicated when we try to use these symbols as indices of variables, e.g. $x_\Pi.$ 
 
 A feature of every formal language should be the lack of ambiguities. If a compiler encounters the symbol 1, it should collect
 enough information from the context to interpret the symbol in a manner it was meant by the author
 of the FPL code. On the other hand, avoiding ambiguities makes the syntax of many formal languages
-overloaded that their readability suffers a lot.   
+overloaded so that their readability suffers a lot.   
 
 So, how should FPL deal with notational ambiguities, without overloading the syntax? Again, the FPL 
 specification will have to make some concessions in both directions, i.e. keep the notation as unambiguous 
