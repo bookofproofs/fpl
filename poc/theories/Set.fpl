@@ -1,0 +1,245 @@
+Fpl.Set.ZermeloFraenkel
+{
+    uses Fpl.Commons
+
+    theory
+    {
+        class Set: obj
+        {
+        }
+
+        // "in relation" ("is element of") relation
+        pred In(x,y: Set)
+        {
+        }
+
+        pred IsEmpty(x: Set)
+        {
+            y: Set
+            all y
+            (
+                not ( In(y, x) )
+            )
+        }
+
+        // existence of an empty set
+        axiom EmptySetExists()
+        {
+            x: Set
+            ex x
+            (
+                IsEmpty(x)
+            )
+        }
+
+        // introduction of a new mathematical object
+        class EmptySet: Set
+        {
+            EmptySet()
+            {
+                assert IsEmpty(self)
+            }
+        }
+
+        // relation between a subset and a superset
+        pred IsSubset(subset,superset: Set)
+        {
+            u: Set
+            all u
+            (
+                impl (In(u, subset), In(u, superset))
+            )
+        }
+
+        // introduction of a new mathematical object that is a subset of a superset
+        class Subset: Set
+        {
+            Subset(superSet: Set)
+            {
+                assert IsSubset(self, superSet)
+            }
+        }
+
+        // extensionality
+        axiom Extensionality()
+        {
+            x,y: Set
+            all x,y
+            (
+                impl
+                (
+                    and
+                    (
+                        IsSubset(x,y),
+                        IsSubset(y,x)
+                    ),
+                    Equals(x,y)
+                )
+            )
+        }
+
+        // adds Roster notation capability to this theory
+        class SetRoster: Set
+        {
+            // to support enumerating set elements, e.g. SetRoster(1,2,3)
+            SetRoster(listOfSets: *Set)
+            {
+                elem: Set
+
+                loop elem listOfSets
+                (
+                    assert In(elem, self)
+                )
+            }
+
+        }
+
+        // Schema of separation axioms
+        axiom SchemaSeparation()
+        {
+            p: pred
+            x,y: Set
+            all p, x
+            (
+                ex y
+                (
+                    Equals(y,SetBuilder(x,p))
+                )
+            )
+        }
+
+        // adds set-builder notation capability to this theory
+        // pred p indicates that p is a predicate, in which the variable u is bound and the type of u is Set
+        // moreover, p can accept even more bound variables of any type.
+        class SetBuilder: Set
+        {
+            // to support set builder notation, ex. all "even" natural numbers like SetBuilder(n: Nat, Even(n))
+            SetBuilder(x: Set, p: pred(u: Set, o: *obj))
+            {
+                assert
+                    all u
+                    (
+                        iif
+                        (
+                            In(u,self),
+                            and ( In(u,x), p(u,o) )
+                        )
+                    )
+            }
+        }
+
+        // calling example
+        class N100:Set{N100(){n:Nat self:=SetBuilder(SetNat(),IsGreater(n,100)) }}
+
+        // For any two sets $x,y$ there exists a set $z$ containing them as elements.
+        axiom Pairing()
+        {
+            x,y,z,w: Set
+            all x,y
+            (
+                ex z
+                (
+                    all w
+                    (
+                        iif
+                        (
+                            In(w,z),
+                            or
+                            (
+                                Equals(w,z),
+                                Equals(w,y)
+                            )
+                        )
+                    )
+                )
+            )
+        }
+
+        // for every set x there is a set containing all elements of the elements of x
+        axiom Union()
+        {
+            x,y,z,w: Set
+            all x
+            (
+                ex y
+                (
+                    all z,w
+                    (
+                        impl
+                        (
+                            and (In(z,w), In(w,x)),
+                            In (z,y)
+                        )
+                    )
+                )
+            )
+        }
+
+        pred IsPowerSet(ofSet, potentialPowerSet: Set)
+        {
+            z: Set
+            all z
+            (
+                impl (SubSet(z,ofSet), In(z, potentialPowerSet))
+            )
+        }
+
+        // including the PowerSet function
+        func PowerSet(x: Set) -> Set
+        {
+            y: Set
+            assert IsPowerSet(x,y)
+            return y
+        }
+
+        // for every set x there is a set y containing all subsets of x as its elements
+        axiom PowerSetExistsForAllSets()
+        {
+            x,y,z: Set
+            all x
+            (
+                ex y
+                (
+                    IsPowerSet(x, y)
+                )
+            )
+        }
+
+        // introducing a set union function
+        func SetUnion(x,y: Set) -> Set
+        {
+            z, union: Set
+            assert
+                all z
+                (
+                    iif
+                    (
+                        or (In(z,x), In(z,y)),
+                        In(z,union)
+                    )
+                )
+            return union
+        }
+
+        // introducing a singleton function
+        func Singleton(x: Set) -> Set
+        {
+            return SetRoster(x)
+        }
+
+        // alternative 2: adds SetUnion notation capability to this theory (as predicate)
+        pred Union(x,y: Set)
+        {
+            u: Set
+            all u
+            (
+                impl (In(u, x), In(u, superSet))
+            )
+        }
+
+
+    }
+
+
+
+}

@@ -1,0 +1,68 @@
+Fpl.LinAlg
+{
+    uses Fpl.Commons, Fpl.Commons.Structures, Fpl.Set.ZermeloFraenkel, Fpl.Algebra
+
+    theory
+    {
+
+        class FieldPowerN: Set
+        {
+
+            FieldPowerN
+            (
+                field : Field
+                    (
+                    tplFieldSet,
+                    addInField: BinOp(tplFieldElem, tplFieldElem),
+                    mulInField: BinOp(tplFieldElem, tplFieldElem)
+                    ),
+                n: Nat
+            )
+            {
+                assert NotEqual(n, Zero())
+                self:=SetBuilder( tplFieldElem[1 ~ n], true)
+            }
+        }
+
+        func VecAdd(v,w: tplFieldElem[1 ~ n]) -> tplFieldElem[1 ~ n]
+        {
+            self[1~n]:=addInField(v[1~n],w[1~n])
+        }
+
+        lemma VecAddIsCommutative()
+        {
+            x,y: tplFieldElem[1~n]
+            fieldPowerN: FieldPowerN
+                (
+                field: Field(tplFieldSet, BinOp(tplFieldElem, tplFieldElem), BinOp(tplFieldElem, tplFieldElem)),
+                n:Nat
+                )
+            vecAdd: VecAdd(tplFieldElem[1~n],tplFieldElem[1~n])
+            pre:
+                and
+                (
+                    In(x, fieldPowerN),
+                    In(y, fieldPowerN)
+                )
+            con:
+                vecAdd.IsCommutative()
+        }
+
+        class ZeroVectorN: Tuple
+        {
+            ZeroVectorN(n: Nat, field: Field)
+            {
+                zero: tplFieldElem[1~n]
+                i: Nat
+                range i [1~n]
+                (
+                    self[i]:=field.AdditiveGroup().NeutralElement()
+                )
+            }
+        }
+
+
+
+
+    }
+}

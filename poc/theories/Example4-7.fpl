@@ -1,0 +1,110 @@
+T
+{
+    inference
+    {
+        ModusPonens()
+        {
+            p,q: pred
+            premise:
+                and (p, impl (p,q) )
+            conclusion:
+                q
+        }
+
+        ProceedingResults(p: +pred)
+        {
+            proceedingResult: pred
+            premise:
+                loop proceedingResult p
+                (
+                    assert proceedingResult
+                )
+            conclusion:
+                and (p)
+        }
+
+        ExistsByExample()
+        {
+            p: pred(c: obj)
+            premise:
+                p(c)
+            conclusion:
+                ex x(p(x))
+        }
+
+    }
+
+    theory
+    {
+
+        class A: obj
+        {
+        }
+
+        class B: obj
+        {
+        }
+
+        class C: obj
+        {
+        }
+
+        pred Greater(x,y: obj)
+        {
+
+        }
+
+        axiom GreaterAB()
+        {
+            a: A
+            b: B
+            Greater(a,b)
+        }
+
+        axiom GreaterBC()
+        {
+            b: B
+            c: C
+            Greater(b,c)
+        }
+
+        axiom GreaterTransitive()
+        {
+            x,y,z: obj
+            impl
+            (
+                and
+                (
+                    Greater(x,y),
+                    Greater(y,z)
+                ),
+                Greater(x,z)
+            )
+        }
+
+        lemma Example4()
+        {
+            x,y,z: obj
+            pre:
+            con:
+                ex x ( and (Greater(x,y), Greater(x,z)) )
+        }
+
+        proof Example4$1
+        {
+            a:A
+            b:B
+            c:C
+            x,y,z: obj
+
+            1. /GreaterAB |- Greater(a,b)
+            2. /GreaterBC |- Greater(b,c)
+            3. /ProceedingResults(/1,/2) |- and (Greater(a,b), Greater(b,c))
+            4. /3, /GreaterTransitive |- impl ( and (Greater(a,b), Greater(b,c)), Greater(a,c) )
+            5. /4, /ModusPonens |- Greater(a,c)
+            6. /ProceedingResults(/5,/1) |- and (Greater(a,c), Greater(a,b))
+            7. /6, /ExistsByExample |- qed
+        }
+   }
+
+}

@@ -1,0 +1,136 @@
+Fpl.Commons
+{
+    inference
+    {
+        ModusPonens()
+        {
+            p,q: pred
+
+            premise:
+                and (p, impl (p,q) )
+            conclusion:
+                q
+        }
+
+        ModusTollens()
+        {
+            p,q: pred
+
+            premise:
+                and (not(q), impl(p,q) )
+            conclusion:
+                not (p)
+        }
+
+        HypotheticalSyllogism()
+        {
+            p,q,r: pred
+            premise:
+                and (impl(p,q), impl(q,r))
+            conclusion:
+                impl(p,r)
+        }
+
+        DisjunctiveSyllogism()
+        {
+            p,q: pred
+            premise:
+                and (not(p), or(p,q))
+            conclusion:
+                q
+        }
+
+        ProceedingResults(p: +pred)
+        {
+            proceedingResult: pred
+            premise:
+                range proceedingResult p
+                (
+                    assert proceedingResult
+                )
+            conclusion:
+                and (p)
+        }
+
+        ExistsByExample(p: pred(c: obj))
+        {
+            x: obj
+            premise:
+                p(c)
+            conclusion:
+                ex x(p(x))
+        }
+
+    }
+
+    theory
+    {
+        pred Equals(x,y: tpl)
+        {
+            p: pred a,b: tpl
+
+            all a, b
+            (
+                iif
+                (
+                    Equals(a,b),
+                    all p
+                    (
+                        iif
+                        (
+                            p(a),
+                            p(b)
+                        )
+                    )
+                )
+            )
+        }
+
+        pred NotEquals(x,y: tpl)
+        {
+            not
+            (
+                Equals(x,y)
+            )
+        }
+
+
+    }
+
+    localization
+    {
+        iif(x,y) :=
+            ~tex: x "\Leftrightarrow" y
+            ~eng: x " if and only if " y
+            ~ger: x " dann und nur dann wenn " y
+            ;
+
+        not(x) :=
+            ~tex: "\neg(" x ")"
+            ~eng: "not " x
+            ~ger: "nicht " x
+            ;
+
+        and(p,q) :=
+            ~tex: p "\wedge" q
+            ~eng: p " and " q
+            ~ger: p " und " q
+            ;
+
+        Equals(x,y) :=
+            ~tex: x "=" y
+            ~eng: x " equals " y
+            ~ger: x " ist gleich " y
+            ~ita: x " è uguale a " y
+            ~pol: x " równa się " y
+            ;
+
+        NotEquals(x,y) :=
+            ~tex: x "\neq" y
+            ~eng: x "is unequal" y
+            ~ger: x "ist ungleich" y
+            ~pol: x ( "nie równa się" | "nie równe" ) y
+            ;
+    }
+
+}

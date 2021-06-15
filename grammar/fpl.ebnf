@@ -1,0 +1,1488 @@
+# fpl Version 1.0.0
+
+@@grammar::fpl
+@@parseinfo :: True
+
+# ----------------------------------------------------------------
+# a mathematical theory written in FPL can be split between different files having
+# the structure of the so-called theory part:
+
+    @@keyword :: uses alias theory th inference inf premise pre conclusion con end ext
+
+    # Every theory part block starts with an optional syntax extension block, followed by
+    # optional usage of other libraries, followed by optional inference rules,
+    # followed by a an optional uses block of comma-separated FplTheoryNamespace statements,
+    # followed by a mandatory TheoryBlock, followed by an optional localization block
+    Namespace =
+        { CW }* NamespaceIdentifier
+        { CW }* NamespaceBlock
+        { CW }* $
+        ;
+
+    NamespaceBlock =
+        LeftBrace
+        { CW }* [ ExtensionBlock ]
+        { CW }* [ UsesClause ]
+        { CW }* [ RulesOfInferenceBlock ]
+        { CW }* TheoryBlock
+        { CW }* [ LocalizationBlock ]
+        { CW }* RightBrace
+        ;
+
+    WildcardTheoryNamespaceList =
+        WildcardTheoryNamespace { [ IW ] Comma [ IW ] WildcardTheoryNamespace }*
+        ;
+
+    ExtensionBlock =
+        ExtensionHeader SW ExtensionContent [ IW ] ExtensionTail
+        ;
+
+    ExtensionHeader =
+        Colon ext
+        ;
+
+    ExtensionTail =
+        Colon end SW
+        ;
+
+    ext =
+        "ext"
+        ;
+
+    end =
+        "end"
+        ;
+
+    UsesClause =
+        uses SW WildcardTheoryNamespaceList SW
+        ;
+
+    # A theory block is a sequence of statements
+    TheoryBlock =
+        TheoryHeader
+        { CW }* LeftBrace
+        { CW }* [ BuildingBlockList ]
+        { CW }* RightBrace
+        ;
+
+    RulesOfInferenceBlock =
+        InferenceHeader
+        { CW }* LeftBrace
+        { CW }* RuleOfInferenceList
+        { CW }* RightBrace
+        ;
+
+    InferenceHeader =
+        (
+        inference
+        | inf
+        )
+        ;
+
+    inference =
+        "inference"
+        ;
+
+    inf =
+        "inf"
+        ;
+
+    PremiseHeader =
+        (
+        premise
+        | pre
+        )
+        ;
+
+    premise =
+        "premise"
+        ;
+
+    pre =
+        "pre"
+        ;
+
+    ConclusionHeader =
+        (
+        conclusion
+        | con
+        )
+        ;
+
+    conclusion =
+        "conclusion"
+        ;
+
+    con =
+        "con"
+        ;
+
+    RuleOfInferenceList =
+        RuleOfInference { { CW }* RuleOfInference }*
+        ;
+
+    # To simplify the syntax definition, we do not define separate
+    # FplPremiseConclusionBlocks for rules of inference and theorem-like blocks.
+    # The first have a simplified, PL0 syntax, the latter have a more complex, predicate syntax.
+    # However, there is a syntactical simplification of the signature
+    RuleOfInference =
+        Signature [ IW ] PremiseConclusionBlock
+        ;
+
+    PremiseConclusionBlock =
+        LeftBrace
+        { CW }* [ VariableSpecificationList ]
+        { CW }* PremiseBlock
+        { CW }* ConclusionBlock
+        { CW }* RightBrace
+        ;
+
+    PremiseBlock =
+        PremiseHeader [ IW ] Colon { CW }* [ Predicate ]
+        ;
+
+    ConclusionBlock =
+        ConclusionHeader [ IW ] Colon { CW }* Predicate
+        ;
+
+    TheoryHeader =
+        (
+        theory
+        | th
+        )
+        ;
+
+    theory =
+        "theory"
+        ;
+
+    th =
+        "th"
+        ;
+
+    BuildingBlockList =
+        BuildingBlock { { CW }* BuildingBlock }*
+        ;
+
+    # FPL statements can be definitions, axioms, Theorem-proof blocks and conjectures
+    BuildingBlock =
+        (
+        Definition
+        | Axiom
+        | TheoremLikeStatementOrConjecture
+        | Proof
+        )
+        ;
+
+    uses =
+        "uses"
+        ;
+
+# ----------------------------------------------------------------
+# Definitions
+
+    @@keyword :: predicate pred function func object obj class cl
+    @@keyword :: template tpl self assert return ret undefined undef index ind
+
+    Definition =
+        (
+        DefinitionClass
+        | DefinitionPredicate
+        | DefinitionFunctionalTerm
+        )
+        ;
+
+    # Objects can only be defined with or without inheritance from a parent class cl
+    DefinitionClass =
+        ClassHeader
+        SW PredicateIdentifier
+        [ IW ] Colon
+        [ IW ] GeneralType
+        { CW }* ObjectDefinitionBlock
+        ;
+
+    ObjectDefinitionBlock =
+        LeftBrace
+        { CW }* [ VariableSpecificationList ]
+        { CW }* [ DefinitionContentList ]
+        { CW }* RightBrace
+        ;
+
+    FunctionalTermDefinitionBlock =
+        LeftBrace
+        { CW }* [ VariableSpecificationList ]
+        { CW }* [ PropertyList ]
+        { CW }* RightBrace
+        ;
+
+    DefinitionContentList =
+        DefinitionContent { { CW }* DefinitionContent }*
+        ;
+
+    DefinitionContent =
+        (
+        Property
+        | Constructor
+        )
+        ;
+
+    DefinitionFunctionalTerm =
+        FunctionalTermSignature
+        { CW }* FunctionalTermDefinitionBlock
+        ;
+
+    FunctionalTermSignature =
+        FunctionalTermHeader
+        SW Signature
+        [ IW ] Mapping
+        ;
+
+    Mapping =
+        To
+        [ IW ] TypeOrTupleOfTypes
+        ;
+
+
+    VariableSpecificationList =
+        { { CW }* VariableSpecification SW }+
+        ;
+
+    VariableSpecification =
+        (
+        Statement
+        | NamedVariableDeclaration
+        )
+        ;
+
+
+    # Difference of assertion to an axiom: axiom's is followed by a signature of a predicate (i.e. with possible parameters),
+    # not by a predicate (i.e. with possible arguments)
+    # Difference of assertion to a mandatory property: a mandatory property introduces a completely new identifier inside
+    # the scope of a definition. An assertion uses a predicate referring to existing identifiers in the whole theory
+    AssertionStatement =
+        assert SW Predicate
+        ;
+
+    assert =
+        "assert"
+        ;
+
+    VariableDeclaration =
+        (
+        AnonymousDeclaration
+        | NamedVariableDeclaration
+        )
+        ;
+
+    AnonymousDeclaration =
+        (
+        AnonymousSignature
+        | GeneralType
+        )
+        ;
+
+    NamedVariableDeclaration =
+        VariableList [ IW ] Colon [ IW ] VariableType
+        ;
+
+    VariableType =
+        (
+        AnonymousSignature
+        | GeneralType
+        )
+        ;
+
+    GeneralType =
+        [ CallModifier ]
+        (
+        TypeWithCoord
+        | Type
+        | IndexHeader
+        )
+        ;
+
+
+    IndexHeader =
+        (
+        index
+        | ind
+        )
+        ;
+
+    index =
+        "index"
+        ;
+
+    ind =
+        "ind"
+        ;
+
+    Type =
+        (
+        AliasedId
+        | XId
+        | PredicateHeader
+        | FunctionalTermHeader
+        | ObjectHeader
+        | IdStartsWithCap
+        )
+        ;
+
+    VariableList =
+        Variable { [ IW ] Comma [ IW ] Variable }*
+        ;
+
+    TypeOrTupleOfTypes =
+        (
+        TupleOfTypes
+        | VariableType
+        )
+        ;
+
+    TupleOfTypes =
+        LeftParen
+        [ IW ] GeneralType
+        { [ IW ] Comma [ IW ] GeneralType }*
+        RightParen
+        ;
+
+    # Predicates can be defined similarly to objects, but they are not derived from a parent type and have arguments
+    DefinitionPredicate =
+        PredicateHeader
+        SW Signature
+        { CW }* PredicateDefinitionBlock
+        ;
+
+    PredicateHeader =
+        (
+        predicate
+        | pred
+        )
+        ;
+
+    FunctionalTermHeader =
+        (
+        function
+        | func
+        )
+        ;
+
+    PredicateDefinitionBlock =
+        LeftBrace
+        { CW }* [ VariableSpecificationList ]
+        { CW }* [ Predicate ]
+        { CW }* RightBrace
+        ;
+
+    PredicateIdentifier =
+        (
+        AliasedId
+        | IdStartsWithCap
+        )
+        ;
+
+    AliasedId =
+        IdStartsWithCap { Dot IdStartsWithCap }+
+        ;
+
+    ClassHeader =
+        (
+        class
+        | cl
+        )
+        ;
+
+    class =
+        "class"
+        ;
+
+    cl =
+        "cl"
+        ;
+
+    predicate =
+        "predicate"
+        ;
+
+    pred =
+        "pred"
+        ;
+
+    function =
+        "function"
+        ;
+
+    func =
+        "func"
+        ;
+
+    To =
+        "->"
+        ;
+
+    ObjectHeader =
+        (
+        object
+        | obj
+        | LongTemplateHeader
+        | TemplateHeader
+        )
+        ;
+
+    LongTemplateHeader =
+        TemplateHeader ( IdStartsWithCap | Digit )
+        ;
+
+    TemplateHeader =
+        (
+        template
+        | tpl
+        )
+        ;
+
+    object =
+        "object"
+        ;
+
+    obj =
+        "obj"
+        ;
+
+    # Via templates, FPL supports generic types, which make it possible to define abstract mathematical
+    # objects and their properties that defer the concrete
+    # specification of one or more types until the definition or method is declared and instantiated by
+    # client code
+
+    template =
+        "template"
+        ;
+
+    tpl =
+        "tpl"
+        ;
+
+# ----------------------------------------------------------------
+# Axioms
+    @@keyword :: axiom ax postulate post
+
+    Axiom =
+        AxiomHeader SW Signature
+        { CW }* AxiomBlock
+        ;
+
+    AxiomHeader =
+        (
+        axiom
+        | ax
+        | postulate
+        | post
+        )
+        ;
+
+    AxiomBlock =
+        LeftBrace
+        { CW }* [ VariableSpecificationList ]
+        { CW }* Predicate
+        { CW }* RightBrace
+        ;
+
+    axiom =
+        "axiom"
+        ;
+
+    ax =
+        "ax"
+        ;
+
+    postulate =
+        "postulate"
+        ;
+
+    post =
+        "post"
+        ;
+# ----------------------------------------------------------------
+# Properties
+
+    @@keyword :: mandatory mand optional opt
+
+    PropertyList =
+        { Property }+
+        ;
+
+    Property =
+        { CW }* PropertyHeader
+        SW DefinitionProperty
+        ;
+
+    DefinitionProperty =
+        (
+        ClassInstance
+        | DefinitionPredicate
+        | FunctionalTermInstance
+        )
+        ;
+
+    ClassInstance =
+        GeneralType
+        SW Signature
+        { CW }* InstanceBlock
+        ;
+
+    FunctionalTermInstance =
+        FunctionalTermSignature
+        { CW }* InstanceBlock
+        ;
+
+    PropertyHeader =
+        (
+        mandatory
+        | mand
+        | optional
+        | opt
+        )
+        ;
+
+    mandatory =
+        "mandatory"
+        ;
+
+    mand =
+        "mand"
+        ;
+
+    optional =
+        "optional"
+        ;
+
+    opt =
+        "opt"
+        ;
+
+# ----------------------------------------------------------------
+# Constructors
+
+    Constructor =
+        Signature { CW }*
+        InstanceBlock
+        ;
+
+    InstanceBlock =
+        LeftBrace
+        { CW }* VariableSpecificationList
+        { CW }* RightBrace
+        ;
+
+
+# ----------------------------------------------------------------
+    @@keyword :: else case
+
+    Signature =
+        PredicateIdentifier
+        [ IW ] ParamTuple
+        ;
+
+    AnonymousSignature =
+        GeneralType
+        [ IW ] ParamTuple
+        ;
+
+    ParamTuple =
+        LeftParen
+        [ IW ] [ ParamList ]
+        [ IW ] RightParen
+        ;
+
+    ParamList =
+        (
+        Slash ArgumentIdentifier [ IW ] Comma [ IW ] Slash ArgumentIdentifier
+        | VariableDeclarationList
+        )
+        ;
+
+    VariableDeclarationList =
+        VariableDeclaration { [ IW ] Comma [ IW ] VariableDeclaration }*
+        ;
+
+    TypeWithCoord =
+        Type
+        LeftBound
+        [ IW ] ( RangeInSignature | CoordInSignature )
+        [ IW ] RightBound
+        ;
+
+    EntityWithCoord =
+        Entity
+        LeftBracket
+        [ IW ] ( Range | CoordList )
+        [ IW ] RightBracket
+        ;
+
+    CoordList =
+        Coord { [ IW ] Comma [ IW ] Coord }*
+        ;
+
+    CoordInSignature =
+        (
+        VariableType
+        | Coord
+        )
+        ;
+
+    Entity =
+        (
+        Variable
+        | AtList self
+        | self
+        )
+        ;
+
+    AtList =
+        { At }+
+        ;
+
+
+    Coord =
+        (
+        Assignee
+        | PrimePredicate
+        )
+        ;
+
+    RangeInSignature =
+        [ CoordInSignature ]
+        [ IW ] Tilde
+        [ IW ] [ CoordInSignature ]
+        ;
+
+    Range =
+        [ Coord ]
+        [ IW ] Tilde
+        [ IW ] [ Coord ]
+        ;
+
+    # Star: 0 or more occurrences
+    # Plus: 1 or more occurrences
+    # Ampersand: variable to be bound by the called function in which other arguments are only optional
+    CallModifier =
+        (
+        Star
+        | Plus
+        )
+        ;
+
+    Plus =
+        "+"
+        ;
+
+    ConditionFollowedByResultList =
+        ConditionFollowedByResult { { CW }* ConditionFollowedByResult }*
+        ;
+
+    ConditionFollowedByResult =
+        Predicate { CW }* Colon { CW }* StatementList
+        ;
+
+    At =
+        "@"
+        ;
+
+
+# ----------------------------------------------------------------
+# Theorem-like statements
+
+    @@keyword :: theorem thm proposition prop lemma lem corollary cor conjecture conj
+
+    # A Theorem is a headed Signature, followed by a TheoremLikeBlock
+    TheoremLikeStatementOrConjecture =
+        TheoremLikeStatementOrConjectureHeader SW Signature
+        [ IW ] PremiseConclusionBlock
+        ;
+
+    TheoremLikeStatementOrConjectureHeader =
+        (
+        theorem
+        | thm
+        | conjecture
+        | conj
+        | proposition
+        | prop
+        | lemma
+        | lem
+        | corollary
+        | cor
+        )
+        ;
+
+
+    theorem =
+        "theorem"
+        ;
+
+    thm =
+        "thm"
+        ;
+
+    proposition =
+        "proposition"
+        ;
+
+    prop =
+        "prop"
+        ;
+
+    lemma =
+        "lemma"
+        ;
+
+    lem =
+        "lem"
+        ;
+
+    corollary =
+        "corollary"
+        ;
+
+    cor =
+        "cor"
+        ;
+
+    conjecture =
+        "conjecture"
+        ;
+
+    conj =
+        "conj"
+        ;
+
+# ----------------------------------------------------------------
+# Proofs
+    @@keyword :: proof prf assume ass revoke rev qed trivial
+
+    # A Proof relates to the PredicateIdentifier of the Theorem.
+    # Because proofs are named, they can stand anywhere inside the theory, not only immediately
+    # after the Theorem they prove. This is to enable the users to mix
+    # with natural language an provide a proof long after the Theorem was stated.
+    Proof =
+        ProofHeadHeader SW ProofIdentifier [ IW ] ProofBlock
+        ;
+
+    ProofIdentifier =
+        PredicateIdentifier Dollar Digit
+        ;
+
+    ProofHeadHeader =
+        (
+        proof
+        | prf
+        )
+        ;
+
+    ProofBlock =
+        LeftBrace
+        { CW }* [ VariableSpecificationList ]
+        { CW }* ProofArgumentList
+        { CW }* RightBrace
+        ;
+
+    ProofArgumentList =
+        ProofArgument { { CW }* ProofArgument }*
+        ;
+
+    ProofArgument =
+        ArgumentIdentifier Dot [ IW ]
+        [ Justification SW ]
+        ArgumentInference
+        ;
+
+    VDash =
+        "|-"
+        ;
+
+    AssumeHeader =
+        (
+        assume
+        | ass
+        )
+        ;
+
+    AssumedPredicate =
+        AssumeHeader
+        SW PremiseOrOtherPredicate
+        ;
+
+    DerivedPredicate =
+        VDash SW
+        (
+        Predicate
+        | qed
+        | trivial
+        )
+        ;
+
+    qed =
+        "qed"
+        ;
+
+    trivial =
+        "trivial"
+        ;
+
+    PremiseOrOtherPredicate =
+        (
+        PremiseHeader
+        | DerivedPredicate
+        )
+        ;
+
+    ArgumentInference =
+        (
+        AssumedPredicate
+        | DerivedPredicate
+        | Revoke
+        )
+        ;
+
+    Revoke =
+        RevokeHeader SW Slash ArgumentIdentifier
+        ;
+
+    RevokeHeader =
+        (
+        revoke
+        | rev
+        )
+        ;
+
+    # Referenced results can be the identifiers of Rules of References, conjectures, theorem-like statements,
+    # or axioms
+    Justification =
+        Slash ReferencedResultIdentifier { [ IW ] Comma [ IW ] Slash ReferencedResultIdentifier }*
+        ;
+
+
+
+    Slash =
+        "/"
+        ;
+
+    ReferencedResultIdentifier =
+        (
+        ArgumentIdentifier
+        | Signature
+        | PredicateIdentifier
+        )
+        ;
+
+    proof =
+        "proof"
+        ;
+
+    prf =
+        "prf"
+        ;
+
+    assume =
+        "assume"
+        ;
+
+    ass =
+        "ass"
+        ;
+
+    revoke =
+        "revoke"
+        ;
+
+    rev =
+        "rev"
+        ;
+
+# ----------------------------------------------------------------
+# Boolean Keywords
+
+    @@keyword :: true false not and or impl iif xor
+
+    true =
+        "true"
+        ;
+
+    false =
+        "false"
+        ;
+
+    not =
+        "not"
+        ;
+
+    and =
+        "and"
+        ;
+
+    or =
+        "or"
+        ;
+
+    impl =
+        "impl"
+        ;
+
+
+    iif =
+        "iif"
+        ;
+
+    xor =
+        "xor"
+        ;
+
+    is =
+        "is"
+        ;
+
+# ----------------------------------------------------------------
+# Predicates
+
+    @@keyword :: all ex py is
+
+    Predicate =
+        (
+        CompoundPredicate
+        | PrimePredicate
+        )
+        ;
+
+    PrimePredicate =
+        (
+        PredicateWithArguments
+        | QualifiedIdentifier
+        | Statement
+        | Identifier
+        | IsOperator
+        | true
+        | false
+        | UndefinedHeader
+        )
+        ;
+
+    QualifiedIdentifier =
+        Identifier { Dot PredicateWithArguments }+
+        ;
+
+    PredicateWithArguments =
+        Identifier
+        [ IW ] LeftParen
+        [ IW ] [ PredicateList ]
+        [ IW ] RightParen
+        ;
+
+    Identifier =
+        (
+        PredicateIdentifier
+        | AmpersandVariable
+        | IndexValue
+        | Assignee
+        | extDigit
+        )
+        ;
+
+    AmpersandVariable =
+        Ampersand Variable
+        ;
+
+    IndexValue =
+        Variable Dollar ( Digit | Variable )
+        ;
+
+    Ampersand =
+        "&"
+        ;
+
+    self =
+        "self"
+        ;
+
+    PredicateList =
+        Predicate { { CW }* Comma { CW }* Predicate }*
+        ;
+
+    # A compound Predicate has its own boolean expressions to avoid mixing up with Pl0Propositions
+    CompoundPredicate =
+        (
+        Conjunction
+        | Disjunction
+        | Implication
+        | Equivalence
+        | ExclusiveOr
+        | Negation
+        | All
+        | Exists
+        )
+        ;
+
+    IsOperator =
+        is
+        [ IW ] LeftParen
+        { CW }*  Identifier
+        { CW }* Comma
+        [ IW ] VariableType
+        [ IW ] RightParen
+        ;
+
+    Negation =
+        not
+        [ IW ] ParenthesisedPredicate
+        ;
+
+
+    Conjunction =
+        and
+        { CW }* LeftParen
+        { CW }* PredicateList
+        { CW }* RightParen
+        ;
+
+
+    Disjunction =
+        or
+        { CW }* LeftParen
+        { CW }* PredicateList
+        { CW }* RightParen
+        ;
+
+    Implication =
+        impl
+        [ CW ] LeftParen
+        { CW }* Predicate
+        { CW }* Comma
+        { CW }* Predicate
+        { CW }* RightParen
+        ;
+
+    Equivalence =
+        iif
+        [ CW ] LeftParen
+        { CW }* Predicate
+        { CW }* Comma
+        { CW }* Predicate
+        { CW }* RightParen
+        ;
+
+    ExclusiveOr =
+        xor
+        [ CW ] LeftParen
+        { CW }* Predicate
+        { CW }* Comma
+        { CW }* Predicate
+        { CW }* RightParen
+        ;
+
+
+    ParenthesisedPredicate =
+        LeftParen
+        { CW }* Predicate
+        { CW }* RightParen
+        ;
+
+    All =
+        all SW VariableList
+        [ CW ] ParenthesisedPredicate
+        ;
+
+    all =
+        "all"
+        ;
+
+    Exists =
+        ExistsHeader SW VariableList
+        [ CW ] ParenthesisedPredicate
+        ;
+
+    ex =
+        "ex"
+        ;
+
+    ExistsHeader =
+        (
+        ExistsTimesN
+        | ex
+        )
+        ;
+
+    ExistsTimesN =
+        ex Dollar Digit
+        ;
+
+    Dollar =
+        "$"
+        ;
+
+    PythonDelegate =
+        py Dot PythonIdentifier
+        [ IW ] LeftParen
+        [ IW ] VariableList
+        [ IW ] RightParen
+        ;
+
+    PythonIdentifier =
+        /[a-z_]+/
+        ;
+
+
+    py =
+        "py"
+        ;
+
+    LeftBracket =
+        "["
+        ;
+
+    RightBracket =
+        "]"
+        ;
+
+# ----------------------------------------------------------------
+# Statements
+
+    @@keyword :: range loop
+
+    StatementList =
+        Statement SW { { CW }* Statement SW }*
+        ;
+
+    Statement =
+        (
+        PythonDelegate
+        | CaseStatement
+        | AssertionStatement
+        | AssignmentStatement
+        | RangeStatement
+        | LoopStatement
+        | ReturnStatement
+        )
+        ;
+
+    ReturnStatement =
+        ReturnHeader SW Predicate
+        ;
+
+    CaseStatement =
+        case
+        { CW }* LeftParen
+        { CW }* ConditionFollowedByResultList
+        { CW }* [ DefaultResult ]
+        { CW }* RightParen
+        ;
+
+    LoopStatement =
+        loop
+        SW RangeOrLoopBody
+        ;
+
+    RangeStatement =
+        range
+        SW RangeOrLoopBody
+        ;
+
+    RangeOrLoopBody =
+        Assignee
+        SW ( KeysOfVariadicVariable | ClosedOrOpenRange | Assignee )
+        { CW }* LeftParen
+        { CW }* StatementList
+        { CW }* RightParen
+        ;
+
+    KeysOfVariadicVariable =
+        Variable Dollar
+        ;
+
+    ClosedOrOpenRange =
+        LeftBound [ IW ] Range [ IW ] RightBound
+        ;
+
+    LeftBound =
+        LeftBracket [ ExclamationMark ]
+        ;
+
+    RightBound =
+        [ ExclamationMark ] RightBracket
+        ;
+
+    ExclamationMark =
+        "!"
+        ;
+
+    range =
+        "range"
+        ;
+
+    loop =
+        "loop"
+        ;
+
+    DefaultResult =
+        else [ IW ] Colon { CW }* StatementList
+        ;
+
+    AssignmentStatement =
+        Assignee [ IW ] ColonEqual [ IW ] Predicate
+        ;
+
+    Assignee =
+        (
+        EntityWithCoord
+        | Entity
+        )
+        ;
+
+    ReturnHeader =
+        (
+        return
+        | ret
+        )
+        ;
+
+    UndefinedHeader =
+        (
+        undefined
+        | undef
+        )
+        ;
+
+    return =
+        "return"
+        ;
+
+    ret =
+        "ret"
+        ;
+
+    undefined =
+        "undefined"
+        ;
+
+    undef =
+        "undef"
+        ;
+
+    ColonEqual =
+        ":="
+        ;
+
+    else =
+        "else"
+        ;
+
+    case =
+        "case"
+        ;
+
+
+# ----------------------------------------------------------------
+# names and identifiers
+    # PascalCase identifiers separated by points
+    Dot =
+        "."
+        ;
+
+    LeftBrace =
+        "{"
+        ;
+
+    RightBrace =
+        "}"
+        ;
+
+    LeftParen =
+        "("
+        ;
+
+    RightParen =
+        ")"
+        ;
+
+    Comma =
+        ","
+        ;
+
+    Star =
+        "*"
+        ;
+
+    Colon =
+        ":"
+        ;
+
+    NamespaceIdentifier =
+        IdStartsWithCap { Dot IdStartsWithCap }*
+        ;
+
+    ArgumentIdentifier =
+        (
+        Digit IdStartsWithSmallCase
+        | Digit
+        )
+        ;
+
+    WildcardTheoryNamespace =
+        NamespaceIdentifier [ NamespaceModifier ]
+        ;
+
+    NamespaceModifier =
+        (
+        Dot Star
+        | Alias
+        )
+        ;
+
+    Alias =
+        IW alias IW IdStartsWithCap
+        ;
+
+    alias =
+        "alias"
+        ;
+
+    IdStartsWithCap =
+        /[A-Z][a-z0-9A-Z_]*/
+        ;
+
+    @name
+    IdStartsWithSmallCase =
+        /[a-z][a-z0-9A-Z_]*/
+        ;
+
+    SW =
+        IW
+        ;
+
+    CW =
+        (
+        IW
+        | Comment
+        | LongComment
+        )
+        ;
+
+    Comment =
+        /\/\/[^\n]*/
+        ;
+
+    LongComment =
+        /\/\*((?:.|\n)*?)\*\//
+        ;
+
+    IW =
+        /[ \r\n\t]+/
+        ;
+
+    # convention: All syntax production rules of FPL syntax extensions have to start with "ext", followed by
+    # a Pascal Case id.
+    # This ensures that they will not be mixed-up with original FPL ebnf productions
+    # that are all PascalCase as well as FPL keywords, that are all small case.
+
+    XId =
+        At ext IdStartsWithCap
+        ;
+
+    @name
+        Variable =
+            IdStartsWithSmallCase
+        ;
+
+    Digit =
+        /\d+/
+        ;
+
+    ExtensionContent =
+        /((?!:end).)*/
+        ;
+
+# -----------------------------------------------------
+# Localization
+    @@keyword :: localization loc
+
+    LocalizationBlock =
+        LocalizationHeader
+        { CW }* LeftBrace
+        { CW }* LocalizationList
+        { CW }* RightBrace
+        ;
+
+    LocalizationList =
+        Localization { { CW }* Localization }*
+        ;
+
+    Localization =
+        Predicate [ IW ] ColonEqual [ IW ] TranslationList [ IW ] SemiColon
+        ;
+
+    SemiColon =
+        ";"
+        ;
+
+    Tilde =
+        "~"
+        ;
+
+    TranslationList =
+        Translation { SW Translation }*
+        ;
+
+    Translation =
+        Tilde LanguageCode [ IW ] Colon [ IW ] EBNFTransl
+        ;
+
+    LanguageCode =
+        /[a-z]{3}/
+        ;
+
+    EBNFTransl =
+        EBNFTerm { [ IW ] EBNFBar [ IW ] EBNFTerm }*
+        ;
+
+    EBNFTerm =
+        EBNFFactor { [ IW ] EBNFFactor }*
+        ;
+
+    EBNFFactor =
+        (
+        Variable
+        | EBNFString
+        | LeftParen [ IW ] EBNFTransl [ IW ] RightParen
+        )
+        ;
+
+    EBNFString =
+        /\"[^\"]*\"/
+        ;
+
+    EBNFBar =
+        "|"
+        ;
+
+    LocalizationHeader =
+        (
+        localization
+        | loc
+        )
+        ;
+
+    localization =
+        "localization"
+        ;
+
+    loc =
+        "loc"
+        ;
+
+# -----------------------------------------------------
+# Extensions of the FPL language (have to be dynamic)! Lacking a pre-processor, we put the rules
+# from the Proof of Concept of FPL code manually into the EBNF of the core FPL grammar.
+
+    # note that this has to be inserted into:
+    # the IsOperand choice
+    # the PredicateOrFunctionalTerm choice
+    extDigit =
+        /\d+/
+        ;
