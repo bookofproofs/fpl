@@ -2,7 +2,7 @@ from fplinterpreter import FplInterpreter
 from util import fplutil
 
 u = fplutil.Utils()
-fpl_parser = u.get_parser("../grammar/fpl.ebnf")
+fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
 u.add_distinct_duration("creating tatsu parser")
 
 theoryCommon = fplutil.get_file_content("theories/Commons.fpl")

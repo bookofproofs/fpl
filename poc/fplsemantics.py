@@ -43,6 +43,8 @@ class FPLSemantics(object):
         if isinstance(context.cst, str):
             if rule == "Comment":
                 pass
+            elif rule == "CommentWhitespaceList":
+                pass
             elif rule == "LongComment":
                 pass
             elif rule == "IW":

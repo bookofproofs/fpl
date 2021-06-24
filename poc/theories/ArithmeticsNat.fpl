@@ -145,6 +145,8 @@ Fpl.Arithmetics.Nat.Peano
                     return n
                 Equals(Succ(m), k):
                     return Succ(Add(n,k))
+                else:
+                    return undef
             )
         }
 

@@ -1,4 +1,4 @@
-# fpl Version 1.0.0
+# fpl Version 1.0.1
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -39,6 +39,10 @@
 
     ExtensionHeader =
         Colon ext
+        ;
+
+    ExtensionContent =
+        /.*/
         ;
 
     ExtensionTail =
@@ -319,12 +323,11 @@
 
     Type =
         (
-        AliasedId
+        PredicateIdentifier
         | XId
         | PredicateHeader
         | FunctionalTermHeader
         | ObjectHeader
-        | IdStartsWithCap
         )
         ;
 
@@ -1170,7 +1173,7 @@
         case
         { CW }* LeftParen
         { CW }* ConditionFollowedByResultList
-        { CW }* [ DefaultResult ]
+        { CW }* DefaultResult
         { CW }* RightParen
         ;
 
@@ -1392,10 +1395,6 @@
 
     Digit =
         /\d+/
-        ;
-
-    ExtensionContent =
-        /((?!:end).)*/
         ;
 
 # -----------------------------------------------------

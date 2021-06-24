@@ -13,7 +13,6 @@ class FplInterpreter(object):
         self._theory_name = theory_name
         self._semantics = fplsemantics.FPLSemantics()
         self._verbose = verbose
-        parser.parse(fpl_source, semantics=self._semantics, whitespace='')
         try:
             self._theory_name = theory_name
             self._semantics = fplsemantics.FPLSemantics()
