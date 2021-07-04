@@ -102,7 +102,7 @@ There is a proof of concept (POC) based on the above requirements. It currently 
 
 1. The FPL grammar in an EBNF. 
   * [Current syntax diagrams](https://www.bookofproofs.org/FPLSyntaxDiagrams.xhtml)
-  * [EBNF definition](https://github.com/bookofproofs/fpl/tree/master/grammar/fpl.ebnf)
+  * [EBNF definition](https://github.com/bookofproofs/fpl/tree/master/grammar/)
 2. [FPL demo theories ](https://github.com/bookofproofs/fpl/tree/master/poc/theories/)
 3. A demo python project consisting of a parser generated using the [TatSu package](https://tatsu.readthedocs.io/en/stable/).
 
