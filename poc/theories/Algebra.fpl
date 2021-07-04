@@ -244,14 +244,14 @@ Fpl.Algebra.Structures
             // we can refer to th this functionality as group.InverseOf(x)
             mandatory func InverseOf(x: tplSetElem) -> tplSetElem
             {
-                retVal : tplSetElem
+                val: tplSetElem
                 assert
                     and
                     (
-                        Equals( myOp(x,retVal), myOp(retVal,x) ),
-                        Equals( myOp(retVal,x), self.NeutralElem())
+                        Equals( myOp(x,val), myOp(ketVal,x) ),
+                        Equals( myOp(val,x), self.NeutralElem())
                     )
-                ret retVal
+                ret val
             }
         }
 

@@ -42,7 +42,7 @@
         ;
 
     ExtensionContent =
-        /.*/
+        /((?!:end).)*/
         ;
 
     ExtensionTail =
@@ -793,9 +793,9 @@
         ;
 
     ProofArgument =
-        ArgumentIdentifier Dot [ IW ]
+        ArgumentIdentifier Dot SW
         [ Justification SW ]
-        ArgumentInference
+        ArgumentInference SW
         ;
 
     VDash =

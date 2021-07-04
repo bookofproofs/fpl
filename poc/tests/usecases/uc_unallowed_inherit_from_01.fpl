@@ -1,0 +1,9 @@
+TestNamespace
+{
+    // use case inheritance from tpl should be not possible
+    theory
+    {
+        class Test: tpl
+        {}
+    }
+}

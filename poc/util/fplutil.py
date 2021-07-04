@@ -3,15 +3,14 @@ import tatsu
 import io
 
 
-def get_file_content(path_to_file):
-    with io.open(path_to_file, 'r', encoding="utf-8") as file:
-        file = file.read()
-        return file
-
-
 class Utils:
     _stopwatch_measurements = dict()
     _stopwatch = time.perf_counter()
+
+    def get_file_content(self, path_to_file):
+        with io.open(path_to_file, 'r', encoding="utf-8") as file:
+            file = file.read()
+            return file
 
     def get_elapsed_seconds(self):
         """
@@ -39,4 +38,4 @@ class Utils:
         :param path_to_ebnf_file: path to source
         :return: tatsu parser
         """
-        return tatsu.compile(get_file_content(path_to_ebnf_file))
+        return tatsu.compile(self.get_file_content(path_to_ebnf_file))

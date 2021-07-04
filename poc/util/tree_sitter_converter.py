@@ -98,7 +98,15 @@ class OutputLines(list):
             else:
                 ret = self.create_sequence(rule_def, rule_name)
         elif rule_def[0] == "/" and rule_def[-1] == "/":
-            ret = rule_def
+            # todo: Unfortunately, tree-sitter grammars do not yet support
+            #  look-around, including look-ahead and look-behind
+            # the regex /((?!:end).)*/ of the FPL rule ExtensionContent has to be replaced by something similar
+            # but unfortunately not equivalent. The work-around would be to program an external scanner for tree-sitter
+            # in C (see https://github.com/tree-sitter/tree-sitter-cli/issues/53)
+            if rule_name == 'ExtensionContent':
+                ret = '/.*/'
+            else:
+                ret = rule_def
         elif rule_def[0] == "\"" and rule_def[-1] == "\"":
             ret = rule_def
         elif rule_def[0] == "[" and rule_def[-1] == "]":

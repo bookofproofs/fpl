@@ -37,7 +37,7 @@ class FPLSemantics(object):
         :return:
         """
         rule = context.rule[0]
-        if self._minified.find("ret Succ(Succ(Zero()))else") > -1:
+        if self._minified.find("func InverseOf(x:tplSetElem)->tplSetElem{retVal") > -1:
             print("")
             pass
         if isinstance(context.cst, str):
@@ -51,6 +51,8 @@ class FPLSemantics(object):
                 pass
             elif rule == "CW":
                 pass
+            elif rule == "Entity":
+                self._last_cst = context.cst
             elif rule == "SW":
                 self._minified += " "
             elif rule == "RightParen":
@@ -60,8 +62,6 @@ class FPLSemantics(object):
             elif rule == "RightChevron":
                 self._minified += ">"
             elif rule == "tpl" and self._last_cst[0:3] == context.cst:
-                self._last_cst = context.cst
-            elif rule == "ret" and self._last_cst[0:3] == context.cst:
                 self._last_cst = context.cst
             else:
                 if self._last_cst == context.cst:
