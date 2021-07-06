@@ -1,4 +1,4 @@
-class Block():
+class Block:
     outer_block = None
     type = None
     identifiers = set()

@@ -1,8 +1,6 @@
 class Variable(dict):
 
-    def __init__(self, var_name):
-        if not type(var_name) is str:
-            raise TypeError("var_name must be a string, was " + str(var_name))
+    def __init__(self, var_name: str):
         super().__init__()
         self["name"] = var_name
 
