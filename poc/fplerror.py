@@ -1,44 +1,62 @@
-class FPLCompilerError(BaseException):
+from classes.AuxInterpretation import AuxInterpretation
 
-    def __init__(self, error_code, inner_exception, line_no, error_context):
-        self.error_code = error_code
+
+class FplParserException(Exception):
+
+    def __init__(self, inner_exception, error_context):
         self.error_context = error_context
         self.inner_exception = inner_exception
-        self.line_no = line_no + 1
 
     def __str__(self):
-        msg = ""
-        if self.error_code != 0:
-            msg += "no. " + str(self.error_code) + " (line " + str(self.line_no) + ") "
-
-        if self.error_code >= 1000:
-            msg += str(self.error_context)
-        else:
-            if self.error_code < -1:
-                msg += "Unexpected error: " + str(type(self.inner_exception)) + " " + str(self.error_context)
-            elif self.error_code == -1:
-                msg += "Fpl Parse error: " + str(type(self.inner_exception)) + " " + str(self.error_context)
-            elif self.error_code == 0:
-                msg += "Syntax error "
-                pos = str(self.error_context).find("\n")
-                if pos > -1:
-                    msg += self.error_context[:pos]
-                    msg += str(self.inner_exception)
-            elif self.error_code == 1:
-                msg += "There is already an IDENTIFIER with the same name '" + str(self.error_context[2]) + "'"
-                msg += " found at " + str(self.error_context[3]) + ":" + str(self.error_context[4]) + "."
-            elif self.error_code == 2:
-                msg += "The identifier '" + str(self.error_context[2]) + "' has to be PascalCase."
-            elif self.error_code == 3:
-                msg += "The variable '" + str(self.error_context[2]) + "' is not declared in the statement "
-                msg += str(self.error_context[3]) + "."
-            elif self.error_code == 4:
-                msg += "deprecated: The IN qualifier is not allowed in the signature of the DEFINITION " + str(
-                    self.error_context[2]) + "."
-            elif self.error_code == 5:
-                msg += "The theory has no declaration for '" + str(self.error_context[2]) + "'."
-            elif self.error_code == 6:
-                msg += "Multiple declarations for a variable not supported, the variable was '" + str(
-                    self.error_context[2]) + "'."
-
+        msg = str(type(self))
+        pos = str(self.error_context).find("\n")
+        if pos > -1:
+            msg += self.error_context[:pos]
+            msg += str(self.inner_exception)
         return msg
+
+
+class FplInterpreterException(Exception):
+    __msg = None
+    __line = None
+    __col = None
+
+    def __init__(self, msg: str, line: int, col: int):
+        self.__msg = msg
+        self.__line = line
+        self.__col = col
+
+    def __str__(self):
+        return str(type(self).__name__) + ":" + str(self.__line) + ":" + str(self.__col) + ": " + self.__msg
+
+    def get_line(self):
+        return self.__line
+
+    def get_col(self):
+        return self.__col
+
+
+class FplVariableDuplicateInVariableListException(FplInterpreterException):
+    def __init__(self, inter: AuxInterpretation, var_name: str):
+        FplInterpreterException.__init__(self, var_name + " was already listed",
+                       inter.rule_line(),
+                       inter.rule_col())
+
+
+class FplUnclosedScopeException(FplInterpreterException):
+    __inter = None
+    __expected = None
+
+    def __init__(self, inter: AuxInterpretation, expected: str):
+        FplInterpreterException.__init__(self, "Expected " + str(expected) + ", got " + str(inter.get_interpretation()),
+                       inter.rule_line(),
+                       inter.rule_col())
+
+
+class FplUnopenedScopeException(Exception):
+    __inter = None
+
+    def __init__(self, inter: AuxInterpretation):
+        FplInterpreterException.__init__(self, str(inter.get_interpretation()),
+                       inter.rule_line(),
+                       inter.rule_col())

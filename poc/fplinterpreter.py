@@ -19,11 +19,7 @@ class FplInterpreter(object):
             self._verbose = verbose
             parser.parse(fpl_source, semantics=self._semantics, whitespace='')
         except tatsu.exceptions.FailedParse as ex:
-            self._semantics.errors.append(fplerror.FPLCompilerError(0, ex, 0, "in " + theory_name + ":" + str(ex)))
-        except tatsu.exceptions.FailedParse as ex:
-            self._semantics.errors.append(fplerror.FPLCompilerError(-1, ex, 0, "in " + theory_name + ":" + str(ex)))
-        except:
-            self._semantics.errors.append(fplerror.FPLCompilerError(-2, sys.exc_info()[1], 0, sys.exc_info()[1]))
+            self._semantics.errors.append(fplerror.FplParserException(ex, 0, "in " + theory_name + ":" + str(ex)))
         # self.validate_statements()
 
     def has_errors(self):
@@ -50,3 +46,4 @@ class FplInterpreter(object):
     def print_semantics(self):
         for item in self._semantics.parse_list:
             print(item)
+        print(str(len(self._semantics.parse_list)) + " items")

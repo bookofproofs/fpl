@@ -1,5 +1,5 @@
 import unittest
-from ..classes.IgnoreRules import ignorable_rules
+from ..classes.AuxAggrRulesText import aggr_rules_text
 from ..fplsemantics import FPLSemantics
 
 """
@@ -16,11 +16,11 @@ class ConsistentSwitcher(unittest.TestCase):
         for sw in self.semantics.switcher:
             rule = self.semantics.switcher.get(sw)
             if rule.__name__ == "inter_equals_proceeding_ignored_rules":
-                self.assertIn(sw, ignorable_rules)
+                self.assertIn(sw, aggr_rules_text)
 
     def test_all_ignorable_rules_have_in_switcher_correct_function(self):
         self.semantics = FPLSemantics()
-        for sw in ignorable_rules:
+        for sw in aggr_rules_text:
             rule = self.semantics.switcher.get(sw, lambda: "Invalid rule")
             if rule.__name__ == "Invalid rule":
                 raise NameError("Invalid rule " + sw + " in ignorable_rules")

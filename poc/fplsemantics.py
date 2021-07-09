@@ -1,5 +1,10 @@
-from classes.Variable import Variable
-from classes.IgnoreRules import IgnoreRules
+from classes.AuxDeclaredVariable import AuxDeclaredVariable
+from classes.AuxAggrRulesText import AuxAggrRulesText
+from classes.AuxInterpretation import AuxInterpretation
+from classes.AuxScope import AuxScope
+from classes.VariableList import VariableList
+from classes.GeneralType import GeneralType
+import fplerror
 
 
 class FPLSemantics(object):
@@ -11,6 +16,7 @@ class FPLSemantics(object):
     _last_cst = None
     _context_stack = None  # used to distinguish different contexts while parsing and interpreting the same lexemes
     switcher = None
+    __scope_stack = None  # used to gather all identified scopes
 
     def __init__(self):
         self.errors = []
@@ -19,269 +25,270 @@ class FPLSemantics(object):
         self._stack = []
         self._minified = ""
         self._last_cst = ""
-        self._context_stack = []  # used to distinguish different contexts while parsing and interpreting the same lexemes
+        self._context_stack = []
+        self.__scope_stack = []
 
         self.switcher = {
-            "Alias": self.inter_equals_cst,
-            "alias": self.inter_equals_cst,
+            "Alias": self.default_interpretation,
+            "alias": self.default_interpretation,
             "AliasedId": self.inter_equals_proceeding_ignored_rules,
-            "All": self.inter_equals_cst,
-            "all": self.inter_equals_cst,
-            "Ampersand": self.inter_equals_cst,
-            "AmpersandVariable": self.inter_equals_cst,
-            "and": self.inter_equals_cst,
-            "AnonymousDeclaration": self.inter_equals_cst,
-            "AnonymousSignature": self.inter_equals_cst,
-            "ArgumentIdentifier": self.inter_equals_cst,
-            "ArgumentInference": self.inter_equals_cst,
-            "ass": self.inter_equals_cst,
-            "assert": self.inter_equals_cst,
-            "AssertionStatement": self.inter_equals_cst,
-            "Assignee": self.inter_equals_cst,
-            "AssignmentStatement": self.inter_equals_cst,
-            "assume": self.inter_equals_cst,
-            "AssumedPredicate": self.inter_equals_cst,
-            "AssumeHeader": self.inter_equals_cst,
-            "At": self.inter_equals_cst,
+            "All": self.default_interpretation,
+            "all": self.default_interpretation,
+            "Ampersand": self.default_interpretation,
+            "AmpersandVariable": self.default_interpretation,
+            "and": self.default_interpretation,
+            "AnonymousDeclaration": self.default_interpretation,
+            "AnonymousSignature": self.default_interpretation,
+            "ArgumentIdentifier": self.default_interpretation,
+            "ArgumentInference": self.default_interpretation,
+            "ass": self.default_interpretation,
+            "assert": self.default_interpretation,
+            "AssertionStatement": self.default_interpretation,
+            "Assignee": self.default_interpretation,
+            "AssignmentStatement": self.default_interpretation,
+            "assume": self.default_interpretation,
+            "AssumedPredicate": self.default_interpretation,
+            "AssumeHeader": self.default_interpretation,
+            "At": self.default_interpretation,
             "AtList": self.inter_equals_proceeding_ignored_rules,
-            "ax": self.inter_equals_cst,
-            "Axiom": self.inter_equals_cst,
-            "axiom": self.inter_equals_cst,
-            "AxiomBlock": self.inter_equals_cst,
-            "AxiomHeader": self.inter_equals_cst,
-            "BuildingBlock": self.inter_equals_cst,
-            "BuildingBlockList": self.inter_equals_cst,
-            "CallModifier": self.inter_equals_cst,
-            "case": self.inter_equals_cst,
-            "CaseStatement": self.inter_equals_cst,
-            "cl": self.inter_equals_cst,
-            "class": self.inter_equals_cst,
-            "ClassHeader": self.inter_equals_cst,
-            "ClassInstance": self.inter_equals_cst,
-            "ClosedOrOpenRange": self.inter_equals_cst,
-            "Colon": self.inter_equals_cst,
-            "ColonEqual": self.inter_equals_cst,
-            "Comma": self.inter_equals_cst,
-            "Comment": self.inter_equals_cst,
-            "CompoundPredicate": self.inter_equals_cst,
-            "con": self.inter_equals_cst,
-            "conclusion": self.inter_equals_cst,
-            "ConclusionBlock": self.inter_equals_cst,
-            "ConclusionHeader": self.inter_equals_cst,
-            "ConditionFollowedByResult": self.inter_equals_cst,
-            "ConditionFollowedByResultList": self.inter_equals_cst,
-            "conj": self.inter_equals_cst,
-            "conjecture": self.inter_equals_cst,
-            "Conjunction": self.inter_equals_cst,
-            "Constructor": self.inter_equals_cst,
-            "Coord": self.inter_equals_cst,
-            "CoordInSignature": self.inter_equals_cst,
-            "CoordList": self.inter_equals_cst,
-            "cor": self.inter_equals_cst,
-            "corollary": self.inter_equals_cst,
+            "ax": self.default_interpretation,
+            "Axiom": self.default_interpretation,
+            "axiom": self.default_interpretation,
+            "AxiomBlock": self.default_interpretation,
+            "AxiomHeader": self.default_interpretation,
+            "BuildingBlock": self.default_interpretation,
+            "BuildingBlockList": self.default_interpretation,
+            "CallModifier": self.inter_equals_proceeding_ignored_rules,
+            "case": self.default_interpretation,
+            "CaseStatement": self.default_interpretation,
+            "cl": self.default_interpretation,
+            "class": self.default_interpretation,
+            "ClassHeader": self.default_interpretation,
+            "ClassInstance": self.default_interpretation,
+            "ClosedOrOpenRange": self.default_interpretation,
+            "Colon": self.default_interpretation,
+            "ColonEqual": self.default_interpretation,
+            "Comma": self.default_interpretation,
+            "Comment": self.default_interpretation,
+            "CompoundPredicate": self.default_interpretation,
+            "con": self.default_interpretation,
+            "conclusion": self.default_interpretation,
+            "ConclusionBlock": self.default_interpretation,
+            "ConclusionHeader": self.default_interpretation,
+            "ConditionFollowedByResult": self.default_interpretation,
+            "ConditionFollowedByResultList": self.default_interpretation,
+            "conj": self.default_interpretation,
+            "conjecture": self.default_interpretation,
+            "Conjunction": self.default_interpretation,
+            "Constructor": self.default_interpretation,
+            "Coord": self.default_interpretation,
+            "CoordInSignature": self.default_interpretation,
+            "CoordList": self.default_interpretation,
+            "cor": self.default_interpretation,
+            "corollary": self.default_interpretation,
             "CW": self.inter_equals_proceeding_ignored_rules,
-            "DefaultResult": self.inter_equals_cst,
-            "Definition": self.inter_equals_cst,
-            "DefinitionClass": self.inter_equals_cst,
-            "DefinitionContent": self.inter_equals_cst,
-            "DefinitionContentList": self.inter_equals_cst,
-            "DefinitionFunctionalTerm": self.inter_equals_cst,
-            "DefinitionPredicate": self.inter_equals_cst,
-            "DefinitionProperty": self.inter_equals_cst,
-            "DerivedPredicate": self.inter_equals_cst,
-            "Digit": self.inter_equals_cst,
-            "Disjunction": self.inter_equals_cst,
-            "Dollar": self.inter_equals_cst,
-            "Dot": self.inter_equals_cst,
-            "EBNFBar": self.inter_equals_cst,
-            "EBNFFactor": self.inter_equals_cst,
-            "EBNFString": self.inter_equals_cst,
-            "EBNFTerm": self.inter_equals_cst,
-            "EBNFTransl": self.inter_equals_cst,
-            "else": self.inter_equals_cst,
-            "end": self.inter_equals_cst,
-            "Entity": self.inter_equals_cst,
-            "EntityWithCoord": self.inter_equals_cst,
-            "Equivalence": self.inter_equals_cst,
-            "ex": self.inter_equals_cst,
-            "ExclamationMark": self.inter_equals_cst,
-            "ExclusiveOr": self.inter_equals_cst,
-            "Exists": self.inter_equals_cst,
-            "ExistsHeader": self.inter_equals_cst,
-            "ExistsTimesN": self.inter_equals_cst,
-            "ext": self.inter_equals_cst,
-            "extDigit": self.inter_equals_cst,
-            "ExtensionBlock": self.inter_equals_cst,
-            "ExtensionContent": self.inter_equals_cst,
-            "ExtensionHeader": self.inter_equals_cst,
-            "ExtensionTail": self.inter_equals_cst,
-            "false": self.inter_equals_cst,
-            "func": self.inter_equals_cst,
-            "function": self.inter_equals_cst,
-            "FunctionalTermDefinitionBlock": self.inter_equals_cst,
-            "FunctionalTermHeader": self.inter_equals_cst,
-            "FunctionalTermInstance": self.inter_equals_cst,
-            "FunctionalTermSignature": self.inter_equals_cst,
-            "GeneralType": self.inter_equals_cst,
-            "Identifier": self.inter_equals_cst,
-            "IdStartsWithCap": self.inter_equals_cst,
-            "IdStartsWithSmallCase": self.inter_equals_cst,
-            "iif": self.inter_equals_cst,
-            "impl": self.inter_equals_cst,
-            "Implication": self.inter_equals_cst,
-            "ind": self.inter_equals_cst,
-            "index": self.inter_equals_cst,
-            "IndexHeader": self.inter_equals_cst,
-            "IndexValue": self.inter_equals_cst,
-            "inf": self.inter_equals_cst,
-            "inference": self.inter_equals_cst,
-            "InferenceHeader": self.inter_equals_cst,
-            "InstanceBlock": self.inter_equals_cst,
-            "is": self.inter_equals_cst,
-            "IsOperator": self.inter_equals_cst,
-            "IW": self.inter_equals_cst,
-            "Justification": self.inter_equals_cst,
-            "KeysOfVariadicVariable": self.inter_equals_cst,
-            "LanguageCode": self.inter_equals_cst,
-            "LeftBound": self.inter_equals_cst,
-            "LeftBrace": self.inter_equals_cst,
-            "LeftBracket": self.inter_equals_cst,
-            "LeftParen": self.inter_equals_cst,
-            "lem": self.inter_equals_cst,
-            "lemma": self.inter_equals_cst,
-            "loc": self.inter_equals_cst,
-            "Localization": self.inter_equals_cst,
-            "localization": self.inter_equals_cst,
-            "LocalizationBlock": self.inter_equals_cst,
-            "LocalizationHeader": self.inter_equals_cst,
-            "LocalizationList": self.inter_equals_cst,
-            "LongComment": self.inter_equals_cst,
-            "LongTemplateHeader": self.inter_equals_cst,
-            "loop": self.inter_equals_cst,
-            "LoopStatement": self.inter_equals_cst,
-            "mand": self.inter_equals_cst,
-            "mandatory": self.inter_equals_cst,
-            "Mapping": self.inter_equals_cst,
-            "NamedVariableDeclaration": self.inter_equals_cst,
-            "Namespace": self.inter_equals_cst,
-            "NamespaceBlock": self.inter_equals_cst,
+            "DefaultResult": self.default_interpretation,
+            "Definition": self.default_interpretation,
+            "DefinitionClass": self.default_interpretation,
+            "DefinitionContent": self.default_interpretation,
+            "DefinitionContentList": self.default_interpretation,
+            "DefinitionFunctionalTerm": self.default_interpretation,
+            "DefinitionPredicate": self.default_interpretation,
+            "DefinitionProperty": self.default_interpretation,
+            "DerivedPredicate": self.default_interpretation,
+            "Digit": self.default_interpretation,
+            "Disjunction": self.default_interpretation,
+            "Dollar": self.default_interpretation,
+            "Dot": self.default_interpretation,
+            "EBNFBar": self.default_interpretation,
+            "EBNFFactor": self.default_interpretation,
+            "EBNFString": self.default_interpretation,
+            "EBNFTerm": self.default_interpretation,
+            "EBNFTransl": self.default_interpretation,
+            "else": self.default_interpretation,
+            "end": self.default_interpretation,
+            "Entity": self.default_interpretation,
+            "EntityWithCoord": self.default_interpretation,
+            "Equivalence": self.default_interpretation,
+            "ex": self.default_interpretation,
+            "ExclamationMark": self.default_interpretation,
+            "ExclusiveOr": self.default_interpretation,
+            "Exists": self.default_interpretation,
+            "ExistsHeader": self.default_interpretation,
+            "ExistsTimesN": self.default_interpretation,
+            "ext": self.default_interpretation,
+            "extDigit": self.default_interpretation,
+            "ExtensionBlock": self.default_interpretation,
+            "ExtensionContent": self.default_interpretation,
+            "ExtensionHeader": self.default_interpretation,
+            "ExtensionTail": self.default_interpretation,
+            "false": self.default_interpretation,
+            "func": self.default_interpretation,
+            "function": self.default_interpretation,
+            "FunctionalTermDefinitionBlock": self.default_interpretation,
+            "FunctionalTermHeader": self.inter_equals_proceeding_ignored_rules,
+            "FunctionalTermInstance": self.default_interpretation,
+            "FunctionalTermSignature": self.default_interpretation,
+            "GeneralType": self.general_type_interpretation,
+            "Identifier": self.default_interpretation,
+            "IdStartsWithCap": self.default_interpretation,
+            "IdStartsWithSmallCase": self.default_interpretation,
+            "iif": self.default_interpretation,
+            "impl": self.default_interpretation,
+            "Implication": self.default_interpretation,
+            "ind": self.default_interpretation,
+            "index": self.default_interpretation,
+            "IndexHeader": self.inter_equals_proceeding_ignored_rules,
+            "IndexValue": self.default_interpretation,
+            "inf": self.default_interpretation,
+            "inference": self.default_interpretation,
+            "InferenceHeader": self.default_interpretation,
+            "InstanceBlock": self.default_interpretation,
+            "is": self.default_interpretation,
+            "IsOperator": self.default_interpretation,
+            "IW": self.default_interpretation,
+            "Justification": self.default_interpretation,
+            "KeysOfVariadicVariable": self.default_interpretation,
+            "LanguageCode": self.default_interpretation,
+            "LeftBound": self.inter_equals_proceeding_ignored_rules,
+            "LeftBrace": self.start_new_scope,
+            "LeftBracket": self.default_interpretation,
+            "LeftParen": self.start_new_scope,
+            "lem": self.default_interpretation,
+            "lemma": self.default_interpretation,
+            "loc": self.default_interpretation,
+            "Localization": self.default_interpretation,
+            "localization": self.default_interpretation,
+            "LocalizationBlock": self.default_interpretation,
+            "LocalizationHeader": self.default_interpretation,
+            "LocalizationList": self.default_interpretation,
+            "LongComment": self.default_interpretation,
+            "LongTemplateHeader": self.inter_equals_proceeding_ignored_rules,
+            "loop": self.default_interpretation,
+            "LoopStatement": self.default_interpretation,
+            "mand": self.default_interpretation,
+            "mandatory": self.default_interpretation,
+            "Mapping": self.default_interpretation,
+            "NamedVariableDeclaration": self.default_interpretation,
+            "Namespace": self.default_interpretation,
+            "NamespaceBlock": self.default_interpretation,
             "NamespaceIdentifier": self.inter_equals_proceeding_ignored_rules,
-            "NamespaceModifier": self.inter_equals_cst,
-            "Negation": self.inter_equals_cst,
-            "not": self.inter_equals_cst,
-            "obj": self.inter_equals_cst,
-            "object": self.inter_equals_cst,
-            "ObjectDefinitionBlock": self.inter_equals_cst,
-            "ObjectHeader": self.inter_equals_cst,
-            "opt": self.inter_equals_cst,
-            "optional": self.inter_equals_cst,
-            "or": self.inter_equals_cst,
-            "ParamList": self.inter_equals_cst,
-            "ParamTuple": self.inter_equals_cst,
-            "ParenthesisedPredicate": self.inter_equals_cst,
-            "Plus": self.inter_equals_cst,
-            "post": self.inter_equals_cst,
-            "postulate": self.inter_equals_cst,
-            "pre": self.inter_equals_cst,
-            "pred": self.inter_equals_cst,
-            "predicate": self.inter_equals_cst,
-            "Predicate": self.inter_equals_cst,
-            "PredicateDefinitionBlock": self.inter_equals_cst,
-            "PredicateHeader": self.inter_equals_cst,
+            "NamespaceModifier": self.default_interpretation,
+            "Negation": self.default_interpretation,
+            "not": self.default_interpretation,
+            "obj": self.default_interpretation,
+            "object": self.default_interpretation,
+            "ObjectDefinitionBlock": self.default_interpretation,
+            "ObjectHeader": self.inter_equals_proceeding_ignored_rules,
+            "opt": self.default_interpretation,
+            "optional": self.default_interpretation,
+            "or": self.default_interpretation,
+            "ParamList": self.default_interpretation,
+            "ParamTuple": self.default_interpretation,
+            "ParenthesisedPredicate": self.default_interpretation,
+            "Plus": self.default_interpretation,
+            "post": self.default_interpretation,
+            "postulate": self.default_interpretation,
+            "pre": self.default_interpretation,
+            "pred": self.default_interpretation,
+            "predicate": self.default_interpretation,
+            "Predicate": self.default_interpretation,
+            "PredicateDefinitionBlock": self.default_interpretation,
+            "PredicateHeader": self.inter_equals_proceeding_ignored_rules,
             "PredicateIdentifier": self.inter_equals_proceeding_ignored_rules,
-            "PredicateList": self.inter_equals_cst,
-            "PredicateWithArguments": self.inter_equals_cst,
-            "premise": self.inter_equals_cst,
-            "PremiseBlock": self.inter_equals_cst,
-            "PremiseConclusionBlock": self.inter_equals_cst,
-            "PremiseHeader": self.inter_equals_cst,
-            "PremiseOrOtherPredicate": self.inter_equals_cst,
-            "prf": self.inter_equals_cst,
-            "PrimePredicate": self.inter_equals_cst,
-            "Proof": self.inter_equals_cst,
-            "proof": self.inter_equals_cst,
-            "ProofArgument": self.inter_equals_cst,
-            "ProofArgumentList": self.inter_equals_cst,
-            "ProofBlock": self.inter_equals_cst,
-            "ProofHeadHeader": self.inter_equals_cst,
-            "ProofIdentifier": self.inter_equals_cst,
-            "prop": self.inter_equals_cst,
-            "Property": self.inter_equals_cst,
-            "PropertyHeader": self.inter_equals_cst,
-            "PropertyList": self.inter_equals_cst,
-            "proposition": self.inter_equals_cst,
-            "py": self.inter_equals_cst,
-            "PythonDelegate": self.inter_equals_cst,
-            "PythonIdentifier": self.inter_equals_cst,
-            "qed": self.inter_equals_cst,
-            "QualifiedIdentifier": self.inter_equals_cst,
-            "Range": self.inter_equals_cst,
-            "range": self.inter_equals_cst,
-            "RangeInSignature": self.inter_equals_cst,
-            "RangeOrLoopBody": self.inter_equals_cst,
-            "RangeStatement": self.inter_equals_cst,
-            "ReferencedResultIdentifier": self.inter_equals_cst,
-            "ret": self.inter_equals_cst,
-            "return": self.inter_equals_cst,
-            "ReturnHeader": self.inter_equals_cst,
-            "ReturnStatement": self.inter_equals_cst,
-            "rev": self.inter_equals_cst,
-            "Revoke": self.inter_equals_cst,
-            "revoke": self.inter_equals_cst,
-            "RevokeHeader": self.inter_equals_cst,
-            "RightBound": self.inter_equals_cst,
-            "RightBrace": self.inter_equals_cst,
-            "RightBracket": self.inter_equals_cst,
-            "RightParen": self.inter_equals_cst,
-            "RuleOfInference": self.inter_equals_cst,
-            "RuleOfInferenceList": self.inter_equals_cst,
-            "RulesOfInferenceBlock": self.inter_equals_cst,
-            "self": self.inter_equals_cst,
-            "SemiColon": self.inter_equals_cst,
-            "Signature": self.inter_equals_cst,
-            "Slash": self.inter_equals_cst,
-            "Star": self.inter_equals_cst,
-            "Statement": self.inter_equals_cst,
-            "StatementList": self.inter_equals_cst,
+            "PredicateList": self.default_interpretation,
+            "PredicateWithArguments": self.default_interpretation,
+            "premise": self.default_interpretation,
+            "PremiseBlock": self.default_interpretation,
+            "PremiseConclusionBlock": self.default_interpretation,
+            "PremiseHeader": self.default_interpretation,
+            "PremiseOrOtherPredicate": self.default_interpretation,
+            "prf": self.default_interpretation,
+            "PrimePredicate": self.default_interpretation,
+            "Proof": self.default_interpretation,
+            "proof": self.default_interpretation,
+            "ProofArgument": self.default_interpretation,
+            "ProofArgumentList": self.default_interpretation,
+            "ProofBlock": self.default_interpretation,
+            "ProofHeadHeader": self.default_interpretation,
+            "ProofIdentifier": self.default_interpretation,
+            "prop": self.default_interpretation,
+            "Property": self.default_interpretation,
+            "PropertyHeader": self.default_interpretation,
+            "PropertyList": self.default_interpretation,
+            "proposition": self.default_interpretation,
+            "py": self.default_interpretation,
+            "PythonDelegate": self.default_interpretation,
+            "PythonIdentifier": self.default_interpretation,
+            "qed": self.default_interpretation,
+            "QualifiedIdentifier": self.default_interpretation,
+            "Range": self.default_interpretation,
+            "range": self.default_interpretation,
+            "RangeInSignature": self.default_interpretation,
+            "RangeOrLoopBody": self.default_interpretation,
+            "RangeStatement": self.default_interpretation,
+            "ReferencedResultIdentifier": self.default_interpretation,
+            "ret": self.default_interpretation,
+            "return": self.default_interpretation,
+            "ReturnHeader": self.default_interpretation,
+            "ReturnStatement": self.default_interpretation,
+            "rev": self.default_interpretation,
+            "Revoke": self.default_interpretation,
+            "revoke": self.default_interpretation,
+            "RevokeHeader": self.default_interpretation,
+            "RightBound": self.inter_equals_proceeding_ignored_rules,
+            "RightBrace": self.end_new_scope,
+            "RightBracket": self.default_interpretation,
+            "RightParen": self.end_new_scope,
+            "RuleOfInference": self.default_interpretation,
+            "RuleOfInferenceList": self.default_interpretation,
+            "RulesOfInferenceBlock": self.default_interpretation,
+            "self": self.default_interpretation,
+            "SemiColon": self.default_interpretation,
+            "Signature": self.default_interpretation,
+            "Slash": self.default_interpretation,
+            "Star": self.default_interpretation,
+            "Statement": self.default_interpretation,
+            "StatementList": self.default_interpretation,
             "SW": self.inter_equals_proceeding_ignored_rules,
-            "template": self.inter_equals_cst,
-            "TemplateHeader": self.inter_equals_cst,
-            "th": self.inter_equals_cst,
-            "theorem": self.inter_equals_cst,
-            "TheoremLikeStatementOrConjecture": self.inter_equals_cst,
-            "TheoremLikeStatementOrConjectureHeader": self.inter_equals_cst,
-            "theory": self.inter_equals_cst,
-            "TheoryBlock": self.inter_equals_cst,
-            "TheoryHeader": self.inter_equals_cst,
-            "thm": self.inter_equals_cst,
-            "Tilde": self.inter_equals_cst,
-            "To": self.inter_equals_cst,
-            "tpl": self.inter_equals_cst,
-            "Translation": self.inter_equals_cst,
-            "TranslationList": self.inter_equals_cst,
-            "trivial": self.inter_equals_cst,
-            "true": self.inter_equals_cst,
-            "TupleOfTypes": self.inter_equals_cst,
-            "Type": self.inter_equals_cst,
-            "TypeOrTupleOfTypes": self.inter_equals_cst,
-            "TypeWithCoord": self.inter_equals_cst,
-            "undef": self.inter_equals_cst,
-            "undefined": self.inter_equals_cst,
-            "UndefinedHeader": self.inter_equals_cst,
-            "uses": self.inter_equals_cst,
-            "UsesClause": self.inter_equals_cst,
+            "template": self.default_interpretation,
+            "TemplateHeader": self.inter_equals_proceeding_ignored_rules,
+            "th": self.default_interpretation,
+            "theorem": self.default_interpretation,
+            "TheoremLikeStatementOrConjecture": self.default_interpretation,
+            "TheoremLikeStatementOrConjectureHeader": self.default_interpretation,
+            "theory": self.default_interpretation,
+            "TheoryBlock": self.default_interpretation,
+            "TheoryHeader": self.default_interpretation,
+            "thm": self.default_interpretation,
+            "Tilde": self.default_interpretation,
+            "To": self.default_interpretation,
+            "tpl": self.default_interpretation,
+            "Translation": self.default_interpretation,
+            "TranslationList": self.default_interpretation,
+            "trivial": self.default_interpretation,
+            "true": self.default_interpretation,
+            "TupleOfTypes": self.default_interpretation,
+            "Type": self.inter_equals_proceeding_ignored_rules,
+            "TypeOrTupleOfTypes": self.default_interpretation,
+            "TypeWithCoord": self.default_interpretation,
+            "undef": self.default_interpretation,
+            "undefined": self.default_interpretation,
+            "UndefinedHeader": self.default_interpretation,
+            "uses": self.default_interpretation,
+            "UsesClause": self.default_interpretation,
             "Variable": self.inter_equals_proceeding_ignored_rules,
-            "VariableDeclaration": self.inter_equals_cst,
-            "VariableDeclarationList": self.inter_equals_cst,
-            "VariableList": self.inter_equals_cst,
-            "VariableSpecification": self.inter_equals_cst,
-            "VariableSpecificationList": self.inter_equals_cst,
-            "VariableType": self.inter_equals_cst,
-            "VDash": self.inter_equals_cst,
-            "WildcardTheoryNamespace": self.inter_equals_cst,
-            "WildcardTheoryNamespaceList": self.inter_equals_cst,
-            "XId": self.inter_equals_cst,
-            "xor": self.inter_equals_cst,
+            "VariableDeclaration": self.default_interpretation,
+            "VariableDeclarationList": self.default_interpretation,
+            "VariableList": self.variable_list_interpretation,
+            "VariableSpecification": self.default_interpretation,
+            "VariableSpecificationList": self.default_interpretation,
+            "VariableType": self.default_interpretation,
+            "VDash": self.default_interpretation,
+            "WildcardTheoryNamespace": self.default_interpretation,
+            "WildcardTheoryNamespaceList": self.default_interpretation,
+            "XId": self.inter_equals_proceeding_ignored_rules,
+            "xor": self.default_interpretation,
         }
 
     @staticmethod
@@ -403,49 +410,104 @@ class FPLSemantics(object):
 
         # minify
         self._minify(context)
-        d = dict()
-        d["rule"] = context.rule[0]
-        d["cst"] = context.cst
-        d["pos"] = context.pos
-        d["col"] = context.tokenizer.col
-        d["line"] = context.tokenizer.line
-        self.interpret_switcher(d, context)
-        self.parse_list.append(d)
+        parsing_info = AuxInterpretation(context.rule[0], context.pos, context.tokenizer.col, context.tokenizer.line,
+                                         context.cst, self.errors)
+        interpretation = self.interpret_switcher(parsing_info)
+        if interpretation is not None:
+            # append all interpretations that returned something else as None
+            self.parse_list.append(interpretation)
         return ast
 
-    def interpret_switcher(self, parsing_info, context):
-        rule = parsing_info["rule"]
+    def interpret_switcher(self, parsing_info: AuxInterpretation):
+        rule = parsing_info.rule_name()
         func = self.switcher.get(rule, lambda: "Invalid rule")
-        # call the function depending on the rule in the switcher and modify its interpretation
-        func(parsing_info, context)
+        # call the function depending on the rule in the switcher and modify its interpretation and returns its value
+        return func(parsing_info)
 
     """
     All interpretation delegates
     """
 
     @staticmethod
-    def inter_equals_cst(parsing_info: dict, context):
+    def default_interpretation(parsing_info: AuxInterpretation):
         """
-        This delegate simply copies the cst as interpretation
-        :param parsing_info: parsing info
-        :param context: parsing context
-        :return: None
+        Copies the parsing context of TatSu into an interpretation
+        :param parsing_info: the interpretation for a rule
+        :return: modified parsing_info
         """
-        parsing_info['inter'] = context.cst
+        cst = parsing_info.get_cst()
+        if type(cst) is str:
+            parsing_info.set_interpretation(cst)
+        else:
+            parsing_info.set_interpretation("NotImplemented " + str(cst))
+        return parsing_info
 
-    def inter_equals_proceeding_ignored_rules(self, parsing_info: dict, context):
+    def inter_equals_proceeding_ignored_rules(self, parsing_info: AuxInterpretation):
         """
-        This delegate removes all rules from parsing_list that can be ignored because the interpretation of
+        Removes all rules from parsing_list that can be ignored because the interpretation of
         the current rule is a string concatenation of the interpretations of to be ignored rules
-        :param parsing_info: parsing info
-        :param context: parsing context
+        :param parsing_info: the interpretation for a rule
+        :return: modified parsing_info
+        """
+        # concatenate the interpretations of the proceeding rules and remove them from self.parse_list
+        aux_ignore = AuxAggrRulesText(self.parse_list, parsing_info.rule_name())
+        # the (string) concatenated interpretation of the proceeding rules replaces the interpretation of this rule
+        parsing_info.set_interpretation(aux_ignore.inter())
+        # replace the complex cst (e.g. lists and dictionaries) by None to save memory. We won't need it any more.
+        parsing_info.clear_cst()
+        return parsing_info
+
+    def start_new_scope(self, parsing_info: AuxInterpretation):
+        """
+        Starts a new scope and returns None to prevent appending the beginning of the scope in the parse_list
+        :param parsing_info: the interpretation for a rule
         :return: None
         """
-        ignore_proceeding_rules = IgnoreRules(self.parse_list, parsing_info['rule'])
-        # the processed interpretation of the proceeding rules is not the interpretation of the current rule
-        parsing_info['inter'] = ignore_proceeding_rules.inter()
-        # replace the complex cst (e.g. lists and dictionaries) by None to save memory. We won't need it any more.
-        parsing_info['cst'] = None
+        scope = AuxScope()
+        scope.set_start(parsing_info)
+        parsing_info.set_interpretation("\'" + parsing_info.get_cst() + "\'")
+        self.__scope_stack.append(scope)
+        return None
+
+    def end_new_scope(self, parsing_info: AuxInterpretation):
+        """
+        Ends a new scope and returns it so it will be appended in the parse_list
+        :param parsing_info: the interpretation for a rule
+        :return: Scope object
+        """
+        if len(self.__scope_stack) > 0:
+            scope = self.__scope_stack.pop()
+            # does the start correspond to the end?
+            if scope.get_start().rule_name() == "LeftParen" and parsing_info.rule_name() != "RightParen":
+                self.errors.append(fplerror.FplUnclosedScopeException(parsing_info, "RightParen"))
+            elif scope.get_start().rule_name() == "LeftBrace" and parsing_info.rule_name() != "RightBrace":
+                self.errors.append(fplerror.FplUnclosedScopeException(parsing_info, "RightBrace"))
+            else:
+                parsing_info.set_interpretation("\'" + parsing_info.get_cst() + "\'")
+                scope.set_end(parsing_info)
+            return scope
+        else:
+            self.errors.append(fplerror.FplUnopenedScopeException(parsing_info))
+
+    def variable_list_interpretation(self, parsing_info: AuxInterpretation):
+        """
+        Simplifies the parse_list by removing all rules that contribute to a VariableList
+        :param parsing_info: the interpretation for a rule
+        :return: VariableList object
+        """
+        # consume all proceeding variables into a VariableList and remove them from self.parse_list
+        variable_list = VariableList(self.parse_list, parsing_info)
+        return variable_list
+
+    def general_type_interpretation(self, parsing_info: AuxInterpretation):
+        """
+        Simplifies the parse_list by removing all rules that contribute to a GeneralType
+        :param parsing_info: the interpretation for a rule
+        :return: GeneralType object
+        """
+        # consume all proceeding variables into a GeneralType and remove them from self.parse_list
+        general_type = GeneralType(self.parse_list, parsing_info)
+        return general_type
 
     def interpret(self, d, context):
         """
@@ -453,9 +515,7 @@ class FPLSemantics(object):
         """
         inter = None  # to be calculated interpretation, depending on the rule
         rule = d["rule"]
-        if rule == "IdStartsWithSmallCase":
-            inter = context.cst
-        elif rule == "Decimal":
+        if rule == "Decimal":
             inter = context.cst
         elif rule == "definition" or rule == "def":
             inter = context.cst
@@ -495,7 +555,7 @@ class FPLSemantics(object):
         elif rule == "template":
             inter = context.cst
         elif rule == "Variable":
-            inter = Variable(self._stack.pop())
+            inter = AuxDeclaredVariable(self._stack.pop())
         d['inter'] = inter
         self._stack.append(inter)
 
