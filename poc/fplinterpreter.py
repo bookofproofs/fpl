@@ -1,13 +1,12 @@
 import fplsemantics
 import fplerror
 import tatsu
-import sys
 
 
 class FplInterpreter(object):
+    _version = "1.0.1"
     _semantics = None
     _theory_name = None
-    _verbose = None
 
     def __init__(self, theory_name, fpl_source, parser, verbose=False):
         self._theory_name = theory_name
@@ -19,8 +18,11 @@ class FplInterpreter(object):
             self._verbose = verbose
             parser.parse(fpl_source, semantics=self._semantics, whitespace='')
         except tatsu.exceptions.FailedParse as ex:
-            self._semantics.errors.append(fplerror.FplParserException(ex, 0, "in " + theory_name + ":" + str(ex)))
+            self._semantics.errors.append(fplerror.FplParserException(ex, "in " + theory_name + ":" + str(ex)))
         # self.validate_statements()
+
+    def get_version(self):
+        return self._version
 
     def has_errors(self):
         return len(self._semantics.errors) > 0
@@ -30,15 +32,11 @@ class FplInterpreter(object):
             print(str(len(self._semantics.errors)), "errors found:")
             for err in self._semantics.errors:
                 print(err)
-            if self._verbose:
-                max_len = len(self._semantics.parse_list)
-                min_len = 10
-                if max_len < min_len:
-                    min_len = min_len
-                print(*(self._semantics.parse_list[max_len - min_len:]), sep="\n")
-
         else:
             print("Congratulations! No errors found")
+
+    def get_errors(self):
+        return self._semantics.errors
 
     def minified(self):
         return self._semantics.get_minified()
@@ -47,3 +45,9 @@ class FplInterpreter(object):
         for item in self._semantics.parse_list:
             print(item)
         print(str(len(self._semantics.parse_list)) + " items")
+
+    def get_semantics(self):
+        return self._semantics.parse_list
+
+    def get_ast_list(self):
+        return self._semantics.ast_list

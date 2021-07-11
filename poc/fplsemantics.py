@@ -4,6 +4,7 @@ from classes.AuxInterpretation import AuxInterpretation
 from classes.AuxScope import AuxScope
 from classes.VariableList import VariableList
 from classes.GeneralType import GeneralType
+from classes.AuxAstInfo import AuxAstInfo
 import fplerror
 
 
@@ -22,6 +23,7 @@ class FPLSemantics(object):
         self.errors = []
         self.warnings = []
         self.parse_list = []
+        self.ast_list = []
         self._stack = []
         self._minified = ""
         self._last_cst = ""
@@ -306,98 +308,97 @@ class FPLSemantics(object):
         """
         return ast
 
-    def _minify(self, context):
+    def _minify(self, ast_info: AuxAstInfo):
         """
         Builds up a minified representation of the parsed fpl file during the parsing process
-        :param context: parsing context
-        :return:
+        :param ast_info: info about the parsed item
+        :return: None
         """
-        rule = context.rule[0]
         if self._minified.find("func InverseOf(x:tplSetElem)->tplSetElem{retVal") > -1:
             # print("")
             pass
-        if isinstance(context.cst, str):
-            if rule == "Comment":
+        if isinstance(ast_info.cst, str):
+            if ast_info.rule == "Comment":
                 pass
-            elif rule == "CommentWhitespaceList":
+            elif ast_info.rule == "CommentWhitespaceList":
                 pass
-            elif rule == "LongComment":
+            elif ast_info.rule == "LongComment":
                 pass
-            elif rule == "IW":
+            elif ast_info.rule == "IW":
                 pass
-            elif rule == "CW":
+            elif ast_info.rule == "CW":
                 pass
-            elif rule == "Entity":
-                self._last_cst = context.cst
-            elif rule == "SW":
+            elif ast_info.rule == "Entity":
+                self._last_cst = ast_info.cst
+            elif ast_info.rule == "SW":
                 self._minified += " "
-            elif rule == "RightParen":
+            elif ast_info.rule == "RightParen":
                 self._minified += ")"
-            elif rule == "RightBrace":
+            elif ast_info.rule == "RightBrace":
                 self._minified += "}"
-            elif rule == "RightChevron":
+            elif ast_info.rule == "RightChevron":
                 self._minified += ">"
-            elif rule == "tpl" and self._last_cst[0:3] == context.cst:
-                self._last_cst = context.cst
+            elif ast_info.rule == "tpl" and self._last_cst[0:3] == ast_info.cst:
+                self._last_cst = ast_info.cst
             else:
-                if self._last_cst == context.cst:
+                if self._last_cst == ast_info.cst:
                     # prevent repeating of the parsed text because of nested productions
                     pass
                 else:
-                    self._last_cst = context.cst
+                    self._last_cst = ast_info.cst
                     # replace long versions by short versions
-                    if context.cst == "assume":
+                    if ast_info.cst == "assume":
                         self._minified += "ass"
-                    elif context.cst == "axiom":
+                    elif ast_info.cst == "axiom":
                         self._minified += "ax"
-                    elif context.cst == "class":
+                    elif ast_info.cst == "class":
                         self._minified += "cl"
-                    elif context.cst == "conclusion":
+                    elif ast_info.cst == "conclusion":
                         self._minified += "con"
-                    elif context.cst == "conjecture":
+                    elif ast_info.cst == "conjecture":
                         self._minified += "conj"
-                    elif context.cst == "corollary":
+                    elif ast_info.cst == "corollary":
                         self._minified += "cor"
-                    elif context.cst == "function":
+                    elif ast_info.cst == "function":
                         self._minified += "func"
-                    elif context.cst == "inference":
+                    elif ast_info.cst == "inference":
                         self._minified += "inf"
-                    elif context.cst == "lemma":
+                    elif ast_info.cst == "lemma":
                         self._minified += "lem"
-                    elif context.cst == "mandatory":
+                    elif ast_info.cst == "mandatory":
                         self._minified += "mand"
-                    elif context.cst == "premise":
+                    elif ast_info.cst == "premise":
                         self._minified += "pre"
-                    elif context.cst == "object":
+                    elif ast_info.cst == "object":
                         self._minified += "obj"
-                    elif context.cst == "optional":
+                    elif ast_info.cst == "optional":
                         self._minified += "opt"
-                    elif context.cst == "predicate":
+                    elif ast_info.cst == "predicate":
                         self._minified += "pred"
-                    elif context.cst == "premise":
+                    elif ast_info.cst == "premise":
                         self._minified += "pre"
-                    elif context.cst == "postulate":
+                    elif ast_info.cst == "postulate":
                         self._minified += "post"
-                    elif context.cst == "proof":
+                    elif ast_info.cst == "proof":
                         self._minified += "prf"
-                    elif context.cst == "proposition":
+                    elif ast_info.cst == "proposition":
                         self._minified += "prop"
-                    elif context.cst == "return":
+                    elif ast_info.cst == "return":
                         self._minified += "ret"
-                    elif context.cst == "revoke":
+                    elif ast_info.cst == "revoke":
                         self._minified += "ref"
-                    elif context.cst == "syntax":
+                    elif ast_info.cst == "syntax":
                         self._minified += "syn"
-                    elif context.cst == "template":
+                    elif ast_info.cst == "template":
                         self._minified += "tpl"
-                    elif context.cst == "theorem":
+                    elif ast_info.cst == "theorem":
                         self._minified += "thm"
-                    elif context.cst == "theory":
+                    elif ast_info.cst == "theory":
                         self._minified += "th"
-                    elif context.cst == "undefined":
+                    elif ast_info.cst == "undefined":
                         self._minified += "undef"
                     else:
-                        self._minified += context.cst
+                        self._minified += ast_info.cst
 
     def _postproc(self, context, ast):
         """
@@ -408,10 +409,11 @@ class FPLSemantics(object):
         :return: ast
         """
 
+        ast_info = AuxAstInfo(context)
+        self.ast_list.append((ast_info.rule, ast_info.line+1, ast_info.col, ast_info.pos))
         # minify
-        self._minify(context)
-        parsing_info = AuxInterpretation(context.rule[0], context.pos, context.tokenizer.col, context.tokenizer.line,
-                                         context.cst, self.errors)
+        self._minify(ast_info)
+        parsing_info = AuxInterpretation(ast_info, self.errors)
         interpretation = self.interpret_switcher(parsing_info)
         if interpretation is not None:
             # append all interpretations that returned something else as None
@@ -508,6 +510,10 @@ class FPLSemantics(object):
         # consume all proceeding variables into a GeneralType and remove them from self.parse_list
         general_type = GeneralType(self.parse_list, parsing_info)
         return general_type
+
+    """
+    The following code is deprecated and will be probably removed in the future 
+    """
 
     def interpret(self, d, context):
         """
