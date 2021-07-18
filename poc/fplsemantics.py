@@ -410,7 +410,7 @@ class FPLSemantics(object):
         """
 
         ast_info = AuxAstInfo(context)
-        self.ast_list.append((ast_info.rule, ast_info.line+1, ast_info.col, ast_info.pos))
+        self.ast_list.append(ast_info)
         # minify
         self._minify(ast_info)
         parsing_info = AuxInterpretation(ast_info, self.errors)
@@ -481,15 +481,15 @@ class FPLSemantics(object):
             scope = self.__scope_stack.pop()
             # does the start correspond to the end?
             if scope.get_start().rule_name() == "LeftParen" and parsing_info.rule_name() != "RightParen":
-                self.errors.append(fplerror.FplUnclosedScopeException(parsing_info, "RightParen"))
+                self.errors.append(fplerror.FplUnclosedScope(parsing_info, "RightParen"))
             elif scope.get_start().rule_name() == "LeftBrace" and parsing_info.rule_name() != "RightBrace":
-                self.errors.append(fplerror.FplUnclosedScopeException(parsing_info, "RightBrace"))
+                self.errors.append(fplerror.FplUnclosedScope(parsing_info, "RightBrace"))
             else:
                 parsing_info.set_interpretation("\'" + parsing_info.get_cst() + "\'")
                 scope.set_end(parsing_info)
             return scope
         else:
-            self.errors.append(fplerror.FplUnopenedScopeException(parsing_info))
+            self.errors.append(fplerror.FplUnopenedScope(parsing_info))
 
     def variable_list_interpretation(self, parsing_info: AuxInterpretation):
         """

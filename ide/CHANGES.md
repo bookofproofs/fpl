@@ -11,3 +11,8 @@
 * Syntax highlighting for open files added
 * Syntax tree clickable added (jumps to position in text)
 * Text clickable added (jumps to position in syntax tree)
+## 1.2.0
+* Saving bug corrected
+* Error list and highlighting run in a separate thread changing dynamically with the user edits in a file
+* Layout improvements
+* Number of errors and number of warnings added

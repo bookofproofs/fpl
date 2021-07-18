@@ -1,12 +1,41 @@
-T
+Fpl.Commons
 {
     inference
     {
         ModusPonens()
         {
             p,q: pred
+
             premise:
                 and (p, impl (p,q) )
+            conclusion:
+                q
+        }
+
+        ModusTollens()
+        {
+            p,q: pred
+
+            premise:
+                and (not(q), impl(p,q) )
+            conclusion:
+                not (p)
+        }
+
+        HypotheticalSyllogism()
+        {
+            p,q,r: pred
+            premise:
+                and (impl(p,q), impl(q,r))
+            conclusion:
+                impl(p,r)
+        }
+
+        DisjunctiveSyllogism()
+        {
+            p,q: pred
+            premise:
+                and (not(p), or(p,q))
             conclusion:
                 q
         }
@@ -15,7 +44,7 @@ T
         {
             proceedingResult: pred
             premise:
-                loop proceedingResult p
+                range proceedingResult p
                 (
                     assert proceedingResult
                 )
@@ -23,9 +52,9 @@ T
                 and (p)
         }
 
-        ExistsByExample()
+        ExistsByExample(p: pred(c: obj))
         {
-            p: pred(c: obj)
+            x: obj
             premise:
                 p(c)
             conclusion:
@@ -36,75 +65,74 @@ T
 
     theory
     {
-
-        class A: obj
+        pred Equals(x,y: tpl)
         {
-        }
+            p: pred a,b: tpl
 
-        class B: obj
-        {
-        }
-
-        class C: obj
-        {
-        }
-
-        pred Greater(x,y: obj)
-        {
-
-        }
-
-        axiom GreaterAB()
-        {
-            a: A
-            b: B
-            Greater(a,b)
-        }
-
-        axiom GreaterBC()
-        {
-            b: B
-            c: C
-            Greater(b,c)
-        }
-
-        axiom GreaterTransitive()
-        {
-            x,y,z: obj
-            impl
+            all a, b
             (
-                and
+                iif
                 (
-                    Greater(x,y),
-                    Greater(y,z)
-                ),
-                Greater(x,z)
+                    Equals(a,b),
+                    all p
+                    (
+                        iif
+                        (
+                            p(a),
+                            p(b)
+                        )
+                    )
+                )
             )
         }
 
-        lemma Example4()
+        pred NotEquals(x,y: tpl)
         {
-            x,y,z: obj
-            pre:
-            con:
-                ex x ( and (Greater(x,y), Greater(x,z)) )
+            not
+            (
+                Equals(x,y)
+            )
         }
 
-        proof Example4$1
-        {
-            a:A
-            b:B
-            c:C
-            x,y,z: obj
 
-            1. /GreaterAB |- Greater(a,b)
-            2. /GreaterBC |- Greater(b,c)
-            3. /ProceedingResults(/1,/2) |- and (Greater(a,b), Greater(b,c))
-            4. /3, /GreaterTransitive |- impl ( and (Greater(a,b), Greater(b,c)), Greater(a,c) )
-            5. /4, /ModusPonens |- Greater(a,c)
-            6. /ProceedingResults(/5,/1) |- and (Greater(a,c), Greater(a,b))
-            7. /6, /ExistsByExample |- qed
-        }
-   }
+    }
+
+    localization
+    {
+        iif(x,y) :=
+            ~tex: x "\Leftrightarrow" y
+            ~eng: x " if and only if " y
+            ~ger: x " dann und nur dann wenn " y
+            ;
+
+        not(x) :=
+            ~tex: "\neg(" x ")"
+            ~eng: "not " x
+            ~ger: "nicht " x
+            ;
+
+        and(p,q) :=
+            ~tex: p "\wedge" q
+            ~eng: p " and " q
+            ~ger: p " und " q
+            ;
+
+        Equals(x,y) :=
+            ~tex: x "=" y
+            ~eng: x " equals " y
+            ~ger: x " ist gleich " y
+            ~ita: x " è uguale a " y
+            ~pol: x " równa się " y
+            ;
+
+        NotEquals(x,y) :=
+            ~tex: x "\neq" y
+            ~eng: x "is unequal" y
+            ~ger: x "ist ungleich" y
+            ~pol: x ( "nie równa się" | "nie równe" ) y
+            ;
+    }
 
 }
+
+

@@ -8,17 +8,15 @@ class FplInterpreter(object):
     _semantics = None
     _theory_name = None
 
-    def __init__(self, theory_name, fpl_source, parser, verbose=False):
+    def __init__(self, theory_name, fpl_source, parser):
         self._theory_name = theory_name
         self._semantics = fplsemantics.FPLSemantics()
-        self._verbose = verbose
         try:
             self._theory_name = theory_name
             self._semantics = fplsemantics.FPLSemantics()
-            self._verbose = verbose
             parser.parse(fpl_source, semantics=self._semantics, whitespace='')
         except tatsu.exceptions.FailedParse as ex:
-            self._semantics.errors.append(fplerror.FplParserException(ex, "in " + theory_name + ":" + str(ex)))
+            self._semantics.errors.append(fplerror.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
         # self.validate_statements()
 
     def get_version(self):
@@ -26,6 +24,9 @@ class FplInterpreter(object):
 
     def has_errors(self):
         return len(self._semantics.errors) > 0
+
+    def get_name(self):
+        return self._theory_name
 
     def print_errors(self):
         if len(self._semantics.errors) > 0:

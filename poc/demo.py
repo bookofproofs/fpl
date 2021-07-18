@@ -6,7 +6,7 @@ fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
 u.add_distinct_duration("creating tatsu parser")
 
 theoryCommon = u.get_file_content("theories/Commons.fpl")
-interpreterCommon = FplInterpreter("common", theoryCommon, fpl_parser, True)
+interpreterCommon = FplInterpreter("common", theoryCommon, fpl_parser)
 u.add_distinct_duration("interpreting common")
 if not interpreterCommon.has_errors():
     print(interpreterCommon.minified())
@@ -15,7 +15,7 @@ else:
     interpreterCommon.print_errors()
 
 theoryNat = u.get_file_content("theories/ArithmeticsNat.fpl")
-interpreterNat = FplInterpreter("nat", theoryNat, fpl_parser, True)
+interpreterNat = FplInterpreter("nat", theoryNat, fpl_parser)
 u.add_distinct_duration("interpreting nat")
 if not interpreterNat.has_errors():
     print(interpreterNat.minified())
@@ -24,7 +24,7 @@ else:
     interpreterNat.print_errors()
 
 theorySet = u.get_file_content("theories/Set.fpl")
-interpreterSet = FplInterpreter("settheory", theorySet, fpl_parser, True)
+interpreterSet = FplInterpreter("settheory", theorySet, fpl_parser)
 u.add_distinct_duration("interpreting set")
 if not interpreterSet.has_errors():
     print(interpreterSet.minified())
@@ -33,7 +33,7 @@ else:
     interpreterSet.print_errors()
 
 theoryAlgebra = u.get_file_content("theories/Algebra.fpl")
-interpreterAlgebra = FplInterpreter("algebra", theoryAlgebra, fpl_parser, True)
+interpreterAlgebra = FplInterpreter("algebra", theoryAlgebra, fpl_parser)
 u.add_distinct_duration("interpreting algebra")
 if not interpreterAlgebra.has_errors():
     print(interpreterAlgebra.minified())
@@ -42,7 +42,7 @@ else:
     interpreterAlgebra.print_errors()
 
 theoryGeometry = u.get_file_content("theories/Geometry.fpl")
-interpreterGeometry = FplInterpreter("geometry", theoryGeometry, fpl_parser, True)
+interpreterGeometry = FplInterpreter("geometry", theoryGeometry, fpl_parser)
 u.add_distinct_duration("interpreting geometry")
 if not interpreterGeometry.has_errors():
     print(interpreterGeometry.minified())
@@ -51,7 +51,7 @@ else:
     interpreterGeometry.print_errors()
 
 theoryLinalg = u.get_file_content("theories/Linalg.fpl")
-interpreterLinalg = FplInterpreter("linalg", theoryLinalg, fpl_parser, True)
+interpreterLinalg = FplInterpreter("linalg", theoryLinalg, fpl_parser)
 u.add_distinct_duration("interpreting linalg")
 if not interpreterLinalg.has_errors():
     print(interpreterLinalg.minified())
@@ -60,7 +60,7 @@ else:
     interpreterLinalg.print_errors()
 
 theoryComStruct = u.get_file_content("theories/CommonsStructures.fpl")
-interpreterComStruct = FplInterpreter("comstruct", theoryComStruct, fpl_parser, True)
+interpreterComStruct = FplInterpreter("comstruct", theoryComStruct, fpl_parser)
 u.add_distinct_duration("interpreting comstruct")
 if not interpreterComStruct.has_errors():
     print(interpreterComStruct.minified())
@@ -69,7 +69,7 @@ else:
     interpreterComStruct.print_errors()
 
 theoryExample25 = u.get_file_content("theories/Example4-7.fpl")
-interpreterExample25 = FplInterpreter("example25", theoryExample25, fpl_parser, True)
+interpreterExample25 = FplInterpreter("example25", theoryExample25, fpl_parser)
 u.add_distinct_duration("interpreting example25")
 if not interpreterExample25.has_errors():
     print(interpreterExample25.minified())

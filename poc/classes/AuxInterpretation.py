@@ -67,3 +67,6 @@ class AuxInterpretation:
     def __str__(self):
         return self._ast_info.rule + ":" + str(self._ast_info.pos) + ":" + str(self._ast_info.col) + ":" + \
                str(self._ast_info.line) + ":" + str(self._inter).replace("\n", "\\n")
+
+    def to_tuple(self):
+        return str(type(self).__name__), str(self._inter).replace("\n", "\\n"), self._ast_info.line, self._ast_info.col
