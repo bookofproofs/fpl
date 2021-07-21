@@ -10,7 +10,7 @@ interpreterCommon = FplInterpreter("common", theoryCommon, fpl_parser)
 u.add_distinct_duration("interpreting common")
 if not interpreterCommon.has_errors():
     print(interpreterCommon.minified())
-    interpreterCommon.print_semantics()
+    # interpreterCommon.print_semantics()
 else:
     interpreterCommon.print_errors()
 
@@ -19,7 +19,7 @@ interpreterNat = FplInterpreter("nat", theoryNat, fpl_parser)
 u.add_distinct_duration("interpreting nat")
 if not interpreterNat.has_errors():
     print(interpreterNat.minified())
-    interpreterNat.print_semantics()
+    # interpreterNat.print_semantics()
 else:
     interpreterNat.print_errors()
 
@@ -28,7 +28,7 @@ interpreterSet = FplInterpreter("settheory", theorySet, fpl_parser)
 u.add_distinct_duration("interpreting set")
 if not interpreterSet.has_errors():
     print(interpreterSet.minified())
-    interpreterSet.print_semantics()
+    # interpreterSet.print_semantics()
 else:
     interpreterSet.print_errors()
 
@@ -37,7 +37,7 @@ interpreterAlgebra = FplInterpreter("algebra", theoryAlgebra, fpl_parser)
 u.add_distinct_duration("interpreting algebra")
 if not interpreterAlgebra.has_errors():
     print(interpreterAlgebra.minified())
-    interpreterAlgebra.print_semantics()
+    # interpreterAlgebra.print_semantics()
 else:
     interpreterAlgebra.print_errors()
 
@@ -46,7 +46,7 @@ interpreterGeometry = FplInterpreter("geometry", theoryGeometry, fpl_parser)
 u.add_distinct_duration("interpreting geometry")
 if not interpreterGeometry.has_errors():
     print(interpreterGeometry.minified())
-    interpreterGeometry.print_semantics()
+    # interpreterGeometry.print_semantics()
 else:
     interpreterGeometry.print_errors()
 
@@ -64,7 +64,7 @@ interpreterComStruct = FplInterpreter("comstruct", theoryComStruct, fpl_parser)
 u.add_distinct_duration("interpreting comstruct")
 if not interpreterComStruct.has_errors():
     print(interpreterComStruct.minified())
-    interpreterComStruct.print_semantics()
+    # interpreterComStruct.print_semantics()
 else:
     interpreterComStruct.print_errors()
 
@@ -73,7 +73,7 @@ interpreterExample25 = FplInterpreter("example25", theoryExample25, fpl_parser)
 u.add_distinct_duration("interpreting example25")
 if not interpreterExample25.has_errors():
     print(interpreterExample25.minified())
-    interpreterExample25.print_semantics()
+    # interpreterExample25.print_semantics()
 else:
     interpreterExample25.print_errors()
 

@@ -16,3 +16,9 @@
 * Error list and highlighting run in a separate thread changing dynamically with the user edits in a file
 * Layout improvements
 * Number of errors and number of warnings added
+## 1.2.1
+* Key events for menu items (on Windows 10, press 'Alt')
+* Bug fix closing application
+* Security messages for saving files before quitting
+
+

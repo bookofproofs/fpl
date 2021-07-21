@@ -10,7 +10,7 @@ import os
 
 class FplIde:
     fpl_parser = None
-    _version = '1.2.0'
+    _version = '1.2.1'
     _theme = None
     _window = None
     _panedWindow = None
@@ -63,16 +63,22 @@ class FplIde:
         self._menuBar = Menu(self._window)
 
         file_bar = Menu(self._menuBar, tearoff=0)
-        file_bar.add_command(label='Open', command=self.open_file)
-        file_bar.add_command(label='Save', command=self.save_file)
-        file_bar.add_command(label='Save As', command=self.save_file_as)
-        file_bar.add_command(label='Exit', command=exit)
-        self._menuBar.add_cascade(label='File', menu=file_bar)
+        file_bar.add_command(label='New', underline=0, command=self.new_file)
+        file_bar.add_command(label='Open', underline=0, command=self.open_file)
+        file_bar.add_command(label='Save', underline=0, command=self.save_file)
+        file_bar.add_command(label='Save As', underline=6, command=self.save_file_as)
+        file_bar.add_command(label='Exit', underline=1, command=self.exit)
+        self._menuBar.add_cascade(label='File', underline=0, menu=file_bar)
 
         build_bar = Menu(self._menuBar, tearoff=0)
         build_bar.add_command(label='Build', command=self.build_fpl_code)
-        self._menuBar.add_cascade(label='Build', menu=build_bar)
+        self._menuBar.add_cascade(label='Build', underline=0, menu=build_bar)
 
+        self._window.bind_all('<Control-Key-n>', self.new_file)
+        self._window.bind_all('<Control-Key-o>', self.open_file)
+        self._window.bind_all('<Control-Key-S>', self.save_file)
+        self._window.bind_all('<Control-Key-s>', self.save_file_as)
+        self._window.bind_all('<Control-Key-x>', self.exit)
         self._window.config(menu=self._menuBar)
 
     def __add_paned_windows(self):
@@ -244,7 +250,7 @@ class FplIde:
         """
         record = self.__identify_clicked_treeview_item(self._listBoxSyntax)
         if record is not None:
-            self.__set_position_in_editor(record[1], record[2])
+            self.__set_position_in_editor(record[1], record[2], record[4])
 
     def __listbox_error_clicked(self, event):
         """
@@ -255,7 +261,7 @@ class FplIde:
         """
         record = self.__identify_clicked_treeview_item(self._listBoxErrors)
         if record is not None:
-            self.__set_position_in_editor(record[2], record[3])
+            self.__set_position_in_editor(record[2], record[3], record[4])
 
     def __identify_clicked_treeview_item(self, tree_view):
         """
@@ -277,8 +283,8 @@ class FplIde:
         item = tree_view.item(currItem)
         return item['values']
 
-    def __set_position_in_editor(self, line, column):
-        editor_frame = self._tabEditor.get_current_file_object()
+    def __set_position_in_editor(self, line: int, column: int, file: str):
+        editor_frame = self._tabEditor.select_file(file)
         self._panedWindowEditor.focus_set()
         self._panedWindowVertical.focus_set()
         self._panedWindowEditor.focus_set()
@@ -289,14 +295,46 @@ class FplIde:
     def build_fpl_code(self):
         messagebox.showinfo("FPL", "Not implemented yet! (Build)")
 
-    def open_file(self):
-        self._tabEditor.open_file()
+    def new_file(self, event=None):
+        self._tabEditor.new_file(event)
 
-    def save_file(self):
-        self._tabEditor.save_file()
+    def open_file(self, event=None):
+        self._tabEditor.open_file(event)
 
-    def save_file_as(self):
-        self._tabEditor.save_file_as()
+    def save_file(self, event=None):
+        self._tabEditor.save_file(event)
+
+    def save_file_as(self, event=None):
+        self._tabEditor.save_file_as(event)
+
+    def exit(self, event=None):
+        book = self._tabEditor.get_book()
+        at_least_one_open_file_changed = False
+        for file in book:
+            if book[file].text.is_dirty:
+                at_least_one_open_file_changed = True
+                self._tabEditor.select_file(file)
+                msg = messagebox.askyesnocancel("Quit FPLIDE",
+                                                "Do you want to save changes of the file " + file + " before quitting?",
+                                                icon='warning')
+                if msg:
+                    # the user does not want to reopen the file, just select the tab!
+                    self.save_file(None)
+                elif msg is None:
+                    # do nothing
+                    return
+        if not at_least_one_open_file_changed:
+            # if no message boxes were answered yet, ask if the user really want's to quit the application
+            msg = messagebox.askyesnocancel("Quit FPLIDE",
+                                         "Do you want quit the application?",
+                                         icon='warning')
+            if not msg or msg is None:
+                # do nothing
+                return
+            else:
+                self._window.destroy()
+        else:
+            self._window.destroy()
 
     def fpl_init(self):
         self._statusBar.set_status_text('Initiating FPL parser... Please wait!')

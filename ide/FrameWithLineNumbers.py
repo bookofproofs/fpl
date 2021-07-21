@@ -14,6 +14,7 @@ class FrameWithLineNumbers(Frame):
     _image_save = None
     to_be_parsed_and_interpreted = False
     title = ""
+    is_new = True  # is True if this is a new file, or False, if it was loaded from disk
     calm_down_countdown = 0
 
     def __init__(self, parent_note_book, title, *args, **kwargs):

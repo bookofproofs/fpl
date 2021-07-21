@@ -53,6 +53,9 @@ class CustomNotebook(ttk.Notebook):
     def on_close_press(self, event):
         """Called when the button is pressed over the close button"""
         element = self.identify(event.x, event.y)
+        if len(self._my_files) == 0:
+            # prevent handling the event if no files are open
+            return
         index = self.index("@%d,%d" % (event.x, event.y))
         if "close" in element:
             editor_info = self.get_current_file_object()
@@ -72,12 +75,11 @@ class CustomNotebook(ttk.Notebook):
 
     def _remove_editor_from_ide(self, editor_info: FrameWithLineNumbers, index: int):
         self.forget(index)
-        del self._my_files[editor_info.title]
         # remove all errors associated with the closed editor
-        self.__remove_items_from_tree_view(self._ide.get_error_list(), 5, editor_info.title)
+        self.__remove_items_from_tree_view(self._ide.get_error_list(), 4, editor_info.title)
         # remove all errors associated with the closed editor
         self.__remove_items_from_tree_view(self._ide.get_syntax_list(), 4, editor_info.title)
-        self.event_generate("<<NotebookTabClosed>>")
+        del self._my_files[editor_info.title]
 
     def on_close_release(self, event):
         """Called when the button is released"""
@@ -92,8 +94,8 @@ class CustomNotebook(ttk.Notebook):
         index = self.index("@%d,%d" % (event.x, event.y))
 
         if self._active == index:
-            self.forget(index)
-            self.event_generate("<<NotebookTabClosed>>")
+            editor_info = self.get_current_file_object()
+            self._remove_editor_from_ide(editor_info, index)
 
         self.state(["!pressed"])
         self._active = None
@@ -107,9 +109,11 @@ class CustomNotebook(ttk.Notebook):
             self._ide.get_status_bar().set_status_text("")
             pass
 
-    def save_file(self):
+    def save_file(self, event=None):
         editor_info = self.get_current_file_object()
         if self._global_path == '':
+            return self.save_file_as()
+        elif editor_info.is_new:
             return self.save_file_as()
         with open(self._global_path, 'w') as file:
             code = editor_info.get_text()
@@ -119,10 +123,10 @@ class CustomNotebook(ttk.Notebook):
             # reset the initial value to the new value
             editor_info.text.init_value(editor_info.get_text())
 
-    def save_file_as(self):
+    def save_file_as(self, event=None):
         editor_info = self.get_current_file_object()
         path = asksaveasfilename(filetypes=[('FPL Files', '*.fpl'), ('Python Files', '*.py')],
-                                 initialfile=self._global_path)
+                                 initialfile=os.path.join(self._global_path, editor_info.title))
         if path == "":
             # cancel clicked
             return
@@ -134,7 +138,18 @@ class CustomNotebook(ttk.Notebook):
             # reset the initial value to the new value
             editor_info.text.init_value(editor_info.get_text())
 
-    def open_file(self):
+    def new_file(self, event=None):
+        self._current_file = self._generate_new_file_name()
+        self._add_new_editor("")
+
+    def _generate_new_file_name(self) -> str:
+        file_name = "NewTheory"
+        numb = 1
+        while file_name + str(numb) + ".fpl" in self._my_files:
+            numb += 1
+        return file_name + str(numb) + ".fpl"
+
+    def open_file(self, event=None):
         path = askopenfilename(filetypes=[('FPL Files', '*.fpl'), ('Python Files', '*.py')])
         if path == "":
             # cancel clicked
@@ -173,24 +188,27 @@ class CustomNotebook(ttk.Notebook):
                     self.select(editor_info)
                     self.tab(editor_info, state="normal")
             else:
-                # this is a new file that is not already open yet. Create a new tab content
-                editor_info = FrameWithLineNumbers(self, self._current_file)
                 # read the file
                 code = file.read()
-                # set the text
-                editor_info.set_text(code)
-                # flag not to interpret the file by the thread, because the main thread will interpret it
-                editor_info.to_be_parsed_and_interpreted = False
-                # pack the frame
-                editor_info.pack(expand=True, fill="both")
-                # remember the object
-                self._my_files[self._current_file] = editor_info
-                # add the object to the tab
-                self.add(editor_info, text=self._current_file)
-                # and select the tab
-                self.select(editor_info)
-                # interpret the file in the main thread. light=False means, also syntax tree will be recreated
-                self.refresh_info_open_file(editor_info, light=False)
+                self._add_new_editor(code)
+
+    def _add_new_editor(self, code):
+        # this is a new file that is not already open yet. Create a new tab content
+        editor_info = FrameWithLineNumbers(self, self._current_file)
+        # set the text
+        editor_info.set_text(code)
+        # flag not to interpret the file by the thread, because the main thread will interpret it
+        editor_info.to_be_parsed_and_interpreted = False
+        # pack the frame
+        editor_info.pack(expand=True, fill="both")
+        # remember the object
+        self._my_files[self._current_file] = editor_info
+        # add the object to the tab
+        self.add(editor_info, text=self._current_file)
+        # and select the tab
+        self.select(editor_info)
+        # interpret the file in the main thread. light=False means, also syntax tree will be recreated
+        self.refresh_info_open_file(editor_info, light=False)
 
     def get_current_file_object(self) -> FrameWithLineNumbers:
         self._current_file = self.tab(self.select(), "text")
@@ -199,6 +217,17 @@ class CustomNotebook(ttk.Notebook):
             self._current_file = self._current_file[:-1]
         if self._current_file in self._my_files:
             return self._my_files[self._current_file]
+        else:
+            return None
+
+    def get_book(self):
+        return self._my_files
+
+    def select_file(self, file):
+        if file in self._my_files:
+            self._current_file = file
+            self.select(self._my_files[file])
+            return self._my_files[file]
         else:
             return None
 
@@ -320,7 +349,7 @@ class CustomNotebook(ttk.Notebook):
 
     def __initialize_custom_style(self):
         style = ttk.Style()
-        dirname = os.path.dirname(__file__) + "/"
+        # dirname = os.path.dirname(__file__) + "/"
 
         self.images = (
             tk.PhotoImage("img_close", data='''
