@@ -20,5 +20,8 @@
 * Key events for menu items (on Windows 10, press 'Alt')
 * Bug fix closing application
 * Security messages for saving files before quitting
-
-
+## 1.2.2
+* Performance improvements while typing: syntax highlighting, error list and syntax tree updates only on demand 
+* Prettify code (experimental)
+* Auto indent when opening new braces or parentheses (experimental)
+* UTF-8 support 

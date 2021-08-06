@@ -2,17 +2,19 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from util.fplutil import Utils
-from idetheme import DefaultTheme
-from CustomNotebook import CustomNotebook
-from StatusBar import StatusBar
+from ide.idetheme import DefaultTheme
+from ide.CustomNotebook import CustomNotebook
+from ide.FrameWithLineNumbers import FrameWithLineNumbers
+from ide.StatusBar import StatusBar
+from poc import fplinterpreter
 import os
 
 
 class FplIde:
     fpl_parser = None
-    _version = '1.2.1'
+    _version = '1.2.2'
     _theme = None
-    _window = None
+    window = None
     _panedWindow = None
     _panedMain = None
     _object_browser_tree = None
@@ -35,14 +37,15 @@ class FplIde:
 
     def __init__(self):
         self._theme = DefaultTheme()
-        self._window = Tk()
-        self._window.resizable()
-        screen_width = self._window.winfo_screenwidth()
-        screen_height = self._window.winfo_screenheight()
+        self.window = Tk()
+        self.window.call('encoding', 'system', 'utf-8')
+        self.window.resizable()
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
         x_cordinate = int((screen_width / 2) - (1024 / 2))
         y_cordinate = int((screen_height / 2) - (768 / 2))
-        self._window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
-        self._window.title('Formal Proving Language IDE (' + self._version + ')')
+        self.window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
+        self.window.title('Formal Proving Language IDE (' + self._version + ')')
         self.images = dict()
         dirname = os.path.dirname(__file__) + "/"
         self.images["warning"] = PhotoImage("warning", file=os.path.join(dirname, "assets/warning.png"))
@@ -52,15 +55,13 @@ class FplIde:
         self._all_editors = dict()
         self.current_file = ""
         self.fpl_init()
-        self._tabEditor.stop_parser_thread = False
-        self._window.mainloop()
-        self._tabEditor.stop_parser_thread = True
+        self.window.mainloop()
 
     def get_version(self):
         return self._version
 
     def __add_menu(self):
-        self._menuBar = Menu(self._window)
+        self._menuBar = Menu(self.window)
 
         file_bar = Menu(self._menuBar, tearoff=0)
         file_bar.add_command(label='New', underline=0, command=self.new_file)
@@ -74,21 +75,21 @@ class FplIde:
         build_bar.add_command(label='Build', command=self.build_fpl_code)
         self._menuBar.add_cascade(label='Build', underline=0, menu=build_bar)
 
-        self._window.bind_all('<Control-Key-n>', self.new_file)
-        self._window.bind_all('<Control-Key-o>', self.open_file)
-        self._window.bind_all('<Control-Key-S>', self.save_file)
-        self._window.bind_all('<Control-Key-s>', self.save_file_as)
-        self._window.bind_all('<Control-Key-x>', self.exit)
-        self._window.config(menu=self._menuBar)
+        self.window.bind_all('<Control-Key-n>', self.new_file)
+        self.window.bind_all('<Control-Key-o>', self.open_file)
+        self.window.bind_all('<Control-Key-S>', self.save_file)
+        self.window.bind_all('<Control-Key-s>', self.save_file_as)
+        self.window.bind_all('<Control-Key-x>', self.exit)
+        self.window.config(menu=self._menuBar)
 
     def __add_paned_windows(self):
-        self._panedWindow = PanedWindow(self._window)
+        self._panedWindow = PanedWindow(self.window)
         self._panedWindow.pack(expand=True, fill="both")
 
         self._panedWindowMainVertical = ttk.Frame(self._tabControl)
         self._panedWindowMainVertical.pack(expand=True, fill="both")
 
-        self._panedWindowMainVertical = PanedWindow(self._window, orient=VERTICAL)
+        self._panedWindowMainVertical = PanedWindow(self.window, orient=VERTICAL)
         self._panedWindow.add(self._panedWindowMainVertical)
 
         style = ttk.Style(self._panedMain)
@@ -97,7 +98,7 @@ class FplIde:
         self.__add_vertical_paned_window()
 
     def __add_object_browser_treeview(self):
-        self._panedMain = PanedWindow(self._window)
+        self._panedMain = PanedWindow(self.window)
         self._object_browser_tree = ttk.Treeview(self._panedMain, show='headings')
         self._object_browser_tree["columns"] = ("object")
         self._object_browser_tree.column("object", width=270, minwidth=270, stretch=YES)
@@ -109,7 +110,7 @@ class FplIde:
         self._panedWindowMainVertical.add(self._statusBar, minsize=20, stretch="always")
 
     def __add_vertical_paned_window(self):
-        self._panedWindowVertical = PanedWindow(self._window, orient=VERTICAL)
+        self._panedWindowVertical = PanedWindow(self.window, orient=VERTICAL)
         self._panedMain.add(self._panedWindowVertical)
 
         self._panedWindowEditor = PanedWindow(self._panedWindowVertical, heigh=570)
@@ -292,6 +293,67 @@ class FplIde:
         editor_frame.focus_set()
         editor_frame.set_pos(line, column)
 
+    def update_error_warning_counts(self):
+        """
+        Update the counts in the IDE depending on the error list
+        :return: None
+        """
+        error_num_label = self.get_error_number()
+        warning_num_label = self.get_warning_number()
+        tree_view = self.get_error_list()
+        error_num = 0
+        warning_num = 0
+        for i in tree_view.get_children():
+            item = tree_view.item(i)
+            if type(item['image']) is list:
+                if item['image'][0] == 'warning':
+                    warning_num += 1
+                elif item['image'][0] == 'cancel':
+                    error_num += 1
+        error_num_label.config(text="Errors (" + str(error_num) + ")")
+        warning_num_label.config(text="Warnings (" + str(warning_num) + ")")
+
+    @staticmethod
+    def remove_items_from_tree_view(tree_view, column, file_name):
+        """
+        Removes the items from tree view depending on the open file
+        :param tree_view: Tree view object
+        :param column: Column of the tree view with the name of the file
+        :param file_name: Name of the file to search in the column
+        :return: None
+        """
+        for i in tree_view.get_children():
+            item = tree_view.item(i)
+            if item['values'][column] == file_name:
+                tree_view.delete(i)
+
+    def refresh_info(self, interpreter: fplinterpreter.FplInterpreter, editor_info: FrameWithLineNumbers):
+        """
+        Refreshes all information based on the current interpreter like errors, warnings, and syntax tree
+        :param interpreter: Current interpreter
+        :param editor_info: Current editor info
+        :return: None
+        """
+        self._refresh_items_tree_view(editor_info, interpreter.get_errors(), self.get_error_list(), column=4)
+        self._refresh_items_tree_view(editor_info, interpreter.get_ast_list(), self.get_syntax_list(), column=4)
+
+    def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, tuple_list: list, tree_view: ttk.Treeview,
+                                 column: int):
+        # delete all old items in tree_view that belong to the current interpreter, i.e. have its name
+        self.remove_items_from_tree_view(tree_view, column, editor_info.title)
+        # insert new items (if any) in tree_view
+        for item in tuple_list:
+            if item.mainType == "E":
+                im = self.images["cancel"]
+            else:
+                im = self.images["warning"]
+            item_tuple = item.to_tuple() + (editor_info.title,)
+            tree_view.insert("", END, text="", image=im, values=item_tuple)
+
+        self.update_error_warning_counts()
+
+
+
     def build_fpl_code(self):
         messagebox.showinfo("FPL", "Not implemented yet! (Build)")
 
@@ -326,21 +388,23 @@ class FplIde:
         if not at_least_one_open_file_changed:
             # if no message boxes were answered yet, ask if the user really want's to quit the application
             msg = messagebox.askyesnocancel("Quit FPLIDE",
-                                         "Do you want quit the application?",
-                                         icon='warning')
+                                            "Do you want quit the application?",
+                                            icon='warning')
             if not msg or msg is None:
                 # do nothing
                 return
             else:
-                self._window.destroy()
+                self.window.destroy()
         else:
-            self._window.destroy()
+            self.window.destroy()
 
     def fpl_init(self):
+        self.window.config(cursor="wait")
         self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
         u = Utils()
         self.fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
         self._statusBar.set_status_text("FPL parser ready.")
+        self.window.config(cursor="")
 
     def get_status_bar(self):
         return self._statusBar

@@ -23,5 +23,5 @@ improving user experience, adding unit tests, or bug-fixing.
 ### Known Issues
 * The FPL parser does not support error recovery. Proper syntax highlighting and listing semantical errors will work until the first syntax error arises.
 * There are only a few semantical errors implemented so far.
-* For performance purposes, the IDE does not display an updated syntax tree on the fly as you type. You have to refresh it by demand.
+* For performance purposes, the IDE does not support highlighting and updated syntax tree on the fly as you type. You have to refresh them by demand.
 

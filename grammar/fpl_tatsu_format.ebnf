@@ -1,4 +1,4 @@
-# fpl Version 1.0.1
+# fpl Version 1.0.2
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -834,7 +834,7 @@
     PremiseOrOtherPredicate =
         (
         PremiseHeader
-        | DerivedPredicate
+        | Predicate
         )
         ;
 

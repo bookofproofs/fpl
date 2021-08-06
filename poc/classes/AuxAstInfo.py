@@ -15,7 +15,7 @@ class AuxAstInfo:
         self.line = context.tokenizer.line+1
 
     def __str__(self):
-        return str(self.rule) + ":" + str(self.line + 1) + ":" + str(self.col) + ":" + str(self.pos)
+        return str(self.rule) + ":" + str(self.line) + ":" + str(self.col) + ":" + str(self.pos)
 
     def to_tuple(self):
-        return self.rule, self.line + 1, self.col, self.pos
+        return self.rule, self.line, self.col, self.pos

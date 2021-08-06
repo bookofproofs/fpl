@@ -5,6 +5,7 @@ from classes.AuxScope import AuxScope
 from classes.VariableList import VariableList
 from classes.GeneralType import GeneralType
 from classes.AuxAstInfo import AuxAstInfo
+from classes.Prettifier import Prettifier
 import fplerror
 
 
@@ -12,10 +13,7 @@ class FPLSemantics(object):
     errors = None
     warnings = None
     parse_list = None
-    _stack = None
-    _minified = None
-    _last_cst = None
-    _context_stack = None  # used to distinguish different contexts while parsing and interpreting the same lexemes
+    _prettifier = None
     switcher = None
     __scope_stack = None  # used to gather all identified scopes
 
@@ -24,10 +22,7 @@ class FPLSemantics(object):
         self.warnings = []
         self.parse_list = []
         self.ast_list = []
-        self._stack = []
-        self._minified = ""
-        self._last_cst = ""
-        self._context_stack = []
+        self._prettifier = Prettifier()
         self.__scope_stack = []
 
         self.switcher = {
@@ -298,7 +293,10 @@ class FPLSemantics(object):
         return True
 
     def get_minified(self):
-        return self._minified
+        return self._prettifier.get_minified()
+
+    def get_prettified(self):
+        return self._prettifier.get_prettified()
 
     def _default(self, ast):
         """
@@ -314,91 +312,7 @@ class FPLSemantics(object):
         :param ast_info: info about the parsed item
         :return: None
         """
-        if self._minified.find("func InverseOf(x:tplSetElem)->tplSetElem{retVal") > -1:
-            # print("")
-            pass
-        if isinstance(ast_info.cst, str):
-            if ast_info.rule == "Comment":
-                pass
-            elif ast_info.rule == "CommentWhitespaceList":
-                pass
-            elif ast_info.rule == "LongComment":
-                pass
-            elif ast_info.rule == "IW":
-                pass
-            elif ast_info.rule == "CW":
-                pass
-            elif ast_info.rule == "Entity":
-                self._last_cst = ast_info.cst
-            elif ast_info.rule == "SW":
-                self._minified += " "
-            elif ast_info.rule == "RightParen":
-                self._minified += ")"
-            elif ast_info.rule == "RightBrace":
-                self._minified += "}"
-            elif ast_info.rule == "RightChevron":
-                self._minified += ">"
-            elif ast_info.rule == "tpl" and self._last_cst[0:3] == ast_info.cst:
-                self._last_cst = ast_info.cst
-            else:
-                if self._last_cst == ast_info.cst:
-                    # prevent repeating of the parsed text because of nested productions
-                    pass
-                else:
-                    self._last_cst = ast_info.cst
-                    # replace long versions by short versions
-                    if ast_info.cst == "assume":
-                        self._minified += "ass"
-                    elif ast_info.cst == "axiom":
-                        self._minified += "ax"
-                    elif ast_info.cst == "class":
-                        self._minified += "cl"
-                    elif ast_info.cst == "conclusion":
-                        self._minified += "con"
-                    elif ast_info.cst == "conjecture":
-                        self._minified += "conj"
-                    elif ast_info.cst == "corollary":
-                        self._minified += "cor"
-                    elif ast_info.cst == "function":
-                        self._minified += "func"
-                    elif ast_info.cst == "inference":
-                        self._minified += "inf"
-                    elif ast_info.cst == "lemma":
-                        self._minified += "lem"
-                    elif ast_info.cst == "mandatory":
-                        self._minified += "mand"
-                    elif ast_info.cst == "premise":
-                        self._minified += "pre"
-                    elif ast_info.cst == "object":
-                        self._minified += "obj"
-                    elif ast_info.cst == "optional":
-                        self._minified += "opt"
-                    elif ast_info.cst == "predicate":
-                        self._minified += "pred"
-                    elif ast_info.cst == "premise":
-                        self._minified += "pre"
-                    elif ast_info.cst == "postulate":
-                        self._minified += "post"
-                    elif ast_info.cst == "proof":
-                        self._minified += "prf"
-                    elif ast_info.cst == "proposition":
-                        self._minified += "prop"
-                    elif ast_info.cst == "return":
-                        self._minified += "ret"
-                    elif ast_info.cst == "revoke":
-                        self._minified += "ref"
-                    elif ast_info.cst == "syntax":
-                        self._minified += "syn"
-                    elif ast_info.cst == "template":
-                        self._minified += "tpl"
-                    elif ast_info.cst == "theorem":
-                        self._minified += "thm"
-                    elif ast_info.cst == "theory":
-                        self._minified += "th"
-                    elif ast_info.cst == "undefined":
-                        self._minified += "undef"
-                    else:
-                        self._minified += ast_info.cst
+        self._prettifier.minify(ast_info)
 
     def _postproc(self, context, ast):
         """
@@ -511,96 +425,3 @@ class FPLSemantics(object):
         general_type = GeneralType(self.parse_list, parsing_info)
         return general_type
 
-    """
-    The following code is deprecated and will be probably removed in the future 
-    """
-
-    def interpret(self, d, context):
-        """
-        Old: this method was completely replaced the method interpret_switcher. We keep it for reference only
-        """
-        inter = None  # to be calculated interpretation, depending on the rule
-        rule = d["rule"]
-        if rule == "Decimal":
-            inter = context.cst
-        elif rule == "definition" or rule == "def":
-            inter = context.cst
-        elif rule == "DefinitionHeader":
-            inter = self._stack.pop()  # copy of "definition" or "def"
-            self._context_stack.append("def")  # mark the beginning of a Definition
-        elif rule == "IdStartsWithCap":
-            inter = context.cst
-        elif rule == "NumberOrCamelCaseId":
-            inter = self._stack.pop()  # copy of "CamelCaseId" or "Decimal"
-        elif rule == "object" or "obj":
-            inter = context.cst
-        elif rule == "":
-            inter = context.cst
-        elif rule == "ObjectHeader":
-            inter = self._stack.pop()  # copy of "object" or "obj" or "template" or "tpl"
-            if self.is_parsing_context("def") and (inter == "object" or inter == "obj"):
-                self._context_stack.append("obj")  # mark the beginning of DefinitionObject
-            elif self.is_parsing_context("def") and (inter == "template" or inter == "tpl"):
-                self._context_stack.append("tpl")  # mark the beginning of DefinitionObject using a generic type
-        elif rule == "ObjectType":
-            inter = self._stack.pop()  # copy of "PascalCaseId"
-        elif rule == "ObjVariableType":
-            inter = self._stack.pop()  # copy of ObjectHeader or ObjectType
-            if self.is_parsing_context("def", "obj", "PredicateIdentifier") \
-                    or self.is_parsing_context("def", "tpl", "PredicateIdentifier"):
-                self._context_stack.append("ObjVariableType")  # continue the beginning of DefinitionObject
-                # at this stage, we know that
-        elif rule == "IdStartsWithCap":
-            inter = context.cst
-        elif rule == "PredicateIdentifier":
-            inter = self._stack.pop()  # copy of "PascalCaseId"
-            if self.is_parsing_context("def", "obj") or self.is_parsing_context("def", "tpl"):
-                self._context_stack.append("PredicateIdentifier")  # continue the beginning of DefinitionObject
-        elif rule == "tpl":
-            inter = context.cst
-        elif rule == "template":
-            inter = context.cst
-        elif rule == "Variable":
-            inter = AuxDeclaredVariable(self._stack.pop())
-        d['inter'] = inter
-        self._stack.append(inter)
-
-    def is_parsing_context(self, *pars):
-        """
-        Check if the current parsing context ends with some given flags
-        :param pars: list of keys
-        :return: True, iif the context's tail corresponds to the keys in their order
-        """
-        if len(self._context_stack) < len(pars):
-            return False
-        else:
-            is_context = True  # assume the context is there
-            pos = len(self._context_stack) - len(pars)
-            for x in pars:
-                is_context = is_context and (x == self._context_stack[pos]['key'])
-                if not is_context:
-                    break
-                pos += 1
-            return is_context
-
-    def push_context(self, key, value):
-        """
-        Pushes the context on a stack
-        :param key: key of the context
-        :param value: value of the context
-        :return: None
-        """
-        d = dict()
-        d['key'] = key
-        d['val'] = value
-        self._context_stack.append(d)
-
-    def pop_context(self):
-        """
-        pops the last context from the stack
-        :return: a dict with d['key'] == <key>, d['val'] == <val>
-        """
-        if len(self._context_stack) > 0:
-            return self._context_stack.pop()
-        else:
-            return None

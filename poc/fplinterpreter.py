@@ -4,7 +4,7 @@ import tatsu
 
 
 class FplInterpreter(object):
-    _version = "1.0.1"
+    _version = "1.0.2"
     _semantics = None
     _theory_name = None
 
@@ -41,6 +41,9 @@ class FplInterpreter(object):
 
     def minified(self):
         return self._semantics.get_minified()
+
+    def prettyfied(self):
+        return self._semantics.get_prettified()
 
     def print_semantics(self):
         for item in self._semantics.parse_list:

@@ -2,7 +2,7 @@
 /* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */
 
 
-/* fpl Version 1.0.1 */
+/* fpl Version 1.0.2 */
 /* a mathematical theory written in FPL can be split between different files having */
 /* Every theory part block starts with an optional syntax extension block, followed by */
 /* optional usage of other libraries, followed by optional inference rules, */
@@ -513,7 +513,7 @@ regular_expression '/((?!:end).)*/'
     PremiseOrOtherPredicate ::=
         (
         PremiseHeader
-        | DerivedPredicate
+        | Predicate
         )
     ArgumentInference ::=
         (

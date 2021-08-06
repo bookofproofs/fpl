@@ -1,6 +1,6 @@
 import _tkinter
 from tkinter import *
-from idetheme import DefaultTheme
+from ide.idetheme import DefaultTheme
 
 
 class EditorText(Text):
@@ -29,8 +29,12 @@ class EditorText(Text):
     def _proxy(self, *args):
         # let the actual widget perform the requested action
         cmd = (self._orig,) + args
-        result = self.tk.call(cmd)
-        # update the is_dirty and has_changed_content flags if something was added or deleted,
+        result = None
+        try:
+            result = self.tk.call(cmd)
+        except _tkinter.TclError:
+            # ignore the error .nothing to undo
+            pass
         if args[0] in ("insert", "replace", "delete"):
             value = self.get_value()
             self.has_changed_content = self._last_value != value
@@ -49,7 +53,6 @@ class EditorText(Text):
             self.event_generate("<<Change>>", when="tail")
 
         # return what the actual widget returned
-        # self.is_dirty = False if self._initial_value == result else True
         return result
 
     def get_value(self):

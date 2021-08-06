@@ -1,5 +1,5 @@
 from tkinter import *
-from idetheme import DefaultTheme
+from ide.idetheme import DefaultTheme
 
 
 class TextLineNumbers(Canvas):
