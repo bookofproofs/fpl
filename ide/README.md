@@ -5,7 +5,7 @@ The FPLIDE is a small IDE for working with *.fpl files. It integrates the curren
 
 ### Getting Started
 #### Installation process:
-Install TatSu 5.5.0 (stable) in your environment. Use python (at least 3.8).
+Install TatSu 5.6.1 (stable) in your environment. Use python (at least 3.8).
 #### Software dependencies
 The software uses the packages TatSu and tkinter. 
 #### Latest releases

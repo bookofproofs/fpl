@@ -25,3 +25,9 @@
 * Prettify code (experimental)
 * Auto indent when opening new braces or parentheses (experimental)
 * UTF-8 support 
+## 1.2.3
+* Indentation when pressing <tab>
+* Outdentation when pressing <Shift-tab>
+* Help menu added (about)
+* Settings menu added (settings)
+* Settings window will open and show the available settings, but no editing is yet possible.

@@ -28,7 +28,7 @@ class Prettifier:
         :return: None
         """
         if self._prettified.find("ProceedingResults(p: +") > -1:
-            print("")
+            # print("")
             pass
         #  print(self._context_stack, self._minified[-50:])
         if isinstance(ast_info.cst, str):

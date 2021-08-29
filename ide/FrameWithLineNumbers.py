@@ -41,7 +41,9 @@ class FrameWithLineNumbers(Frame):
         self.bind_all('<Alt-Control-j>', self.parse_interpret_highlight)
         self.bind_all('<Alt-Control-g>', self.parse_interpret_highlight_update_all)
         self.bind_all('<Alt-Control-l>', self.reformat_code)
-        self.bind_all('<Return>', self._enter_return)
+        self.text.bind('<Return>', self._press_enter)
+        self.text.bind('<Tab>', self._press_tab)
+        self.text.bind('<Shift-Tab>', self._press_shift_tab)
         self.text.bind("<Double-1>", self._on_click)
         self.text.bind("<Configure>", self._on_change)
 
@@ -49,7 +51,62 @@ class FrameWithLineNumbers(Frame):
         font = tkfont.Font(font=self.text['font'])
         self.text.config(tabs=font.measure(' ' * number_spaces))
 
-    def _enter_return(self, event):
+    def _press_tab(self, event):
+        """
+        Handles the event when the user presses the tab key and increases the indentation of the selection.
+        :param event: key event
+        :return: None
+        """
+        if self.text.index(SEL_FIRST) == "None" or self.text.index(SEL_LAST) == "None":
+            # prevent indenting anything if there is no current selection
+            return
+        # remember position of old text
+        selected_text = self.text.get(SEL_FIRST, SEL_LAST)
+        # create replacement
+        selection_replacement = ""
+        for line in selected_text.splitlines():
+            selection_replacement += "\t" + line + "\n"
+
+        self.__replace_selection_by_text_and_select_it(selection_replacement)
+        return "break"
+
+    def __replace_selection_by_text_and_select_it(self, text: str):
+        # remember first position
+        pos_first = self.text.index(SEL_FIRST)
+        first_line = int(pos_first.split('.')[0])
+        # delete all select
+        self.text.delete(SEL_FIRST, SEL_LAST)
+        # insert new selection
+        self.text.insert(pos_first, text)
+        # identify where the new selection should end
+        pos_last = str(len(text.splitlines()) + first_line) + ".0"
+        # mark the text selected
+        self.text.tag_add(SEL, pos_first, pos_last)
+
+    def _press_shift_tab(self, event):
+        """
+        Handles the event when the user presses the Shift tab key and decreases the indentation of the selection.
+        :param event: key event
+        :return: None
+        """
+        if self.text.index(SEL_FIRST) == "None" or self.text.index(SEL_LAST) == "None":
+            # prevent outdenting anything if there is no current selection
+            return
+        # remember position of old text
+        pos_first = self.text.index(SEL_FIRST)
+        selected_text = self.text.get(SEL_FIRST, SEL_LAST)
+        # create replacement
+        selection_replacement = ""
+        for line in selected_text.splitlines():
+            if len(line) > 0:
+                if line[0] == " " or line[0] == "\t":
+                    line = line[1:]
+            selection_replacement += line + "\n"
+        self.__replace_selection_by_text_and_select_it(selection_replacement)
+        return "break"
+
+    def _press_enter(self, event):
+        print("hier ret")
         split_last_pos = self._last_pos.split('.')
         last_row = int(split_last_pos[0])
         last_col = int(split_last_pos[1])

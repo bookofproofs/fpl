@@ -6,13 +6,16 @@ from ide.idetheme import DefaultTheme
 from ide.CustomNotebook import CustomNotebook
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.StatusBar import StatusBar
+from ide.SettingsDialog import SettingsDialog
 from poc import fplinterpreter
+import configparser
 import os
 
 
 class FplIde:
     fpl_parser = None
-    _version = '1.2.2'
+    _version = '1.2.3'
+    config = None
     _theme = None
     window = None
     _panedWindow = None
@@ -33,6 +36,7 @@ class FplIde:
     _listBoxSemantics = None
     _menuBar = None
     _statusBar = None
+    _root_dir = None
     images = None
 
     def __init__(self):
@@ -47,14 +51,15 @@ class FplIde:
         self.window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
         self.window.title('Formal Proving Language IDE (' + self._version + ')')
         self.images = dict()
-        dirname = os.path.dirname(__file__) + "/"
-        self.images["warning"] = PhotoImage("warning", file=os.path.join(dirname, "assets/warning.png"))
-        self.images["cancel"] = PhotoImage("cancel", file=os.path.join(dirname, "assets/cancel.png"))
+        self._root_dir = os.path.dirname(__file__) + "/"
+        self.images["warning"] = PhotoImage("warning", file=os.path.join(self._root_dir, "assets/warning.png"))
+        self.images["cancel"] = PhotoImage("cancel", file=os.path.join(self._root_dir, "assets/cancel.png"))
         self.__add_paned_windows()
         self.__add_menu()
         self._all_editors = dict()
         self.current_file = ""
         self.fpl_init()
+        self.config_init()
         self.window.mainloop()
 
     def get_version(self):
@@ -74,6 +79,14 @@ class FplIde:
         build_bar = Menu(self._menuBar, tearoff=0)
         build_bar.add_command(label='Build', command=self.build_fpl_code)
         self._menuBar.add_cascade(label='Build', underline=0, menu=build_bar)
+
+        options_bar = Menu(self._menuBar, tearoff=0)
+        options_bar.add_command(label='Settings', command=self.settings)
+        self._menuBar.add_cascade(label='Options', underline=0, menu=options_bar)
+
+        help_bar = Menu(self._menuBar, tearoff=0)
+        help_bar.add_command(label='About', command=self.about)
+        self._menuBar.add_cascade(label='Help', underline=0, menu=help_bar)
 
         self.window.bind_all('<Control-Key-n>', self.new_file)
         self.window.bind_all('<Control-Key-o>', self.open_file)
@@ -352,10 +365,16 @@ class FplIde:
 
         self.update_error_warning_counts()
 
-
-
     def build_fpl_code(self):
         messagebox.showinfo("FPL", "Not implemented yet! (Build)")
+
+    def settings(self):
+        settings_dialog = SettingsDialog(self)
+
+    def about(self):
+        messagebox.showinfo("FPL",
+                            "IDE for the Formal Proving Language (FPL), Version " + self._version +
+                            "\n\n" + u"\u00A9" + " All Rights Reserved")
 
     def new_file(self, event=None):
         self._tabEditor.new_file(event)
@@ -405,6 +424,46 @@ class FplIde:
         self.fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
         self._statusBar.set_status_text("FPL parser ready.")
         self.window.config(cursor="")
+
+    def config_init(self):
+        """
+        Initialise the config (file) of this IDE
+        :return:
+        """
+        self.config = configparser.RawConfigParser()
+        # check if there is a config file
+        path_to_config = os.path.join(self._root_dir, "config.ini")
+        if os.path.exists(path_to_config):
+            # if so, read the config file
+            self.config.read(path_to_config)
+        # ensure all mandatory sections and options are set
+        if not self.config.has_section("Paths"):
+            self.config.add_section("Paths")
+        if not self.config.has_option("Paths", "FPL Theories"):
+            self.config.set("Paths", "FPL Theories", self._tabEditor.global_path)
+
+        if not self.config.has_section("Editor"):
+            self.config.add_section("Editor")
+        if not self.config.has_option("Editor", "Tab Length"):
+            self.config.set("Editor", "Tab Length", 3)
+
+        if not self.config.has_section("Code Reformatting"):
+            self.config.add_section("Code Reformatting")
+        if not self.config.has_option("Code Reformatting", "One-Line Compound Predicates"):
+            self.config.set("Code Reformatting", "One-Line Compound Predicates", True)
+
+        # make sure, the config file is now complete
+        cfgfile = open(path_to_config, "w")
+        self.config.write(cfgfile)
+
+    def _check_config_section(self, section:str):
+        """
+        Checks if the current config file has all necessary settings.
+        If not, they will be complemented
+        :param section: name of the config section
+        :return: None
+        """
+
 
     def get_status_bar(self):
         return self._statusBar

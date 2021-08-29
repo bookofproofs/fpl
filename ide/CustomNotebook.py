@@ -19,7 +19,7 @@ class CustomNotebook(ttk.Notebook):
     ide = None
     _my_files = dict()
     _current_file = ""
-    _global_path = ""
+    global_path = ""
 
     def __init__(self, ide, *args, **kwargs):
         self.ide = ide
@@ -28,7 +28,7 @@ class CustomNotebook(ttk.Notebook):
             self.__inititialized = True
             self._my_files = dict()
             self._current_file = ""
-            self._global_path = ""
+            self.global_path = ""
             self._theme = DefaultTheme()
 
         kwargs["style"] = "CustomNotebook"
@@ -101,11 +101,11 @@ class CustomNotebook(ttk.Notebook):
 
     def save_file(self, event=None):
         editor_info = self.get_current_file_object()
-        if self._global_path == '':
+        if self.global_path == '':
             return self.save_file_as()
         elif editor_info.is_new:
             return self.save_file_as()
-        with io.open(self._global_path, 'w', encoding="UTF-8") as file:
+        with io.open(self.global_path, 'w', encoding="UTF-8") as file:
             code = editor_info.get_text()
             file.write(code)
             # change the appearance of the tab to "unchanged"
@@ -144,7 +144,7 @@ class CustomNotebook(ttk.Notebook):
         if path == "":
             # cancel clicked
             return
-        self._global_path = path
+        self.global_path = path
         with open(path, 'r', encoding="UTF-8") as file:
             self._current_file = os.path.basename(path)
             if self._current_file in self._my_files:
@@ -193,7 +193,7 @@ class CustomNotebook(ttk.Notebook):
         # interpret the file
         # get the interpreter, highlight the code, refresh all info
         editor_info.parse_interpret_highlight_update_all()
-        self.ide.window.config(cursor="")
+        self.ide._rootwindow.config(cursor="")
 
     def get_current_file_object(self) -> FrameWithLineNumbers:
         self._current_file = self.tab(self.select(), "text")
