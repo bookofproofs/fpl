@@ -1,9 +1,9 @@
 import _tkinter
-from tkinter import *
+import tkinter as tk
 from ide.idetheme import DefaultTheme
 
 
-class EditorText(Text):
+class EditorText(tk.Text):
     _theme = None
     is_dirty = False  # indicates if the string changed as compared to the _initial_value
     has_changed_content = False  # indicates if the string changed as compared to the previous one
@@ -11,7 +11,7 @@ class EditorText(Text):
     _last_value = ""  # remember the last value
 
     def __init__(self, *args, **kwargs):
-        Text.__init__(self, *args, **kwargs)
+        tk.Text.__init__(self, *args, **kwargs)
         self._theme = DefaultTheme()
         # create a proxy for the underlying widget
         self._orig = self._w + "_orig"
@@ -19,7 +19,7 @@ class EditorText(Text):
         self.tk.createcommand(self._w, self._proxy)
 
     def init_value(self, code):
-        self.delete("1.0", END)
+        self.delete("1.0", tk.END)
         self.insert("1.0", code)
         self._initial_value = self.get_value()
         self._last_value = self._initial_value
@@ -56,7 +56,7 @@ class EditorText(Text):
         return result
 
     def get_value(self):
-        return self.get("1.0", END)
+        return self.get("1.0", tk.END)
 
     def settings(self, background_color, foreground_color):
         self.config(bg=background_color, fg=foreground_color, insertbackground='white')

@@ -8,6 +8,7 @@ import os
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.idetheme import DefaultTheme
+from ide.Settings import Settings
 import io
 
 
@@ -19,7 +20,6 @@ class CustomNotebook(ttk.Notebook):
     ide = None
     _my_files = dict()
     _current_file = ""
-    global_path = ""
 
     def __init__(self, ide, *args, **kwargs):
         self.ide = ide
@@ -28,7 +28,6 @@ class CustomNotebook(ttk.Notebook):
             self.__inititialized = True
             self._my_files = dict()
             self._current_file = ""
-            self.global_path = ""
             self._theme = DefaultTheme()
 
         kwargs["style"] = "CustomNotebook"
@@ -91,21 +90,21 @@ class CustomNotebook(ttk.Notebook):
         self._active = None
 
     def tab_changed(self, event):
-        selected_tab = event.widget.select()
         try:
-            self._current_file = event.widget.tab(selected_tab, "text")
-            self.ide.get_status_bar().set_status_text(selected_tab)
+            editor_info = self.get_current_file_object()
+            editor_info.on_change(None)  # reset the status bar and other info according to to tab
         except tk.TclError:
             self.ide.get_status_bar().set_status_text("")
             pass
 
     def save_file(self, event=None):
         editor_info = self.get_current_file_object()
-        if self.global_path == '':
+        path_to_fpl_theories = self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
+        if path_to_fpl_theories == '':
             return self.save_file_as()
         elif editor_info.is_new:
             return self.save_file_as()
-        with io.open(self.global_path, 'w', encoding="UTF-8") as file:
+        with io.open(path_to_fpl_theories, 'w', encoding="UTF-8") as file:
             code = editor_info.get_text()
             file.write(code)
             # change the appearance of the tab to "unchanged"
@@ -140,11 +139,12 @@ class CustomNotebook(ttk.Notebook):
         return file_name + str(numb) + ".fpl"
 
     def open_file(self, event=None):
-        path = askopenfilename(filetypes=[('FPL Files', '*.fpl'), ('Python Files', '*.py')])
+        path_to_fpl_theories = self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
+        path = askopenfilename(filetypes=[('FPL Files', '*.fpl'), ('Python Files', '*.py')],
+                               initialdir=path_to_fpl_theories)
         if path == "":
             # cancel clicked
             return
-        self.global_path = path
         with open(path, 'r', encoding="UTF-8") as file:
             self._current_file = os.path.basename(path)
             if self._current_file in self._my_files:
@@ -193,7 +193,7 @@ class CustomNotebook(ttk.Notebook):
         # interpret the file
         # get the interpreter, highlight the code, refresh all info
         editor_info.parse_interpret_highlight_update_all()
-        self.ide._rootwindow.config(cursor="")
+        self.ide.window.config(cursor="")
 
     def get_current_file_object(self) -> FrameWithLineNumbers:
         self._current_file = self.tab(self.select(), "text")
@@ -205,7 +205,7 @@ class CustomNotebook(ttk.Notebook):
         else:
             return None
 
-    def get_book(self):
+    def get_files(self):
         return self._my_files
 
     def select_file(self, file):

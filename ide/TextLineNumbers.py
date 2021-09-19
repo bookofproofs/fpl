@@ -1,13 +1,13 @@
-from tkinter import *
+import tkinter as tk
 from ide.idetheme import DefaultTheme
 
 
-class TextLineNumbers(Canvas):
+class TextLineNumbers(tk.Canvas):
     _foreground_color = None
     _theme = None
 
     def __init__(self, *args, **kwargs):
-        Canvas.__init__(self, *args, **kwargs)
+        tk.Canvas.__init__(self, *args, **kwargs)
         self.text_widget = None
         self._theme = DefaultTheme()
 

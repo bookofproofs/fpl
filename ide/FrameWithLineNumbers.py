@@ -1,15 +1,16 @@
 # solution adapted from https://stackoverflow.com/questions/16369470/tkinter-adding-line-number-to-text-widget
 # By Bryan Oakley
 import _tkinter
-from tkinter import *
+import tkinter as tk
 from ide.idetheme import DefaultTheme
 from ide.TextLineNumbers import TextLineNumbers
 from ide.EditorText import EditorText
 import tkinter.font as tkfont
 from poc import fplinterpreter
+from ide.Settings import Settings
 
 
-class FrameWithLineNumbers(Frame):
+class FrameWithLineNumbers(tk.Frame):
     _parent_notebook = None  # parent notebook containing this Frame
     _theme = None
     _tag_indices = {}
@@ -17,39 +18,58 @@ class FrameWithLineNumbers(Frame):
     title = ""
     is_new = True  # is True if this is a new file, or False, if it was loaded from disk
     _last_pos = "1.0"
-    _indent = 0
     _number_spaces_per_tab = 3
 
     def __init__(self, parent_note_book, title, *args, **kwargs):
-        Frame.__init__(self, *args, **kwargs)
+        tk.Frame.__init__(self, *args, **kwargs)
         self._parent_notebook = parent_note_book
         self._theme = DefaultTheme()
         self.text = EditorText(self, undo=True)
         self.text.settings(self._theme.get_bg_color(), self._theme.get_fg_color())
-        self.vsb = Scrollbar(self, orient="vertical", command=self.text.yview)
+        self.vsb = tk.Scrollbar(self, orient="vertical", command=self.text.yview)
         self.text.configure(yscrollcommand=self.vsb.set)
         self.linenumbers = TextLineNumbers(self, width=30)
         self.linenumbers.attach(self.text)
         self.to_be_parsed_and_interpreted = False
         self.title = title
-        self.configure_tab_width(self._number_spaces_per_tab)
+        self.configure_tab_width(
+            self._parent_notebook.ide.config.get(Settings.section_editor, Settings.option_editor_tab_length)
+        )
         self.vsb.pack(side="right", fill="y")
         self.linenumbers.pack(side="left", fill="y")
         self.text.pack(side="right", fill="both", expand=True)
 
-        self.text.bind("<<Change>>", self._on_change)
+        self.text.bind("<<Change>>", self.on_change)
         self.bind_all('<Alt-Control-j>', self.parse_interpret_highlight)
         self.bind_all('<Alt-Control-g>', self.parse_interpret_highlight_update_all)
         self.bind_all('<Alt-Control-l>', self.reformat_code)
         self.text.bind('<Return>', self._press_enter)
+        self.text.bind('<Key>', self._key_pressed)
         self.text.bind('<Tab>', self._press_tab)
         self.text.bind('<Shift-Tab>', self._press_shift_tab)
         self.text.bind("<Double-1>", self._on_click)
-        self.text.bind("<Configure>", self._on_change)
+        self.text.bind("<Configure>", self.on_change)
 
     def configure_tab_width(self, number_spaces):
         font = tkfont.Font(font=self.text['font'])
-        self.text.config(tabs=font.measure(' ' * number_spaces))
+        self.text.config(tabs=font.measure(' ' * Settings.to_positive_integer(number_spaces)))
+
+    def _key_pressed(self, event):
+        split_last_pos = self.get_pos().split('.')
+        last_row = int(split_last_pos[0])
+        last_col = int(split_last_pos[1])
+        if event.char in ["(", "[", "{"]:
+            # Enter a closing brace when an opening brace was entered
+            self.text.insert(self.get_pos(), event.char + self._get_closing_character(event.char))
+            self.set_pos(last_row, last_col + 1)
+            return 'break'
+        elif event.char in [")", "]", "}"]:
+            last_char = self.text.get(str(last_row) + "." + str(last_col), str(last_row) + "." + str(last_col + 1))
+            if last_char == event.char:
+                # prevent the entry of closing braces if there is already one at the current cursor position
+                # However, move the position one character to the right
+                self.set_pos(last_row, last_col + 1)
+                return 'break'
 
     def _press_tab(self, event):
         """
@@ -57,11 +77,11 @@ class FrameWithLineNumbers(Frame):
         :param event: key event
         :return: None
         """
-        if self.text.index(SEL_FIRST) == "None" or self.text.index(SEL_LAST) == "None":
+        if self.text.index(tk.SEL_FIRST) == "None" or self.text.index(tk.SEL_LAST) == "None":
             # prevent indenting anything if there is no current selection
             return
         # remember position of old text
-        selected_text = self.text.get(SEL_FIRST, SEL_LAST)
+        selected_text = self.text.get(tk.SEL_FIRST, tk.SEL_LAST)
         # create replacement
         selection_replacement = ""
         for line in selected_text.splitlines():
@@ -72,16 +92,16 @@ class FrameWithLineNumbers(Frame):
 
     def __replace_selection_by_text_and_select_it(self, text: str):
         # remember first position
-        pos_first = self.text.index(SEL_FIRST)
+        pos_first = self.text.index(tk.SEL_FIRST)
         first_line = int(pos_first.split('.')[0])
         # delete all select
-        self.text.delete(SEL_FIRST, SEL_LAST)
+        self.text.delete(tk.SEL_FIRST, tk.SEL_LAST)
         # insert new selection
         self.text.insert(pos_first, text)
         # identify where the new selection should end
         pos_last = str(len(text.splitlines()) + first_line) + ".0"
         # mark the text selected
-        self.text.tag_add(SEL, pos_first, pos_last)
+        self.text.tag_add(tk.SEL, pos_first, pos_last)
 
     def _press_shift_tab(self, event):
         """
@@ -89,12 +109,12 @@ class FrameWithLineNumbers(Frame):
         :param event: key event
         :return: None
         """
-        if self.text.index(SEL_FIRST) == "None" or self.text.index(SEL_LAST) == "None":
+        if self.text.index(tk.SEL_FIRST) == "None" or self.text.index(tk.SEL_LAST) == "None":
             # prevent outdenting anything if there is no current selection
             return
         # remember position of old text
-        pos_first = self.text.index(SEL_FIRST)
-        selected_text = self.text.get(SEL_FIRST, SEL_LAST)
+        pos_first = self.text.index(tk.SEL_FIRST)
+        selected_text = self.text.get(tk.SEL_FIRST, tk.SEL_LAST)
         # create replacement
         selection_replacement = ""
         for line in selected_text.splitlines():
@@ -106,35 +126,60 @@ class FrameWithLineNumbers(Frame):
         return "break"
 
     def _press_enter(self, event):
-        print("hier ret")
-        split_last_pos = self._last_pos.split('.')
-        last_row = int(split_last_pos[0])
-        last_col = int(split_last_pos[1])
-        last_char = self.text.get(str(last_row) + "." + str(last_col - 1), str(last_row) + "." + str(last_col))
-        if last_char in ["{", "("]:
-            # replace current row by the same content except the last character
-
-            # insert the closed block with an indent inside
-            self.text.insert(self.get_pos(),
-                             self._indent * "\t" + last_char + "\n\n" +
-                             self._indent * "\t" + self._get_closing_character(last_char)
-                             )
-            self._indent += 1
-            self.set_pos(last_row + 2, 0)
-            self.text.insert(self.get_pos(), self._indent * "\t")
-            # at this stage, the cursor is positioned inside the block
-
-        elif last_char in ["}", ")"]:
-            if self._indent > 0:
-                self._indent -= 1
+        text_to_the_left = self.text.get("0.0", self.get_pos())
+        indent = self.__determine_current_indent(text_to_the_left, "{")
+        split_pos = self.get_pos().split('.')
+        last_row = int(split_pos[0])
+        last_col = int(split_pos[1])
+        possible_brackets = ""
+        if last_col > 0:
+            possible_brackets = self.text.get(str(last_row) + "." + str(last_col - 1),
+                                              str(last_row) + "." + str(last_col + 1))
+        if possible_brackets in ["{}"]:
+            self.__insert_indented_brackets(last_row, last_col, indent-1, possible_brackets, True)
+        elif possible_brackets in ["()", "[]"]:
+            self.__insert_indented_brackets(last_row, last_col, indent, possible_brackets, False)
         else:
-            pass
+            # new line entered with nothing to the left, so insert the line to the right indented
+            self.text.insert(self.get_pos(), "\n" + indent * "\t")
+        # do not handle new lines on your own
+        return "break"
 
-    def _get_closing_character(self, last_char):
-        if last_char == "{":
+    def __determine_current_indent(self, text: str, bracket: str):
+        indent = 0
+        if len(text) > 0:
+            i = 0
+            stack = []
+            while i < len(text):
+                if text[i] == bracket:
+                    stack.append(text[i])
+                    indent += 1
+                elif text[i] == self._get_closing_character(bracket):
+                    if len(stack) > 0:
+                        stack.pop()
+                        indent -= 1
+                i += 1
+        return indent
+
+    def __insert_indented_brackets(self, at_row, at_column, indent: int, possible_brackets: str, newline: bool):
+        # insert an indented new block
+        if newline:
+            self.text.insert(str(at_row) + "." + str(at_column - 1), "\n" + indent * "\t")
+            self.text.insert(str(at_row + 1) + "." + str(indent + 1), "\n\n" + indent * "\t")
+            # increase indent and insert it inside this block
+            self.set_pos(at_row + 2, 0)
+            self.text.insert(self.get_pos(), (indent + 1) * "\t")
+            # at this stage, the cursor is positioned inside the block at an indented position
+        else:
+            self.text.insert(str(at_row) + "." + str(at_column), "\n" + indent * "\t")
+
+    def _get_closing_character(self, opening):
+        if opening == "{":
             return "}"
-        elif last_char == "(":
+        elif opening == "(":
             return ")"
+        elif opening == "[":
+            return "]"
         else:
             return ""
 
@@ -205,7 +250,7 @@ class FrameWithLineNumbers(Frame):
                     ide.get_syntax_list().focus_force()
                     ide.get_syntax_list().see(child)
 
-    def _on_change(self, event):
+    def on_change(self, event):
         # rewrite all line numbers
         self.linenumbers.redraw()
         # print the current position in the status bar of the ide
@@ -235,15 +280,15 @@ class FrameWithLineNumbers(Frame):
         if init:
             self.text.init_value(code)
         else:
-            self.text.delete(1.0, END)
-            self.text.insert(END, code)
+            self.text.delete(1.0, tk.END)
+            self.text.insert(tk.END, code)
         self.reconfigure_all_tags()
 
     def get_text(self):
         return self.text.get_value()
 
     def get_pos(self):
-        return self.text.index(INSERT)
+        return self.text.index(tk.INSERT)
 
     def set_pos(self, row, column):
         index = str(row) + "." + str(column)

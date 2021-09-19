@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from util.fplutil import Utils
@@ -8,13 +8,14 @@ from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.StatusBar import StatusBar
 from ide.SettingsDialog import SettingsDialog
 from poc import fplinterpreter
+from ide.Settings import Settings
 import configparser
 import os
 
 
 class FplIde:
     fpl_parser = None
-    _version = '1.2.3'
+    _version = '1.2.4'
     config = None
     _theme = None
     window = None
@@ -41,7 +42,7 @@ class FplIde:
 
     def __init__(self):
         self._theme = DefaultTheme()
-        self.window = Tk()
+        self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
         self.window.resizable()
         screen_width = self.window.winfo_screenwidth()
@@ -50,25 +51,26 @@ class FplIde:
         y_cordinate = int((screen_height / 2) - (768 / 2))
         self.window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
         self.window.title('Formal Proving Language IDE (' + self._version + ')')
+        self.window.protocol("WM_DELETE_WINDOW", self.exit)
         self.images = dict()
         self._root_dir = os.path.dirname(__file__) + "/"
-        self.images["warning"] = PhotoImage("warning", file=os.path.join(self._root_dir, "assets/warning.png"))
-        self.images["cancel"] = PhotoImage("cancel", file=os.path.join(self._root_dir, "assets/cancel.png"))
+        self.images["warning"] = tk.PhotoImage("warning", file=os.path.join(self._root_dir, "assets/warning.png"))
+        self.images["cancel"] = tk.PhotoImage("cancel", file=os.path.join(self._root_dir, "assets/cancel.png"))
+        self.config_init()
         self.__add_paned_windows()
         self.__add_menu()
         self._all_editors = dict()
         self.current_file = ""
         self.fpl_init()
-        self.config_init()
         self.window.mainloop()
 
     def get_version(self):
         return self._version
 
     def __add_menu(self):
-        self._menuBar = Menu(self.window)
+        self._menuBar = tk.Menu(self.window)
 
-        file_bar = Menu(self._menuBar, tearoff=0)
+        file_bar = tk.Menu(self._menuBar, tearoff=0)
         file_bar.add_command(label='New', underline=0, command=self.new_file)
         file_bar.add_command(label='Open', underline=0, command=self.open_file)
         file_bar.add_command(label='Save', underline=0, command=self.save_file)
@@ -76,15 +78,15 @@ class FplIde:
         file_bar.add_command(label='Exit', underline=1, command=self.exit)
         self._menuBar.add_cascade(label='File', underline=0, menu=file_bar)
 
-        build_bar = Menu(self._menuBar, tearoff=0)
+        build_bar = tk.Menu(self._menuBar, tearoff=0)
         build_bar.add_command(label='Build', command=self.build_fpl_code)
         self._menuBar.add_cascade(label='Build', underline=0, menu=build_bar)
 
-        options_bar = Menu(self._menuBar, tearoff=0)
+        options_bar = tk.Menu(self._menuBar, tearoff=0)
         options_bar.add_command(label='Settings', command=self.settings)
         self._menuBar.add_cascade(label='Options', underline=0, menu=options_bar)
 
-        help_bar = Menu(self._menuBar, tearoff=0)
+        help_bar = tk.Menu(self._menuBar, tearoff=0)
         help_bar.add_command(label='About', command=self.about)
         self._menuBar.add_cascade(label='Help', underline=0, menu=help_bar)
 
@@ -96,13 +98,13 @@ class FplIde:
         self.window.config(menu=self._menuBar)
 
     def __add_paned_windows(self):
-        self._panedWindow = PanedWindow(self.window)
+        self._panedWindow = tk.PanedWindow(self.window)
         self._panedWindow.pack(expand=True, fill="both")
 
         self._panedWindowMainVertical = ttk.Frame(self._tabControl)
         self._panedWindowMainVertical.pack(expand=True, fill="both")
 
-        self._panedWindowMainVertical = PanedWindow(self.window, orient=VERTICAL)
+        self._panedWindowMainVertical = tk.PanedWindow(self.window, orient=tk.VERTICAL)
         self._panedWindow.add(self._panedWindowMainVertical)
 
         style = ttk.Style(self._panedMain)
@@ -111,11 +113,11 @@ class FplIde:
         self.__add_vertical_paned_window()
 
     def __add_object_browser_treeview(self):
-        self._panedMain = PanedWindow(self.window)
+        self._panedMain = tk.PanedWindow(self.window)
         self._object_browser_tree = ttk.Treeview(self._panedMain, show='headings')
         self._object_browser_tree["columns"] = ("object")
-        self._object_browser_tree.column("object", width=270, minwidth=270, stretch=YES)
-        self._object_browser_tree.heading("object", text="Object Browser", anchor=W)
+        self._object_browser_tree.column("object", width=270, minwidth=270, stretch=tk.YES)
+        self._object_browser_tree.heading("object", text="Object Browser", anchor=tk.W)
         self._object_browser_tree.insert("", 0, "TODO", text="item")
         self._panedMain.add(self._object_browser_tree)
         self._statusBar = StatusBar(self._panedWindowMainVertical)
@@ -123,10 +125,10 @@ class FplIde:
         self._panedWindowMainVertical.add(self._statusBar, minsize=20, stretch="always")
 
     def __add_vertical_paned_window(self):
-        self._panedWindowVertical = PanedWindow(self.window, orient=VERTICAL)
+        self._panedWindowVertical = tk.PanedWindow(self.window, orient=tk.VERTICAL)
         self._panedMain.add(self._panedWindowVertical)
 
-        self._panedWindowEditor = PanedWindow(self._panedWindowVertical, heigh=570)
+        self._panedWindowEditor = tk.PanedWindow(self._panedWindowVertical, heigh=570)
         self._panedWindowEditor.config(bg=self._theme.get_bg_color())
         self._panedWindowVertical.add(self._panedWindowEditor)
 
@@ -136,7 +138,8 @@ class FplIde:
         self._tabEditor = CustomNotebook(self, self._panedWindowEditor)
         self._panedWindowEditor.add(self._tabEditor)
 
-        self._panedWindowBelowEditor = PanedWindow(self._panedWindowVertical, heigh=70, bg=self._theme.get_bg_color())
+        self._panedWindowBelowEditor = tk.PanedWindow(self._panedWindowVertical, heigh=70,
+                                                      bg=self._theme.get_bg_color())
         self._panedWindowBelowEditor.config(bg=self._theme.get_bg_color())
         self._panedWindowVertical.add(self._panedWindowBelowEditor)
         self.__add_info_boxes()
@@ -149,24 +152,24 @@ class FplIde:
         self._frameSyntax = ttk.Frame(self._tabControl)
         self._listBoxSyntax = ttk.Treeview(self._frameSyntax, selectmode='browse', show='headings')
         self._listBoxSyntax["columns"] = ("rule", "line", "col", "pos", "file")
-        self._listBoxSyntax.column("rule", width=170, minwidth=170, stretch=YES, anchor=W)
-        self._listBoxSyntax.column('line', width=30, minwidth=50, stretch=YES, anchor=E)
-        self._listBoxSyntax.column('col', width=30, minwidth=50, stretch=YES, anchor=E)
-        self._listBoxSyntax.column('pos', width=30, minwidth=50, stretch=YES, anchor=E)
-        self._listBoxSyntax.column('file', width=100, minwidth=100, stretch=YES, anchor=W)
-        self._listBoxSyntax.heading("rule", text="Grammar Rule", anchor=CENTER)
-        self._listBoxSyntax.heading("line", text="Line", anchor=CENTER)
-        self._listBoxSyntax.heading("col", text="Column", anchor=CENTER)
-        self._listBoxSyntax.heading("pos", text="Position", anchor=CENTER)
-        self._listBoxSyntax.heading("file", text="File", anchor=CENTER)
+        self._listBoxSyntax.column("rule", width=170, minwidth=170, stretch=tk.YES, anchor=tk.W)
+        self._listBoxSyntax.column('line', width=30, minwidth=50, stretch=tk.YES, anchor=tk.E)
+        self._listBoxSyntax.column('col', width=30, minwidth=50, stretch=tk.YES, anchor=tk.E)
+        self._listBoxSyntax.column('pos', width=30, minwidth=50, stretch=tk.YES, anchor=tk.E)
+        self._listBoxSyntax.column('file', width=100, minwidth=100, stretch=tk.YES, anchor=tk.W)
+        self._listBoxSyntax.heading("rule", text="Grammar Rule", anchor=tk.CENTER)
+        self._listBoxSyntax.heading("line", text="Line", anchor=tk.CENTER)
+        self._listBoxSyntax.heading("col", text="Column", anchor=tk.CENTER)
+        self._listBoxSyntax.heading("pos", text="Position", anchor=tk.CENTER)
+        self._listBoxSyntax.heading("file", text="File", anchor=tk.CENTER)
         self._listBoxSyntax.bind('<Button-1>', self.__listbox_syntax_item_clicked)
         self.__add_scrollbar(self._frameSyntax, self._listBoxSyntax)
-        self._listBoxSyntax.pack(side=LEFT, expand=True, fill=BOTH)
+        self._listBoxSyntax.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
 
         self._frameSemantics = ttk.Frame(self._tabControl)
-        self._listBoxSemantics = Listbox(self._frameSemantics)
+        self._listBoxSemantics = tk.Listbox(self._frameSemantics)
         self._listBoxSemantics.config(bg=self._theme.get_bg_color(), fg=self._theme.get_fg_color())
-        self._listBoxSemantics.pack(side=LEFT, expand=True, fill=BOTH)
+        self._listBoxSemantics.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
         self.__add_scrollbar(self._frameSemantics, self._listBoxSemantics)
 
         self._frameOutput = ttk.Frame(self._tabControl)
@@ -184,75 +187,76 @@ class FplIde:
         self._gridErrors.pack(expand=True, fill="both")
 
         # number of errors label
-        self._label_error_num = Label(self._gridErrors, text="Errors (0)",
-                                      relief=GROOVE, bg=self._theme.get_bg_color(), fg=self._theme.get_fg_color())
+        self._label_error_num = tk.Label(self._gridErrors, text="Errors (0)",
+                                         relief=tk.GROOVE, bg=self._theme.get_bg_color(), fg=self._theme.get_fg_color())
         self._label_error_num.grid()
-        self._label_error_num["compound"] = LEFT
+        self._label_error_num["compound"] = tk.LEFT
         self._label_error_num["image"] = self.images["cancel"]
-        self._label_error_num.grid(row=0, column=0, sticky=W + E, pady=2)
+        self._label_error_num.grid(row=0, column=0, sticky=tk.W + tk.E, pady=2)
 
         # number of warnings label
-        self._label_warning_num = Label(self._gridErrors, text="Warnings (0)",
-                                        relief=GROOVE, bg=self._theme.get_bg_color(), fg=self._theme.get_fg_color())
+        self._label_warning_num = tk.Label(self._gridErrors, text="Warnings (0)",
+                                           relief=tk.GROOVE, bg=self._theme.get_bg_color(),
+                                           fg=self._theme.get_fg_color())
         self._label_warning_num.grid()
-        self._label_warning_num["compound"] = LEFT
+        self._label_warning_num["compound"] = tk.LEFT
         self._label_warning_num["image"] = self.images["warning"]
-        self._label_warning_num.grid(row=0, column=1, sticky=W + E, pady=2)
+        self._label_warning_num.grid(row=0, column=1, sticky=tk.W + tk.E, pady=2)
 
         # option menue for filtering all or current file errors
         self._all_file_list = ["All", "Current File"]
-        self._all_file_option_menu = OptionMenu(self._gridErrors,
-                                                StringVar(self._gridErrors, value="All"),
-                                                *self._all_file_list)
-        self._all_file_option_menu.config(relief=GROOVE,
+        self._all_file_option_menu = tk.OptionMenu(self._gridErrors,
+                                                   tk.StringVar(self._gridErrors, value="All"),
+                                                   *self._all_file_list)
+        self._all_file_option_menu.config(relief=tk.GROOVE,
                                           bg=self._theme.get_bg_color(),
                                           highlightbackground=self._theme.get_bg_color(),
                                           fg=self._theme.get_fg_color())
-        self._all_file_option_menu.grid(row=0, column=2, sticky=W + E, pady=2)
+        self._all_file_option_menu.grid(row=0, column=2, sticky=tk.W + tk.E, pady=2)
 
         # option menue for filtering the error type
         self._error_type_list = ["(no types)"]
-        self._error_type_option_menu = OptionMenu(self._gridErrors,
-                                                  StringVar(self._gridErrors, value="(no types)"),
-                                                  *self._error_type_list)
-        self._error_type_option_menu.config(relief=GROOVE,
+        self._error_type_option_menu = tk.OptionMenu(self._gridErrors,
+                                                     tk.StringVar(self._gridErrors, value="(no types)"),
+                                                     *self._error_type_list)
+        self._error_type_option_menu.config(relief=tk.GROOVE,
                                             bg=self._theme.get_bg_color(),
                                             highlightbackground=self._theme.get_bg_color(),
                                             fg=self._theme.get_fg_color())
-        self._error_type_option_menu.grid(row=0, column=3, sticky=W + E, pady=2)
+        self._error_type_option_menu.grid(row=0, column=3, sticky=tk.W + tk.E, pady=2)
 
         # make the infos stretch with the window
-        Grid.columnconfigure(self._gridErrors, 0, weight=1)
-        Grid.columnconfigure(self._gridErrors, 1, weight=1)
-        Grid.columnconfigure(self._gridErrors, 2, weight=50)
-        Grid.columnconfigure(self._gridErrors, 3, weight=50)
+        tk.Grid.columnconfigure(self._gridErrors, 0, weight=1)
+        tk.Grid.columnconfigure(self._gridErrors, 1, weight=1)
+        tk.Grid.columnconfigure(self._gridErrors, 2, weight=50)
+        tk.Grid.columnconfigure(self._gridErrors, 3, weight=50)
         self._frameErrors = ttk.Frame(self._gridErrors)
-        self._frameErrors.grid(row=1, column=0, columnspan=4, sticky=W + E + N + S)
-        Grid.rowconfigure(self._gridErrors, 0, weight=1)
-        Grid.rowconfigure(self._gridErrors, 1, weight=100)
+        self._frameErrors.grid(row=1, column=0, columnspan=4, sticky=tk.W + tk.E + tk.N + tk.S)
+        tk.Grid.rowconfigure(self._gridErrors, 0, weight=1)
+        tk.Grid.rowconfigure(self._gridErrors, 1, weight=100)
 
         self._listBoxErrors = ttk.Treeview(self._frameErrors, selectmode='browse',
                                            column=('Type', 'Message', 'Line', 'Column', 'File'))
         # self._listBoxErrors["columns"] = ("#0", "#1", "#2", "#3", "#4", "#5")
-        self._listBoxErrors.heading("#0", text="", anchor=W)
-        self._listBoxErrors.heading("#1", text="Type", anchor=W)
-        self._listBoxErrors.heading("#2", text="Message", anchor=W)
-        self._listBoxErrors.heading("#3", text="Line", anchor=E)
-        self._listBoxErrors.heading("#4", text="Column", anchor=E)
-        self._listBoxErrors.heading("#5", text="File", anchor=CENTER)
-        self._listBoxErrors.column('#0', width=40, minwidth=40, stretch=NO, anchor=W)
-        self._listBoxErrors.column('Type', width=170, minwidth=170, stretch=YES, anchor=W)
-        self._listBoxErrors.column('Message', width=170, minwidth=170, stretch=YES, anchor=W)
-        self._listBoxErrors.column('Line', width=30, minwidth=30, stretch=YES, anchor=E)
-        self._listBoxErrors.column('Column', width=30, minwidth=30, stretch=YES, anchor=E)
-        self._listBoxErrors.column('File', width=100, minwidth=100, stretch=YES, anchor=CENTER)
+        self._listBoxErrors.heading("#0", text="", anchor=tk.W)
+        self._listBoxErrors.heading("#1", text="Type", anchor=tk.W)
+        self._listBoxErrors.heading("#2", text="Message", anchor=tk.W)
+        self._listBoxErrors.heading("#3", text="Line", anchor=tk.E)
+        self._listBoxErrors.heading("#4", text="Column", anchor=tk.E)
+        self._listBoxErrors.heading("#5", text="File", anchor=tk.CENTER)
+        self._listBoxErrors.column('#0', width=40, minwidth=40, stretch=tk.NO, anchor=tk.W)
+        self._listBoxErrors.column('Type', width=170, minwidth=170, stretch=tk.YES, anchor=tk.W)
+        self._listBoxErrors.column('Message', width=170, minwidth=170, stretch=tk.YES, anchor=tk.W)
+        self._listBoxErrors.column('Line', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
+        self._listBoxErrors.column('Column', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
+        self._listBoxErrors.column('File', width=100, minwidth=100, stretch=tk.YES, anchor=tk.CENTER)
         self._listBoxErrors.bind('<Button-1>', self.__listbox_error_clicked)
         self.__add_scrollbar(self._frameErrors, self._listBoxErrors)
-        self._listBoxErrors.pack(expand=True, fill=BOTH)
+        self._listBoxErrors.pack(expand=True, fill=tk.BOTH)
 
     def __add_scrollbar(self, frame, widget):
-        scrollbar = Scrollbar(frame)
-        scrollbar.pack(side=RIGHT, fill=BOTH)
+        scrollbar = tk.Scrollbar(frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.BOTH)
         scrollbar.config(command=widget.yview)
 
     def __listbox_syntax_item_clicked(self, event):
@@ -361,7 +365,7 @@ class FplIde:
             else:
                 im = self.images["warning"]
             item_tuple = item.to_tuple() + (editor_info.title,)
-            tree_view.insert("", END, text="", image=im, values=item_tuple)
+            tree_view.insert("", tk.END, text="", image=im, values=item_tuple)
 
         self.update_error_warning_counts()
 
@@ -389,7 +393,7 @@ class FplIde:
         self._tabEditor.save_file_as(event)
 
     def exit(self, event=None):
-        book = self._tabEditor.get_book()
+        book = self._tabEditor.get_files()
         at_least_one_open_file_changed = False
         for file in book:
             if book[file].text.is_dirty:
@@ -427,8 +431,9 @@ class FplIde:
 
     def config_init(self):
         """
-        Initialise the config (file) of this IDE
-        :return:
+        Initialise the config (file) of this IDE. If the values in the ini-file are invalid, they will be overwritten
+        with valid default values
+        :return: None
         """
         self.config = configparser.RawConfigParser()
         # check if there is a config file
@@ -437,33 +442,45 @@ class FplIde:
             # if so, read the config file
             self.config.read(path_to_config)
         # ensure all mandatory sections and options are set
-        if not self.config.has_section("Paths"):
-            self.config.add_section("Paths")
-        if not self.config.has_option("Paths", "FPL Theories"):
-            self.config.set("Paths", "FPL Theories", self._tabEditor.global_path)
+        if not self.config.has_section(Settings.section_paths):
+            self.config.add_section(Settings.section_paths)
+        if not self.config.has_option(Settings.section_paths, Settings.option_paths_fpl_theories):
+            self.config.set(Settings.section_paths, Settings.option_paths_fpl_theories, os.path.dirname(__file__) + "/")
+        else:
+            valid_value = self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
+            if not os.path.isdir(valid_value):
+                valid_value = os.path.dirname(__file__) + "/"
+                self.config.set(Settings.section_paths, Settings.option_paths_fpl_theories, valid_value)
 
-        if not self.config.has_section("Editor"):
-            self.config.add_section("Editor")
-        if not self.config.has_option("Editor", "Tab Length"):
-            self.config.set("Editor", "Tab Length", 3)
+        if not self.config.has_section(Settings.section_editor):
+            self.config.add_section(Settings.section_editor)
+        if not self.config.has_option(Settings.section_editor, Settings.option_editor_tab_length):
+            self.config.set(Settings.section_editor, Settings.option_editor_tab_length, 3)
+        else:
+            valid_value = self.config.get(Settings.section_editor, Settings.option_editor_tab_length)
+            valid_value = Settings.to_positive_integer(valid_value)
+            self.config.set(Settings.section_editor, Settings.option_editor_tab_length, valid_value)
 
-        if not self.config.has_section("Code Reformatting"):
-            self.config.add_section("Code Reformatting")
-        if not self.config.has_option("Code Reformatting", "One-Line Compound Predicates"):
-            self.config.set("Code Reformatting", "One-Line Compound Predicates", True)
+        if not self.config.has_section(Settings.section_codereform):
+            self.config.add_section(Settings.section_codereform)
+        if not self.config.has_option(Settings.section_codereform, Settings.option_codereform_1linecomppred):
+            self.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, True)
+        else:
+            valid_value = self.config.get(Settings.section_codereform, Settings.option_codereform_1linecomppred)
+            if valid_value not in ["True", "False"]:
+                self.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, True)
 
         # make sure, the config file is now complete
         cfgfile = open(path_to_config, "w")
         self.config.write(cfgfile)
 
-    def _check_config_section(self, section:str):
+    def _check_config_section(self, section: str):
         """
         Checks if the current config file has all necessary settings.
         If not, they will be complemented
         :param section: name of the config section
         :return: None
         """
-
 
     def get_status_bar(self):
         return self._statusBar

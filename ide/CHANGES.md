@@ -31,3 +31,8 @@
 * Help menu added (about)
 * Settings menu added (settings)
 * Settings window will open and show the available settings, but no editing is yet possible.
+## 1.2.4
+* Settings window allows editing the settings
+* Unified convention for importing tkinter in different classes 
+* Bugfix indentation when entering new lines
+* Automated entry of closing brackets, braces, and parentheses

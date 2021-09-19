@@ -1,5 +1,8 @@
 from classes.AuxAstInfo import AuxAstInfo
 import re
+import configparser
+import os
+from ide.Settings import Settings
 
 
 class Prettifier:
@@ -9,10 +12,11 @@ class Prettifier:
     _last_cst = None
     _indent = None
     _context_stack = None  # used to distinguish different contexts while parsing and interpreting the same lexemes
+    config = None
 
     def __init__(self):
         """
-        Constructor of Prettyfier
+        Constructor of Prettifier
         """
         self._last_cst = ""
         self._minified = ""
@@ -20,6 +24,9 @@ class Prettifier:
         self._prettified_is_postprocessed = False
         self._indent = 0
         self._context_stack = []
+        self.config = configparser.RawConfigParser()
+        path_to_config = os.path.realpath(os.path.join(os.path.dirname(__file__) + "../../../ide/config.ini"))
+        self.config.read(path_to_config)
 
     def minify(self, ast_info: AuxAstInfo):
         """
@@ -112,7 +119,13 @@ class Prettifier:
                 else:
                     self._last_cst = ast_info.cst
                     # replace long versions by short versions
-                    if ast_info.cst in ["and", "or", "impl", "iif", "xor", "not", "all", "ex", "loop", "range"]:
+                    if ast_info.cst in ["and", "or", "impl", "iif", "xor", "not", "all", "ex"]:
+                        self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
+                        one_line_predicates = self.config.get(Settings.section_codereform,
+                                           Settings.option_codereform_1linecomppred)
+                        if one_line_predicates == "False":
+                            self.push_context("dolinebreaks")
+                    elif ast_info.cst in ["loop", "range"]:
                         self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
                         self.push_context("dolinebreaks")
                     elif ast_info.cst == "assert":
@@ -210,7 +223,12 @@ class Prettifier:
                     self._append_indented("")
             elif ast_info.rule == "CaseStatement":
                 self.pop_context(["case", "dolinebreaks"])  # remove the "case", "dolinebreaks" flag from the context
-            elif ast_info.rule in ["CompoundPredicate", "RangeStatement", "LoopStatement"]:
+            elif ast_info.rule == "CompoundPredicate":
+                one_line_predicates = self.config.get(Settings.section_codereform,
+                                                      Settings.option_codereform_1linecomppred)
+                if one_line_predicates == "False":
+                    self.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
+            elif ast_info.rule in ["RangeStatement", "LoopStatement"]:
                 self.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
             elif ast_info.rule == "ExtensionHeader":
                 self._increase_indent()
@@ -386,14 +404,17 @@ class Prettifier:
         :param pars: a context (list) assumed to be at the tail of the stack. Raises an AssertionError if not
         :return: None
         """
-        if len(self._context_stack) >= len(pars):
-            if not self.is_parsing_context(pars):
-                raise AssertionError(
-                    "Got context " + str(self._context_stack[-len(pars):]) + ", expected " + str(list(pars)))
+        if type(pars) is list:
+            if len(self._context_stack) >= len(pars):
+                if not self.is_parsing_context(pars):
+                    raise AssertionError(
+                        "Got context " + str(self._context_stack[-len(pars):]) + ", expected " + str(list(pars)))
+                else:
+                    self._context_stack = self._context_stack[:len(self._context_stack) - len(pars)]
             else:
-                self._context_stack = self._context_stack[:len(self._context_stack) - len(pars)]
+                raise AssertionError("Got context " + str(self._context_stack) + ", expected " + str(pars))
         else:
-            raise AssertionError("Got context " + str([]) + ", expected " + str(list(pars)))
+            raise TypeError("Got context " + str(type(pars)) + ", expected " + str(type(list)))
 
     def get_context(self):
         return self._context_stack
