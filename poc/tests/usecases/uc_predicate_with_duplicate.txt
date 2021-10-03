@@ -1,0 +1,47 @@
+TestNamespace
+{
+    theory
+    {
+        pred Equals(x,y: tpl)
+        {
+            p: pred a,b: tpl
+
+            all a, b
+            (
+                iif
+                (
+                    Equals(a,b),
+                    all p
+                    (
+                        iif
+                        (
+                            p(a),
+                            p(b)
+                        )
+                    )
+                )
+            )
+        }
+
+        pred NotEquals(x,y: tpl)
+        {
+            not
+            (
+                Equals(x,y)
+            )
+        }
+
+        pred NotEquals(x,y: tpl)
+        {
+            not
+            (
+                Equals(x,y)
+            )
+        }
+
+    }
+}
+
+##############################
+
+FplIdentifierAlreadyDeclared:34:22: Identifier NotEquals already defined at (26,22)

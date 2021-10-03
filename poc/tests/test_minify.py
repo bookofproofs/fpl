@@ -17,11 +17,17 @@ class MinifyTestCase(unittest.TestCase):
     def setUpClass(cls):
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser("../../grammar/fpl_tatsu_format.ebnf")
+        cls.interpreter = FplInterpreter(cls.fpl_parser)
+        cls.interpreter_after_minify = FplInterpreter(cls.fpl_parser)
 
     def interpret(self, source_path):
-        self.theory_source = self.util.get_file_content(source_path)
-        self.interpreter = FplInterpreter("test_theory", self.theory_source, self.fpl_parser)
-        self.interpreter_after_minify = FplInterpreter("test_theory", self.interpreter.minified(), self.fpl_parser)
+        theory_source = self.util.get_file_content(source_path)
+        self.interpreter.get_errors().clear()
+        self.interpreter.symbol_table_clear()
+        self.interpreter_after_minify.get_errors().clear()
+
+        self.interpreter.syntax_analysis("test_theory_name", theory_source)
+        self.interpreter_after_minify.syntax_analysis("minified_test_theory_name", self.interpreter.minified())
         if self.interpreter_after_minify.has_errors():
             self.interpreter_after_minify.print_errors()
 

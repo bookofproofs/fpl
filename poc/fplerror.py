@@ -88,19 +88,32 @@ class FplVariableDuplicateInVariableList(FplInterpreterMessage):
 
 
 class FplUnclosedScope(FplInterpreterMessage):
-    __inter = None
-    __expected = None
-
     def __init__(self, inter: AuxInterpretation, expected: str):
         FplInterpreterMessage.__init__(self, "Expected " + str(expected) + ", got " + str(inter.get_interpretation()),
                                        inter.rule_line(),
                                        inter.rule_col())
 
 
-class FplUnopenedScope(Exception):
-    __inter = None
-
+class FplUnopenedScope(FplInterpreterMessage):
     def __init__(self, inter: AuxInterpretation):
         FplInterpreterMessage.__init__(self, str(inter.get_interpretation()),
+                                       inter.rule_line(),
+                                       inter.rule_col())
+
+
+class FplIdentifierAlreadyDeclared(FplInterpreterMessage):
+    def __init__(self, inter: AuxInterpretation, existing_inter: AuxInterpretation):
+        FplInterpreterMessage.__init__(self, "Identifier " + str(inter.get_interpretation()) +
+                                       " already defined at (" +
+                                       str(existing_inter.rule_line()) + "," + str(existing_inter.rule_col()) + ")",
+                                       inter.rule_line(),
+                                       inter.rule_col())
+
+
+class FplNameSpaceAlreadyExists(FplInterpreterMessage):
+    def __init__(self, inter: AuxInterpretation, existing_inter: AuxInterpretation):
+        FplInterpreterMessage.__init__(self, "Namespace " + str(inter.get_interpretation()) +
+                                       " already defined at (" +
+                                       str(existing_inter.rule_line()) + "," + str(existing_inter.rule_col()) + ")",
                                        inter.rule_line(),
                                        inter.rule_col())

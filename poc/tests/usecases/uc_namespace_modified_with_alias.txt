@@ -1,0 +1,23 @@
+Fpl.Geometry.Euclidean
+{
+    uses Fpl.Commons alias Com
+
+    theory
+    {
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='Fpl.Geometry.Euclidean', outline='theory', theory_name='uc_namespace_modified_with_alias')
+    ├── AnyNode(outline='uses')
+    │   └── AnyNode(id='Fpl.Commons', interpretation=<classes.AuxInterpretation.AuxInterpretation>, modifier='Com', outline='usedNamespace')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

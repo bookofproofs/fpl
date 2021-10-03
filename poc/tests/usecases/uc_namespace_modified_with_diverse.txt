@@ -1,0 +1,25 @@
+Fpl.Geometry.Euclidean
+{
+    uses Fpl.Commons.*, Fpl, Fpl.Test.Long.Namespace alias FplLong
+
+    theory
+    {
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='Fpl.Geometry.Euclidean', outline='theory', theory_name='uc_namespace_modified_with_diverse')
+    ├── AnyNode(outline='uses')
+    │   ├── AnyNode(id='Fpl.Commons.', interpretation=<classes.AuxInterpretation.AuxInterpretation>, modifier='*', outline='usedNamespace')
+    │   ├── AnyNode(id='Fpl', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='usedNamespace')
+    │   └── AnyNode(id='Fpl.Test.Long.Namespace', interpretation=<classes.AuxInterpretation.AuxInterpretation>, modifier='FplLong', outline='usedNamespace')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

@@ -1,0 +1,22 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: obj
+        {
+        }
+
+        class Nat: Zero
+        {
+        }
+
+        class Zero: obj
+        {
+        }
+
+    }
+}
+
+##############################
+
+FplIdentifierAlreadyDeclared:13:18: Identifier Zero already defined at (5,18)

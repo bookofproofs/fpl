@@ -1,0 +1,25 @@
+TestNamespace
+{
+    theory
+    {
+        axiom ZeroIsNat()
+        {
+            is(Zero,Nat)
+        }
+
+
+        axiom ZeroIsNat()
+        {
+            n: Nat
+            all n
+            (
+                NotEquals(Zero(), Succ(n))
+            )
+        }
+
+    }
+}
+
+##############################
+
+FplIdentifierAlreadyDeclared:11:23: Identifier ZeroIsNat already defined at (5,23)

@@ -35,3 +35,6 @@ class GeneralType(AuxInterpretation):
             else:
                 can_be_ignored = False
         self.set_interpretation(self.__objects)
+
+    def get_type(self):
+        return self.__objects['Type']

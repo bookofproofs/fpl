@@ -1,0 +1,41 @@
+TestNamespace
+{
+    inference
+    {
+        ModusPonens()
+        {
+            p,q: pred
+
+            premise:
+                and (p, impl (p,q) )
+            conclusion:
+                q
+        }
+
+        ModusTollens()
+        {
+            p,q: pred
+
+            premise:
+                and (not(q), impl(p,q) )
+            conclusion:
+                not (p)
+        }
+
+        ModusPonens()
+        {
+            p,q: pred
+
+            premise:
+                and (p, impl (p,q) )
+            conclusion:
+                q
+        }
+    }
+    theory
+    {
+    }
+}
+##############################
+
+FplIdentifierAlreadyDeclared:25:19: Identifier ModusPonens already defined at (5,19)

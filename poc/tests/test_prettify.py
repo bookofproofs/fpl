@@ -1,6 +1,6 @@
 import unittest
-from ..util.fplutil import Utils
-from ..fplinterpreter import FplInterpreter
+from util.fplutil import Utils
+from fplinterpreter import FplInterpreter
 
 """
 Test if a syntactically correct theory can be prettified and 
@@ -17,11 +17,16 @@ class PrettifyTestCase(unittest.TestCase):
     def setUpClass(cls):
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser("../../grammar/fpl_tatsu_format.ebnf")
+        cls.interpreter = FplInterpreter(cls.fpl_parser)
+        cls.interpreter_after_prettify = FplInterpreter(cls.fpl_parser)
 
     def interpret(self, source_path):
-        self.theory_source = self.util.get_file_content(source_path)
-        self.interpreter = FplInterpreter("test_theory", self.theory_source, self.fpl_parser)
-        self.interpreter_after_prettify = FplInterpreter("test_theory", self.interpreter.prettyfied(), self.fpl_parser)
+        theory_source = self.util.get_file_content(source_path)
+        self.interpreter.get_errors().clear()
+        self.interpreter_after_prettify.get_errors().clear()
+
+        self.interpreter.syntax_analysis("test_theory_name", theory_source)
+        self.interpreter_after_prettify.syntax_analysis("prettified_test_theory_name", self.interpreter.prettyfied())
         if self.interpreter_after_prettify.has_errors():
             self.interpreter_after_prettify.print_errors()
 

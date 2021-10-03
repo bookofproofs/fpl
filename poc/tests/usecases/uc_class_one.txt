@@ -1,0 +1,23 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: obj
+        {
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    │   └── AnyNode(id='Zero', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='class', type='obj')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

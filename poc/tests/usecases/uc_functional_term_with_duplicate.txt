@@ -1,0 +1,21 @@
+TestNamespace
+{
+    theory
+    {
+        func Succ(n: Nat) -> Nat
+        {
+        }
+
+        func Addend(a: Nat)->Nat
+        {
+        }
+
+        func Succ(a: Nat)->Nat
+        {
+        }
+    }
+}
+
+##############################
+
+FplIdentifierAlreadyDeclared:13:17: Identifier Succ already defined at (5,17)

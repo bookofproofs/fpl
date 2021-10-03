@@ -1,4 +1,4 @@
-# fpl Version 1.0.2
+# fpl Version 1.0.3
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -1339,7 +1339,7 @@
         ;
 
     Alias =
-        IW alias IW IdStartsWithCap
+        SW alias SW IdStartsWithCap
         ;
 
     alias =

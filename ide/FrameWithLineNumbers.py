@@ -193,7 +193,8 @@ class FrameWithLineNumbers(tk.Frame):
         self._parent_notebook.ide.window.update_idletasks()
         # parse and interpret the code
         code = self.get_text()
-        interpreter = fplinterpreter.FplInterpreter(self.title, code, self._parent_notebook.ide.fpl_parser)
+        interpreter = fplinterpreter.FplInterpreter(self._parent_notebook.ide.fpl_parser)
+        interpreter.syntax_analysis(self.title, code)
         # reconfigure all tags
         self.reconfigure_all_tags()
         # add new tags
