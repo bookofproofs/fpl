@@ -14,7 +14,7 @@ class AuxInterpretation:
 
     def __init__(self, ast_info: AuxAstInfo, errors: list):
         self._ast_info = ast_info
-        self._errors = errors
+        self._errors = errors  # a pointer to all the errors of the semantics, so we can add new errors to this list
 
     def rule_name(self):
         """ name of the corresponding grammar rule """
@@ -60,13 +60,16 @@ class AuxInterpretation:
     def get_ast_info(self):
         return self._ast_info
 
+    def all_errors(self):
+        return self._errors
+
     def clone(self, other):
         self._ast_info = other.get_ast_info()
         self._errors = other.get_errors()
 
     def __str__(self):
-        return self._ast_info.rule + ":" + str(self._ast_info.pos) + ":" + str(self._ast_info.col) + ":" + \
-               str(self._ast_info.line) + ":" + str(self._inter).replace("\n", "\\n")
+        return self._ast_info.rule + ":" + str(self._ast_info.pos) + ":(" + str(self._ast_info.line) + ":" + \
+               str(self._ast_info.col) + "):" + str(self._inter).replace("\n", "\\n")
 
     def to_tuple(self):
         return str(type(self).__name__), str(self._inter).replace("\n", "\\n"), self._ast_info.line, self._ast_info.col

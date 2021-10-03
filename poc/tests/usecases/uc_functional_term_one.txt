@@ -1,0 +1,23 @@
+TestNamespace
+{
+    theory
+    {
+        func Succ(n: Nat) -> Nat
+        {
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_functional_term_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    │   └── AnyNode(id='Succ', image='Nat', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='functionalTerm', overload_id=None)
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

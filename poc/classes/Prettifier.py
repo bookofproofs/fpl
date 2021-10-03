@@ -1,4 +1,5 @@
 from classes.AuxAstInfo import AuxAstInfo
+from classes.AuxContext import AuxContext
 import re
 import configparser
 import os
@@ -11,7 +12,7 @@ class Prettifier:
     _prettified_is_postprocessed = None
     _last_cst = None
     _indent = None
-    _context_stack = None  # used to distinguish different contexts while parsing and interpreting the same lexemes
+    _context = None
     config = None
 
     def __init__(self):
@@ -23,7 +24,7 @@ class Prettifier:
         self._prettified = ""
         self._prettified_is_postprocessed = False
         self._indent = 0
-        self._context_stack = []
+        self._context = AuxContext()
         self.config = configparser.RawConfigParser()
         path_to_config = os.path.realpath(os.path.join(os.path.dirname(__file__) + "../../../ide/config.ini"))
         self.config.read(path_to_config)
@@ -37,7 +38,7 @@ class Prettifier:
         if self._prettified.find("ProceedingResults(p: +") > -1:
             # print("")
             pass
-        #  print(self._context_stack, self._minified[-50:])
+        # print(self._context.get_context(), self._minified[-50:])
         if isinstance(ast_info.cst, str):
             if ast_info.rule == "Comment":
                 self._append_indented(ast_info.cst)
@@ -53,7 +54,7 @@ class Prettifier:
                 self._last_cst = ast_info.cst
             elif ast_info.rule == "Comma":
                 self._last_cst = ","
-                if self.is_parsing_context(["dolinebreaks", "paren"]):
+                if self._context.is_parsing_context(["dolinebreaks", "paren"]):
                     self._append_indented(",")
                 else:
                     self._append(", ")
@@ -62,7 +63,7 @@ class Prettifier:
                 # last word:
                 if self.__last_word() in ["con", "conclusion", "pre", "premise"]:
                     self._append_indented(": ", strip=True)
-                elif self.is_parsing_context(["case", "dolinebreaks", "paren", "aftercase"]):
+                elif self._context.is_parsing_context(["case", "dolinebreaks", "paren", "aftercase"]):
                     self._append(":")
                     self._increase_indent()  # increase indent after the case
                     self._append_indented("")
@@ -73,31 +74,31 @@ class Prettifier:
                 self._append(" := ")
             elif ast_info.rule == "else":
                 self._append("else")
-                if self.is_parsing_context(["case", "dolinebreaks", "paren"]):
+                if self._context.is_parsing_context(["case", "dolinebreaks", "paren"]):
                     # remember that we are after a case context
-                    self.push_context("aftercase")
+                    self._context.push_context("aftercase")
             elif ast_info.rule == "LeftBracket":
                 self._last_cst = "["
                 self._append("[")
-                self.push_context("nolinebreak")
+                self._context.push_context("nolinebreak")
             elif ast_info.rule == "LeftParen":
                 self._last_cst = "("
-                self.push_context("paren")
+                self._context.push_context("paren")
                 # line break if we are in the context of a starting compound predicate, ex., "and (...."
-                self._open_left_block("(", linebreak=self.is_parsing_context(["dolinebreaks", "paren"]))
+                self._open_left_block("(", linebreak=self._context.is_parsing_context(["dolinebreaks", "paren"]))
             elif ast_info.rule == "LeftBrace":
                 self._last_cst = "{"
                 self._open_left_block("{", linebreak=True)
             elif ast_info.rule == "RightBracket":
                 self._last_cst = "]"
                 self._append("]")
-                self.pop_context(["nolinebreak"])
+                self._context.pop_context(["nolinebreak"])
             elif ast_info.rule == "RightParen":
                 self._last_cst = ")"
                 # line break if we are in the context of a starting compound predicate, ex., "and (...."
-                self._close_right_block(")", linebreak=self.is_parsing_context(["dolinebreaks", "paren"]))
-                if self.is_parsing_context(["paren"]):
-                    self.pop_context(["paren"])
+                self._close_right_block(")", linebreak=self._context.is_parsing_context(["dolinebreaks", "paren"]))
+                if self._context.is_parsing_context(["paren"]):
+                    self._context.pop_context(["paren"])
                 else:
                     # missing closing paren detected
                     pass
@@ -124,20 +125,20 @@ class Prettifier:
                         one_line_predicates = self.config.get(Settings.section_codereform,
                                            Settings.option_codereform_1linecomppred)
                         if one_line_predicates == "False":
-                            self.push_context("dolinebreaks")
+                            self._context.push_context("dolinebreaks")
                     elif ast_info.cst in ["loop", "range"]:
                         self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
-                        self.push_context("dolinebreaks")
+                        self._context.push_context("dolinebreaks")
                     elif ast_info.cst == "assert":
                         self._append_indented(ast_info.cst)
                         self._increase_indent()  # increase indent after an assert keyword
                         self._append_indented("")
                     elif ast_info.cst == "case":
                         self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
-                        self.push_context("case")
-                        self.push_context("dolinebreaks")
+                        self._context.push_context("case")
+                        self._context.push_context("dolinebreaks")
                     elif ast_info.cst in ["assume", "ass"]:
-                        if "insideproof" in self._context_stack:
+                        if "insideproof" in self._context.get_context():
                             self._replace_long_by_short("ass", ast_info.cst, line_separator="", indent=False)
                         else:
                             self._replace_long_by_short("ass", ast_info.cst)
@@ -176,7 +177,7 @@ class Prettifier:
                         else:
                             self._replace_long_by_short("pred", ast_info.cst, line_separator="\n\n")
                     elif ast_info.cst in ["premise", "pre"]:
-                        if "insideproof" in self._context_stack:
+                        if "insideproof" in self._context.get_context():
                             self._replace_long_by_short("pre", ast_info.cst, line_separator="", indent=False)
                         else:
                             self._replace_long_by_short("pre", ast_info.cst)
@@ -186,7 +187,7 @@ class Prettifier:
                         self._replace_long_by_short("post", ast_info.cst, line_separator="\n\n")
                     elif ast_info.cst in ["proof", "prf"]:
                         self._replace_long_by_short("prf", ast_info.cst, line_separator="\n\n")
-                        self.push_context("insideproof")
+                        self._context.push_context("insideproof")
                     elif ast_info.cst in ["proposition", "prop"]:
                         self._replace_long_by_short("prop", ast_info.cst, line_separator="\n\n")
                     elif ast_info.cst in ["return", "ret"]:
@@ -216,20 +217,20 @@ class Prettifier:
             elif ast_info.rule in ["ConditionFollowedByResult", "DefaultResult"]:
                 self._decrease_indent()
                 self._append_indented("")
-                self.pop_context(["aftercase"])  # remove the after case flag again
+                self._context.pop_context(["aftercase"])  # remove the after case flag again
             elif ast_info.rule in ["StatementList"]:
-                if self.is_parsing_context(["case", "dolinebreaks", "paren"]):
+                if self._context.is_parsing_context(["case", "dolinebreaks", "paren"]):
                     self._decrease_indent()
                     self._append_indented("")
             elif ast_info.rule == "CaseStatement":
-                self.pop_context(["case", "dolinebreaks"])  # remove the "case", "dolinebreaks" flag from the context
+                self._context.pop_context(["case", "dolinebreaks"])  # remove the "case", "dolinebreaks" flag from the context
             elif ast_info.rule == "CompoundPredicate":
                 one_line_predicates = self.config.get(Settings.section_codereform,
                                                       Settings.option_codereform_1linecomppred)
                 if one_line_predicates == "False":
-                    self.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
+                    self._context.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
             elif ast_info.rule in ["RangeStatement", "LoopStatement"]:
-                self.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
+                self._context.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
             elif ast_info.rule == "ExtensionHeader":
                 self._increase_indent()
                 self._prettified = self._prettified[:-5] + ":ext\n" + "\t" * self._indent
@@ -237,13 +238,13 @@ class Prettifier:
                 self._decrease_indent()
                 self._prettified = self._prettified[:-6] + "\n" + "\t" * self._indent + ":end\n"
             elif ast_info.rule == "Predicate":
-                if self.is_parsing_context(["case", "dolinebreaks", "paren"]):
+                if self._context.is_parsing_context(["case", "dolinebreaks", "paren"]):
                     # remember that we are after a case context
-                    self.push_context("aftercase")
+                    self._context.push_context("aftercase")
             elif ast_info.rule == "ProofArgument":
                 self._append_indented("")
             elif ast_info.rule == "Proof":
-                self.pop_context(["insideproof"])
+                self._context.pop_context(["insideproof"])
             elif ast_info.rule in ["VariableSpecification", "Statement"]:
                 # line break after each VariableSpecification in the prettyfied version
                 self._prettified = self._prettified + "\n" + "\t" * self._indent
@@ -291,7 +292,7 @@ class Prettifier:
         Returns the current minified version of the FPL code
         :return: A minified version of the FPL code
         """
-        if len(self._context_stack) > 0:
+        if len(self._context.get_context()) > 0:
             # the _context stack has to be empty after the prettyfying process, otherwise, something is wrong
             raise AssertionError("Context stack not empty after minifying the code")
         return self._minified
@@ -372,49 +373,3 @@ class Prettifier:
             i += 1
         self._prettified = "\n".join(prettyfied_lines)
 
-    def is_parsing_context(self, pars: list):
-        """
-        Check if the current parsing context ends with some given flags
-        :param pars: list of keys
-        :return: True, iif the context's tail corresponds to the keys in their order
-        """
-        if len(self._context_stack) < len(pars):
-            return False
-        else:
-            is_context = True  # assume the context is there
-            pos = len(self._context_stack) - len(pars)
-            for x in pars:
-                is_context = is_context and (x == self._context_stack[pos])
-                if not is_context:
-                    break
-                pos += 1
-            return is_context
-
-    def push_context(self, key):
-        """
-        Pushes the parsing context on a stack
-        :param key: key of the context
-        :return: None
-        """
-        self._context_stack.append(key)
-
-    def pop_context(self, pars: list):
-        """
-        Pops the last context from the stack.
-        :param pars: a context (list) assumed to be at the tail of the stack. Raises an AssertionError if not
-        :return: None
-        """
-        if type(pars) is list:
-            if len(self._context_stack) >= len(pars):
-                if not self.is_parsing_context(pars):
-                    raise AssertionError(
-                        "Got context " + str(self._context_stack[-len(pars):]) + ", expected " + str(list(pars)))
-                else:
-                    self._context_stack = self._context_stack[:len(self._context_stack) - len(pars)]
-            else:
-                raise AssertionError("Got context " + str(self._context_stack) + ", expected " + str(pars))
-        else:
-            raise TypeError("Got context " + str(type(pars)) + ", expected " + str(type(list)))
-
-    def get_context(self):
-        return self._context_stack

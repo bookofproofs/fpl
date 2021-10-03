@@ -1,0 +1,42 @@
+TestNamespace
+{
+    inference
+    {
+        ModusPonens()
+        {
+            p,q: pred
+
+            premise:
+                and (p, impl (p,q) )
+            conclusion:
+                q
+        }
+
+        ModusTollens()
+        {
+            p,q: pred
+
+            premise:
+                and (not(q), impl(p,q) )
+            conclusion:
+                not (p)
+        }
+    }
+    theory
+    {
+    }
+}
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_inference_rules_two')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    │   ├── AnyNode(id='ModusPonens', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='inferenceRule')
+    │   └── AnyNode(id='ModusTollens', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='inferenceRule')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

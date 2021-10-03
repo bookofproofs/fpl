@@ -1,43 +1,59 @@
 import fplsemantics
 import fplerror
 import tatsu
+from anytree import AnyNode, RenderTree
+from classes.AuxOutlines import AuxOutlines
+from classes.SymbolTable import SymbolTable
 
 
 class FplInterpreter(object):
-    _version = "1.0.2"
+    _version = "1.1.0"
+    _errors = None
     _semantics = None
-    _theory_name = None
+    _parser = None
+    _symbol_table_root = None
 
-    def __init__(self, theory_name, fpl_source, parser):
-        self._theory_name = theory_name
-        self._semantics = fplsemantics.FPLSemantics()
+    def __init__(self, parser):
+        self._parser = parser
+        self._errors = []
+        self._symbol_table_root = AnyNode(outline=AuxOutlines.root)
+
+    def syntax_analysis(self, theory_name, fpl_source):
         try:
-            self._theory_name = theory_name
-            self._semantics = fplsemantics.FPLSemantics()
-            parser.parse(fpl_source, semantics=self._semantics, whitespace='')
+            self._semantics = fplsemantics.FPLSemantics(self._symbol_table_root, theory_name, self._errors)
+            self._parser.parse(fpl_source, semantics=self._semantics, whitespace='')
+            # self.print_semantics()
         except tatsu.exceptions.FailedParse as ex:
             self._semantics.errors.append(fplerror.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
-        # self.validate_statements()
+
+    def print_symbol_table(self):
+        print(RenderTree(self._symbol_table_root))
+
+    def symbol_table_to_str(self):
+        return str(RenderTree(self._symbol_table_root))
+
+    def symbol_table_clear(self):
+        self._symbol_table_root.children = []
+
+    def get_symbol_table_root(self):
+        return self._symbol_table_root
 
     def get_version(self):
         return self._version
 
     def has_errors(self):
-        return len(self._semantics.errors) > 0
-
-    def get_name(self):
-        return self._theory_name
+        return len(self._errors) > 0
 
     def print_errors(self):
-        if len(self._semantics.errors) > 0:
-            print(str(len(self._semantics.errors)), "errors found:")
-            for err in self._semantics.errors:
+        if len(self._errors) > 0:
+            print(str(len(self._errors)), "errors found:")
+            for err in self._errors:
                 print(err)
         else:
             print("Congratulations! No errors found")
 
     def get_errors(self):
-        return self._semantics.errors
+        return self._errors
 
     def minified(self):
         return self._semantics.get_minified()

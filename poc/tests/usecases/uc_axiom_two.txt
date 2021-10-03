@@ -1,0 +1,35 @@
+TestNamespace
+{
+    theory
+    {
+        axiom ZeroIsNat()
+        {
+            is(Zero,Nat)
+        }
+
+        axiom ZeroIsNotSuccessor()
+        {
+            n: Nat
+            all n
+            (
+                NotEquals(Zero(), Succ(n))
+            )
+        }
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_axiom_two')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    │   ├── AnyNode(id='ZeroIsNat', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='axiom')
+    │   └── AnyNode(id='ZeroIsNotSuccessor', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='axiom')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

@@ -1,19 +1,19 @@
 import unittest
-from poc.classes.Prettifier import Prettifier
+from poc.classes.AuxContext import AuxContext
 
 """
 Tests if the parsing context works properly.
 """
 
 
-class SemanticsTests(unittest.TestCase):
+class AuxContextTests(unittest.TestCase):
 
     # test parsing context
     def test_is_parsing_context(self):
         """
         Test if parsing context returns correct results
         """
-        sem = Prettifier()
+        sem = AuxContext()
         sem.push_context("t1")
         sem.push_context("t2")
         sem.push_context("t3")
@@ -22,6 +22,10 @@ class SemanticsTests(unittest.TestCase):
         self.assertTrue(sem.is_parsing_context(["t3", "t4"]))
         self.assertTrue(sem.is_parsing_context(["t2", "t3", "t4"]))
         self.assertTrue(sem.is_parsing_context(["t1", "t2", "t3", "t4"]))
+        self.assertFalse(sem.is_parsing_context(["t1"]))
+        self.assertFalse(sem.is_parsing_context(["t2"]))
+        self.assertFalse(sem.is_parsing_context(["t3"]))
+        self.assertFalse(sem.is_parsing_context(["t2", "t3"]))
         self.assertFalse(sem.is_parsing_context(["t0", "t1", "t2", "t3", "t4"]))
         self.assertFalse(sem.is_parsing_context(["t0", "t2", "t3", "t4"]))
         self.assertFalse(sem.is_parsing_context(["t1", "t2", "t3", "t5"]))
@@ -32,7 +36,7 @@ class SemanticsTests(unittest.TestCase):
         """
         Test if parsing context returns correct results
         """
-        sem = Prettifier()
+        sem = AuxContext()
         sem.push_context("t1")
         sem.push_context("t2")
         sem.push_context("t3")

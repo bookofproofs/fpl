@@ -29,7 +29,7 @@ class VariableList(AuxInterpretation):
 
     def add(self, var_name):
         if var_name in self.__set:
-            self._errors.append(fplerror.FplVariableDuplicateInVariableList(self, var_name))
+            self.all_errors().append(fplerror.FplVariableDuplicateInVariableList(self, var_name))
         else:
             self.__set.add(var_name)
 

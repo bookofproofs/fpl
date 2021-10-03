@@ -1,0 +1,28 @@
+TestNamespace
+{
+    theory
+    {
+        pred NotEquals(x,y: tpl)
+        {
+            not
+            (
+                Equals(x,y)
+            )
+        }
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_predicate_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    │   └── AnyNode(id='NotEquals', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='predicate', overload_id=None)
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

@@ -1,10 +1,11 @@
 import unittest
-from ..classes.AuxAggrRulesText import aggr_rules_text
-from ..fplsemantics import FPLSemantics
+from classes.AuxStringConcatenationRules import aggr_rules_text
+from fplsemantics import FPLSemantics
+from anytree import AnyNode
 
 """
 Test if the interpretation switcher in semantics selects the correct interpretation function.
-For instance, all functions 'inter_equals_proceeding_ignored_rules' in switcher must be in 
+For instance, all functions 'concatenation_of_proceeding_string_rules' in switcher must be in 
 IgnoreRules.ignorable_rules and vice versa. Otherwise the interpreter might not work correctly.
 """
 
@@ -12,16 +13,47 @@ IgnoreRules.ignorable_rules and vice versa. Otherwise the interpreter might not 
 class ConsistentSwitcher(unittest.TestCase):
 
     def test_switcher_selects_correct_function(self):
-        self.semantics = FPLSemantics()
+        root = AnyNode()
+        self.semantics = FPLSemantics(root, "test", [])
         for sw in self.semantics.switcher:
             rule = self.semantics.switcher.get(sw)
-            if rule.__name__ == "inter_equals_proceeding_ignored_rules":
+            if rule.__name__ == "concatenation_of_proceeding_string_rules":
                 self.assertIn(sw, aggr_rules_text)
 
-    def test_all_ignorable_rules_have_in_switcher_correct_function(self):
-        self.semantics = FPLSemantics()
-        for sw in aggr_rules_text:
-            rule = self.semantics.switcher.get(sw, lambda: "Invalid rule")
-            if rule.__name__ == "Invalid rule":
-                raise NameError("Invalid rule " + sw + " in ignorable_rules")
-            self.assertEqual(sw + ":" + "inter_equals_proceeding_ignored_rules", sw + ":" + rule.__name__)
+    def test_all_string_concat_rules_have_in_switcher_correct_function(self):
+        root = AnyNode()
+        self.semantics = FPLSemantics(root, "test", [])
+        for key in aggr_rules_text:
+            rule_delegate = self.semantics.switcher.get(key, lambda: "Dummy")
+            if rule_delegate.__name__ == "Dummy":
+                raise NameError("Unrecognized rule " + key + " in aggr_rules_text")
+            # some_additional_action contains those rules in aggr_rules_text that need some additional action
+            # (like for instance changing the parsing context for the interpretations being still ahead).
+            # The switcher will call other delegates instead of 'concatenation_of_proceeding_string_rules'
+            # in which 'concatenation_of_proceeding_string_rules' is usually called as a first step,
+            # followed by some additional action.
+            # Therefore, some_other_action extends this test by some special cases, while
+            # key + ":" + "concatenation_of_proceeding_string_rules" is the asserted default case.
+            some_additional_action = \
+                ["NamespaceIdentifier:handle_namespace_identifier",
+                 "PredicateIdentifier:handle_predicate_identifier"
+                 ]
+            self.assertIn(key + ":" + rule_delegate.__name__,
+                          some_additional_action +
+                          [key + ":" + "concatenation_of_proceeding_string_rules"])
+
+    def test_all_string_concat_aggregated_rules_have_in_switcher_correct_function(self):
+        root = AnyNode()
+        self.semantics = FPLSemantics(root, "test", [])
+        for key in aggr_rules_text:
+            rule = self.semantics.switcher.get(key, lambda: "Dummy")
+            if rule.__name__ == "Dummy":
+                raise NameError("Unrecognized rule " + key + " in ignorable_rules")
+            for aggregated_rule in aggr_rules_text[key]:
+                rule_delegate = self.semantics.switcher.get(aggregated_rule, lambda: "Dummy")
+                # the to-be aggregated production must have a string_interpretation or an aggregation
+                # of such productions
+                self.assertIn(aggregated_rule + ":" + rule_delegate.__name__,
+                              [aggregated_rule + ":" + "string_interpretation",
+                               aggregated_rule + ":" + "concatenation_of_proceeding_string_rules"])
+

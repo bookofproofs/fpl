@@ -1,0 +1,24 @@
+TestNamespace
+{
+    theory
+    {
+        axiom ZeroIsNat()
+        {
+            is(Zero,Nat)
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_axiom_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    │   └── AnyNode(id='ZeroIsNat', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='axiom')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')
