@@ -1,0 +1,57 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myCarrierSet: tplSet
+            myOps: +Composition(*tplSetElem)
+
+            AlgebraicStructure(x: tplSet, ops: +Composition(*tplSetElem))
+            {
+
+                a: obj
+                myOps := ops
+                myCarrierSet := x
+
+                // Assert that all types used in the declaration of AlgebraicStructure
+                // can be treated like they were sets, even if they are not derived from the type "Set" in their original
+                // definition! This, means that the In predicate has a non-transitive model
+                // this is comparable to implementing an interface (or comparable to multiple inheritance).
+                // The interpreter only asserts the types tplSet, and tplSetElement to be sets
+                assert
+                    and
+                    (
+                        is(tplSet,Set),
+                        is(tplSetElem,Set)
+                    )
+
+                assert
+                    all a
+                    (
+                        impl ( is(a,tplSetElem), In(a,myCarrierSet) )
+                    )
+            }
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_constructor')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    │   └── AnyNode(id='AlgebraicStructure', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='class', type='obj')
+    │       ├── AnyNode(outline='variables')
+    │       ├── AnyNode(outline='constructors')
+    │       │   └── AnyNode(id='AlgebraicStructure', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='constructor')
+    │       │       └── AnyNode(outline='variables')
+    │       └── AnyNode(outline='properties')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

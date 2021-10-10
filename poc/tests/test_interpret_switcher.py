@@ -1,6 +1,6 @@
 import unittest
 from classes.AuxStringConcatenationRules import aggr_rules_text
-from fplsemantics import FPLSemantics
+from fplsourceanalyser import FPLSourceAnalyser
 from anytree import AnyNode
 
 """
@@ -14,7 +14,7 @@ class ConsistentSwitcher(unittest.TestCase):
 
     def test_switcher_selects_correct_function(self):
         root = AnyNode()
-        self.semantics = FPLSemantics(root, "test", [])
+        self.semantics = FPLSourceAnalyser(root, "test", [])
         for sw in self.semantics.switcher:
             rule = self.semantics.switcher.get(sw)
             if rule.__name__ == "concatenation_of_proceeding_string_rules":
@@ -22,7 +22,7 @@ class ConsistentSwitcher(unittest.TestCase):
 
     def test_all_string_concat_rules_have_in_switcher_correct_function(self):
         root = AnyNode()
-        self.semantics = FPLSemantics(root, "test", [])
+        self.semantics = FPLSourceAnalyser(root, "test", [])
         for key in aggr_rules_text:
             rule_delegate = self.semantics.switcher.get(key, lambda: "Dummy")
             if rule_delegate.__name__ == "Dummy":
@@ -35,8 +35,8 @@ class ConsistentSwitcher(unittest.TestCase):
             # Therefore, some_other_action extends this test by some special cases, while
             # key + ":" + "concatenation_of_proceeding_string_rules" is the asserted default case.
             some_additional_action = \
-                ["NamespaceIdentifier:handle_namespace_identifier",
-                 "PredicateIdentifier:handle_predicate_identifier"
+                ["NamespaceIdentifier:namespace_identifier_dispatcher",
+                 "PredicateIdentifier:predicate_identifier_dispatcher"
                  ]
             self.assertIn(key + ":" + rule_delegate.__name__,
                           some_additional_action +
@@ -44,7 +44,7 @@ class ConsistentSwitcher(unittest.TestCase):
 
     def test_all_string_concat_aggregated_rules_have_in_switcher_correct_function(self):
         root = AnyNode()
-        self.semantics = FPLSemantics(root, "test", [])
+        self.semantics = FPLSourceAnalyser(root, "test", [])
         for key in aggr_rules_text:
             rule = self.semantics.switcher.get(key, lambda: "Dummy")
             if rule.__name__ == "Dummy":

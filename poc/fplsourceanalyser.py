@@ -3,15 +3,17 @@ from classes.AuxStringConcatenationRules import AuxStringConcatenationRules
 from classes.AuxInterpretation import AuxInterpretation
 from classes.VariableList import VariableList
 from classes.GeneralType import GeneralType
+from classes.Type import Type
 from classes.AuxAstInfo import AuxAstInfo
 from classes.Prettifier import Prettifier
 from classes.SymbolTable import SymbolTable
 from classes.AuxContext import AuxContext
 from classes.AuxOutlines import AuxOutlines
 from anytree import AnyNode
+import fplerror
 
 
-class FPLSemantics(object):
+class FPLSourceAnalyser(object):
     errors = None
     warnings = None
     parse_list = None
@@ -37,8 +39,8 @@ class FPLSemantics(object):
             "Alias": self.ignore_production,
             "alias": self.ignore_production,
             "AliasedId": self.concatenation_of_proceeding_string_rules,
-            "All": self.default_interpretation,  # todo
-            "all": self.default_interpretation,  # todo
+            "All": self.all_quantor_stop,
+            "all": self.all_quantor_start,
             "Ampersand": self.default_interpretation,  # todo
             "AmpersandVariable": self.default_interpretation,  # todo
             "and": self.default_interpretation,  # todo
@@ -56,11 +58,11 @@ class FPLSemantics(object):
             "AssumeHeader": self.default_interpretation,  # todo
             "At": self.string_interpretation,
             "AtList": self.concatenation_of_proceeding_string_rules,
-            "ax": self.default_interpretation,  # todo
-            "Axiom": self.default_interpretation,  # todo
+            "ax": self.ignore_production,
+            "Axiom": self.axiom_stop,
             "axiom": self.ignore_production,
             "AxiomBlock": self.default_interpretation,  # todo
-            "AxiomHeader": self.start_context_signature_axiom,
+            "AxiomHeader": self.axiom_start,
             "BuildingBlock": self.ignore_production,
             "BuildingBlockList": self.ignore_production,
             "CallModifier": self.concatenation_of_proceeding_string_rules,
@@ -68,8 +70,8 @@ class FPLSemantics(object):
             "CaseStatement": self.default_interpretation,  # todo
             "cl": self.ignore_production,
             "class": self.ignore_production,
-            "ClassHeader": self.start_context_class_declaration,
-            "ClassInstance": self.default_interpretation,  # todo
+            "ClassHeader": self.class_start,
+            "ClassInstance": self.class_instance_declaration_stop,
             "ClosedOrOpenRange": self.default_interpretation,  # todo
             "Colon": self.default_interpretation,  # todo
             "ColonEqual": self.default_interpretation,  # todo
@@ -82,23 +84,23 @@ class FPLSemantics(object):
             "ConclusionHeader": self.default_interpretation,  # todo
             "ConditionFollowedByResult": self.default_interpretation,  # todo
             "ConditionFollowedByResultList": self.default_interpretation,  # todo
-            "conj": self.default_interpretation,  # todo
-            "conjecture": self.default_interpretation,  # todo
+            "conj": self.ignore_production,
+            "conjecture": self.ignore_production,
             "Conjunction": self.default_interpretation,  # todo
-            "Constructor": self.default_interpretation,  # todo
+            "Constructor": self.constructor_stop,
             "Coord": self.default_interpretation,  # todo
             "CoordInSignature": self.default_interpretation,  # todo
             "CoordList": self.default_interpretation,  # todo
-            "cor": self.default_interpretation,  # todo
-            "corollary": self.default_interpretation,  # todo
+            "cor": self.ignore_production,
+            "corollary": self.ignore_production,
             "CW": self.ignore_production,
             "DefaultResult": self.default_interpretation,  # todo
             "Definition": self.ignore_production,
-            "DefinitionClass": self.default_interpretation,  # todo
+            "DefinitionClass": self.class_stop,
             "DefinitionContent": self.default_interpretation,  # todo
             "DefinitionContentList": self.default_interpretation,  # todo
-            "DefinitionFunctionalTerm": self.default_interpretation,  # todo
-            "DefinitionPredicate": self.default_interpretation,  # todo
+            "DefinitionFunctionalTerm": self.functional_term_stop,
+            "DefinitionPredicate": self.predicate_declaration_stop,
             "DefinitionProperty": self.default_interpretation,  # todo
             "DerivedPredicate": self.default_interpretation,  # todo
             "Digit": self.string_interpretation,
@@ -115,10 +117,10 @@ class FPLSemantics(object):
             "Entity": self.default_interpretation,  # todo
             "EntityWithCoord": self.default_interpretation,  # todo
             "Equivalence": self.default_interpretation,  # todo
-            "ex": self.default_interpretation,  # todo
+            "ex": self.ex_quantor_start,
             "ExclamationMark": self.string_interpretation,
             "ExclusiveOr": self.default_interpretation,  # todo
-            "Exists": self.default_interpretation,  # todo
+            "Exists": self.ex_quantor_stop,
             "ExistsHeader": self.default_interpretation,  # todo
             "ExistsTimesN": self.default_interpretation,  # todo
             "ext": self.string_interpretation,
@@ -131,10 +133,10 @@ class FPLSemantics(object):
             "func": self.ignore_production,
             "function": self.ignore_production,
             "FunctionalTermDefinitionBlock": self.default_interpretation,  # todo
-            "FunctionalTermHeader": self.start_context_functional_term_declaration,
-            "FunctionalTermInstance": self.default_interpretation,  # todo
+            "FunctionalTermHeader": self.functional_term_start,
+            "FunctionalTermInstance": self.functional_term_stop,
             "FunctionalTermSignature": self.default_interpretation,  # todo
-            "GeneralType": self.general_type_interpretation,
+            "GeneralType": self.general_type_dispatcher,
             "Identifier": self.default_interpretation,  # todo
             "IdStartsWithCap": self.string_interpretation,
             "IdStartsWithSmallCase": self.string_interpretation,
@@ -147,20 +149,20 @@ class FPLSemantics(object):
             "IndexValue": self.default_interpretation,  # todo
             "inf": self.ignore_production,
             "inference": self.ignore_production,
-            "InferenceHeader": self.start_context_inference,
+            "InferenceHeader": self.inference_block_start,
             "InstanceBlock": self.default_interpretation,  # todo
-            "is": self.default_interpretation,  # todo
-            "IsOperator": self.default_interpretation,  # todo
+            "is": self.is_operator_start,
+            "IsOperator": self.is_operator_stop,
             "IW": self.ignore_production,
             "Justification": self.default_interpretation,  # todo
             "KeysOfVariadicVariable": self.default_interpretation,  # todo
             "LanguageCode": self.default_interpretation,  # todo
             "LeftBound": self.concatenation_of_proceeding_string_rules,
-            "LeftBrace": self.start_block,
+            "LeftBrace": self.block_start,
             "LeftBracket": self.string_interpretation,
-            "LeftParen": self.default_interpretation,  # todo
-            "lem": self.default_interpretation,  # todo
-            "lemma": self.default_interpretation,  # todo
+            "LeftParen": self.paren_start,
+            "lem": self.ignore_production,
+            "lemma": self.ignore_production,
             "loc": self.default_interpretation,  # todo
             "Localization": self.default_interpretation,  # todo
             "localization": self.default_interpretation,  # todo
@@ -173,11 +175,11 @@ class FPLSemantics(object):
             "LoopStatement": self.default_interpretation,  # todo
             "mand": self.default_interpretation,  # todo
             "mandatory": self.default_interpretation,  # todo
-            "Mapping": self.handle_mapping,
-            "NamedVariableDeclaration": self.default_interpretation,  # todo
+            "Mapping": self.mapping_stop,
+            "NamedVariableDeclaration": self.named_variable_declaration_stop,
             "Namespace": self.ignore_production,
             "NamespaceBlock": self.ignore_production,
-            "NamespaceIdentifier": self.handle_namespace_identifier,
+            "NamespaceIdentifier": self.namespace_identifier_dispatcher,
             "NamespaceModifier": self.handle_namespace_modifier,
             "Negation": self.default_interpretation,  # todo
             "not": self.default_interpretation,  # todo
@@ -192,15 +194,15 @@ class FPLSemantics(object):
             "ParamTuple": self.default_interpretation,  # todo
             "ParenthesisedPredicate": self.default_interpretation,  # todo
             "Plus": self.string_interpretation,
-            "post": self.default_interpretation,  # todo
+            "post": self.ignore_production,
             "postulate": self.ignore_production,
             "pre": self.default_interpretation,  # todo
             "pred": self.ignore_production,
             "predicate": self.ignore_production,
             "Predicate": self.default_interpretation,  # todo
             "PredicateDefinitionBlock": self.default_interpretation,  # todo
-            "PredicateHeader": self.handle_predicate_header,
-            "PredicateIdentifier": self.handle_predicate_identifier,
+            "PredicateHeader": self.predicate_header_dispatcher,
+            "PredicateIdentifier": self.predicate_identifier_dispatcher,
             "PredicateList": self.default_interpretation,  # todo
             "PredicateWithArguments": self.default_interpretation,  # todo
             "premise": self.default_interpretation,  # todo
@@ -217,11 +219,11 @@ class FPLSemantics(object):
             "ProofBlock": self.default_interpretation,  # todo
             "ProofHeadHeader": self.default_interpretation,  # todo
             "ProofIdentifier": self.default_interpretation,  # todo
-            "prop": self.default_interpretation,  # todo
-            "Property": self.default_interpretation,  # todo
-            "PropertyHeader": self.default_interpretation,  # todo
+            "prop": self.ignore_production,
+            "Property": self.property_stop,
+            "PropertyHeader": self.property_start,
             "PropertyList": self.default_interpretation,  # todo
-            "proposition": self.default_interpretation,  # todo
+            "proposition": self.ignore_production,
             "py": self.default_interpretation,  # todo
             "PythonDelegate": self.default_interpretation,  # todo
             "PythonIdentifier": self.default_interpretation,  # todo
@@ -242,15 +244,15 @@ class FPLSemantics(object):
             "revoke": self.default_interpretation,  # todo
             "RevokeHeader": self.default_interpretation,  # todo
             "RightBound": self.concatenation_of_proceeding_string_rules,
-            "RightBrace": self.stop_block,
+            "RightBrace": self.block_stop,
             "RightBracket": self.string_interpretation,
-            "RightParen": self.default_interpretation,  # todo
-            "RuleOfInference": self.ignore_production,
-            "RuleOfInferenceList": self.default_interpretation,  # todo
-            "RulesOfInferenceBlock": self.ignore_production,
+            "RightParen": self.paren_stop,
+            "RuleOfInference": self.inference_stop,
+            "RuleOfInferenceList": self.ignore_production,
+            "RulesOfInferenceBlock": self.inference_block_stop,
             "self": self.default_interpretation,  # todo
             "SemiColon": self.default_interpretation,  # todo
-            "Signature": self.default_interpretation,  # todo
+            "Signature": self.signature_stop,
             "Slash": self.default_interpretation,  # todo
             "Star": self.string_interpretation,
             "Statement": self.default_interpretation,  # todo
@@ -259,13 +261,13 @@ class FPLSemantics(object):
             "template": self.default_interpretation,  # todo
             "TemplateHeader": self.default_interpretation,  # todo
             "th": self.default_interpretation,  # todo
-            "theorem": self.default_interpretation,  # todo
-            "TheoremLikeStatementOrConjecture": self.default_interpretation,  # todo
-            "TheoremLikeStatementOrConjectureHeader": self.default_interpretation,  # todo
+            "theorem": self.ignore_production,
+            "TheoremLikeStatementOrConjecture": self.theorem_like_statement_stop,
+            "TheoremLikeStatementOrConjectureHeader": self.theorem_like_statement_start,
             "theory": self.ignore_production,
-            "TheoryBlock": self.ignore_production,
-            "TheoryHeader": self.start_context_theory,
-            "thm": self.default_interpretation,  # todo
+            "TheoryBlock": self.theory_stop,
+            "TheoryHeader": self.theory_start,
+            "thm": self.ignore_production,
             "Tilde": self.default_interpretation,  # todo
             "To": self.default_interpretation,  # todo
             "tpl": self.default_interpretation,  # todo
@@ -274,14 +276,14 @@ class FPLSemantics(object):
             "trivial": self.default_interpretation,  # todo
             "true": self.default_interpretation,  # todo
             "TupleOfTypes": self.default_interpretation,  # todo
-            "Type": self.default_interpretation,  # todo
+            "Type": self.handle_type,
             "TypeOrTupleOfTypes": self.default_interpretation,  # todo
             "TypeWithCoord": self.default_interpretation,  # todo
             "undef": self.default_interpretation,  # todo
             "undefined": self.default_interpretation,  # todo
             "UndefinedHeader": self.default_interpretation,  # todo
-            "uses": self.start_context_uses,
-            "UsesClause": self.stop_context_uses,
+            "uses": self.uses_start,
+            "UsesClause": self.uses_stop,
             "Variable": self.concatenation_of_proceeding_string_rules,
             "VariableDeclaration": self.default_interpretation,  # todo
             "VariableDeclarationList": self.default_interpretation,  # todo
@@ -342,7 +344,12 @@ class FPLSemantics(object):
         # minify
         self._minify(ast_info)
         parsing_info = AuxInterpretation(ast_info, self.errors)
-        interpretation = self.interpret_switcher(parsing_info)
+        interpretation = None
+        try:
+            interpretation = self.interpret_switcher(parsing_info)
+        except AssertionError as err:
+            self.errors.append(
+                fplerror.FplInterpreterMessage(str(err), parsing_info.rule_line(), parsing_info.rule_col()))
         if interpretation is not None:
             # append all interpretations that returned something else than None
             self.parse_list.append(interpretation)
@@ -385,7 +392,7 @@ class FPLSemantics(object):
             raise AssertionError("String interpretation expected, received " + str(cst))
         return parsing_info
 
-    def handle_namespace_identifier(self, parsing_info: AuxInterpretation):
+    def namespace_identifier_dispatcher(self, parsing_info: AuxInterpretation):
         parsing_info = self.concatenation_of_proceeding_string_rules(parsing_info)
         # NamespaceIdentifer can occur in the following contexts:
         if self._context.is_parsing_context([AuxOutlines.root]):
@@ -401,126 +408,260 @@ class FPLSemantics(object):
         else:
             if self._debug():
                 print(
-                    "########### Unhandled context in handle_predicate_identifier " + str(
+                    "########### Unhandled context in predicate_identifier_dispatcher " + str(
                         self._context.get_context()) + " " + str(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def handle_predicate_identifier(self, parsing_info: AuxInterpretation):
+    def predicate_identifier_dispatcher(self, parsing_info: AuxInterpretation):
         parsing_info = self.concatenation_of_proceeding_string_rules(parsing_info)
         # PredicateIdentifier can occur in following different  contexts:
         if self._context.is_parsing_context([AuxOutlines.inferenceRules, AuxOutlines.block]):
             # as a name of an inference rule
             SymbolTable.add_inference_rule_to_theory(self._theory_node, parsing_info)
-            self._context.push_context(AuxOutlines.inferenceRule, self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.theory, AuxOutlines.block, AuxOutlines.axiom]):
+            return self.inference_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.axiom, AuxOutlines.signature]):
             # as a name of an axiom that is global
             SymbolTable.add_axiom_to_theory(self._theory_node, parsing_info)
         elif self._context.is_parsing_context([AuxOutlines.classDeclaration]):
-            # as a name of a class definition
-            # we put the class name on the working stack because we have yet to update it with its type
-            # (see handle_general_type)
+            # as a name of a class instance definition
+            # we put the class instance name on the working stack because we have yet to update it with its type
+            # (see general_type_dispatcher)
             self._working_stack.append(SymbolTable.add_class_to_theory(self._theory_node, parsing_info))
             self._context.push_context(AuxOutlines.classType, self.get_debug_parsing_info(parsing_info))
         elif self._context.is_parsing_context([AuxOutlines.classType]):
-            # as a name of a class type, do nothing since handle_general_type handles this
+            # as a name of a class type, do nothing since general_type_dispatcher handles this
             pass
-        elif self._context.is_parsing_context([AuxOutlines.theory, AuxOutlines.block, AuxOutlines.predicate]):
+        elif self._context.is_parsing_context([AuxOutlines.mandatoryProperty]) or \
+                self._context.is_parsing_context([AuxOutlines.optionalProperty]):
+            # as the type of a class instance definition
+            # we put the type name on the working stack so we can get it back
+            # when the name of the class instance definition will be parsed next in the context
+            # [AuxOutlines.mandatoryProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature] or
+            # [AuxOutlines.optionalProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature] or
+            self._working_stack.append(parsing_info.get_interpretation())
+            return self.class_instance_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.theoremLikeStmtThm, AuxOutlines.signature]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtLem, AuxOutlines.signature]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtProp, AuxOutlines.signature]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtCor, AuxOutlines.signature]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtConj, AuxOutlines.signature]):
+            # as a name of a predicate definition that is global
+            SymbolTable.add_theorem_like_stmt(self._theory_node, parsing_info, self._context.get_context()[-2])
+        elif self._context.is_parsing_context([AuxOutlines.predicateDeclaration, AuxOutlines.signature]):
             # as a name of a predicate definition that is global
             SymbolTable.add_predicate_to_theory(self._theory_node, parsing_info)
-        elif self._context.is_parsing_context([AuxOutlines.theory, AuxOutlines.block, AuxOutlines.functionalTerm]):
+        elif self._context.is_parsing_context(
+                [AuxOutlines.mandatoryProperty, AuxOutlines.functionalTerm, AuxOutlines.signature]) or \
+                self._context.is_parsing_context(
+                    [AuxOutlines.optionalProperty, AuxOutlines.functionalTerm, AuxOutlines.signature]):
+            # as a name of a functional term property
+            # we put the functional term name on the working stack because we have yet to update
+            # it with its image (see general_type_dispatcher)
+            parent_node = self._working_stack[-1]
+            is_mandatory = (self._context.get_context()[-3] == AuxOutlines.mandatoryProperty)
+            self._working_stack.append(
+                SymbolTable.add_property_to_node(parent_node, parsing_info, is_mandatory,
+                                                 self._context.get_context()[-2]))
+        elif self._context.is_parsing_context(
+                [AuxOutlines.mandatoryProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature]) or \
+                self._context.is_parsing_context(
+                    [AuxOutlines.optionalProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature]):
+            # as a name of a class instance property
+            # we put the class instance name on the working stack because we have yet to update
+            # it with its image (see general_type_dispatcher)
+            property_type = self._working_stack.pop()
+            parent_node = self._working_stack[-1]
+            is_mandatory = (self._context.get_context()[-3] == AuxOutlines.mandatoryProperty)
+            self._working_stack.append(
+                SymbolTable.add_property_to_node(parent_node, parsing_info, is_mandatory, property_type))
+        elif self._context.is_parsing_context([AuxOutlines.functionalTerm, AuxOutlines.signature]):
             # as a name of a functional term definition that is global
             # we put the functional term name on the working stack because we have yet to update
-            # it with its image (see handle_general_type)
+            # it with its image (see general_type_dispatcher)
             self._working_stack.append(SymbolTable.add_functional_term_to_theory(self._theory_node, parsing_info))
-            self._context.push_context(AuxOutlines.functionalTermImage, self.get_debug_parsing_info(parsing_info))
+        elif self._context.is_parsing_context([AuxOutlines.classDeclaration, AuxOutlines.block]):
+            # as the name of a Constructor
+            class_node = self._working_stack[-1]
+            SymbolTable.add_constructor_to_class(class_node, parsing_info)
+            return self.constructor_start(parsing_info)
         else:
             if self._debug():
                 print(
-                    "########### Unhandled context in handle_predicate_identifier " + str(
+                    "########### Unhandled context in predicate_identifier_dispatcher " + str(
                         self._context.get_context()) + " " + str(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def start_context_uses(self, parsing_info: AuxInterpretation):
+    def named_variable_declaration_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.varDeclaration), self.get_debug_parsing_info(parsing_info)
+        return parsing_info
+
+    def named_variable_declaration_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.varDeclaration], self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def uses_start(self, parsing_info: AuxInterpretation):
         self._context.push_context(AuxOutlines.uses, self.get_debug_parsing_info(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def stop_context_uses(self, parsing_info: AuxInterpretation):
+    def uses_stop(self, parsing_info: AuxInterpretation):
         self._context.pop_context([AuxOutlines.uses], self.get_debug_parsing_info(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def start_context_inference(self, parsing_info: AuxInterpretation):
+    def inference_block_start(self, parsing_info: AuxInterpretation):
         self._context.push_context(AuxOutlines.inferenceRules, self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def inference_block_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.inferenceRules], self.get_debug_parsing_info(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def start_context_theory(self, parsing_info: AuxInterpretation):
+    def inference_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.inferenceRule, self.get_debug_parsing_info(parsing_info))
+        return self.signature_start(parsing_info)
+
+    def inference_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.inferenceRule], self.get_debug_parsing_info(parsing_info))
+        return None  # do not append to parse_list, we are done with this
+
+    def theory_start(self, parsing_info: AuxInterpretation):
         self._context.push_context(AuxOutlines.theory, self.get_debug_parsing_info(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def start_context_signature_axiom(self, parsing_info: AuxInterpretation):
+    def theory_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.theory], self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def axiom_start(self, parsing_info: AuxInterpretation):
         self._context.push_context(AuxOutlines.axiom, self.get_debug_parsing_info(parsing_info))
+        return self.signature_start(parsing_info)
+
+    def axiom_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.axiom], self.get_debug_parsing_info(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def handle_predicate_header(self, parsing_info: AuxInterpretation):
+    def theorem_like_statement_start(self, parsing_info: AuxInterpretation):
+        if parsing_info.get_cst() == 'thm' or parsing_info.get_cst() == 'theorem':
+            self._context.push_context(AuxOutlines.theoremLikeStmtThm, self.get_debug_parsing_info(parsing_info))
+        elif parsing_info.get_cst() == 'prop' or parsing_info.get_cst() == 'proposition':
+            self._context.push_context(AuxOutlines.theoremLikeStmtProp, self.get_debug_parsing_info(parsing_info))
+        elif parsing_info.get_cst() == 'lem' or parsing_info.get_cst() == 'lemma':
+            self._context.push_context(AuxOutlines.theoremLikeStmtLem, self.get_debug_parsing_info(parsing_info))
+        elif parsing_info.get_cst() == 'cor' or parsing_info.get_cst() == 'corollary':
+            self._context.push_context(AuxOutlines.theoremLikeStmtCor, self.get_debug_parsing_info(parsing_info))
+        elif parsing_info.get_cst() == 'conj' or parsing_info.get_cst() == 'conjecture':
+            self._context.push_context(AuxOutlines.theoremLikeStmtConj, self.get_debug_parsing_info(parsing_info))
+        else:
+            raise AssertionError("Unexpected keyword in theorem_like_statement_start " + parsing_info.get_cst())
+        return self.signature_start(parsing_info)
+
+    def theorem_like_statement_stop(self, parsing_info: AuxInterpretation):
+        if self._context.is_parsing_context([AuxOutlines.theoremLikeStmtThm]):
+            self._context.pop_context([AuxOutlines.theoremLikeStmtThm], self.get_debug_parsing_info(parsing_info))
+        elif self._context.is_parsing_context([AuxOutlines.theoremLikeStmtProp]):
+            self._context.pop_context([AuxOutlines.theoremLikeStmtProp], self.get_debug_parsing_info(parsing_info))
+        elif self._context.is_parsing_context([AuxOutlines.theoremLikeStmtLem]):
+            self._context.pop_context([AuxOutlines.theoremLikeStmtLem], self.get_debug_parsing_info(parsing_info))
+        elif self._context.is_parsing_context([AuxOutlines.theoremLikeStmtCor]):
+            self._context.pop_context([AuxOutlines.theoremLikeStmtCor], self.get_debug_parsing_info(parsing_info))
+        elif self._context.is_parsing_context([AuxOutlines.theoremLikeStmtConj]):
+            self._context.pop_context([AuxOutlines.theoremLikeStmtConj], self.get_debug_parsing_info(parsing_info))
+        else:
+            raise AssertionError("Unexpected context in theorem_like_statement_stop " + parsing_info.get_cst())
+        return None  # do not append to parse_list, we are done with this
+
+    def property_start(self, parsing_info: AuxInterpretation):
+        if parsing_info.get_cst() == 'opt' or parsing_info.get_cst() == 'optional':
+            self._context.push_context(AuxOutlines.optionalProperty, self.get_debug_parsing_info(parsing_info))
+        elif parsing_info.get_cst() == 'mand' or parsing_info.get_cst() == 'mandatory':
+            self._context.push_context(AuxOutlines.mandatoryProperty, self.get_debug_parsing_info(parsing_info))
+        else:
+            raise AssertionError("Unexpected keyword in property_start " + parsing_info.get_cst())
+        return None
+
+    def property_stop(self, parsing_info: AuxInterpretation):
+        if self._context.is_parsing_context([AuxOutlines.optionalProperty]):
+            self._context.pop_context([AuxOutlines.optionalProperty], self.get_debug_parsing_info(parsing_info))
+        elif self._context.is_parsing_context([AuxOutlines.mandatoryProperty]):
+            self._context.pop_context([AuxOutlines.mandatoryProperty], self.get_debug_parsing_info(parsing_info))
+        else:
+            raise AssertionError("Unexpected context in property_stop " + str(parsing_info.get_cst()))
+        return None  # do not append to parse_list, we are done with this
+
+    def constructor_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.classConstructor, self.get_debug_parsing_info(parsing_info))
+        return self.signature_start(parsing_info)
+
+    def constructor_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.classConstructor], self.get_debug_parsing_info(parsing_info))
+        return None  # do not append to parse_list, we are done with this
+
+    def predicate_header_dispatcher(self, parsing_info: AuxInterpretation):
         # a predicate header can occur in the following contexts:
         if self._context.is_parsing_context([AuxOutlines.theory, AuxOutlines.block]):
-            # inside a theory (top level) - in this case, we have a new global predicate definition
-            self._context.push_context(AuxOutlines.predicate, self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.inferenceRules, AuxOutlines.block]):
-            # inside an inference (top level) - in this case, we have a new global inference rule definition
-            self._context.push_context(AuxOutlines.inferenceRule, self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.axiom, AuxOutlines.block]):
-            # predicate type declaration inside an axiom, todo
-            pass
-        elif self._context.is_parsing_context([AuxOutlines.classDeclaration, AuxOutlines.block]):
-            # predicate declaration or usage inside an class block, todo
-            pass
+            # inside a theory as a global predicate definition
+            return self.predicate_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.optionalProperty]) or \
+                self._context.is_parsing_context([AuxOutlines.mandatoryProperty]):
+            # inside a class, or functional term, a predicate instance
+            return self.predicate_declaration_start(parsing_info)
         else:
             if self._debug():
-                print("########### Unhandled context in handle_predicate_header" + str(
+                print("########### Unhandled context in predicate_header_dispatcher" + str(
                     self._context.get_context()) + " " + str(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def start_block(self, parsing_info: AuxInterpretation):
+    def paren_start(self, parsing_info: AuxInterpretation):
+        # starts a new parenthesis
+        self._context.push_context(AuxOutlines.paren, self.get_debug_parsing_info(parsing_info))
+        return None  # do not append to parse_list, we are done with this
+
+    def paren_stop(self, parsing_info: AuxInterpretation):
+        # stops a parenthesis
+        self._context.pop_context([AuxOutlines.paren], self.get_debug_parsing_info(parsing_info))
+        return None  # do not append to parse_list, we are done with this
+
+    def block_start(self, parsing_info: AuxInterpretation):
         # starts a new block
         self._context.push_context(AuxOutlines.block, self.get_debug_parsing_info(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def stop_block(self, parsing_info: AuxInterpretation):
+    def block_stop(self, parsing_info: AuxInterpretation):
         # stops a block
         self._context.pop_context([AuxOutlines.block], self.get_debug_parsing_info(parsing_info))
-        # garbage collector, remove any additional infos depending on the context
-        if self._context.is_parsing_context([AuxOutlines.root]):
-            # root? => do nothing since this is a global interpreter context built up in the caller of fplsemantics
-            pass
-        elif self._context.is_parsing_context([AuxOutlines.theory]):
-            # end of the theory block
-            self._context.pop_context([AuxOutlines.theory], self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.inferenceRules]):
-            # end of inference block
-            self._context.pop_context([AuxOutlines.inferenceRules], self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.inferenceRule]):
-            # end of the inference rule block
-            self._context.pop_context([AuxOutlines.inferenceRule],
-                                      self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.axiom]):
-            self._context.pop_context([AuxOutlines.axiom], self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.predicate]):
-            self._context.pop_context([AuxOutlines.predicate], self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.classDeclaration]):
-            self._context.pop_context([AuxOutlines.classDeclaration], self.get_debug_parsing_info(parsing_info))
-        elif self._context.is_parsing_context([AuxOutlines.functionalTerm]):
-            self._context.pop_context([AuxOutlines.functionalTerm], self.get_debug_parsing_info(parsing_info))
-        else:
-            if self._debug():
-                print("########### Unhandled context in stop_block" + str(self._context.get_context()) + " " + str(
-                    parsing_info))
 
-    def start_context_class_declaration(self, parsing_info: AuxInterpretation):
-        self._context.push_context(AuxOutlines.classDeclaration, self.get_debug_parsing_info(parsing_info))
+    def predicate_declaration_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.predicateDeclaration, self.get_debug_parsing_info(parsing_info))
+        return self.signature_start(parsing_info)
+
+    def predicate_declaration_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.predicateDeclaration], self.get_debug_parsing_info(parsing_info))
         return None  # do not append to parse_list, we are done with this
 
-    def start_context_functional_term_declaration(self, parsing_info: AuxInterpretation):
+    def class_instance_declaration_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.classInstanceDeclaration, self.get_debug_parsing_info(parsing_info))
+        return self.signature_start(parsing_info)
+
+    def class_instance_declaration_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.classInstanceDeclaration], self.get_debug_parsing_info(parsing_info))
+        self._working_stack.pop()  # remove the class instance node from the working stack
+        return None  # do not append to parse_list, we are done with this
+
+    def class_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.classDeclaration, self.get_debug_parsing_info(parsing_info))
+        return None  # classes have no signature, we are done
+
+    def class_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.classDeclaration], self.get_debug_parsing_info(parsing_info))
+        self._working_stack.pop()  # remove the class node
+        return None  # do not append to parse_list, we are done with this
+
+    def functional_term_start(self, parsing_info: AuxInterpretation):
         self._context.push_context(AuxOutlines.functionalTerm, self.get_debug_parsing_info(parsing_info))
+        return self.signature_start(parsing_info)
+
+    def functional_term_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.functionalTerm], self.get_debug_parsing_info(parsing_info))
+        self._working_stack.pop()
         return None  # do not append to parse_list, we are done with this
 
     def concatenation_of_proceeding_string_rules(self, parsing_info: AuxInterpretation):
@@ -564,9 +705,32 @@ class FPLSemantics(object):
         """
         # consume all proceeding variables into a VariableList and remove them from self.parse_list
         variable_list = VariableList(self.parse_list, parsing_info)
+        if self._context.is_parsing_context([AuxOutlines.signature, AuxOutlines.paren]):
+            return self.named_variable_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.classDeclaration, AuxOutlines.block]):
+            return self.named_variable_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.axiom, AuxOutlines.block]):
+            return self.named_variable_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.inferenceRule, AuxOutlines.block]):
+            return self.named_variable_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.predicateDeclaration, AuxOutlines.block]):
+            return self.named_variable_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.theoremLikeStmtThm, AuxOutlines.block]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtLem, AuxOutlines.block]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtConj, AuxOutlines.block]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtCor, AuxOutlines.block]) or \
+                self._context.is_parsing_context([AuxOutlines.theoremLikeStmtProp, AuxOutlines.block]):
+            return self.named_variable_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.classConstructor, AuxOutlines.block]):
+            return self.named_variable_declaration_start(parsing_info)
+        else:
+            if self._debug():
+                print(
+                    "########### Unhandled context in variable_list_interpretation " + str(
+                        self._context.get_context()) + " " + str(parsing_info))
         return variable_list
 
-    def general_type_interpretation(self, parsing_info: AuxInterpretation):
+    def general_type_dispatcher(self, parsing_info: AuxInterpretation):
         """
         Simplifies the parse_list by removing all rules that contribute to a GeneralType
         :param parsing_info: the interpretation for a rule
@@ -578,19 +742,77 @@ class FPLSemantics(object):
         self.clean_up_parse_list(["Colon", "obj", "ObjectHeader"])
         if self._context.is_parsing_context([AuxOutlines.classType]):
             # in the context of a class declaration, we have to update the type of the class
-            class_node = self._working_stack.pop()
-            class_node.type = general_type.get_type()
+            class_node = self._working_stack[-1]
+            class_node.type = general_type.typeRepresentation
             # we clear the context of classType
             self._context.pop_context([AuxOutlines.classType], self.get_debug_parsing_info(parsing_info))
             return None  # this general type is handled completely
+        elif self._context.is_parsing_context([AuxOutlines.optionalProperty]) or \
+                self._context.is_parsing_context([AuxOutlines.mandatoryProperty]):
+            # as the type of property definition
+            # we put the type name on the working stack so we can get it back
+            # when the name of the class instance definition will be parsed next in the context
+            # [AuxOutlines.mandatoryProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature] or
+            # [AuxOutlines.optionalProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature] or
+            self._working_stack.append(general_type.typeRepresentation)
+            return self.class_instance_declaration_start(parsing_info)
+        elif self._context.is_parsing_context([AuxOutlines.functionalTerm, AuxOutlines.functionalTermImage]):
+            # as the image of a functional term
+            functional_term_node = self._working_stack[-1]
+            image_node = SymbolTable.get_image_node(functional_term_node)
+            SymbolTable.add_param_to_image_node(image_node, general_type)
+            return None
         else:
+            if self._debug():
+                print("########### Unhandled context in general_type_dispatcher" + str(
+                    self._context.get_context()) + " " + str(parsing_info))
             return general_type
 
-    def handle_mapping(self, parsing_info: AuxInterpretation):
-        if self._context.is_parsing_context([AuxOutlines.functionalTermImage]):
-            # in the context of a functional term declaration, we have to update the image of the functional term
-            functional_term_node = self._working_stack.pop()
-            functional_term_node.image = parsing_info.get_cst()[-1]
-            # clear the context of functionalTermImage
-            self._context.pop_context([AuxOutlines.functionalTermImage], self.get_debug_parsing_info(parsing_info))
-            return None  # this general type is handled completely
+    def mapping_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.functionalTermImage, self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def mapping_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.functionalTermImage], self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def signature_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.signature, self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def signature_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.signature], self.get_debug_parsing_info(parsing_info))
+        if self._context.is_parsing_context([AuxOutlines.functionalTerm]):
+            return self.mapping_start(parsing_info)
+        return None
+
+    def is_operator_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.isoperator, self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def is_operator_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.isoperator], self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def all_quantor_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.allquantor, self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def all_quantor_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.allquantor], self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def ex_quantor_start(self, parsing_info: AuxInterpretation):
+        self._context.push_context(AuxOutlines.exquantor, self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def ex_quantor_stop(self, parsing_info: AuxInterpretation):
+        self._context.pop_context([AuxOutlines.exquantor], self.get_debug_parsing_info(parsing_info))
+        return None
+
+    def handle_type(self, paring_info: AuxInterpretation):
+        self.clean_up_parse_list(
+            ["tpl", "template", "TemplateHeader", "IdStartsWithCap", "LongTemplateHeader", "obj", "object",
+             "ObjectHeader", "Digit", "function", "func", "FunctionalTermHeader", "predicate", "pred",
+             "PredicateHeader", "AliasedId", "Dot", "PredicateIdentifier", "At", "ext"])
+        return Type(paring_info)

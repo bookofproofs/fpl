@@ -1,0 +1,38 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myCarrierSet: tplSet
+
+            // Every algebraic structure will have a mandatory property called CarrierSet of type Set.
+            mandatory Set CarrierSet()
+            {
+                self:=myCarrierSet
+            }
+
+
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_class_instance_property_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    │   └── AnyNode(id='AlgebraicStructure', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='class', type='obj')
+    │       ├── AnyNode(outline='variables')
+    │       ├── AnyNode(outline='constructors')
+    │       └── AnyNode(outline='properties')
+    │           └── AnyNode(id='CarrierSet', interpretation=<classes.AuxInterpretation.AuxInterpretation>, is_mandatory=True, outline='property', overload_id=None, type='Set')
+    │               └── AnyNode(outline='variables')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

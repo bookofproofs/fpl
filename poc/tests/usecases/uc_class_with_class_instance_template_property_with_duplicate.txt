@@ -1,0 +1,30 @@
+TestNamespace
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+
+            mandatory tplSetElem LeftNeutralElement()
+            {
+                assert IsLeftNeutralElement(self)
+            }
+
+            optional tplSetElem RightNeutralElement()
+            {
+                assert IsRightNeutralElement(self)
+            }
+
+            mandatory tplSetElem RightNeutralElement()
+            {
+                assert IsNeutralElement(self)
+            }
+
+        }
+    }
+}
+
+##############################
+
+
+FplIdentifierAlreadyDeclared:18:52: Identifier RightNeutralElement already defined at (13,51)

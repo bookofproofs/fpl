@@ -14,5 +14,16 @@ Initial interpreter
   * names of functional terms
   * names of predicates
 * Adjusted fplinterpreter to handle more than one theory
-* some additional unit tests
+* Some additional unit tests
 * Known issues: No overloading of name declarations implemented yet
+## 1.1.1
+* Basic symbol table functionality (cont.) 
+  * identifiers of properties of classes and functional terms
+  * identifiers of images of functional terms
+  * identifiers of theorems, propositions, lemmas, corollaries, and conjunctions 
+* Refactoring 
+* Handling of parentheses contexts
+* Some additional unit tests
+* Known issues: 
+  * No overloading of name declarations 
+  * handling of parentheses in nested signatures

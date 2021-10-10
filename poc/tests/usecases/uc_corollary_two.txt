@@ -1,0 +1,61 @@
+TestNamespace
+{
+    theory
+    {
+        cor AddIsUnique(op: Add)
+        {
+            n,m: Nat
+            anotherAdd: Add
+            pre:
+                and
+                    (
+                        Equals(Add(n,0),n),
+                        Equals(anotherAdd(n,0),n),
+                        Equals(Add(n,Succ(m)), Succ(Add(n,m))),
+                        Equals(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
+                    )
+            con:
+                all n
+                (
+                    all m
+                    (
+                        Equals(Add(n,m), anotherAdd(n,m))
+                    )
+                )
+        }
+
+        corollary SumOfConsecutiveNumbers()
+        {
+            n, limit: Nat
+            f: Addend
+            premise:
+                loop n [Nat(1)~limit]
+                (
+                    assert Equals(f(n),n)
+                )
+            conclusion:
+                all n
+                (
+                    Equals(Sum(1,n,f),Div(Mul(n,Succ(n)),2))
+                )
+
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_corollary_two')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    │   ├── AnyNode(id='AddIsUnique', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='theoremLikeStmt', statement_type='corollary')
+    │   │   └── AnyNode(outline='variables')
+    │   └── AnyNode(id='SumOfConsecutiveNumbers', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='theoremLikeStmt', statement_type='corollary')
+    │       └── AnyNode(outline='variables')
+    └── AnyNode(outline='conjectures')

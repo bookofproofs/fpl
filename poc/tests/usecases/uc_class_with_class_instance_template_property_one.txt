@@ -1,0 +1,34 @@
+TestNamespace
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+
+            mandatory tplSetElem LeftNeutralElement()
+            {
+                assert IsLeftNeutralElement(self)
+            }
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_class_instance_template_property_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    │   └── AnyNode(id='BinOp', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='functionalTerm', overload_id=None)
+    │       ├── AnyNode(outline='image')
+    │       │   └── AnyNode(id='tplSetElem', interpretation=<classes.GeneralType.GeneralType>, outline='param1')
+    │       ├── AnyNode(outline='variables')
+    │       └── AnyNode(outline='properties')
+    │           └── AnyNode(id='LeftNeutralElement', interpretation=<classes.AuxInterpretation.AuxInterpretation>, is_mandatory=True, outline='property', overload_id=None, type='tplSetElem')
+    │               └── AnyNode(outline='variables')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

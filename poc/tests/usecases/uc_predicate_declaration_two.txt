@@ -37,13 +37,15 @@ TestNamespace
 ##############################
 
 AnyNode(outline='root')
-└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_predicate_two')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_predicate_declaration_two')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
     ├── AnyNode(outline='predicates')
-    │   ├── AnyNode(id='Equals', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='predicate', overload_id=None)
-    │   └── AnyNode(id='NotEquals', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='predicate', overload_id=None)
+    │   ├── AnyNode(id='Equals', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='predicateDeclaration', overload_id=None)
+    │   │   └── AnyNode(outline='variables')
+    │   └── AnyNode(id='NotEquals', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='predicateDeclaration', overload_id=None)
+    │       └── AnyNode(outline='variables')
     ├── AnyNode(outline='functionalTerms')
     ├── AnyNode(outline='axioms')
     ├── AnyNode(outline='theoremLikeStatements')
