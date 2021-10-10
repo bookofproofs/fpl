@@ -137,24 +137,24 @@ class SymbolTableTests(unittest.TestCase):
         self.assertEqual(1, len(interpreter.get_errors()))
         self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
 
-    def test_uc_predicate_one(self):
-        use_case = "uc_predicate_one"
+    def test_uc_predicate_declaration_one(self):
+        use_case = "uc_predicate_declaration_one"
         interpreter = FplInterpreter(self.fpl_parser)
         result = self.get_code_and_expected(use_case)
         interpreter.syntax_analysis(use_case, result[0])
         self.assertEquals(result[1].strip(),
                           SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
 
-    def test_uc_predicate_two(self):
-        use_case = "uc_predicate_two"
+    def test_uc_predicate_declaration_two(self):
+        use_case = "uc_predicate_declaration_two"
         interpreter = FplInterpreter(self.fpl_parser)
         result = self.get_code_and_expected(use_case)
         interpreter.syntax_analysis(use_case, result[0])
         self.assertEquals(result[1].strip(),
                           SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
 
-    def test_uc_predicate_with_duplicate(self):
-        use_case = "uc_predicate_with_duplicate"
+    def test_uc_predicate_declaration_with_duplicate(self):
+        use_case = "uc_predicate_declaration_with_duplicate"
         interpreter = FplInterpreter(self.fpl_parser)
         result = self.get_code_and_expected(use_case)
         interpreter.syntax_analysis(use_case, result[0])
@@ -209,3 +209,210 @@ class SymbolTableTests(unittest.TestCase):
         self.assertEqual(1, len(interpreter.get_errors()))
         self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
 
+    def test_uc_class_with_constructor(self):
+        use_case = "uc_class_with_constructor"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_func_property_one(self):
+        use_case = "uc_class_with_func_property_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_func_property_two(self):
+        use_case = "uc_class_with_func_property_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_class_instance_property_one(self):
+        use_case = "uc_class_with_class_instance_property_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_class_instance_property_two(self):
+        use_case = "uc_class_with_class_instance_property_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_class_instance_property_with_duplicate(self):
+        use_case = "uc_class_with_class_instance_property_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_class_with_class_instance_template_property_one(self):
+        use_case = "uc_class_with_class_instance_template_property_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_class_instance_template_property_two(self):
+        use_case = "uc_class_with_class_instance_template_property_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_class_instance_template_property_with_duplicate(self):
+        use_case = "uc_class_with_class_instance_template_property_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_class_with_class_with_mixed_properties(self):
+        use_case = "uc_class_with_mixed_properties"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_func_property_with_duplicate(self):
+        use_case = "uc_class_with_func_property_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_theorem_one(self):
+        use_case = "uc_theorem_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_theorem_two(self):
+        use_case = "uc_theorem_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_theorem_with_duplicate(self):
+        use_case = "uc_theorem_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_corollary_one(self):
+        use_case = "uc_corollary_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_corollary_two(self):
+        use_case = "uc_corollary_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_corollary_with_duplicate(self):
+        use_case = "uc_corollary_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_proposition_one(self):
+        use_case = "uc_proposition_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_proposition_two(self):
+        use_case = "uc_proposition_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_proposition_with_duplicate(self):
+        use_case = "uc_proposition_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_lemma_one(self):
+        use_case = "uc_lemma_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_lemma_two(self):
+        use_case = "uc_lemma_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_lemma_with_duplicate(self):
+        use_case = "uc_lemma_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_conjecture_one(self):
+        use_case = "uc_conjecture_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_conjecture_two(self):
+        use_case = "uc_conjecture_two"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_conjecture_with_duplicate(self):
+        use_case = "uc_conjecture_with_duplicate"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEqual(1, len(interpreter.get_errors()))
+        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))

@@ -1,4 +1,4 @@
-import fplsemantics
+import fplsourceanalyser
 import fplerror
 import tatsu
 from anytree import AnyNode, RenderTree
@@ -7,9 +7,9 @@ from classes.SymbolTable import SymbolTable
 
 
 class FplInterpreter(object):
-    _version = "1.1.0"
+    _version = "1.1.1"
     _errors = None
-    _semantics = None
+    _source_analysis = None
     _parser = None
     _symbol_table_root = None
 
@@ -20,11 +20,12 @@ class FplInterpreter(object):
 
     def syntax_analysis(self, theory_name, fpl_source):
         try:
-            self._semantics = fplsemantics.FPLSemantics(self._symbol_table_root, theory_name, self._errors)
-            self._parser.parse(fpl_source, semantics=self._semantics, whitespace='')
+            self._source_analysis = fplsourceanalyser.FPLSourceAnalyser(self._symbol_table_root, theory_name,
+                                                                        self._errors)
+            self._parser.parse(fpl_source, semantics=self._source_analysis, whitespace='')
             # self.print_semantics()
         except tatsu.exceptions.FailedParse as ex:
-            self._semantics.errors.append(fplerror.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
+            self._source_analysis.errors.append(fplerror.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
 
     def print_symbol_table(self):
         print(RenderTree(self._symbol_table_root))
@@ -56,18 +57,18 @@ class FplInterpreter(object):
         return self._errors
 
     def minified(self):
-        return self._semantics.get_minified()
+        return self._source_analysis.get_minified()
 
     def prettyfied(self):
-        return self._semantics.get_prettified()
+        return self._source_analysis.get_prettified()
 
     def print_semantics(self):
-        for item in self._semantics.parse_list:
+        for item in self._source_analysis.parse_list:
             print(item)
-        print(str(len(self._semantics.parse_list)) + " items")
+        print(str(len(self._source_analysis.parse_list)) + " items")
 
     def get_semantics(self):
-        return self._semantics.parse_list
+        return self._source_analysis.parse_list
 
     def get_ast_list(self):
-        return self._semantics.ast_list
+        return self._source_analysis.ast_list

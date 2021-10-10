@@ -117,3 +117,19 @@ class FplNameSpaceAlreadyExists(FplInterpreterMessage):
                                        str(existing_inter.rule_line()) + "," + str(existing_inter.rule_col()) + ")",
                                        inter.rule_line(),
                                        inter.rule_col())
+
+
+class FplMisspelledConstructor(FplInterpreterMessage):
+    def __init__(self, inter: AuxInterpretation, correct_class_name: str):
+        FplInterpreterMessage.__init__(self, "Misspelled constructor " + str(inter.get_interpretation()) +
+                                       " (must be named " + correct_class_name + ")",
+                                       inter.rule_line(),
+                                       inter.rule_col())
+
+
+class FplWrongPropertyName(FplInterpreterMessage):
+    def __init__(self, inter: AuxInterpretation, parent_name: str):
+        FplInterpreterMessage.__init__(self, "Property " + str(inter.get_interpretation()) +
+                                       " must have a different name from its parent " + parent_name + ")",
+                                       inter.rule_line(),
+                                       inter.rule_col())

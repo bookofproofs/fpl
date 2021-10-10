@@ -1,0 +1,26 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myCarrierSet: tplSet
+            myLength: Nat
+
+            mandatory Set CarrierSet()
+            {
+                self:=myCarrierSet
+            }
+
+            optional Set CarrierSet()
+            {
+                self:=myLength
+            }
+        }
+    }
+}
+
+##############################
+
+FplIdentifierAlreadyDeclared:16:35: Identifier CarrierSet already defined at (11,36)

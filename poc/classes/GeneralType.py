@@ -9,24 +9,24 @@ aggr_rules_GeneralType = {'CallModifier', 'Type', 'IndexHeader', 'TypeWithCoord'
 
 
 class GeneralType(AuxInterpretation):
-    __objects = dict()
+    typeRepresentation = ""
+    isTemplate = False
+    callModifier = None
+    hasCoord = False
 
     def __init__(self, parse_list: list, inter: AuxInterpretation):
         self.clone(inter)
-        self.__set = set()
-        self.__objects['CallModifier'] = None
-        self.__objects['Type'] = None
-        self.__objects['TypeHasCoord'] = False
 
         can_be_ignored = parse_list[-1].rule_name() in aggr_rules_GeneralType
         while can_be_ignored:
             rule = parse_list[-1].rule_name()
             if rule == "CallModifier":
-                self.__objects['CallModifier'] = parse_list[-1].get_interpretation()
+                self.callModifier = parse_list[-1].get_interpretation()
+            elif rule == "Type":
+                self.typeRepresentation = parse_list[-1].get_interpretation()
+                self.isTemplate = parse_list[-1].isTemplate
             else:
-                self.__objects['Type'] = parse_list[-1].get_interpretation()
-                if rule == 'TypeWithCoord':
-                    self.__objects['TypeHasCoord'] = True
+                self.typeRepresentation = parse_list[-1]
 
             # remove ignored rule
             parse_list.pop()
@@ -34,7 +34,3 @@ class GeneralType(AuxInterpretation):
                 can_be_ignored = parse_list[-1].rule_name() in aggr_rules_GeneralType
             else:
                 can_be_ignored = False
-        self.set_interpretation(self.__objects)
-
-    def get_type(self):
-        return self.__objects['Type']
