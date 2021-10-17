@@ -3,7 +3,7 @@
 Initial interpreter
 ## 1.0.1
 * Exceptions added 
-* Some basic intepretations added
+* Some basic interpretations added
 ## 1.0.2
 * Minify and Prettify functionality removed from interpreter into a separate class
 ## 1.1.0
@@ -27,3 +27,12 @@ Initial interpreter
 * Known issues: 
   * No overloading of name declarations 
   * handling of parentheses in nested signatures
+## 1.2.0
+* Symbol table functionality (cont.)
+  * variable declarations
+  * used types (initial)
+  * first draft representation of (complex) types
+* Bugfix relative folders for importing package files
+* Bugfix instance namespaces for variables of auxiliary classes
+* Separation of syntax transforming (minify/prettify) and syntax analysis
+* Redesign and simplification of the FPLSourceAnalyser class while moving context handling to individual classes named Contex<Something>

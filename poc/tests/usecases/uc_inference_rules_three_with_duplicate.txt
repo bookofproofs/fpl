@@ -24,12 +24,12 @@ TestNamespace
 
         ModusPonens()
         {
-            p,q: pred
+            a,b: pred
 
             premise:
-                and (p, impl (p,q) )
+                and (a, impl (a,b) )
             conclusion:
-                q
+                b
         }
     }
     theory

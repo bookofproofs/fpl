@@ -13,7 +13,7 @@ Fpl.Geometry.Euclidean
 AnyNode(outline='root')
 └── AnyNode(namespace='Fpl.Geometry.Euclidean', outline='theory', theory_name='uc_namespace_modified_with_star')
     ├── AnyNode(outline='uses')
-    │   └── AnyNode(id='Fpl.Commons.', interpretation=<classes.AuxInterpretation.AuxInterpretation>, modifier='*', outline='usedNamespace')
+    │   └── AnyNode(id='Fpl.Commons.', info=<AuxAstInfo.AuxAstInfo>, modifier='*', outline='usedNamespace')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
     ├── AnyNode(outline='predicates')

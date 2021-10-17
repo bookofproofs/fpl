@@ -6,6 +6,7 @@ TestNamespace
         {
 
             myCarrierSet: tplSet
+            myCarrierSet1: Nat
             myOps: +Composition(*tplSetElem)
 
             AlgebraicStructure(x: tplSet, ops: +Composition(*tplSetElem))
@@ -44,10 +45,10 @@ AnyNode(outline='root')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
-    │   └── AnyNode(id='AlgebraicStructure', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='class', type='obj')
+    │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj')
     │       ├── AnyNode(outline='variables')
     │       ├── AnyNode(outline='constructors')
-    │       │   └── AnyNode(id='AlgebraicStructure', interpretation=<classes.AuxInterpretation.AuxInterpretation>, outline='constructor')
+    │       │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='constructor')
     │       │       └── AnyNode(outline='variables')
     │       └── AnyNode(outline='properties')
     ├── AnyNode(outline='predicates')

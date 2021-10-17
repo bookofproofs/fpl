@@ -1,0 +1,61 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myCarrierSet: tplSet
+            myCarrierSet1: Nat
+            myOps: Test
+
+            AlgebraicStructure(x: tplSet, ops: +Composition)
+            {
+
+                a: obj
+                myOps := ops
+                myCarrierSet := x
+
+                assert
+                    and
+                    (
+                        is(tplSet,Set),
+                        is(tplSetElem,Set)
+                    )
+
+                assert
+                    all a
+                    (
+                        impl ( is(a,tplSetElem), In(a,myCarrierSet) )
+                    )
+            }
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_constructor_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj')
+    │       ├── AnyNode(outline='variables')
+    │       │   ├── AnyNode(id='myCarrierSet', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSet')
+    │       │   ├── AnyNode(id='myCarrierSet1', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Nat')
+    │       │   └── AnyNode(id='myOps', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Test')
+    │       ├── AnyNode(outline='usedTypes')
+    │       ├── AnyNode(outline='constructors')
+    │       │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='constructor')
+    │       │       ├── AnyNode(outline='variables')
+    │       │       │   ├── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='tplSet')
+    │       │       │   ├── AnyNode(id='ops', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='Composition')
+    │       │       │   └── AnyNode(id='a', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='obj')
+    │       │       └── AnyNode(outline='usedTypes')
+    │       └── AnyNode(outline='properties')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

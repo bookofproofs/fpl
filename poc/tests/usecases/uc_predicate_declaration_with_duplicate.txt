@@ -31,11 +31,11 @@ TestNamespace
             )
         }
 
-        pred NotEquals(x,y: tpl)
+        pred NotEquals(a,b: tpl)
         {
             not
             (
-                Equals(x,y)
+                Equals(a,b)
             )
         }
 

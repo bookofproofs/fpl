@@ -137,7 +137,7 @@ class SettingsDialog(tk.Toplevel):
         self._config_browser_pane.add(one_line_frame)
         self.option_paths_fpl_theories_trace(self.entry_var)
 
-    def _select_dir(self):
+    def _select_dir(self, event=None):
         directory_name = askdirectory(
             initialdir=self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
         if directory_name == "":

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from util.fplutil import Utils
+from poc.util.fplutil import Utils
 from ide.idetheme import DefaultTheme
 from ide.CustomNotebook import CustomNotebook
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
@@ -14,8 +14,7 @@ import os
 
 
 class FplIde:
-    fpl_parser = None
-    _version = '1.2.4'
+    """
     config = None
     _theme = None
     window = None
@@ -36,11 +35,10 @@ class FplIde:
     _listBoxSyntax = None
     _listBoxSemantics = None
     _menuBar = None
-    _statusBar = None
-    _root_dir = None
-    images = None
+    """
 
     def __init__(self):
+        self._version = '1.2.5'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -61,7 +59,12 @@ class FplIde:
         self.__add_menu()
         self._all_editors = dict()
         self.current_file = ""
-        self.fpl_init()
+        self.window.config(cursor="wait")
+        self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
+        u = Utils()
+        self.fpl_interpreter = fplinterpreter.FplInterpreter(u.get_parser("../grammar/fpl_tatsu_format.ebnf"))
+        self._statusBar.set_status_text("FPL parser ready.")
+        self.window.config(cursor="")
         self.window.mainloop()
 
     def get_version(self):
@@ -101,13 +104,13 @@ class FplIde:
         self._panedWindow = tk.PanedWindow(self.window)
         self._panedWindow.pack(expand=True, fill="both")
 
-        self._panedWindowMainVertical = ttk.Frame(self._tabControl)
+        self._panedWindowMainVertical = ttk.Frame(self._panedWindow)
         self._panedWindowMainVertical.pack(expand=True, fill="both")
 
         self._panedWindowMainVertical = tk.PanedWindow(self.window, orient=tk.VERTICAL)
         self._panedWindow.add(self._panedWindowMainVertical)
 
-        style = ttk.Style(self._panedMain)
+        style = ttk.Style(self._panedWindowMainVertical)
         style.configure('TNotebook', tabposition='wn', background=self._theme.get_bg_color())
         self.__add_object_browser_treeview()
         self.__add_vertical_paned_window()
@@ -420,14 +423,6 @@ class FplIde:
                 self.window.destroy()
         else:
             self.window.destroy()
-
-    def fpl_init(self):
-        self.window.config(cursor="wait")
-        self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
-        u = Utils()
-        self.fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
-        self._statusBar.set_status_text("FPL parser ready.")
-        self.window.config(cursor="")
 
     def config_init(self):
         """
