@@ -1,4 +1,4 @@
-# fpl Version 1.0.3
+# fpl Version 1.0.4
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -627,7 +627,7 @@
 
     CoordInSignature =
         (
-        VariableType
+        Type
         | Coord
         )
         ;

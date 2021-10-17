@@ -1,0 +1,64 @@
+Fpl.Arithmetics.Nat.Peano
+{
+    theory
+    {
+        // definition of a new mathematical object (natural number)
+        class Nat: obj
+        {
+            Nat(x: @extDecimal)
+            {
+                case
+                (
+                    Equals(x,0) :
+                        self := Zero()
+                    Equals(x,1) :
+                        self := Succ(Zero())
+                    Equals(x,2) :
+                        self := Succ(Succ(Zero()))
+                    else:
+                        // else case addressed using a python delegate
+                        self := Succ(py.decrement(x))
+                )
+            }
+
+            Nat(x: Int)
+            {
+                case
+                (
+                    IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                        self:=x.RightMember()
+                    else:
+                        self:=undefined
+                )
+            }
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_constructor_two')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj')
+    │       ├── AnyNode(outline='variables')
+    │       │   ├── AnyNode(id='myCarrierSet', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSet')
+    │       │   ├── AnyNode(id='myCarrierSet1', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Nat')
+    │       │   └── AnyNode(id='myOps', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Test')
+    │       ├── AnyNode(outline='usedTypes')
+    │       ├── AnyNode(outline='usedTypes')
+    │       ├── AnyNode(outline='constructors')
+    │       │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='constructor')
+    │       │       ├── AnyNode(outline='variables')
+    │       │       │   ├── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='tplSet')
+    │       │       │   ├── AnyNode(id='ops', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='Composition')
+    │       │       │   └── AnyNode(id='a', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='obj')
+    │       │       └── AnyNode(outline='usedTypes')
+    │       └── AnyNode(outline='properties')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

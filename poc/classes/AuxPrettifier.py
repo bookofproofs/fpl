@@ -1,19 +1,12 @@
-from classes.AuxAstInfo import AuxAstInfo
-from classes.AuxContext import AuxContext
+from poc.classes.AuxAstInfo import AuxAstInfo
+from poc.classes.AuxContext import AuxContext
 import re
 import configparser
 import os
 from ide.Settings import Settings
 
 
-class Prettifier:
-    _minified = None
-    _prettified = None
-    _prettified_is_postprocessed = None
-    _last_cst = None
-    _indent = None
-    _context = None
-    config = None
+class AuxPrettifier:
 
     def __init__(self):
         """

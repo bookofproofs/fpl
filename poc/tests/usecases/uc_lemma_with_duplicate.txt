@@ -26,17 +26,17 @@ TestNamespace
 
         lemma AddIsUnique()
         {
-            n, limit: Nat
+            k, limit: Nat
             f: Addend
             premise:
-                loop n [Nat(1)~limit]
+                loop k [Nat(1)~limit]
                 (
-                    assert Equals(f(n),n)
+                    assert Equals(f(k),k)
                 )
             conclusion:
-                all n
+                all k
                 (
-                    Equals(Sum(1,n,f),Div(Mul(n,Succ(n)),2))
+                    Equals(Sum(1,k,f),Div(Mul(k,Succ(k)),2))
                 )
 
         }

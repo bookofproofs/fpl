@@ -1,10 +1,16 @@
+"""
+The class AuxContext provides methods to store and check the context during the parsing process helping to identify
+in which context a grammar rule was used.
+"""
+
+
 class AuxContext:
-    _context_stack = None  # used to distinguish different contexts while parsing and interpreting the same lexemes
 
     def __init__(self):
         """
         Constructor of Context
         """
+        # used to distinguish different contexts while parsing and interpreting the same lexemes
         self._context_stack = []
 
     def is_parsing_context(self, pars: list):

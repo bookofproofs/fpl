@@ -1,7 +1,7 @@
 import unittest
-from util.fplutil import Utils
-from fplinterpreter import FplInterpreter
-import fplerror
+from poc.util.fplutil import Utils
+from poc.fplinterpreter import FplInterpreter
+import poc.fplerror
 import os
 import re
 
@@ -40,6 +40,7 @@ class SymbolTableTests(unittest.TestCase):
         :param test_output: output of the test
         :return: test_result replaced
         """
+        test_output = test_output.replace("poc.classes.", "")
         return re.sub(' object at 0x[0-9A-F]+', '', test_output)
 
     def test_uc_empty(self):
@@ -209,8 +210,16 @@ class SymbolTableTests(unittest.TestCase):
         self.assertEqual(1, len(interpreter.get_errors()))
         self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
 
-    def test_uc_class_with_constructor(self):
-        use_case = "uc_class_with_constructor"
+    def test_uc_class_with_constructor_one(self):
+        use_case = "uc_class_with_constructor_one"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))
+
+    def test_uc_class_with_constructor_two(self):
+        use_case = "uc_class_with_constructor_two"
         interpreter = FplInterpreter(self.fpl_parser)
         result = self.get_code_and_expected(use_case)
         interpreter.syntax_analysis(use_case, result[0])
@@ -416,3 +425,11 @@ class SymbolTableTests(unittest.TestCase):
         interpreter.syntax_analysis(use_case, result[0])
         self.assertEqual(1, len(interpreter.get_errors()))
         self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+
+    def test_uc_anonymous_signature(self):
+        use_case = "uc_anonymous_signature"
+        interpreter = FplInterpreter(self.fpl_parser)
+        result = self.get_code_and_expected(use_case)
+        interpreter.syntax_analysis(use_case, result[0])
+        self.assertEquals(result[1].strip(),
+                          SymbolTableTests.remove_object_references_from_string(interpreter.symbol_table_to_str()))

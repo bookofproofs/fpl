@@ -113,7 +113,6 @@ class FrameWithLineNumbers(tk.Frame):
             # prevent outdenting anything if there is no current selection
             return
         # remember position of old text
-        pos_first = self.text.index(tk.SEL_FIRST)
         selected_text = self.text.get(tk.SEL_FIRST, tk.SEL_LAST)
         # create replacement
         selection_replacement = ""
@@ -193,13 +192,12 @@ class FrameWithLineNumbers(tk.Frame):
         self._parent_notebook.ide.window.update_idletasks()
         # parse and interpret the code
         code = self.get_text()
-        interpreter = fplinterpreter.FplInterpreter(self._parent_notebook.ide.fpl_parser)
-        interpreter.syntax_analysis(self.title, code)
+        self._parent_notebook.ide.fpl_interpreter.syntax_analysis(self.title, code)
         # reconfigure all tags
         self.reconfigure_all_tags()
         # add new tags
         list_indices = list()
-        for item in interpreter.get_ast_list():
+        for item in self._parent_notebook.ide.fpl_interpreter.get_ast_list():
             current_index = str(item.line) + "." + str(item.col)
             list_indices.append(current_index)
             grammar_tags = self._theme.get_grammar_tags()
@@ -213,7 +211,7 @@ class FrameWithLineNumbers(tk.Frame):
                     last_index = "1.0"
                 self.add_tag(tag, last_index, current_index)
         self._parent_notebook.ide.window.config(cursor="")
-        return interpreter
+        return self._parent_notebook.ide.fpl_interpreter
 
     def parse_interpret_highlight_update_all(self, event=None):
         """
@@ -231,8 +229,8 @@ class FrameWithLineNumbers(tk.Frame):
         :return: None
         """
         code = self.get_text()
-        interpreter = fplinterpreter.FplInterpreter(self.title, code, self._parent_notebook.ide.fpl_parser)
-        self.set_text(interpreter.prettyfied(), init=False)
+        self._parent_notebook.ide.fpl_interpreter.syntax_transform(self.title, code)
+        self.set_text(self._parent_notebook.ide.fpl_interpreter.prettyfied(), init=False)
         self.parse_interpret_highlight()
 
     def _on_click(self, event):

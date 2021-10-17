@@ -36,3 +36,6 @@
 * Unified convention for importing tkinter in different classes 
 * Bugfix indentation when entering new lines
 * Automated entry of closing brackets, braces, and parentheses
+## 1.2.5
+* Bugfix relative folders for importing package files
+* Separation of syntax transforming and syntax analysis in the fpl interpreter (since version 1.2.0) reflected in the ide

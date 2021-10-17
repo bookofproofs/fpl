@@ -1,13 +1,7 @@
 class AuxAstInfo:
-    rule = None
-    cst = None
-    pos = None
-    line = None
-    col = None
-    mainType = None
 
     def __init__(self, context):
-        self.mainType = "R"
+        self.mainType = "R"  # rule (others are E=Error, W=Warning)
         self.rule = context.rule[0]
         self.cst = context.cst
         self.pos = context.pos
