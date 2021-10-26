@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        class Test:obj
+        {
+            mand Field(tplFieldSet, BinOp(tplFieldElem, tplFieldElem), BinOp(tplFieldElem, tplFieldElem)) TestProperty() { return n }
+        }
+    }
+}

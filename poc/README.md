@@ -13,6 +13,7 @@ Install the package TatSu (tested with the 5.5.0 stable version) in your environ
 
 #### Software dependencies
 The software uses the packages TatSu (parser) and tkinter (IDE only).
+Also, the following packages should be installed: anytree, parameterized.
 
 #### Latest releases
 see [CHANGES.md](https://github.com/bookofproofs/fpl/blob/master/poc/CHANGES.md)

@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class TestNamespace: obj
+        {
+        }
+    }
+}
+
+##############################
+
+FplMalformedGlobalId:5:27: The global id TestNamespace.TestNamespace should consist of different names.

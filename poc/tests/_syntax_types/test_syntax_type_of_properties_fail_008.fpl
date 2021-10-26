@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        class Test:obj
+        {
+            mand VecAdd(tplFieldElem[1~n],tplFieldElem[1~n]) TestProperty() { return n }
+        }
+    }
+}

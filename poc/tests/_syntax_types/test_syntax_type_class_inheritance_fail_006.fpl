@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: Field(tplFieldSet, BinOp(tplFieldElem, tplFieldElem), BinOp(tplFieldElem, tplFieldElem)) {}
+    }
+}

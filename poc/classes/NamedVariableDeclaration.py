@@ -5,10 +5,10 @@ class NamedVariableDeclaration(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
         self.clone(parsing_info)
-        self.var_list=[]
-        self.var_type=None
+        self.var_list = dict()
+        self.var_type = None
         self.aggregate_previous_rules(parse_list,
-                                      ["VariableList", "VariableType"],
+                                      ["VariableList", "VariableType", "Colon"],
                                       self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parse_info: AuxInterpretation):

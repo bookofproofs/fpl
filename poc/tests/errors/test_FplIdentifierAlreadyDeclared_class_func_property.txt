@@ -1,0 +1,26 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myOps: +Composition(a: *tplSetElem)
+
+            mandatory func NthOp(n: index) -> Composition(a: *tplSetElem)
+            {
+                return myOps$n
+            }
+
+            optional func NthOp(m: index) -> Composition(d: *tplSetElem)
+            {
+                return myOps$m
+            }
+
+        }
+    }
+}
+
+##############################
+
+FplIdentifierAlreadyDeclared:15:31: Identifier NthOp already defined at (10,32)

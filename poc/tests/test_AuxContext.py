@@ -49,7 +49,7 @@ class AuxContextTests(unittest.TestCase):
             sem.pop_context(["t3"])
         sem.pop_context(["t4"])
         sem.pop_context(["t1", "t2", "t3"])
-        self.assertEquals(0, len(sem.get_context()))
+        self.assertEqual(0, len(sem.get_context()))
 
 
 if __name__ == '__main__':

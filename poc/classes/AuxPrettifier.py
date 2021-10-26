@@ -47,7 +47,7 @@ class AuxPrettifier:
                 self._last_cst = ast_info.cst
             elif ast_info.rule == "Comma":
                 self._last_cst = ","
-                if self._context.is_parsing_context(["dolinebreaks", "paren"]):
+                if self._context.is_parsing_context([AuxContext.dolinebreaks, AuxContext.paren]):
                     self._append_indented(",")
                 else:
                     self._append(", ")
@@ -56,7 +56,7 @@ class AuxPrettifier:
                 # last word:
                 if self.__last_word() in ["con", "conclusion", "pre", "premise"]:
                     self._append_indented(": ", strip=True)
-                elif self._context.is_parsing_context(["case", "dolinebreaks", "paren", "aftercase"]):
+                elif self._context.is_parsing_context([AuxContext.case, AuxContext.dolinebreaks, AuxContext.paren, AuxContext.aftercase]):
                     self._append(":")
                     self._increase_indent()  # increase indent after the case
                     self._append_indented("")
@@ -67,31 +67,31 @@ class AuxPrettifier:
                 self._append(" := ")
             elif ast_info.rule == "else":
                 self._append("else")
-                if self._context.is_parsing_context(["case", "dolinebreaks", "paren"]):
+                if self._context.is_parsing_context([AuxContext.case, AuxContext.dolinebreaks, AuxContext.paren]):
                     # remember that we are after a case context
-                    self._context.push_context("aftercase")
+                    self._context.push_context(AuxContext.aftercase)
             elif ast_info.rule == "LeftBracket":
                 self._last_cst = "["
                 self._append("[")
-                self._context.push_context("nolinebreak")
+                self._context.push_context(AuxContext.nolinebreak)
             elif ast_info.rule == "LeftParen":
                 self._last_cst = "("
-                self._context.push_context("paren")
+                self._context.push_context(AuxContext.paren)
                 # line break if we are in the context of a starting compound predicate, ex., "and (...."
-                self._open_left_block("(", linebreak=self._context.is_parsing_context(["dolinebreaks", "paren"]))
+                self._open_left_block("(", linebreak=self._context.is_parsing_context([AuxContext.dolinebreaks, AuxContext.paren]))
             elif ast_info.rule == "LeftBrace":
                 self._last_cst = "{"
                 self._open_left_block("{", linebreak=True)
             elif ast_info.rule == "RightBracket":
                 self._last_cst = "]"
                 self._append("]")
-                self._context.pop_context(["nolinebreak"])
+                self._context.pop_context([AuxContext.nolinebreak])
             elif ast_info.rule == "RightParen":
                 self._last_cst = ")"
                 # line break if we are in the context of a starting compound predicate, ex., "and (...."
-                self._close_right_block(")", linebreak=self._context.is_parsing_context(["dolinebreaks", "paren"]))
-                if self._context.is_parsing_context(["paren"]):
-                    self._context.pop_context(["paren"])
+                self._close_right_block(")", linebreak=self._context.is_parsing_context([AuxContext.dolinebreaks, AuxContext.paren]))
+                if self._context.is_parsing_context([AuxContext.paren]):
+                    self._context.pop_context([AuxContext.paren])
                 else:
                     # missing closing paren detected
                     pass
@@ -118,20 +118,20 @@ class AuxPrettifier:
                         one_line_predicates = self.config.get(Settings.section_codereform,
                                            Settings.option_codereform_1linecomppred)
                         if one_line_predicates == "False":
-                            self._context.push_context("dolinebreaks")
+                            self._context.push_context(AuxContext.dolinebreaks)
                     elif ast_info.cst in ["loop", "range"]:
                         self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
-                        self._context.push_context("dolinebreaks")
+                        self._context.push_context(AuxContext.dolinebreaks)
                     elif ast_info.cst == "assert":
                         self._append_indented(ast_info.cst)
                         self._increase_indent()  # increase indent after an assert keyword
                         self._append_indented("")
                     elif ast_info.cst == "case":
                         self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
-                        self._context.push_context("case")
-                        self._context.push_context("dolinebreaks")
+                        self._context.push_context(AuxContext.case)
+                        self._context.push_context(AuxContext.dolinebreaks)
                     elif ast_info.cst in ["assume", "ass"]:
-                        if "insideproof" in self._context.get_context():
+                        if AuxContext.insideproof in self._context.get_context():
                             self._replace_long_by_short("ass", ast_info.cst, line_separator="", indent=False)
                         else:
                             self._replace_long_by_short("ass", ast_info.cst)
@@ -180,7 +180,7 @@ class AuxPrettifier:
                         self._replace_long_by_short("post", ast_info.cst, line_separator="\n\n")
                     elif ast_info.cst in ["proof", "prf"]:
                         self._replace_long_by_short("prf", ast_info.cst, line_separator="\n\n")
-                        self._context.push_context("insideproof")
+                        self._context.push_context(AuxContext.insideproof)
                     elif ast_info.cst in ["proposition", "prop"]:
                         self._replace_long_by_short("prop", ast_info.cst, line_separator="\n\n")
                     elif ast_info.cst in ["return", "ret"]:
@@ -210,20 +210,20 @@ class AuxPrettifier:
             elif ast_info.rule in ["ConditionFollowedByResult", "DefaultResult"]:
                 self._decrease_indent()
                 self._append_indented("")
-                self._context.pop_context(["aftercase"])  # remove the after case flag again
+                self._context.pop_context([AuxContext.aftercase])  # remove the after case flag again
             elif ast_info.rule in ["StatementList"]:
-                if self._context.is_parsing_context(["case", "dolinebreaks", "paren"]):
+                if self._context.is_parsing_context([AuxContext.case, AuxContext.dolinebreaks, AuxContext.paren]):
                     self._decrease_indent()
                     self._append_indented("")
             elif ast_info.rule == "CaseStatement":
-                self._context.pop_context(["case", "dolinebreaks"])  # remove the "case", "dolinebreaks" flag from the context
+                self._context.pop_context([AuxContext.case, AuxContext.dolinebreaks])  # remove the "case", "dolinebreaks" flag from the context
             elif ast_info.rule == "CompoundPredicate":
                 one_line_predicates = self.config.get(Settings.section_codereform,
                                                       Settings.option_codereform_1linecomppred)
                 if one_line_predicates == "False":
-                    self._context.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
+                    self._context.pop_context([AuxContext.dolinebreaks])  # remove the "dolinebreaks" flag from the context
             elif ast_info.rule in ["RangeStatement", "LoopStatement"]:
-                self._context.pop_context(["dolinebreaks"])  # remove the "dolinebreaks" flag from the context
+                self._context.pop_context([AuxContext.dolinebreaks])  # remove the "dolinebreaks" flag from the context
             elif ast_info.rule == "ExtensionHeader":
                 self._increase_indent()
                 self._prettified = self._prettified[:-5] + ":ext\n" + "\t" * self._indent
@@ -231,13 +231,13 @@ class AuxPrettifier:
                 self._decrease_indent()
                 self._prettified = self._prettified[:-6] + "\n" + "\t" * self._indent + ":end\n"
             elif ast_info.rule == "Predicate":
-                if self._context.is_parsing_context(["case", "dolinebreaks", "paren"]):
+                if self._context.is_parsing_context([AuxContext.case, AuxContext.dolinebreaks, AuxContext.paren]):
                     # remember that we are after a case context
-                    self._context.push_context("aftercase")
+                    self._context.push_context(AuxContext.aftercase)
             elif ast_info.rule == "ProofArgument":
                 self._append_indented("")
             elif ast_info.rule == "Proof":
-                self._context.pop_context(["insideproof"])
+                self._context.pop_context([AuxContext.insideproof])
             elif ast_info.rule in ["VariableSpecification", "Statement"]:
                 # line break after each VariableSpecification in the prettyfied version
                 self._prettified = self._prettified + "\n" + "\t" * self._indent
@@ -285,9 +285,6 @@ class AuxPrettifier:
         Returns the current minified version of the FPL code
         :return: A minified version of the FPL code
         """
-        if len(self._context.get_context()) > 0:
-            # the _context stack has to be empty after the prettyfying process, otherwise, something is wrong
-            raise AssertionError("Context stack not empty after minifying the code")
         return self._minified
 
     def _close_right_block(self, paren: str, linebreak=False):

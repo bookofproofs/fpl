@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test(tpl[1 ~ length]) {true}
+    }
+}

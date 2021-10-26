@@ -1,6 +1,6 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxOutlines import AuxOutlines
+from poc.classes.AuxContext import AuxContext
 from poc.classes.PredicateIdentifier import PredicateIdentifier
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.ContextInference import ContextInference
@@ -13,87 +13,77 @@ class ContextPredicateIdentifier:
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         pred_identifier = PredicateIdentifier(i.parse_list, parsing_info)
         # PredicateIdentifier can occur in following different  contexts:
-        if i.context.is_parsing_context([AuxOutlines.inferenceRules, AuxOutlines.block]):
+        if i.context.is_parsing_context([AuxContext.inferenceRules, AuxContext.block]):
             # as a name of an inference rule
-            i.working_stack.append(
-                AuxSymbolTable.add_inference_rule_to_theory(i.theory_node, pred_identifier))
+            i.push_node(AuxSymbolTable.add_inference_rule_to_theory(i.theory_node, pred_identifier))
             ContextInference.start(i, pred_identifier)
             return
-        elif i.context.is_parsing_context([AuxOutlines.axiom, AuxOutlines.signature]):
-            # as a name of an axiom that is global
-            i.working_stack.append(AuxSymbolTable.add_axiom_to_theory(i.theory_node, pred_identifier))
-        elif i.context.is_parsing_context([AuxOutlines.classDeclaration]):
+        elif i.context.is_parsing_context([AuxContext.axiom, AuxContext.signature]):
+            # as a name of an axiom
+            i.push_node(AuxSymbolTable.add_axiom_to_theory(i.theory_node, pred_identifier))
+        elif i.context.is_parsing_context([AuxContext.classDeclaration]):
             # as a name of a class instance definition
             # we put the class instance name on the working stack because we have yet to update it with its type
             # (see ContextGeneralType.dispatch)
-            i.working_stack.append(AuxSymbolTable.add_class_to_theory(i.theory_node, pred_identifier))
-            i.context.push_context(AuxOutlines.classType, i.get_debug_parsing_info(pred_identifier))
-        elif i.context.is_parsing_context([AuxOutlines.classType]):
+            i.push_node(AuxSymbolTable.add_class_to_theory(i.theory_node, pred_identifier))
+            i.context.push_context(AuxContext.classType, i.get_debug_parsing_info(pred_identifier))
+        elif i.context.is_parsing_context([AuxContext.classType]):
             # as a name of a class type, do nothing since ContextGeneralType.dispatch handles this
             pass
-        elif i.context.is_parsing_context([AuxOutlines.varDeclaration]):
+        elif i.context.is_parsing_context([AuxContext.varDeclaration]):
             # as a name of type, do nothing since named_variable_declaration_stop handles this
             pass
-        elif i.context.is_parsing_context([AuxOutlines.mandatoryProperty]) or \
-                i.context.is_parsing_context([AuxOutlines.optionalProperty]):
+        elif i.context.is_parsing_context([AuxContext.mandatoryProperty]) or \
+                i.context.is_parsing_context([AuxContext.optionalProperty]):
             # as the type of a class instance definition
-            # we put the type name on the working stack so we can get it back
-            # when the name of the class instance definition will be parsed next in the context
-            # [AuxOutlines.mandatoryProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature] or
-            # [AuxOutlines.optionalProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature] or
-            i.working_stack.append(pred_identifier.id)
             ContextClassInstance.start(i, pred_identifier)
             return
-        elif i.context.is_parsing_context([AuxOutlines.theoremLikeStmtThm, AuxOutlines.signature]) or \
-                i.context.is_parsing_context([AuxOutlines.theoremLikeStmtLem, AuxOutlines.signature]) or \
-                i.context.is_parsing_context([AuxOutlines.theoremLikeStmtProp, AuxOutlines.signature]) or \
-                i.context.is_parsing_context([AuxOutlines.theoremLikeStmtCor, AuxOutlines.signature]) or \
-                i.context.is_parsing_context([AuxOutlines.theoremLikeStmtConj, AuxOutlines.signature]):
-            # as a name of a predicate definition that is global
-            i.working_stack.append(
+        elif i.context.is_parsing_context([AuxContext.theoremLikeStmtThm, AuxContext.signature]) or \
+                i.context.is_parsing_context([AuxContext.theoremLikeStmtLem, AuxContext.signature]) or \
+                i.context.is_parsing_context([AuxContext.theoremLikeStmtProp, AuxContext.signature]) or \
+                i.context.is_parsing_context([AuxContext.theoremLikeStmtCor, AuxContext.signature]) or \
+                i.context.is_parsing_context([AuxContext.theoremLikeStmtConj, AuxContext.signature]):
+            # as a name of a theorem-like statement
+            i.push_node(
                 AuxSymbolTable.add_theorem_like_stmt(i.theory_node, pred_identifier,
                                                      i.context.get_context()[-2]))
-        elif i.context.is_parsing_context([AuxOutlines.predicateDeclaration, AuxOutlines.signature]):
-            # as a name of a predicate definition that is global
-            i.working_stack.append(AuxSymbolTable.add_predicate_to_theory(i.theory_node, pred_identifier))
+        elif i.context.is_parsing_context([AuxContext.predicateDeclaration, AuxContext.signature]):
+            # as a name of a predicate definition
+            i.push_node(AuxSymbolTable.add_predicate_to_theory(i.theory_node, pred_identifier))
         elif i.context.is_parsing_context(
-                [AuxOutlines.mandatoryProperty, AuxOutlines.functionalTerm, AuxOutlines.signature]) or \
+                [AuxContext.mandatoryProperty, AuxContext.functionalTerm, AuxContext.signature]) or \
                 i.context.is_parsing_context(
-                    [AuxOutlines.optionalProperty, AuxOutlines.functionalTerm, AuxOutlines.signature]):
+                    [AuxContext.optionalProperty, AuxContext.functionalTerm, AuxContext.signature]) or \
+                i.context.is_parsing_context(
+                    [AuxContext.classInstanceDeclaration, AuxContext.signature]):
             # as a name of a functional term property
-            # we put the functional term name on the working stack because we have yet to update
             # it with its image (see ContextGeneralType.dispatch)
-            parent_node = i.working_stack[-1]
-            is_mandatory = (i.context.get_context()[-3] == AuxOutlines.mandatoryProperty)
-            i.working_stack.append(
-                AuxSymbolTable.add_property_to_node(parent_node, pred_identifier, is_mandatory,
-                                                    i.context.get_context()[-2]))
-        elif i.context.is_parsing_context(
-                [AuxOutlines.mandatoryProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature]) or \
-                i.context.is_parsing_context(
-                    [AuxOutlines.optionalProperty, AuxOutlines.classInstanceDeclaration, AuxOutlines.signature]):
-            # as a name of a class instance property
-            # we put the class instance name on the working stack because we have yet to update
-            # it with its image (see ContextGeneralType.dispatch)
-            property_type = i.working_stack.pop()
-            parent_node = i.working_stack[-1]
-            is_mandatory = (i.context.get_context()[-3] == AuxOutlines.mandatoryProperty)
-            i.working_stack.append(
+            property_type = i.parse_list[-1]
+            parent_node = i.touch_node()
+            is_mandatory = (i.context.get_context()[-3] == AuxContext.mandatoryProperty)
+            i.push_node(
                 AuxSymbolTable.add_property_to_node(parent_node, pred_identifier, is_mandatory, property_type))
-        elif i.context.is_parsing_context([AuxOutlines.functionalTerm, AuxOutlines.signature]):
-            # as a name of a functional term definition that is global
+            # register the type of the class
+            new_node = i.touch_node()
+            new_node.type = property_type.id
+            new_node.type_inBuilt = property_type.inBuilt
+            new_node.type_generic = property_type.generic
+            new_node.type_isIndex = property_type.isIndex
+            new_node.isSyntaxExtension = property_type.isSyntaxExtension
+        elif i.context.is_parsing_context([AuxContext.functionalTerm, AuxContext.signature]):
+            # as a name of a functional term definition
             # we put the functional term name on the working stack because we have yet to update
             # it with its image (see ContextGeneralType.dispatch)
-            i.working_stack.append(
+            i.push_node(
                 AuxSymbolTable.add_functional_term_to_theory(i.theory_node, pred_identifier))
-        elif i.context.is_parsing_context([AuxOutlines.classDeclaration, AuxOutlines.block]):
+        elif i.context.is_parsing_context([AuxContext.classDeclaration, AuxContext.block]):
             # as the name of a Constructor
-            class_node = i.working_stack[-1]
-            i.working_stack.append(AuxSymbolTable.add_constructor_to_class(class_node, pred_identifier))
+            class_node = i.touch_node()
+            i.push_node(AuxSymbolTable.add_constructor_to_class(class_node, pred_identifier))
             ContextConstructor.start(i, pred_identifier)
             return
         else:
-            if i.debug:
+            if i.verbose:
                 print(
                     "########### Unhandled context in ContextPredicateIdentifier.dispatch " + str(
                         i.context.get_context()) + " " + str(pred_identifier))

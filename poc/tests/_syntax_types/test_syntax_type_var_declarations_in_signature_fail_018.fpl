@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test(Tuple[1~2]) {true}
+    }
+}

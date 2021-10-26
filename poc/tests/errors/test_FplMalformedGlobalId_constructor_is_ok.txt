@@ -1,0 +1,23 @@
+TestNamespace
+{
+    theory
+    {
+        class Nat: obj
+        {
+            Nat(x: Int)
+            {
+                case
+                (
+                    IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                        self:=x.RightMember()
+                    else:
+                        self:=undefined
+                )
+            }
+        }
+    }
+}
+
+##############################
+
+FplMalformedGlobalId

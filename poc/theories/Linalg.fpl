@@ -13,8 +13,8 @@ Fpl.LinAlg
                 field : Field
                     (
                     tplFieldSet,
-                    addInField: BinOp(tplFieldElem, tplFieldElem),
-                    mulInField: BinOp(tplFieldElem, tplFieldElem)
+                    addInField: BinOp(a,b: tplFieldElem),
+                    mulInField: BinOp(a,b: tplFieldElem)
                     ),
                 n: Nat
             )
@@ -34,10 +34,10 @@ Fpl.LinAlg
             x,y: tplFieldElem[1~n]
             fieldPowerN: FieldPowerN
                 (
-                field: Field(tplFieldSet, BinOp(tplFieldElem, tplFieldElem), BinOp(tplFieldElem, tplFieldElem)),
+                field: Field(f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem)),
                 n:Nat
                 )
-            vecAdd: VecAdd(tplFieldElem[1~n],tplFieldElem[1~n])
+            vecAdd: VecAdd(v,w: tplFieldElem[1~n])
             pre:
                 and
                 (

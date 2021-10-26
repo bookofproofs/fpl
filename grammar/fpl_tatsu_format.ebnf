@@ -1,4 +1,4 @@
-# fpl Version 1.0.4
+# fpl Version 1.1.0
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -243,7 +243,7 @@
 
     Mapping =
         To
-        [ IW ] TypeOrTupleOfTypes
+        [ IW ] VariableType
         ;
 
 
@@ -271,27 +271,13 @@
         "assert"
         ;
 
-    VariableDeclaration =
-        (
-        AnonymousDeclaration
-        | NamedVariableDeclaration
-        )
-        ;
-
-    AnonymousDeclaration =
-        (
-        AnonymousSignature
-        | GeneralType
-        )
-        ;
-
     NamedVariableDeclaration =
         VariableList [ IW ] Colon [ IW ] VariableType
         ;
 
     VariableType =
         (
-        AnonymousSignature
+        ParenthesisedGeneralType
         | GeneralType
         )
         ;
@@ -333,20 +319,6 @@
 
     VariableList =
         Variable { [ IW ] Comma [ IW ] Variable }*
-        ;
-
-    TypeOrTupleOfTypes =
-        (
-        TupleOfTypes
-        | VariableType
-        )
-        ;
-
-    TupleOfTypes =
-        LeftParen
-        [ IW ] GeneralType
-        { [ IW ] Comma [ IW ] GeneralType }*
-        RightParen
         ;
 
     # Predicates can be defined similarly to objects, but they are not derived from a parent type and have arguments
@@ -585,26 +557,23 @@
         [ IW ] ParamTuple
         ;
 
-    AnonymousSignature =
+    ParenthesisedGeneralType =
         GeneralType
         [ IW ] ParamTuple
         ;
 
     ParamTuple =
         LeftParen
-        [ IW ] [ ParamList ]
+        [ IW ] [ NamedVariableDeclarationList ]
         [ IW ] RightParen
         ;
 
-    ParamList =
-        (
-        Slash ArgumentIdentifier [ IW ] Comma [ IW ] Slash ArgumentIdentifier
-        | VariableDeclarationList
-        )
+    ArgumentParam =
+        Slash ArgumentIdentifier
         ;
 
-    VariableDeclarationList =
-        VariableDeclaration { [ IW ] Comma [ IW ] VariableDeclaration }*
+    NamedVariableDeclarationList =
+        NamedVariableDeclaration { [ IW ] Comma [ IW ] NamedVariableDeclaration }*
         ;
 
     TypeWithCoord =
@@ -628,7 +597,8 @@
     CoordInSignature =
         (
         Type
-        | Coord
+        | Variable
+        | extDigit
         )
         ;
 
@@ -847,7 +817,7 @@
         ;
 
     Revoke =
-        RevokeHeader SW Slash ArgumentIdentifier
+        RevokeHeader SW ArgumentParam
         ;
 
     RevokeHeader =
@@ -860,21 +830,13 @@
     # Referenced results can be the identifiers of Rules of References, conjectures, theorem-like statements,
     # or axioms
     Justification =
-        Slash ReferencedResultIdentifier { [ IW ] Comma [ IW ] Slash ReferencedResultIdentifier }*
+        Slash PrimePredicate { [ IW ] Comma [ IW ] Slash PrimePredicate }*
         ;
 
 
 
     Slash =
         "/"
-        ;
-
-    ReferencedResultIdentifier =
-        (
-        ArgumentIdentifier
-        | Signature
-        | PredicateIdentifier
-        )
         ;
 
     proof =
@@ -965,6 +927,7 @@
         | true
         | false
         | UndefinedHeader
+        | ArgumentParam
         )
         ;
 

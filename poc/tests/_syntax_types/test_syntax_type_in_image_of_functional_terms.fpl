@@ -1,0 +1,69 @@
+TestNamespace
+{
+    theory
+    {
+        // object image (allowed both, syntactically and semantically)
+        func Test() -> obj {}
+        func Test() -> object {}
+
+        // generic declarations (allowed both, syntactically and semantically)
+        func Test() -> tpl {}
+        func Test() -> template {}
+        func Test() -> tplSetElem {}
+        func Test() -> tpl123 {}
+
+        // generic declarations (allowed both, syntactically and semantically)
+        func Test() -> ind {}
+        func Test() -> index {}
+
+        // predicate declarations (allowed both, syntactically and semantically)
+        func Test() -> pred {}
+        func Test() -> predicate {}
+
+        // function declarations (allowed both, syntactically and semantically)
+        func Test() -> func {}
+        func Test() -> function {}
+
+        // User-defined (allowed both, syntactically and semantically)
+        func Test() -> MyBaseClass {}
+        func Test() -> AnotherBaseClass {}
+
+        // Aliased user-defined (allowed both, syntactically and semantically)
+        func Test() -> MyAlias.MyBaseClass {}
+        func Test() -> My.LongAlias.AnotherBaseClass {}
+
+        // syntax extensions (syntactically allowed for functions, semantically not allowed for functions todo)
+        func Test() -> @extMySyntaxExtension {}
+        func Test() -> @extMyAnotherSyntaxExtension {}
+
+        // other types
+        func Test() -> *tplSetElem {}
+        func Test() -> +Composition(a: *tplSetElem) {}
+        func Test() -> Composition(a: *tplSetElem) {}
+        func Test() -> BinOp(a,b: tplSetElem) {}
+        func Test() -> *Nat {}
+        func Test() -> Nat[from~to] {}
+        func Test() -> Nat[~] {}
+        func Test() -> Real[k~] {}
+        func Test() -> Int[k~] {}
+        func Test() -> tpl[Nat~Nat] {}
+        func Test() -> +tpl {}
+        func Test() -> tpl[1 ~ length] {}
+        func Test() -> tpl[Nat~] {}
+        func Test() -> tpl[from~] {}
+        func Test() -> Set[Nat~Nat] {}
+        func Test() -> +Set {}
+        func Test() -> Set[1~n] {}
+        func Test() -> Tuple[1~2] {}
+        func Test() -> +pred {}
+        func Test() -> tplFieldElem[1 ~ n] {}
+        func Test() -> tplFieldElem[1~n] {}
+        func Test() -> Field (f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem)) {}
+        func Test() -> VecAdd(a,b: tplFieldElem[1~n]) {}
+        func Test() -> Test(a: Test1,b: Test2,c: obj,d: pred,e: +pred,f: *func) {}
+        func Test() -> Test(a: *func) {}
+        func Test() -> *func {}
+        func Test() -> +func {}
+        func Test() -> *pred {}
+    }
+}

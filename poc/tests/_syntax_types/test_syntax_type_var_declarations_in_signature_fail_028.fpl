@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test(Test1,Test2,obj,pred,+pred,*func) {true}
+    }
+}

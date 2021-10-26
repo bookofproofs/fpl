@@ -1,6 +1,6 @@
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxAstInfo import AuxAstInfo
-from poc.classes.AuxOutlines import AuxOutlines
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from anytree import AnyNode
 from poc.classes.ContextAllQuantor import ContextAllQuantor
@@ -18,8 +18,9 @@ from poc.classes.ContextIsOperator import ContextIsOperator
 from poc.classes.ContextMapping import ContextMapping
 from poc.classes.ContextNamedVariableDeclaration import ContextNamedVariableDeclaration
 from poc.classes.ContextNamespaceIdentifier import ContextNamespaceIdentifier
-from poc.classes.ContextNamespaceModifier import ContextNamespaceModifier
+from poc.classes.ContextParamTuple import ContextParamTuple
 from poc.classes.ContextParen import ContextParen
+from poc.classes.ContextParenthesisedGeneralType import ContextParenthesisedGeneralType
 from poc.classes.ContextPredicateDeclaration import ContextPredicateDeclaration
 from poc.classes.ContextPredicateHeader import ContextPredicateHeader
 from poc.classes.ContextPredicateIdentifier import ContextPredicateIdentifier
@@ -28,9 +29,11 @@ from poc.classes.ContextSignature import ContextSignature
 from poc.classes.ContextTheoremLikeStatement import ContextTheoremLikeStatement
 from poc.classes.ContextTheory import ContextTheory
 from poc.classes.ContextType import ContextType
+from poc.classes.ContextXid import ContextXid
 from poc.classes.ContextUses import ContextUses
 from poc.classes.ContextVariableList import ContextVariableList
 from poc.classes.ContextVariableType import ContextVariableType
+from poc.classes.ContextWildcardTheoryNamespace import ContextWildcardTheoryNamespace
 import poc.fplerror
 
 
@@ -39,7 +42,7 @@ class FPLSourceAnalyser(object):
     def __init__(self, root: AnyNode, theory_name: str, errors: list):
         self.i = AuxISourceAnalyser(errors, root, theory_name)
         self.ast_list = []
-        self.i.context.push_context(AuxOutlines.root)
+        self.i.context.push_context(AuxSymbolTable.root)
 
         self.switcher = {
             "Alias": self.default_interpretation,
@@ -50,10 +53,9 @@ class FPLSourceAnalyser(object):
             "Ampersand": self.default_interpretation,
             "AmpersandVariable": self.default_interpretation,
             "and": self.default_interpretation,
-            "AnonymousDeclaration": self.default_interpretation,
-            "AnonymousSignature": self.default_interpretation,
             "ArgumentIdentifier": self.default_interpretation,
             "ArgumentInference": self.default_interpretation,
+            "ArgumentParam": self.default_interpretation,
             "ass": self.default_interpretation,
             "ass": self.default_interpretation,
             "assert": self.default_interpretation,
@@ -184,10 +186,11 @@ class FPLSourceAnalyser(object):
             "mandatory": self.default_interpretation,
             "Mapping": ContextMapping.stop,
             "NamedVariableDeclaration": ContextNamedVariableDeclaration.stop,
+            "NamedVariableDeclarationList": self.default_interpretation,
             "Namespace": self.default_interpretation,
             "NamespaceBlock": self.default_interpretation,
             "NamespaceIdentifier": ContextNamespaceIdentifier.dispatch,
-            "NamespaceModifier": ContextNamespaceModifier.dispatch,
+            "NamespaceModifier": self.default_interpretation,
             "Negation": self.default_interpretation,
             "not": self.default_interpretation,
             "obj": self.default_interpretation,
@@ -197,8 +200,8 @@ class FPLSourceAnalyser(object):
             "opt": self.default_interpretation,
             "optional": self.default_interpretation,
             "or": self.default_interpretation,
-            "ParamList": self.default_interpretation,
-            "ParamTuple": self.default_interpretation,
+            "ParamTuple": ContextParamTuple.dispatch,
+            "ParenthesisedGeneralType": ContextParenthesisedGeneralType.dispatch,
             "ParenthesisedPredicate": self.default_interpretation,
             "Plus": self.default_interpretation,
             "post": self.default_interpretation,
@@ -241,7 +244,6 @@ class FPLSourceAnalyser(object):
             "RangeInSignature": self.default_interpretation,
             "RangeOrLoopBody": self.default_interpretation,
             "RangeStatement": self.default_interpretation,
-            "ReferencedResultIdentifier": self.default_interpretation,
             "ret": self.default_interpretation,
             "return": self.default_interpretation,
             "ReturnHeader": self.default_interpretation,
@@ -282,9 +284,7 @@ class FPLSourceAnalyser(object):
             "TranslationList": self.default_interpretation,
             "trivial": self.default_interpretation,
             "true": self.default_interpretation,
-            "TupleOfTypes": self.default_interpretation,
             "Type": ContextType.dispatch,
-            "TypeOrTupleOfTypes": self.default_interpretation,
             "TypeWithCoord": self.default_interpretation,
             "undef": self.default_interpretation,
             "undefined": self.default_interpretation,
@@ -292,16 +292,14 @@ class FPLSourceAnalyser(object):
             "uses": ContextUses.start,
             "UsesClause": ContextUses.stop,
             "Variable": self.default_interpretation,
-            "VariableDeclaration": self.default_interpretation,
-            "VariableDeclarationList": self.default_interpretation,
             "VariableList": ContextVariableList.dispatch,
             "VariableSpecification": self.default_interpretation,
             "VariableSpecificationList": self.default_interpretation,
             "VariableType": ContextVariableType.dispatch,
             "VDash": self.default_interpretation,
-            "WildcardTheoryNamespace": self.default_interpretation,
+            "WildcardTheoryNamespace": ContextWildcardTheoryNamespace.dispatch,
             "WildcardTheoryNamespaceList": self.default_interpretation,
-            "XId": self.default_interpretation,
+            "XId": ContextXid.dispatch,
             "xor": self.default_interpretation,
         }
 
@@ -323,19 +321,27 @@ class FPLSourceAnalyser(object):
         :return: ast
         """
 
-        ast_info = AuxAstInfo(context)
+        ast_info = AuxAstInfo(context, self.i.theory_node.theory_name)
         self.ast_list.append(ast_info)
         parsing_info = AuxInterpretation(ast_info, self.i.errors)
-        try:
+        if self.i.verbose:
+            # when in debug mode, do not catch AssertionErrors
+            # We use AssertionErrors to mine the correctness of the FPL interpreter
             self.syntax_analysis_switcher(parsing_info)
-        except AssertionError as err:
-            self.i.errors.append(
-                poc.fplerror.FplInterpreterMessage(str(err), parsing_info.rule_line(), parsing_info.rule_col()))
+        else:
+            try:
+                self.syntax_analysis_switcher(parsing_info)
+            except AssertionError as err:
+                self.i.errors.append(
+                    poc.fplerror.FplInterpreterMessage(str(err), parsing_info.rule_line(), parsing_info.rule_col(),
+                                                       self.i.theory_node.theory_name))
         return ast
 
     def syntax_analysis_switcher(self, parsing_info: AuxInterpretation):
         rule = parsing_info.rule_name()
         func = self.switcher.get(rule, lambda: "Invalid rule")
+        if self.i.verbose:
+            print("switched " + (str(func)).split(" ")[1] + " for " + rule)
         # call the function depending on the rule in the switcher and modify its interpretation and returns its value
         return func(self.i, parsing_info)
 
@@ -363,13 +369,3 @@ class FPLSourceAnalyser(object):
         :return: None
         """
         return None
-
-
-
-
-
-
-
-
-
-

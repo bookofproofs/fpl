@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: ind
+        {
+        }
+    }
+}
+
+##############################
+
+FplInvalidInheritance:5:23: Inheritance from ind not possible (not a defined class but an index type)

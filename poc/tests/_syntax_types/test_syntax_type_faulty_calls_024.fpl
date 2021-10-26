@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test()
+        {
+            Test(Field(tplFieldSet, BinOp(tplFieldElem, tplFieldElem), BinOp(tplFieldElem, tplFieldElem)))
+        }
+    }
+}

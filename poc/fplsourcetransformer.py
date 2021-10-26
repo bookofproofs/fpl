@@ -43,7 +43,7 @@ class FPLSourceTransformer(object):
         :return: ast
         """
 
-        ast_info = AuxAstInfo(context)
+        ast_info = AuxAstInfo(context, self.i.theory_node.theory_name)
         # minify
         self._minify(ast_info)
         return ast

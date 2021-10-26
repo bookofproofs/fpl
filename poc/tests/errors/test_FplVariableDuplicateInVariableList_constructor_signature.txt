@@ -1,0 +1,23 @@
+Test.Namespace
+{
+    theory
+    {
+        class Nat: obj
+        {
+            Nat(x, y, x: Int)
+            {
+                case
+                (
+                    IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                        self:=x.RightMember()
+                    else:
+                        self:=undefined
+                )
+            }
+        }
+    }
+}
+
+##############################
+
+FplVariableDuplicateInVariableList:7:23: Variable x already listed at 7:17

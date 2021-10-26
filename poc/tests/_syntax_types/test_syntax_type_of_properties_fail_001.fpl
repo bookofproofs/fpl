@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        class Test:obj
+        {
+            mand +Composition(*tplSetElem) TestProperty() { return n }
+        }
+    }
+}

@@ -2,7 +2,7 @@
 /* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */
 
 
-/* fpl Version 1.0.4 */
+/* fpl Version 1.1.0 */
 /* a mathematical theory written in FPL can be split between different files having */
 /* Every theory part block starts with an optional syntax extension block, followed by */
 /* optional usage of other libraries, followed by optional inference rules, */
@@ -153,7 +153,7 @@ regular_expression '/((?!:end).)*/'
         (IW)? Mapping
     Mapping ::=
         To
-        (IW)? TypeOrTupleOfTypes
+        (IW)? VariableType
     VariableSpecificationList ::=
         ( ( CW )* VariableSpecification SW )+
     VariableSpecification ::=
@@ -167,21 +167,11 @@ regular_expression '/((?!:end).)*/'
         assert SW Predicate
     assert ::=
         "assert"
-    VariableDeclaration ::=
-        (
-        AnonymousDeclaration
-        | NamedVariableDeclaration
-        )
-    AnonymousDeclaration ::=
-        (
-        AnonymousSignature
-        | GeneralType
-        )
     NamedVariableDeclaration ::=
         VariableList (IW)? Colon (IW)? VariableType
     VariableType ::=
         (
-        AnonymousSignature
+        ParenthesisedGeneralType
         | GeneralType
         )
     GeneralType ::=
@@ -210,16 +200,6 @@ regular_expression '/((?!:end).)*/'
         )
     VariableList ::=
         Variable ( (IW)? Comma (IW)? Variable )*
-    TypeOrTupleOfTypes ::=
-        (
-        TupleOfTypes
-        | VariableType
-        )
-    TupleOfTypes ::=
-        LeftParen
-        (IW)? GeneralType
-        ( (IW)? Comma (IW)? GeneralType )*
-        RightParen
 /* Predicates can be defined similarly to objects, but they are not derived from a parent type and have arguments */
     DefinitionPredicate ::=
         PredicateHeader
@@ -361,20 +341,17 @@ regular_expression '/((?!:end).)*/'
     Signature ::=
         PredicateIdentifier
         (IW)? ParamTuple
-    AnonymousSignature ::=
+    ParenthesisedGeneralType ::=
         GeneralType
         (IW)? ParamTuple
     ParamTuple ::=
         LeftParen
-        (IW)? (ParamList)?
+        (IW)? (NamedVariableDeclarationList)?
         (IW)? RightParen
-    ParamList ::=
-        (
-        Slash ArgumentIdentifier (IW)? Comma (IW)? Slash ArgumentIdentifier
-        | VariableDeclarationList
-        )
-    VariableDeclarationList ::=
-        VariableDeclaration ( (IW)? Comma (IW)? VariableDeclaration )*
+    ArgumentParam ::=
+        Slash ArgumentIdentifier
+    NamedVariableDeclarationList ::=
+        NamedVariableDeclaration ( (IW)? Comma (IW)? NamedVariableDeclaration )*
     TypeWithCoord ::=
         Type
         LeftBound
@@ -390,7 +367,8 @@ regular_expression '/((?!:end).)*/'
     CoordInSignature ::=
         (
         Type
-        | Coord
+        | Variable
+        | extDigit
         )
     Entity ::=
         (
@@ -522,7 +500,7 @@ regular_expression '/((?!:end).)*/'
         | Revoke
         )
     Revoke ::=
-        RevokeHeader SW Slash ArgumentIdentifier
+        RevokeHeader SW ArgumentParam
     RevokeHeader ::=
         (
         revoke
@@ -531,15 +509,9 @@ regular_expression '/((?!:end).)*/'
 /* Referenced results can be the identifiers of Rules of References, conjectures, theorem-like statements, */
 /* or axioms */
     Justification ::=
-        Slash ReferencedResultIdentifier ( (IW)? Comma (IW)? Slash ReferencedResultIdentifier )*
+        Slash PrimePredicate ( (IW)? Comma (IW)? Slash PrimePredicate )*
     Slash ::=
         "/"
-    ReferencedResultIdentifier ::=
-        (
-        ArgumentIdentifier
-        | Signature
-        | PredicateIdentifier
-        )
     proof ::=
         "proof"
     prf ::=
@@ -587,6 +559,7 @@ regular_expression '/((?!:end).)*/'
         | true
         | false
         | UndefinedHeader
+        | ArgumentParam
         )
     QualifiedIdentifier ::=
         Identifier ( Dot PredicateWithArguments )+
