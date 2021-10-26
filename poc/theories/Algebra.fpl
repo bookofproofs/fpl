@@ -110,9 +110,9 @@ Fpl.Algebra.Structures
         {
 
             myCarrierSet: tplSet
-            myOps: +Composition(*tplSetElem)
+            myOps: +Composition(myElem: *tplSetElem)
 
-            AlgebraicStructure(x: tplSet, ops: +Composition(*tplSetElem))
+            AlgebraicStructure(x: tplSet, ops: +Composition(elem: *tplSetElem))
             {
 
                 a: obj
@@ -138,7 +138,7 @@ Fpl.Algebra.Structures
                     )
             }
 
-            mandatory func NthOp(n: index) -> Composition(*tplSetElem)
+            mandatory func NthOp(n: index) -> Composition(elem: *tplSetElem)
             {
                 return myOps$n
             }
@@ -157,7 +157,7 @@ Fpl.Algebra.Structures
         class Magma: AlgebraicStructure
         {
 
-            Magma(x: tplSet, op: BinOp(tplSetElem, tplSetElem))
+            Magma(x: tplSet, op: BinOp(a,b: tplSetElem))
             {
                 self:=AlgebraicStructure(x,op)
             }
@@ -179,9 +179,9 @@ Fpl.Algebra.Structures
         // Note how we use "full-qualified" parameters to ensure that the type "tpl" will be of exactly the  same ty
         class Monoid: Semigroup
         {
-            myOp: BinOp(tplSetElem, tplSetElem)
+            myOp: BinOp(a,b: tplSetElem)
 
-            Monoid(x: tplSet, op: BinOp(tplSetElem, tplSetElem))
+            Monoid(x: tplSet, op: BinOp(a,b: tplSetElem))
             {
                 self:=Semigroup(x,op)
                 myOp:=op
@@ -198,7 +198,7 @@ Fpl.Algebra.Structures
         // Note how we use "full-qualified" parameters to enforce x to be an element of the monoid m.
         func Exp
             (
-            m: Monoid(x: tplSet, op: BinOp(tplSetElem, tplSetElem)),
+            m: Monoid(x: tplSet, op: BinOp(a,b: tplSetElem)),
             x: tplSetElem,
             n: Nat
             ) -> tplSetElem
@@ -220,9 +220,9 @@ Fpl.Algebra.Structures
         // a group is a monoid, in which an inverse element exists for all elements
         class Group: Monoid
         {
-            myOp: BinOp(tplSetElem, tplSetElem)
+            myOp: BinOp(a,b: tplSetElem)
 
-            Group(x: tplSet, op: BinOp(tplSetElem, tplSetElem))
+            Group(x: tplSet, op: BinOp(a,b: tplSetElem))
             {
                 myOp:=op
                 self:=Monoid (x,op)
@@ -267,12 +267,12 @@ Fpl.Algebra.Structures
         class Ring: AlgebraicStructure
         {
             myX : tpl
-            myAdd,myMul : BinOp(tplElem, tplElem)
+            myAdd,myMul : BinOp(a,b: tplElem)
 
             Ring (
                 x: tpl,
-                add: BinOp(tplElem, tplElem),
-                mul: BinOp(tplElem, tplElem)
+                add: BinOp(a,b: tplElem),
+                mul: BinOp(a,b: tplElem)
             )
             {
                 myX:= x
@@ -281,12 +281,12 @@ Fpl.Algebra.Structures
                 self:=AlgebraicStructure(x, add, mul)
             }
 
-            mandatory func Add(tplElem, tplElem)->tplElem
+            mandatory func Add(a,b:tplElem)->tplElem
             {
                 return myAdd
             }
 
-            mandatory func Mul(tplElem, tplElem)->tplElem
+            mandatory func Mul(a,b:tplElem)->tplElem
             {
                 return myMul
             }
@@ -361,7 +361,7 @@ Fpl.Algebra.Structures
         class Field: CommutativeUnitRing
         {
 
-            Field(x: tpl, add,mul: BinOp(tplElem,tplElem))
+            Field(x: tpl, add,mul: BinOp(a,b:tplElem))
             {
                 self:=CommutativeUnitRing(x,add,mul)
             }
@@ -408,11 +408,11 @@ Fpl.Algebra.Structures
         class VectorSpaceOverField : obj
         {
             mySpace: NonemptySet
-            myFieldAdd, myFieldMul: BinOp(tplFieldElement, tplFieldElement)
+            myFieldAdd, myFieldMul: BinOp(a,b:tplFieldElement)
             myFieldSet: tplFieldSet
-            myScalarMul: ScalarMul (tplFieldElement, tplVector)
-            myVecAdd: AddVec (tplVector,tplVector)
-            myField: Field(tplFieldSet,BinOp(tplFieldElement,tplFieldElement),BinOp(tplFieldElement,tplFieldElement))
+            myScalarMul: ScalarMul (a: tplFieldElement, v: tplVector)
+            myVecAdd: AddVec (v,w: tplVector)
+            myField: Field(f: tplFieldSet,opAdd, opMul: BinOp(a,b: tplFieldElement))
 
             VectorSpaceOverField
                 (
@@ -420,11 +420,11 @@ Fpl.Algebra.Structures
                         field: Field
                         (
                             fieldSet: tplFieldSet,
-                            fieldAdd: BinOp(tplFieldElement, tplFieldElement),
-                            fieldMul: BinOp(tplFieldElement, tplFieldElement)
+                            fieldAdd: BinOp(a,b: tplFieldElement),
+                            fieldMul: BinOp(a,b: tplFieldElement)
                         ),
-                    vecAdd: AddVec (tplVector,tplVector),
-                    scalarMul: ScalarMul (tplFieldElement, tplVector)
+                    vecAdd: AddVec (v,w: tplVector),
+                    scalarMul: ScalarMul (a: tplFieldElement,v: tplVector)
                 )
             {
                 mySpace:= space

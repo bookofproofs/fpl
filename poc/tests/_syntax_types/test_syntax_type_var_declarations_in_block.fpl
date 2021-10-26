@@ -1,0 +1,77 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test()
+        {
+            // object declarations (allowed both, syntactically and semantically)
+            a,b,c: obj
+            a,b,c: object
+
+            // generic declarations (allowed both, syntactically and in general semantically)
+            a,b,c: tpl
+            a,b,c: template
+            a,b,c: tplSetElem
+            a,b,c: tpl123
+
+            // index declarations (allowed both, syntactically and in general semantically)
+            a,b,c: ind
+            a,b,c: index
+
+            // predicate declarations (allowed both, syntactically and semantically)
+            a,b,c: pred
+            a,b,c: predicate
+
+            // function declarations (allowed both, syntactically and semantically)
+            a,b,c: func
+            a,b,c: function
+
+            // User-defined (allowed both, syntactically and semantically)
+            a,b,c: MyBaseClass
+            a,b,c: AnotherBaseClass
+
+            // Aliased user-defined (allowed both, syntactically and semantically)
+            a,b,c: MyAlias.MyBaseClass
+            a,b,c: My.LongAlias.AnotherBaseClass
+
+            // syntax extensions (syntactically and semantically allowed for variables)
+            a,b,c: @extMySyntaxExtension
+            a,b,c: @extMyAnotherSyntaxExtension
+
+
+            // other types
+            a,b,c: *tplSetElem
+            myOps: +Composition(a: *tplSetElem)
+            n: Composition(a: *tplSetElem)
+            op: BinOp(a,b: tplSetElem)
+            list: *Nat
+            arr: Nat[from~to]
+            arr: Nat[~]
+            arr: Real[k~]
+            arr: Int[k~]
+            a : tpl[Nat~Nat]
+            listOfTpl: +tpl
+            arr: tpl[1 ~ length]
+            a: tpl[Nat~]
+            x: tpl[from~]
+            a: Set[Nat~Nat]
+            setList: +Set
+            setArray: Set[1~n]
+            tuple: Tuple[1~2]
+            p: +pred
+            t: tplFieldElem[1 ~ n]
+            x,y: tplFieldElem[1~n]
+
+            field: Field(f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem))
+            vecAdd: VecAdd(v,w: tplFieldElem[1~n])
+            testVar: Test(a: Test1,b: Test2,c: obj,d: pred,e: +pred,f: *func)
+            testVar: Test(a: *func)
+            testVar: *func
+            testVar: +func
+            testVar: *pred
+
+            // because we are in an axiom, we need at least one predicate to avoid causing syntax errors
+            true
+        }
+    }
+}

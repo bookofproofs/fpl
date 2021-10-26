@@ -1,0 +1,28 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: OtherClass
+        {
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_generaltype_obj')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    │   └── AnyNode(id='Zero', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj')
+    │       ├── AnyNode(outline='variables')
+    │       ├── AnyNode(outline='usedTypes')
+    │       │   └── AnyNode(generic=False, id='obj', inbuilt=True, info=<AuxAstInfo.AuxAstInfo>, isIndex=False, outline='type')
+    │       ├── AnyNode(outline='constructors')
+    │       └── AnyNode(outline='properties')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

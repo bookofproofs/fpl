@@ -45,14 +45,6 @@ print(interpreterGeometry.minified())
 if interpreterGeometry.has_errors():
     interpreterGeometry.print_errors()
 
-theoryLinalg = u.get_file_content("theories/Linalg.fpl")
-interpreterLinalg = FplInterpreter(fpl_parser)
-interpreterLinalg.syntax_transform("linalg", theoryLinalg)
-u.add_distinct_duration("interpreting linalg")
-print(interpreterLinalg.minified())
-if interpreterLinalg.has_errors():
-    interpreterLinalg.print_errors()
-
 theoryExample25 = u.get_file_content("theories/Example4-7.fpl")
 interpreterExample25 = FplInterpreter(fpl_parser)
 interpreterExample25.syntax_transform("example25", theoryExample25)
@@ -60,6 +52,14 @@ u.add_distinct_duration("interpreting example25")
 print(interpreterExample25.minified())
 if interpreterExample25.has_errors():
     interpreterExample25.print_errors()
+
+theoryLinalg = u.get_file_content("theories/Linalg.fpl")
+interpreterLinalg = FplInterpreter(fpl_parser)
+interpreterLinalg.syntax_transform("linalg", theoryLinalg)
+u.add_distinct_duration("interpreting linalg")
+print(interpreterLinalg.minified())
+if interpreterLinalg.has_errors():
+    interpreterLinalg.print_errors()
 
 theoryComStruct = u.get_file_content("theories/CommonsStructures.fpl")
 interpreterComStruct = FplInterpreter(fpl_parser)

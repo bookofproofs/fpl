@@ -1,0 +1,69 @@
+TestNamespace
+{
+    theory
+    {
+        // object declarations (allowed both, syntactically and in general also semantically)
+        axiom Test(a,b,c: obj) {true}
+        axiom Test(a,b,c: object) {true}
+
+        // generic declarations (allowed both, syntactically and in general also semantically)
+        axiom Test(a,b,c: tpl) {true}
+        axiom Test(a,b,c: template) {true}
+        axiom Test(a,b,c: tplSetElem) {true}
+        axiom Test(a,b,c: tpl123) {true}
+
+        // generic declarations (allowed both, syntactically and in general also semantically)
+        axiom Test(a,b,c: ind) {true}
+        axiom Test(a,b,c: index) {true}
+
+        // predicate declarations (allowed both, syntactically and semantically)
+        axiom Test(a,b,c: pred) {true}
+        axiom Test(a,b,c: predicate) {true}
+
+        // function declarations (allowed both, syntactically and semantically)
+        axiom Test(a,b,c: func) {true}
+        axiom Test(a,b,c: function) {true}
+
+        // User-defined (allowed both, syntactically and semantically)
+        axiom Test(a,b,c: MyBaseClass) {true}
+        axiom Test(a,b,c: AnotherBaseClass) {true}
+
+        // Aliased user-defined (allowed both, syntactically and semantically)
+        axiom Test(a,b,c: MyAlias.MyBaseClass) {true}
+       axiom Test(a,b,c: My.LongAlias.AnotherBaseClass) {true}
+
+        // syntax extensions (allowed both, syntactically and semantically for variables)
+        axiom Test(a,b,c: @extMySyntaxExtension) {true}
+        axiom Test(a,b,c: @extMyAnotherSyntaxExtension) {true}
+
+        // other types
+        axiom Test(a,b,c: *tplSetElem) {true}
+        axiom Test(myOps: +Composition(a: *tplSetElem)) {true}
+        axiom Test(n: Composition(a: *tplSetElem)) {true}
+        axiom Test(op: BinOp(a,b: tplSetElem)) {true}
+        axiom Test(list: *Nat) {true}
+        axiom Test(arr: Nat[from~to]) {true}
+        axiom Test(arr: Nat[~]) {true}
+        axiom Test(arr: Real[k~]) {true}
+        axiom Test(arr: Int[k~]) {true}
+        axiom Test(a : tpl[Nat~Nat]) {true}
+        axiom Test(listOfTpl: +tpl) {true}
+        axiom Test(arr: tpl[1 ~ length]) {true}
+        axiom Test(a: tpl[Nat~]) {true}
+        axiom Test(x: tpl[from~]) {true}
+        axiom Test(a: Set[Nat~Nat]) {true}
+        axiom Test(setList: +Set) {true}
+        axiom Test(setArray: Set[1~n]) {true}
+        axiom Test(tuple: Tuple[1~2]) {true}
+        axiom Test(p: +pred) {true}
+        axiom Test(t: tplFieldElem[1 ~ n]) {true}
+        axiom Test(x,y: tplFieldElem[1~n]) {true}
+        axiom Test(field: Field (f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem))) {true}
+        axiom Test(vecAdd: VecAdd(v,w: tplFieldElem[1~n])) {true}
+        axiom Test(testVar: Field(a: Test1,b: Test2,c: obj,d: pred,e: +pred,f: *func)) {true}
+        axiom Test(a: *func) {true}
+        axiom Test(a: +func) {true}
+        axiom Test(a: *pred) {true}
+        axiom Test(a: +pred) {true}
+    }
+}

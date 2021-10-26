@@ -5,11 +5,11 @@ TestNamespace
         class AlgebraicStructure: obj
         {
 
+            myOps1,myOps2,myOps3: +Composition(a,b,c: *tplSetElem, d,e,f: obj)
             myCarrierSet: tplSet
             myCarrierSet1: Nat
-            myOps: +Composition(*tplSetElem)
 
-            AlgebraicStructure(x: tplSet, ops: +Composition(*tplSetElem))
+            AlgebraicStructure(x: tplSet, ops: +Composition(e: *tplSetElem))
             {
 
                 a: obj
@@ -41,15 +41,21 @@ TestNamespace
 ##############################
 
 AnyNode(outline='root')
+├── AnyNode(outline='global')
+│   └── AnyNode(gid='TestNamespace.AlgebraicStructure', node=AnyNode(), outline='class')
 └── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_constructor')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
     │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj')
     │       ├── AnyNode(outline='variables')
+    │       │   ├── AnyNode(id='myCarrierSet', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSet')
+    │       │   └── AnyNode(id='myCarrierSet1', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Nat')
     │       ├── AnyNode(outline='constructors')
     │       │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='constructor')
-    │       │       └── AnyNode(outline='variables')
+    │       │       ├── AnyNode(outline='variables')
+    │       │       │   ├── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='tplSet')
+    │       │       │   └── AnyNode(id='a', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='obj')
     │       └── AnyNode(outline='properties')
     ├── AnyNode(outline='predicates')
     ├── AnyNode(outline='functionalTerms')

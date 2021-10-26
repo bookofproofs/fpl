@@ -1,0 +1,39 @@
+Test.Namespace
+{
+    theory
+    {
+        class Nat: obj
+        {
+            Nat(x: @extDecimal)
+            {
+                case
+                (
+                    Equals(x,0) :
+                        self := Zero()
+                    Equals(x,1) :
+                        self := Succ(Zero())
+                    Equals(x,2) :
+                        self := Succ(Succ(Zero()))
+                    else:
+                        // else case addressed using a python delegate
+                        self := Succ(py.decrement(x))
+                )
+            }
+
+            Nat1(x: Int)
+            {
+                case
+                (
+                    IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                        self:=x.RightMember()
+                    else:
+                        self:=undefined
+                )
+            }
+        }
+    }
+}
+
+##############################
+
+FplMisspelledConstructor:23:16: Misspelled constructor Nat1 (must be named Nat)

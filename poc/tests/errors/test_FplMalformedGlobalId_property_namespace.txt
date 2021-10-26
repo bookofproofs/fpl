@@ -1,0 +1,17 @@
+TestNamespace
+{
+    theory
+    {
+        class TestDerived: TestParent
+        {
+            mand TestParent TestNamespace()
+            {
+                self:=myVar
+            }
+        }
+    }
+}
+
+##############################
+
+FplMalformedGlobalId:7:41: The global id TestNamespace.TestDerived.TestNamespace should consist of different names.

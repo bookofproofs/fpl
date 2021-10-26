@@ -1,0 +1,66 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            // object declarations (allowed both, syntactically and semantically for properties)
+            mand obj TestProperty() { return n }
+            mand object TestProperty() { return n }
+
+            // object declarations (allowed both, syntactically and semantically for properties)
+            mand tpl TestProperty() { return n }
+            mand template TestProperty() { return n }
+            mand tplSetElem TestProperty() { return n }
+            mand tpl123 TestProperty() { return n }
+
+            // index declarations (allowed both, syntactically and semantically for properties)
+            mand ind TestProperty() { return n }
+            mand index TestProperty() { return n }
+
+            // predicate declarations (allowed both, syntactically and semantically)
+            mand pred TestProperty() { return n }
+            mand predicate TestProperty() { return n }
+
+            // function declarations (allowed both, syntactically and semantically)
+            mand func TestProperty() { return n }
+            mand function TestProperty() { return n }
+
+            // User-defined (allowed both, syntactically and semantically)
+            mand MyBaseClass TestProperty() { return n }
+            mand AnotherBaseClass TestProperty() { return n }
+
+            // Aliased user-defined (allowed both, syntactically and semantically)
+            mand MyAlias.MyBaseClass TestProperty() { return n }
+            mand My.LongAlias.AnotherBaseClass TestProperty() { return n }
+
+            // syntax extensions (syntactically allowed for properties, semantically not allowed for properties todo)
+            mand @extMySyntaxExtension TestProperty() { return n }
+            mand @extMyAnotherSyntaxExtension TestProperty() { return n }
+
+            // other types
+            mand *tplSetElem TestProperty() { return n }
+            mand *Nat TestProperty() { return n }
+            mand Nat[from~to] TestProperty() { return n }
+            mand Nat[~] TestProperty() { return n }
+            mand Real[k~] TestProperty() { return n }
+            mand Int[k~] TestProperty() { return n }
+            mand tpl[Nat~Nat] TestProperty() { return n }
+            mand +tpl TestProperty() { return n }
+            mand tpl[1 ~ length] TestProperty() { return n }
+            mand tpl[Nat~] TestProperty() { return n }
+            mand tpl[from~] TestProperty() { return n }
+            mand Set[Nat~Nat] TestProperty() { return n }
+            mand +Set TestProperty() { return n }
+            mand Set[1~n] TestProperty() { return n }
+            mand Tuple[1~2] TestProperty() { return n }
+            mand +pred TestProperty() { return n }
+            mand tplFieldElem[1 ~ n] TestProperty() { return n }
+            mand tplFieldElem[1~n] TestProperty() { return n }
+            mand *func TestProperty() { return n }
+            mand +func TestProperty() { return n }
+            mand *pred TestProperty() { return n }
+
+        }
+    }
+}

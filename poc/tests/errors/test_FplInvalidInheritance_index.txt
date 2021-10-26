@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: index
+        {
+        }
+    }
+}
+
+##############################
+
+FplInvalidInheritance:5:25: Inheritance from index not possible (not a defined class but an index type)

@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        class Test:obj
+        {
+            mand Test(Test1,Test2,obj,pred,+pred,*func) TestProperty() { return n }
+        }
+    }
+}

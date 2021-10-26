@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: Test(*func) {}
+    }
+}

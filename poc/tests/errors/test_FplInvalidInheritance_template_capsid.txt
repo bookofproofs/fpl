@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: templateTest
+        {
+        }
+    }
+}
+
+##############################
+
+FplInvalidInheritance:5:32: Inheritance from templateTest not possible (not a defined class but a generic type)

@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test()
+        {
+            Test(tplFieldElem[1 ~ n])
+        }
+    }
+}
