@@ -27,12 +27,6 @@ class ContextPredicateIdentifier:
             # (see ContextGeneralType.dispatch)
             i.push_node(AuxSymbolTable.add_class_to_theory(i.theory_node, pred_identifier))
             i.context.push_context(AuxContext.classType, i.get_debug_parsing_info(pred_identifier))
-        elif i.context.is_parsing_context([AuxContext.classType]):
-            # as a name of a class type, do nothing since ContextGeneralType.dispatch handles this
-            pass
-        elif i.context.is_parsing_context([AuxContext.varDeclaration]):
-            # as a name of type, do nothing since named_variable_declaration_stop handles this
-            pass
         elif i.context.is_parsing_context([AuxContext.mandatoryProperty]) or \
                 i.context.is_parsing_context([AuxContext.optionalProperty]):
             # as the type of a class instance definition
@@ -43,10 +37,10 @@ class ContextPredicateIdentifier:
                 i.context.is_parsing_context([AuxContext.theoremLikeStmtProp, AuxContext.signature]) or \
                 i.context.is_parsing_context([AuxContext.theoremLikeStmtCor, AuxContext.signature]) or \
                 i.context.is_parsing_context([AuxContext.theoremLikeStmtConj, AuxContext.signature]):
-            # as a name of a theorem-like statement
+            # as a name of a theorem-like statement or conjecture
             i.push_node(
-                AuxSymbolTable.add_theorem_like_stmt(i.theory_node, pred_identifier,
-                                                     i.context.get_context()[-2]))
+                AuxSymbolTable.add_theorem_like_stmt_or_conj(i.theory_node, pred_identifier,
+                                                             i.context.get_context()[-2]))
         elif i.context.is_parsing_context([AuxContext.predicateDeclaration, AuxContext.signature]):
             # as a name of a predicate definition
             i.push_node(AuxSymbolTable.add_predicate_to_theory(i.theory_node, pred_identifier))
@@ -66,10 +60,8 @@ class ContextPredicateIdentifier:
             # register the type of the class
             new_node = i.touch_node()
             new_node.type = property_type.id
-            new_node.type_inBuilt = property_type.inBuilt
-            new_node.type_generic = property_type.generic
-            new_node.type_isIndex = property_type.isIndex
-            new_node.isSyntaxExtension = property_type.isSyntaxExtension
+            new_node.type_pattern = property_type.pattern_int
+            new_node.type_mod = property_type.mod
         elif i.context.is_parsing_context([AuxContext.functionalTerm, AuxContext.signature]):
             # as a name of a functional term definition
             # we put the functional term name on the working stack because we have yet to update

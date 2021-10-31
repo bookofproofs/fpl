@@ -2,7 +2,7 @@ TestNamespace
 {
     theory
     {
-        class Zero: obj
+        class Zero: *OtherClass
         {
         }
     }
@@ -13,11 +13,11 @@ TestNamespace
 AnyNode(outline='root')
 ├── AnyNode(outline='global')
 │   └── AnyNode(gid='TestNamespace.Zero', inherits=AnyNode(), node=AnyNode(), outline='class', type_pattern=0, uid='Zero')
-└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='test_Types_class_obj')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='test_Types_class_capsid_star')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
-    │   └── AnyNode(id='Zero', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj', type_mod=None, type_pattern=17)
+    │   └── AnyNode(id='Zero', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='OtherClass', type_mod='*', type_pattern=1)
     │       ├── AnyNode(outline='variables')
     │       ├── AnyNode(outline='constructors')
     │       └── AnyNode(outline='properties')

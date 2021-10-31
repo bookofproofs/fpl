@@ -15,6 +15,15 @@ TestNamespace
         class Test: obj[!obj~m] {}
         class Test: obj[obj~m] {}
 
+        class Test: obj[!1~42!] {}
+        class Test: obj[1~42!] {}
+        class Test: obj[!1~42] {}
+        class Test: obj[1~42] {}
+        class Test: obj[!42~m!] {}
+        class Test: obj[42~m!] {}
+        class Test: obj[!42~m] {}
+        class Test: obj[42~m] {}
+
         // generic declarations (syntactically allowed for classes, semantically not allowed for classes)
         class Test: tpl {}
         class Test: template {}

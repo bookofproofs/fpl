@@ -1,4 +1,4 @@
-Fpl.Arithmetics.Nat.Peano
+Fpl.Arithmetics.Natural.Peano
 {
     theory
     {
@@ -38,24 +38,23 @@ Fpl.Arithmetics.Nat.Peano
 ##############################
 
 AnyNode(outline='root')
-└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_constructor_two')
+├── AnyNode(outline='global')
+│   ├── AnyNode(gid='Fpl.Arithmetics.Natural.Peano.Nat', inherits=AnyNode(), node=AnyNode(), outline='class', type_pattern=0, uid='Nat')
+│   ├── AnyNode(gid='Fpl.Arithmetics.Natural.Peano.Nat.Nat[1:@extDecimal[]]', node=AnyNode(), outline='constructor', type_pattern=1, uid='Nat')
+│   └── AnyNode(gid='Fpl.Arithmetics.Natural.Peano.Nat.Nat[1:Int[]]', node=AnyNode(), outline='constructor', type_pattern=1, uid='Nat')
+└── AnyNode(namespace='Fpl.Arithmetics.Natural.Peano', outline='theory', theory_name='uc_class_with_constructor_two')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
-    │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj')
+    │   └── AnyNode(id='Nat', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj', type_mod=None, type_pattern=17)
     │       ├── AnyNode(outline='variables')
-    │       │   ├── AnyNode(id='myCarrierSet', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSet')
-    │       │   ├── AnyNode(id='myCarrierSet1', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Nat')
-    │       │   └── AnyNode(id='myOps', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Test')
-    │       ├── AnyNode(outline='usedTypes')
-    │       ├── AnyNode(outline='usedTypes')
     │       ├── AnyNode(outline='constructors')
-    │       │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='constructor')
-    │       │       ├── AnyNode(outline='variables')
-    │       │       │   ├── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='tplSet')
-    │       │       │   ├── AnyNode(id='ops', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='Composition')
-    │       │       │   └── AnyNode(id='a', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='obj')
-    │       │       └── AnyNode(outline='usedTypes')
+    │       │   ├── AnyNode(id='Nat[1:@extDecimal[]]', info=<AuxAstInfo.AuxAstInfo>, outline='constructor')
+    │       │   │   └── AnyNode(outline='variables')
+    │       │   │       └── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='@extDecimal', type_mod=None, type_pattern=64)
+    │       │   └── AnyNode(id='Nat[1:Int[]]', info=<AuxAstInfo.AuxAstInfo>, outline='constructor')
+    │       │       └── AnyNode(outline='variables')
+    │       │           └── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='Int', type_mod=None, type_pattern=1)
     │       └── AnyNode(outline='properties')
     ├── AnyNode(outline='predicates')
     ├── AnyNode(outline='functionalTerms')

@@ -11,9 +11,10 @@ Fpl.Geometry.Euclidean
 ##############################
 
 AnyNode(outline='root')
+├── AnyNode(outline='global')
 └── AnyNode(namespace='Fpl.Geometry.Euclidean', outline='theory', theory_name='uc_namespace_modified_with_alias')
     ├── AnyNode(outline='uses')
-    │   └── AnyNode(id='Fpl.Commons', info=<AuxAstInfo.AuxAstInfo>, modifier='Com', outline='usedNamespace')
+    │   └── AnyNode(id='Fpl.Commons', info=<AuxAstInfo.AuxAstInfo>, modifier='Com')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
     ├── AnyNode(outline='predicates')

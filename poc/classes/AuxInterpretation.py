@@ -64,6 +64,9 @@ class AuxInterpretation:
         return self._ast_info.rule + ":" + str(self._ast_info.pos) + ":(" + str(self._ast_info.line) + ":" + \
                str(self._ast_info.col) + "):" + str(self.id).replace("\n", "\\n")
 
+    def __repr__(self):
+        return self.__str__()
+
     def to_tuple(self):
         return str(type(self).__name__), str(self.id).replace("\n", "\\n"), self._ast_info.line, self._ast_info.col
 
@@ -76,19 +79,19 @@ class AuxInterpretation:
         the actual aggregation
         :return: None
         """
-        rule = parse_list[-1].rule_name()
-        can_be_aggregated = rule in aggr_rules
-        while can_be_aggregated:
-            rule_aggregator(rule, parse_list[-1])
+        if len(parse_list) > 0:
+            rule = parse_list[-1].rule_name()
+            can_be_aggregated = rule in aggr_rules
+            while can_be_aggregated:
+                rule_aggregator(rule, parse_list[-1])
 
-            # remove ignored rule
-            parse_list.pop()
-            if len(parse_list) > 0:
-                rule = parse_list[-1].rule_name()
-                can_be_aggregated = rule in aggr_rules
-            else:
-                can_be_aggregated = False
-
+                # remove ignored rule
+                parse_list.pop()
+                if len(parse_list) > 0:
+                    rule = parse_list[-1].rule_name()
+                    can_be_aggregated = rule in aggr_rules
+                else:
+                    can_be_aggregated = False
         # after the aggregation, we can clear the cst to free memory
         self.clear_cst()
 

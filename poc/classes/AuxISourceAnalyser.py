@@ -19,7 +19,7 @@ class AuxISourceAnalyser:
         :param theory_name: the name of the current theory being interpreted
         """
         self.context = AuxContext()  # the current context of the source analysis
-        self.parse_list = []  # a stack for bottom-up aggregation of parsed FPL source code productions
+        self.parse_list = []  # a stack for bottom-up aggregation of parsed FPL source code derivations
         self.errors = errors  # any errors of the FPL interpreter
         self.theory_node = AuxSymbolTable.add_or_get_theory(root, theory_name)  # root node of the current theory
         # A stack for AnyTree nodes of the symbol table being built in the specific context.
@@ -52,6 +52,7 @@ class AuxISourceAnalyser:
         self._node_stack.append(node)
         if self.verbose:
             print("node stack (push): " + self._str_node_stack())
+        return node
 
     def _str_node_stack(self):
         ret = []

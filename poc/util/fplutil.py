@@ -1,16 +1,18 @@
 import time
 import tatsu
 import io
+import re
 
 
 class Utils:
     _stopwatch_measurements = dict()
     _stopwatch = time.perf_counter()
 
-    def get_file_content(self, path_to_file):
+    @staticmethod
+    def get_file_content(path_to_file):
         with io.open(path_to_file, 'r', encoding="utf-8") as file:
             file = file.read()
-            return file
+        return file
 
     def get_elapsed_seconds(self):
         """
@@ -39,3 +41,28 @@ class Utils:
         :return: tatsu parser
         """
         return tatsu.compile(self.get_file_content(path_to_ebnf_file))
+
+    @staticmethod
+    def remove_object_references_from_string(test_output: str):
+        """
+        Removes from the test output all dynamic object memory addresses because they are irrelevant for the test.
+        :param test_output: output of the test
+        :return: test_result replaced
+        """
+        # remove "poc.classes." paths
+        test_output = test_output.replace("poc.classes.", "")
+        # remove dynamic object memory references
+        first = re.sub(' object at 0x[0-9A-F]+', '', test_output)
+        # remove AnyNode string representations that are the "node" attribute of AnyNode
+        second = re.sub(r'(node=AnyNode\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", first)
+        return second
+
+    @staticmethod
+    def get_code_and_expected(path_to_usecases, use_case_name):
+        file_content = Utils.get_file_content(path_to_usecases + "/" + use_case_name + ".txt")
+        return file_content.split('##############################')
+
+
+
+
+

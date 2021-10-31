@@ -40,4 +40,13 @@ Initial interpreter
 * Class AuxOutline was removed. It mixed up the symbols used for the outline of the symbol table (now in the class AuxSymbolTable) with the symbols used for contexts (now in the class AuxContext). 
 * Symbol table functionality variable declarations (cont.)
 * New tests added
-* paremetrised tests
+* parameterized tests
+## 1.2.2
+* Symbol table functionality (cont.)
+  * types for building blocks of FPL (type_pattern) added
+  * AuxBits.py added for handling type patterns
+  * global Ids now include names that distinguish between different signatures (will allow overloading in FPL)
+  * Signature interpretation class added
+  * expected values for some test cases adjusted
+* simplified test code and test classes
+* AuxInterpretation __repr__() added
