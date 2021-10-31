@@ -4,6 +4,7 @@ from poc.classes.AuxContext import AuxContext
 from poc.classes.GeneralType import GeneralType
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.ContextClassInstance import ContextClassInstance
+from poc.classes.AuxBits import AuxBits
 from poc.fplerror import FplInvalidInheritance
 
 
@@ -17,29 +18,27 @@ class ContextGeneralType:
         if i.context.is_parsing_context([AuxContext.classType]):
             # in the context of a class declaration, we have to update the type of the class
             class_node = i.touch_node()
-            if general_type.id in ["func", "function"]:
+            if AuxBits.is_functional_term(general_type.pattern_int):
                 parsing_info.all_errors().append(
                     FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "a functional term type"))
-            elif general_type.id in ["pred", "predicate"]:
+            elif AuxBits.is_predicate(general_type.pattern_int):
                 parsing_info.all_errors().append(
                     FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "a predicate type"))
-            elif general_type.generic:
+            elif AuxBits.is_generic(general_type.pattern_int):
                 parsing_info.all_errors().append(
                     FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "a generic type"))
-            elif general_type.isIndex:
+            elif AuxBits.is_index(general_type.pattern_int):
                 parsing_info.all_errors().append(
                     FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "an index type"))
-            elif general_type.isSyntaxExtension:
+            elif AuxBits.is_extension(general_type.pattern_int):
                 parsing_info.all_errors().append(
                     FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id,
                                           "a user-defined syntax extension"))
             else:
                 # register the type of the class
                 class_node.type = general_type.id
-                class_node.type_inBuilt = general_type.inBuilt
-                class_node.type_generic = general_type.generic
-                class_node.type_isIndex = general_type.isIndex
-                class_node.isSyntaxExtension = general_type.isSyntaxExtension
+                class_node.type_pattern = general_type.pattern_int
+                class_node.type_mod = general_type.mod
             # we clear the context of classType
             i.context.pop_context([AuxContext.classType], i.get_debug_parsing_info(parsing_info))
         elif i.context.is_parsing_context([AuxContext.optionalProperty]) or \
@@ -49,14 +48,7 @@ class ContextGeneralType:
             return
         elif i.context.is_parsing_context([AuxContext.signature, AuxContext.paren, AuxContext.varDeclaration]):
             # As the type of variables in the signature
-            # register the type as one of the used types of this the node with this signature.
-            parent_node = i.touch_node()
-            # register the type of the parent_node in the class's usedTypes node
-            parent_node.type = general_type.id
-            parent_node.type_inBuilt = general_type.inBuilt
-            parent_node.type_generic = general_type.generic
-            parent_node.type_isIndex = general_type.isIndex
-            parent_node.isSyntaxExtension = general_type.isSyntaxExtension
+            pass
         elif i.context.is_parsing_context([AuxContext.functionalTerm, AuxContext.functionalTermImage]):
             # as the image of a functional term
             functional_term_node = i.touch_node()

@@ -27,7 +27,7 @@ to mention only some possible applications.
 
 ## 1.2 Why FPL?
 
-FPL is not yet another automated prove assistant or yet another automated theorem proving tool. It attempts to set a standard for writing mathematical definitions, theorems, and proofs while encouraging automated programming tools based on FPL. 
+FPL is not yet another automated proof assistant or yet another automated theorem proving tool. It attempts to set a standard for writing mathematical definitions, theorems, and proofs while encouraging automated programming tools based on FPL. 
 
 The syntax of existing formal systems and automated tools is computer-friendly, i.e., primarily designed to be interpreted by computers, not humans. Therefore, the language used by these tools is hard to read and to understand, even by mathematicians. The communities using these tools are small communities of specialists. Despite that, such automated tools provide many advantages. In particular, they help to write correct mathematical proofs and help to avoid errors. 
 

@@ -28,25 +28,6 @@ class SymbolTableTests(unittest.TestCase):
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
-    def get_code_and_expected(self, use_case_name):
-        file_content = self.util.get_file_content(self.path_to_usecases + "/" + use_case_name + ".txt")
-        return file_content.split('##############################')
-
-    @staticmethod
-    def remove_object_references_from_string(test_output: str):
-        """
-        Removes from the test output all dynamic object memory addresses because they are irrelevant for the test.
-        :param test_output: output of the test
-        :return: test_result replaced
-        """
-        # remove "poc.classes." paths
-        test_output = test_output.replace("poc.classes.", "")
-        # remove dynamic object memory references
-        first = re.sub(' object at 0x[0-9A-F]+', '', test_output)
-        # remove AnyNode string representations that are the "node" attribute of AnyNode
-        second = re.sub(r'(node=AnyNode\()([a-zA-Z0-9_=\', <.>]+)(\)[.]*)', r"\1\3", first)
-        return second
-
     @parameterized.expand([
         "uc_anonymous_signature",
         "uc_axiom_one",
@@ -70,8 +51,8 @@ class SymbolTableTests(unittest.TestCase):
         "uc_class_with_func_property_two",
         "uc_class_with_class_instance_property_one",
         "uc_class_with_class_instance_property_two",
-        "uc_class_with_class_instance_template_property_one",
-        "uc_class_with_class_instance_template_property_two",
+        "uc_functional_term_with_property_one",
+        "uc_functional_term_with_property_two",
         "uc_class_with_mixed_properties",
         "uc_theorem_one",
         "uc_theorem_two",
@@ -86,7 +67,8 @@ class SymbolTableTests(unittest.TestCase):
     ])
     def test_symbol_table_correct(self, use_case):
         interpreter = FplInterpreter(self.fpl_parser)
-        result = self.get_code_and_expected(use_case)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(use_case, result[0])
-        self.assertEqual(result[1].strip(), SymbolTableTests.remove_object_references_from_string(
-            interpreter.symbol_table_to_str().strip()))
+        actual = self.util.remove_object_references_from_string(interpreter.symbol_table_to_str().strip())
+        print(actual)
+        self.assertEqual(result[1].strip(), actual)

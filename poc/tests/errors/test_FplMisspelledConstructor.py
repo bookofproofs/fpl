@@ -25,17 +25,13 @@ class FplMisspelledConstructorTests(unittest.TestCase):
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
-    def get_code_and_expected(self, use_case_name):
-        file_content = self.util.get_file_content(self.path_to_usecases + "/" + use_case_name + ".txt")
-        return file_content.split('##############################')
-
     @parameterized.expand([
         "test_FplMisspelledConstructor_first_occurence",
         "test_FplMisspelledConstructor_second_occurence"
     ])
     def test_errors(self, use_case):
         interpreter = FplInterpreter(self.fpl_parser)
-        result = self.get_code_and_expected(use_case)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(use_case, result[0])
         # exactly one error was found
         self.assertEqual(1, len(interpreter.get_errors()))

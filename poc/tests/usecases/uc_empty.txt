@@ -5,6 +5,7 @@ TestNamespace
 ##############################
 
 AnyNode(outline='root')
+├── AnyNode(outline='global')
 └── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_empty')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')

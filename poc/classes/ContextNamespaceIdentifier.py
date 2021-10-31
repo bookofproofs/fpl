@@ -9,14 +9,10 @@ class ContextNamespaceIdentifier:
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         namespace_info = NamespaceIdentifier(i.parse_list, parsing_info)
-        # NamespaceIdentifer can occur in the following contexts:
+        # NamespaceIdentifier can occur in the following contexts:
         if i.context.is_parsing_context([AuxContext.root]):
             # tag the namespace to the theory node
             i.theory_node.namespace = namespace_info.id
-        elif i.context.is_parsing_context([AuxContext.root, AuxContext.block, AuxContext.uses]):
-            # as a name of namespaces used in the current namespace
-            # Remember the used namespace because we will need it in case ContextWildcardTheoryNamespace is called
-            i.push_node(AuxSymbolTable.add_usage_to_theory(i.theory_node, namespace_info))
         else:
             if i.verbose:
                 print(

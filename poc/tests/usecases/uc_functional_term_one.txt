@@ -9,20 +9,20 @@ TestNamespace
 }
 
 ##############################
-
 AnyNode(outline='root')
+├── AnyNode(outline='global')
+│   └── AnyNode(gid='TestNamespace.Succ[1:Nat[]]', node=AnyNode(), outline='functionalTerm', type_pattern=4, uid='Succ')
 └── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_functional_term_one')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
     ├── AnyNode(outline='predicates')
     ├── AnyNode(outline='functionalTerms')
-    │   └── AnyNode(id='Succ', info=<AuxAstInfo.AuxAstInfo>, outline='functionalTerm', overload_id=None)
+    │   └── AnyNode(id='Succ[1:Nat[]]', info=<AuxAstInfo.AuxAstInfo>, outline='functionalTerm')
     │       ├── AnyNode(outline='image')
-    │       │   └── AnyNode(id='Nat', info=<AuxAstInfo.AuxAstInfo>, outline='param1')
+    │       │   └── AnyNode(id='Nat', info=<AuxAstInfo.AuxAstInfo>, outline='param')
     │       ├── AnyNode(outline='variables')
-    │       │   └── AnyNode(id='n', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='Nat')
-    │       ├── AnyNode(outline='usedTypes')
+    │       │   └── AnyNode(id='n', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='Nat', type_mod=None, type_pattern=1)
     │       └── AnyNode(outline='properties')
     ├── AnyNode(outline='axioms')
     ├── AnyNode(outline='theoremLikeStatements')

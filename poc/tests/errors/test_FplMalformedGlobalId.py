@@ -25,17 +25,13 @@ class FplMalformedGlobalIdTests(unittest.TestCase):
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
-    def get_code_and_expected(self, use_case_name):
-        file_content = self.util.get_file_content(self.path_to_usecases + "/" + use_case_name + ".txt")
-        return file_content.split('##############################')
-
     @parameterized.expand([
         "test_FplMalformedGlobalId_class_namespace",
         "test_FplMalformedGlobalId_property_namespace"
     ])
     def test_errors(self, use_case):
         interpreter = FplInterpreter(self.fpl_parser)
-        result = self.get_code_and_expected(use_case)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(use_case, result[0])
         # exactly one error was found
         self.assertEqual(1, len(interpreter.get_errors()))
@@ -47,7 +43,7 @@ class FplMalformedGlobalIdTests(unittest.TestCase):
     ])
     def test_negative(self, use_case):
         interpreter = FplInterpreter(self.fpl_parser)
-        result = self.get_code_and_expected(use_case)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(use_case, result[0])
         # since the name of the constructor is (in FPL always) the same as the name of the class,
         # it should never trigger the FplMalformedGlobalId error
