@@ -5,15 +5,12 @@ TestNamespace
         class AlgebraicStructure: obj
         {
 
-            myCarrierSet: tplSet
+            myOps: +Composition(x: *tplSetElem)
 
-            // Every algebraic structure will have a mandatory property called CarrierSet of type Set.
-            mandatory Set CarrierSet()
+            mandatory pred IsFinite()
             {
-                self:=myCarrierSet
+                true
             }
-
-
         }
     }
 }
@@ -23,17 +20,18 @@ TestNamespace
 AnyNode(outline='root')
 ├── AnyNode(outline='global')
 │   ├── AnyNode(gid='TestNamespace.AlgebraicStructure', inherits=AnyNode(), node=AnyNode(), outline='class', type_pattern=0, uid='AlgebraicStructure')
-│   └── AnyNode(gid='TestNamespace.AlgebraicStructure.CarrierSet[]', node=AnyNode(), outline='property', type_pattern=1, uid='CarrierSet')
-└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_class_instance_property_one')
+│   └── AnyNode(gid='TestNamespace.AlgebraicStructure.IsFinite[]', node=AnyNode(), outline='property', type_pattern=18, uid='IsFinite')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_pred_property_one')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
     │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj', type_mod=None, type_pattern=17)
     │       ├── AnyNode(outline='variables')
-    │       │   └── AnyNode(id='myCarrierSet', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSet', type_mod=None, type_pattern=33)
+    │       │   └── AnyNode(id='myOps', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Composition', type_mod='+', type_pattern=1)
+    │       │       └── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSetElem', type_mod='*', type_pattern=33)
     │       ├── AnyNode(outline='constructors')
     │       └── AnyNode(outline='properties')
-    │           └── AnyNode(id='CarrierSet[]', info=<AuxAstInfo.AuxAstInfo>, is_mandatory=True, outline='property', type='Set', type_mod=None, type_pattern=1)
+    │           └── AnyNode(id='IsFinite[]', info=<AuxAstInfo.AuxAstInfo>, is_mandatory=True, outline='property', type='pred', type_mod=None, type_pattern=18)
     │               └── AnyNode(outline='variables')
     ├── AnyNode(outline='predicates')
     ├── AnyNode(outline='functionalTerms')

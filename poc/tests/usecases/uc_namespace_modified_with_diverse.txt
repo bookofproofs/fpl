@@ -1,6 +1,6 @@
 Fpl.Geometry.Euclidean
 {
-    uses Fpl.Commons.*, Fpl, Fpl.Test.Long.Namespace alias Fpl1.Mong
+    uses Fpl.Commons.*, Fpl, Fpl.Test.Long.Namespace alias Fpl1
 
     theory
     {

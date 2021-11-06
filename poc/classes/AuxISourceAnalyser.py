@@ -9,7 +9,7 @@ Implements an interface between the classes named Context<Something> and the cla
 
 
 class AuxISourceAnalyser:
-    verbose = False  # True <=> verbose mode
+    verbose = True  # True <=> verbose mode
 
     def __init__(self, errors: list, root: AnyNode, theory_name: str):
         """

@@ -36,7 +36,7 @@ class TypeTests(unittest.TestCase):
         "test_Types_class_obj",
         "test_Types_class_obj_star",
         "test_Types_class_obj_plus",
-        "test_Types_class_obj!n~m!",
+        "test_Types_class_objN_M",
         "test_Types_class_object",
     ])
     def test_possibilities(self, use_case):

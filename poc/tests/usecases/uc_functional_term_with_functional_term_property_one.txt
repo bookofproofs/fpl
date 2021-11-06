@@ -1,0 +1,39 @@
+TestNamespace
+{
+    theory
+    {
+        func Exp(x: Real) -> Real
+        {
+            mandatory func Approximation() -> Real
+            {
+                return x
+            }
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='global')
+│   ├── AnyNode(gid='TestNamespace.Exp[1:Real[]]', node=AnyNode(), outline='functionalTerm', type_pattern=4, uid='Exp')
+│   └── AnyNode(gid='TestNamespace.Exp[1:Real[]].Approximation[]', node=AnyNode(), outline='property', type_pattern=20, uid='Approximation')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_functional_term_with_functional_term_property_one')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    ├── AnyNode(outline='functionalTerms')
+    │   └── AnyNode(id='Exp[1:Real[]]', info=<AuxAstInfo.AuxAstInfo>, outline='functionalTerm')
+    │       ├── AnyNode(outline='image')
+    │       │   └── AnyNode(id='Real', info=<AuxAstInfo.AuxAstInfo>, outline='param')
+    │       ├── AnyNode(outline='variables')
+    │       │   └── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='Real', type_mod=None, type_pattern=1)
+    │       └── AnyNode(outline='properties')
+    │           └── AnyNode(id='Approximation[]', info=<AuxAstInfo.AuxAstInfo>, is_mandatory=True, outline='property', type='func', type_mod=None, type_pattern=20)
+    │               ├── AnyNode(outline='image')
+    │               │   └── AnyNode(id='Real', info=<AuxAstInfo.AuxAstInfo>, outline='param')
+    │               └── AnyNode(outline='variables')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')
