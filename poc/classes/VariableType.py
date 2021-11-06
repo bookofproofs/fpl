@@ -1,4 +1,5 @@
 from poc.classes.AuxInterpretation import AuxInterpretation
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
 class VariableType(AuxInterpretation):
@@ -7,8 +8,7 @@ class VariableType(AuxInterpretation):
         self.clone(inter)
         self.generalType = None
         self.paramTuple = None
-        self.aggregate_previous_rules(parse_list, ['GeneralType', 'ParenthesisedGeneralType'],
-                                      self.rule_aggregator)
+        self.aggregate_previous_rules(parse_list, AuxRuleDependencies.dep["VariableType"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parse_info: AuxInterpretation):
         if rule == "GeneralType":

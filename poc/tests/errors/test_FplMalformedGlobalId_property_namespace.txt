@@ -14,4 +14,4 @@ TestNamespace
 
 ##############################
 
-FplMalformedGlobalId:7:41: The global id TestNamespace.TestDerived.TestNamespace should consist of different names.
+FplMalformedGlobalId:7:41: The global id TestNamespace.TestDerived.TestNamespace[] should consist of different names.

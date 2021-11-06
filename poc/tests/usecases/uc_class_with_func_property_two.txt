@@ -5,9 +5,9 @@ TestNamespace
         class AlgebraicStructure: obj
         {
 
-            myOps: +Composition(*tplSetElem)
+            myOps: +Composition(x: *tplSetElem)
 
-            mandatory func NthOp(n: index) -> Composition(*tplSetElem)
+            mandatory func NthOp(n: index) -> Composition(y: *tplSetElem)
             {
                 return myOps$n
             }
@@ -24,25 +24,31 @@ TestNamespace
 ##############################
 
 AnyNode(outline='root')
+├── AnyNode(outline='global')
+│   ├── AnyNode(gid='TestNamespace.AlgebraicStructure', inherits=AnyNode(), node=AnyNode(), outline='class', type_pattern=0, uid='AlgebraicStructure')
+│   ├── AnyNode(gid='TestNamespace.AlgebraicStructure.NthOp[1:index[]]', node=AnyNode(), outline='property', type_pattern=20, uid='NthOp')
+│   └── AnyNode(gid='TestNamespace.AlgebraicStructure.TestProp[1:index[]]', node=AnyNode(), outline='property', type_pattern=20, uid='TestProp')
 └── AnyNode(namespace='TestNamespace', outline='theory', theory_name='uc_class_with_func_property_two')
     ├── AnyNode(outline='uses')
     ├── AnyNode(outline='inferenceRules')
     ├── AnyNode(outline='classes')
-    │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj')
+    │   └── AnyNode(id='AlgebraicStructure', info=<AuxAstInfo.AuxAstInfo>, outline='class', type='obj', type_mod=None, type_pattern=17)
     │       ├── AnyNode(outline='variables')
-    │       ├── AnyNode(outline='usedTypes')
+    │       │   └── AnyNode(id='myOps', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='Composition', type_mod='+', type_pattern=1)
+    │       │       └── AnyNode(id='x', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSetElem', type_mod='*', type_pattern=33)
     │       ├── AnyNode(outline='constructors')
     │       └── AnyNode(outline='properties')
-    │           ├── AnyNode(id='NthOp', info=<AuxAstInfo.AuxAstInfo>, is_mandatory=True, outline='property', overload_id=None, type='functionalTerm')
+    │           ├── AnyNode(id='NthOp[1:index[]]', info=<AuxAstInfo.AuxAstInfo>, is_mandatory=True, outline='property', type='func', type_mod=None, type_pattern=20)
     │           │   ├── AnyNode(outline='image')
-    │           │   │   └── AnyNode(id='Composition', info=<AuxAstInfo.AuxAstInfo>, outline='param1')
-    │           │   ├── AnyNode(outline='variables')
-    │           │   └── AnyNode(outline='usedTypes')
-    │           └── AnyNode(id='TestProp', info=<AuxAstInfo.AuxAstInfo>, is_mandatory=False, outline='property', overload_id=None, type='functionalTerm')
+    │           │   │   └── AnyNode(id='Composition', info=<AuxAstInfo.AuxAstInfo>, outline='param')
+    │           │   └── AnyNode(outline='variables')
+    │           │       ├── AnyNode(id='n', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='index', type_mod=None, type_pattern=128)
+    │           │       └── AnyNode(id='y', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='tplSetElem', type_mod='*', type_pattern=33)
+    │           └── AnyNode(id='TestProp[1:index[]]', info=<AuxAstInfo.AuxAstInfo>, is_mandatory=False, outline='property', type='func', type_mod=None, type_pattern=20)
     │               ├── AnyNode(outline='image')
-    │               │   └── AnyNode(id='obj', info=<AuxAstInfo.AuxAstInfo>, outline='param1')
-    │               ├── AnyNode(outline='variables')
-    │               └── AnyNode(outline='usedTypes')
+    │               │   └── AnyNode(id='obj', info=<AuxAstInfo.AuxAstInfo>, outline='param')
+    │               └── AnyNode(outline='variables')
+    │                   └── AnyNode(id='n', info=<AuxAstInfo.AuxAstInfo>, is_signature=True, outline='var', type='index', type_mod=None, type_pattern=128)
     ├── AnyNode(outline='predicates')
     ├── AnyNode(outline='functionalTerms')
     ├── AnyNode(outline='axioms')

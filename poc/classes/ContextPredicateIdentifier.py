@@ -41,15 +41,15 @@ class ContextPredicateIdentifier:
             i.push_node(
                 AuxSymbolTable.add_theorem_like_stmt_or_conj(i.theory_node, pred_identifier,
                                                              i.context.get_context()[-2]))
-        elif i.context.is_parsing_context([AuxContext.predicateDeclaration, AuxContext.signature]):
-            # as a name of a predicate definition
-            i.push_node(AuxSymbolTable.add_predicate_to_theory(i.theory_node, pred_identifier))
         elif i.context.is_parsing_context(
                 [AuxContext.mandatoryProperty, AuxContext.functionalTerm, AuxContext.signature]) or \
                 i.context.is_parsing_context(
                     [AuxContext.optionalProperty, AuxContext.functionalTerm, AuxContext.signature]) or \
                 i.context.is_parsing_context(
-                    [AuxContext.classInstanceDeclaration, AuxContext.signature]):
+                    [AuxContext.mandatoryProperty, AuxContext.predicateDeclaration, AuxContext.signature]) or \
+                i.context.is_parsing_context(
+                    [AuxContext.optionalProperty, AuxContext.predicateDeclaration, AuxContext.signature]) or \
+                i.context.is_parsing_context([AuxContext.classInstanceDeclaration, AuxContext.signature]):
             # as a name of a functional term property
             # it with its image (see ContextGeneralType.dispatch)
             property_type = i.parse_list[-1]
@@ -57,17 +57,12 @@ class ContextPredicateIdentifier:
             is_mandatory = (i.context.get_context()[-3] == AuxContext.mandatoryProperty)
             i.push_node(
                 AuxSymbolTable.add_property_to_node(parent_node, pred_identifier, is_mandatory, property_type))
-            # register the type of the class
-            new_node = i.touch_node()
-            new_node.type = property_type.id
-            new_node.type_pattern = property_type.pattern_int
-            new_node.type_mod = property_type.mod
         elif i.context.is_parsing_context([AuxContext.functionalTerm, AuxContext.signature]):
             # as a name of a functional term definition
-            # we put the functional term name on the working stack because we have yet to update
-            # it with its image (see ContextGeneralType.dispatch)
-            i.push_node(
-                AuxSymbolTable.add_functional_term_to_theory(i.theory_node, pred_identifier))
+            i.push_node(AuxSymbolTable.add_functional_term_to_theory(i.theory_node, pred_identifier))
+        elif i.context.is_parsing_context([AuxContext.predicateDeclaration, AuxContext.signature]):
+            # as a name of a predicate definition
+            i.push_node(AuxSymbolTable.add_predicate_to_theory(i.theory_node, pred_identifier))
         elif i.context.is_parsing_context([AuxContext.classDeclaration, AuxContext.block]):
             # as the name of a Constructor
             class_node = i.touch_node()

@@ -36,6 +36,7 @@ class ContextSignature:
                 or i.context.is_parsing_context([AuxContext.predicateDeclaration]) \
                 or i.context.is_parsing_context([AuxContext.functionalTerm]) \
                 or i.context.is_parsing_context([AuxContext.classConstructor]) \
+                or i.context.is_parsing_context([AuxContext.classInstanceDeclaration]) \
                 or i.context.is_parsing_context([AuxContext.axiom]):
             # as a signature of an building block
             AuxSymbolTable.set_global_id(i.touch_node(), signature_info)

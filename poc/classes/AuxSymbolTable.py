@@ -92,57 +92,6 @@ class AuxSymbolTable:
         return r.get(parent, outline)
 
     @staticmethod
-    def _register_global_reference(theory_node: AnyNode, gid: str, uid: str, node: AnyNode, errors: list):
-        root = theory_node.parent
-        global_references_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.globalLookup)
-        # there can be nodes with the same global id in the symbol table. This can happen if the
-        r = Resolver(AuxSymbolTable.gid)
-        try:
-            # There cannot be nodes with the same global id in the symbol table. If this happens, we have some bug
-            # in the proceeding steps.
-            node = r.get(global_references_node, gid)
-            raise AssertionError("Name conflict was not discovered for " + gid + " and " + str(node.info))
-        except anytree.resolver.ChildResolverError:
-            at_least_one_error = False
-            significant_name = gid.split(".")[-1]
-            # It can happen that the significant name is the same as some part other of the gid (for instance,
-            # an FPL class could be named the same as the namespace or the same as its property). In this case, we
-            # have another error.
-            names = gid.split(".")
-            for name in names[:-1]:
-                if significant_name == name:
-                    # Note that the constructor's name of a class is an exception from this rule:
-                    # it MUST be named the same as the class name.
-                    if node.outline == AuxSymbolTable.classConstructor and name == names[-2]:
-                        # ok
-                        pass
-                    else:
-                        errors.append(poc.fplerror.FplMalformedGlobalId(node.info, gid))
-                        at_least_one_error = True
-
-            if not at_least_one_error:
-                # if there were no errors, we can register the new node
-                global_node = AnyNode(parent=global_references_node, outline=node.outline, gid=gid, uid=uid, node=node)
-                # set the global node's  type pattern
-                if node.outline == AuxSymbolTable.classConstructor:
-                    global_node.type_pattern = AuxBits.isObject
-                elif node.outline == AuxSymbolTable.classDeclaration:
-                    global_node.type_pattern = AuxBits.isClass
-                    global_node.inherits = AnyNode()
-                elif node.outline == AuxSymbolTable.property:
-                    global_node.type_pattern = node.type_pattern
-                elif node.outline in [AuxSymbolTable.theoremLikeStmt, AuxSymbolTable.conjecture,
-                                      AuxSymbolTable.predicateDeclaration, AuxSymbolTable.inferenceRule,
-                                      AuxSymbolTable.axiom]:
-                    global_node.type_pattern = AuxBits.isPredicate
-                elif node.outline == AuxSymbolTable.functionalTerm:
-                    global_node.type_pattern = AuxBits.isFunctionalTerm
-                else:
-                    raise NotImplementedError(node.outline)
-                return global_node
-        return None
-
-    @staticmethod
     def add_usage_to_theory(theory_node: AnyNode, parsing_info: AuxInterpretation):
         uses_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.uses)
         identifier = parsing_info.id
@@ -317,11 +266,16 @@ class AuxSymbolTable:
             node = AnyNode(parent=properties_node, outline=AuxSymbolTable.property, id=identifier,
                            info=parsing_info.get_ast_info(), is_mandatory=is_mandatory)
 
+            node.type = property_type.id
+            node.type_pattern = property_type.pattern_int
+            node.type_mod = property_type.mod
+
             # in case of functional term nodes, add image as a subnode
             if property_type.id in ["func", "function"]:
                 AnyNode(parent=node, outline=AuxSymbolTable.functionalTermImage)
             # add specific subnodes
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
+            # register the global reference for the property
         return node
 
     @staticmethod
@@ -412,3 +366,58 @@ class AuxSymbolTable:
             # identifies a reference to the node in the FPL code ("call") and will have to check if this references
             # uses a compatible parameter specifications to use the "call".
             building_block_node.info.signature = signature
+
+    @staticmethod
+    def _register_global_reference(theory_node: AnyNode, gid: str, uid: str, node: AnyNode, errors: list):
+        root = theory_node.parent
+        global_references_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.globalLookup)
+        # there can be nodes with the same global id in the symbol table. This can happen if the
+        r = Resolver(AuxSymbolTable.gid)
+        try:
+            # There cannot be nodes with the same global id in the symbol table. If this happens, we have some bug
+            # in the proceeding steps.
+            node = r.get(global_references_node, gid)
+            raise AssertionError("Name conflict was not discovered for " + gid + " and " + str(node.info))
+        except anytree.resolver.ChildResolverError:
+            at_least_one_error = False
+            significant_name = gid.split(".")[-1]
+            # It can happen that the significant name is the same as some part other of the gid (for instance,
+            # an FPL class could be named the same as the namespace or the same as its property). In this case, we
+            # have another error.
+            names = gid.split(".")
+            for name in names[:-1]:
+                if significant_name == name:
+                    errors.append(poc.fplerror.FplMalformedGlobalId(node.info, gid))
+                    at_least_one_error = True
+                elif len(significant_name) > len(name):
+                    if significant_name.startswith(name) and significant_name[len(name)] == "[":
+                        # Note that the constructor's name of a class is an exception from this rule:
+                        # it MUST be named the same as the class name.
+                        if node.outline == AuxSymbolTable.classConstructor and name == names[-2]:
+                            # ok
+                            pass
+                        else:
+                            errors.append(poc.fplerror.FplMalformedGlobalId(node.info, gid))
+                            at_least_one_error = True
+
+            if not at_least_one_error:
+                # if there were no errors, we can register the new node
+                global_node = AnyNode(parent=global_references_node, outline=node.outline, gid=gid, uid=uid, node=node)
+                # set the global node's  type pattern
+                if node.outline == AuxSymbolTable.classConstructor:
+                    global_node.type_pattern = AuxBits.isObject
+                elif node.outline == AuxSymbolTable.classDeclaration:
+                    global_node.type_pattern = AuxBits.isClass
+                    global_node.inherits = AnyNode()
+                elif node.outline == AuxSymbolTable.property:
+                    global_node.type_pattern = node.type_pattern
+                elif node.outline in [AuxSymbolTable.theoremLikeStmt, AuxSymbolTable.conjecture,
+                                      AuxSymbolTable.predicateDeclaration, AuxSymbolTable.inferenceRule,
+                                      AuxSymbolTable.axiom]:
+                    global_node.type_pattern = AuxBits.isPredicate
+                elif node.outline == AuxSymbolTable.functionalTerm:
+                    global_node.type_pattern = AuxBits.isFunctionalTerm
+                else:
+                    raise NotImplementedError(node.outline)
+                return global_node
+        return None

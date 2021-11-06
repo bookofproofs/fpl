@@ -1,0 +1,6 @@
+TestNamespcase
+{
+    uses Fpl.Test.Long.Namespace alias Fpl1.Mong.Dong
+
+    theory  {}
+}

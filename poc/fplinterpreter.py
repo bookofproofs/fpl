@@ -15,13 +15,12 @@ class FplInterpreter(object):
         self._symbol_table_root = AnyNode(outline=AuxSymbolTable.root)
         AnyNode(outline=AuxSymbolTable.globalLookup, parent=self._symbol_table_root)
         self._is_verbose = AuxISourceAnalyser.verbose
-        self._transformer = None
-        self.version = "1.2.2"
-
+        self._analyser = None
+        self.version = "1.2.3"
 
     def syntax_analysis(self, theory_name: str, fpl_source: str):
         self._analyser = poc.fplsourceanalyser.FPLSourceAnalyser(self._symbol_table_root, theory_name,
-                                                                        self._errors)
+                                                                 self._errors)
         if self._analyser.i.verbose:
             self._parser.parse(fpl_source, semantics=self._analyser, whitespace='')
         else:
