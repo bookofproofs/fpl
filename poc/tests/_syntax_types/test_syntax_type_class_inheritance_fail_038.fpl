@@ -1,0 +1,9 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: tpl[1 ~ length] {}
+
+    }
+}
+

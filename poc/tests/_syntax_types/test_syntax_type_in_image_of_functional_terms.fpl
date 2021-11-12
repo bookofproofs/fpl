@@ -46,20 +46,20 @@ TestNamespace
         func Test() -> Nat[~] {}
         func Test() -> Real[k~] {}
         func Test() -> Int[k~] {}
-        func Test() -> tpl[Nat~Nat] {}
+        func Test() -> tpl[Nat(1)~Nat(2)] {}
         func Test() -> +tpl {}
-        func Test() -> tpl[1 ~ length] {}
-        func Test() -> tpl[Nat~] {}
+        func Test() -> tpl[Nat(1) ~ length] {}
+        func Test() -> tpl[~to] {}
         func Test() -> tpl[from~] {}
-        func Test() -> Set[Nat~Nat] {}
+        func Test() -> Set[Nat(10)~Nat(20)] {}
         func Test() -> +Set {}
-        func Test() -> Set[1~n] {}
-        func Test() -> Tuple[1~2] {}
+        func Test() -> Set[Nat(1)~n] {}
+        func Test() -> Tuple[Nat(1)~Nat(2)] {}
         func Test() -> +pred {}
-        func Test() -> tplFieldElem[1 ~ n] {}
-        func Test() -> tplFieldElem[1~n] {}
+        func Test() -> tplFieldElem[Nat(10) ~ n] {}
+        func Test() -> tplFieldElem[Nat(10)~n] {}
         func Test() -> Field (f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem)) {}
-        func Test() -> VecAdd(a,b: tplFieldElem[1~n]) {}
+        func Test() -> VecAdd(a,b: tplFieldElem[Nat(10)~n]) {}
         func Test() -> Test(a: Test1,b: Test2,c: obj,d: pred,e: +pred,f: *func) {}
         func Test() -> Test(a: *func) {}
         func Test() -> *func {}

@@ -18,7 +18,7 @@ class DefaultTheme:
 
     @staticmethod
     def notebook_font():
-        return ('TkFixedFont', '9')
+        return ('OpenSymbol', '9')
 
     @staticmethod
     def line_number_font():

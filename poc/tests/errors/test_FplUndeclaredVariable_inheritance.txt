@@ -1,0 +1,14 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: obj
+        {
+            k: obj[m]
+        }
+    }
+}
+
+##############################
+
+FplUndeclaredVariable:7:20: The name 'm' does not exist in the current context

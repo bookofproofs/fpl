@@ -1,4 +1,4 @@
-# fpl Version 1.1.0
+# fpl Version 1.1.1
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -201,7 +201,7 @@
         ClassHeader
         SW PredicateIdentifier
         [ IW ] Colon
-        [ IW ] GeneralType
+        [ IW ] Type
         { CW }* ObjectDefinitionBlock
         ;
 
@@ -579,8 +579,21 @@
     TypeWithCoord =
         Type
         LeftBound
-        [ IW ] ( RangeInSignature | CoordInSignature )
+        [ IW ] ( RangeInType | CoordInType )
         [ IW ] RightBound
+        ;
+
+    RangeInType =
+        [ CoordInType ]
+        [ IW ] Tilde
+        [ IW ] [ CoordInType ]
+        ;
+
+    CoordInType =
+        (
+        PredicateWithArguments
+        | Variable
+        )
         ;
 
     EntityWithCoord =
@@ -592,14 +605,6 @@
 
     CoordList =
         Coord { [ IW ] Comma [ IW ] Coord }*
-        ;
-
-    CoordInSignature =
-        (
-        Type
-        | Variable
-        | extDigit
-        )
         ;
 
     Entity =
@@ -620,12 +625,6 @@
         Assignee
         | PrimePredicate
         )
-        ;
-
-    RangeInSignature =
-        [ CoordInSignature ]
-        [ IW ] Tilde
-        [ IW ] [ CoordInSignature ]
         ;
 
     Range =
@@ -928,6 +927,7 @@
         | false
         | UndefinedHeader
         | ArgumentParam
+        | extDigit
         )
         ;
 
@@ -948,7 +948,6 @@
         | AmpersandVariable
         | IndexValue
         | Assignee
-        | extDigit
         )
         ;
 

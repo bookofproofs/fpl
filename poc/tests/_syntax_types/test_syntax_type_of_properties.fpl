@@ -39,27 +39,28 @@ TestNamespace
             mand @extMyAnotherSyntaxExtension TestProperty() { return n }
 
             // other types
-            mand *tplSetElem TestProperty() { return n }
-            mand *Nat TestProperty() { return n }
-            mand Nat[from~to] TestProperty() { return n }
-            mand Nat[~] TestProperty() { return n }
-            mand Real[k~] TestProperty() { return n }
-            mand Int[k~] TestProperty() { return n }
-            mand tpl[Nat~Nat] TestProperty() { return n }
-            mand +tpl TestProperty() { return n }
-            mand tpl[1 ~ length] TestProperty() { return n }
-            mand tpl[Nat~] TestProperty() { return n }
-            mand tpl[from~] TestProperty() { return n }
-            mand Set[Nat~Nat] TestProperty() { return n }
-            mand +Set TestProperty() { return n }
-            mand Set[1~n] TestProperty() { return n }
-            mand Tuple[1~2] TestProperty() { return n }
-            mand +pred TestProperty() { return n }
-            mand tplFieldElem[1 ~ n] TestProperty() { return n }
-            mand tplFieldElem[1~n] TestProperty() { return n }
-            mand *func TestProperty() { return n }
             mand +func TestProperty() { return n }
             mand *pred TestProperty() { return n }
+            mand *func TestProperty() { return n }
+            mand tplFieldElem[m~n] TestProperty() { return n }
+            mand tplFieldElem[m ~ n] TestProperty() { return n }
+            mand +pred TestProperty() { return n }
+            mand Tuple[p~q] TestProperty() { return n }
+            mand Set[s~n] TestProperty() { return n }
+            mand +Set TestProperty() { return n }
+            mand Set[k~l] TestProperty() { return n }
+            mand tpl[from~] TestProperty() { return n }
+            mand tpl[g~] TestProperty() { return n }
+            mand tpl[Nat(1) ~ length] TestProperty() { return n }
+            mand +tpl TestProperty() { return n }
+            mand tpl[Nat(1)~Nat(100)] TestProperty() { return n }
+            mand Int[k~] TestProperty() { return n }
+            mand Real[k~] TestProperty() { return n }
+            mand Nat[~] TestProperty() { return n }
+            mand Nat[from~to] TestProperty() { return n }
+            mand *Nat TestProperty() { return n }
+            mand *tplSetElem TestProperty() { return n }
+
 
         }
     }

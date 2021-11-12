@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        class Test:obj
+        {
+            mand tpl[n~Nat] TestProperty() { return n }
+        }
+    }
+}

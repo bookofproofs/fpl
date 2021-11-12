@@ -6,23 +6,6 @@ TestNamespace
         class Test: obj {}
         class Test: object {}
         // object TypeWithCoord in Signature (allowed both, syntactically and in general semantically)
-        class Test: obj[!n~m!] {}
-        class Test: obj[n~m!] {}
-        class Test: obj[!n~m] {}
-        class Test: obj[n~m] {}
-        class Test: obj[!obj~m!] {}
-        class Test: obj[obj~m!] {}
-        class Test: obj[!obj~m] {}
-        class Test: obj[obj~m] {}
-
-        class Test: obj[!1~42!] {}
-        class Test: obj[1~42!] {}
-        class Test: obj[!1~42] {}
-        class Test: obj[1~42] {}
-        class Test: obj[!42~m!] {}
-        class Test: obj[42~m!] {}
-        class Test: obj[!42~m] {}
-        class Test: obj[42~m] {}
 
         // generic declarations (syntactically allowed for classes, semantically not allowed for classes)
         class Test: tpl {}
@@ -30,9 +13,6 @@ TestNamespace
         class Test: tplSetElem {}
         class Test: tpl123 {}
 
-        // index declarations (syntactically allowed for classes, semantically not allowed for classes)
-        class Test: ind {}
-        class Test: index {}
 
         // predicate declarations (syntactically allowed for classes, semantically not allowed for classes)
         class Test: pred {}
@@ -54,28 +34,6 @@ TestNamespace
         class Test: @extMySyntaxExtension {}
         class Test: @extMyAnotherSyntaxExtension {}
 
-        // other types
-        class Test: *tplSetElem {}
-        class Test: *Nat {}
-        class Test: Nat[from~to] {}
-        class Test: Nat[~] {}
-        class Test: Real[k~] {}
-        class Test: Int[k~] {}
-        class Test: tpl[Nat~Nat] {}
-        class Test: +tpl {}
-        class Test: tpl[1 ~ length] {}
-        class Test: tpl[Nat~] {}
-        class Test: tpl[from~] {}
-        class Test: Set[Nat~Nat] {}
-        class Test: +Set {}
-        class Test: Set[1~n] {}
-        class Test: Tuple[1~2] {}
-        class Test: +pred {}
-        class Test: tplFieldElem[1 ~ n] {}
-        class Test: tplFieldElem[1~n] {}
-        class Test: *func {}
-        class Test: +func {}
-        class Test: *pred {}
 
     }
 }

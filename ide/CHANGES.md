@@ -39,3 +39,5 @@
 ## 1.2.5
 * Bugfix relative folders for importing package files
 * Separation of syntax transforming and syntax analysis in the fpl interpreter (since version 1.2.0) reflected in the ide
+## 1.2.6
+* Font error list changed 

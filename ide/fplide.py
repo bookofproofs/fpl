@@ -38,7 +38,7 @@ class FplIde:
     """
 
     def __init__(self):
-        self._version = '1.2.5'
+        self._version = '1.2.6'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -248,8 +248,8 @@ class FplIde:
         self._listBoxErrors.heading("#4", text="Column", anchor=tk.E)
         self._listBoxErrors.heading("#5", text="File", anchor=tk.CENTER)
         self._listBoxErrors.column('#0', width=40, minwidth=40, stretch=tk.NO, anchor=tk.W)
-        self._listBoxErrors.column('Type', width=170, minwidth=170, stretch=tk.YES, anchor=tk.W)
-        self._listBoxErrors.column('Message', width=170, minwidth=170, stretch=tk.YES, anchor=tk.W)
+        self._listBoxErrors.column('Type', width=100, minwidth=100, stretch=tk.YES, anchor=tk.W)
+        self._listBoxErrors.column('Message', width=240, minwidth=240, stretch=tk.YES, anchor=tk.W)
         self._listBoxErrors.column('Line', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
         self._listBoxErrors.column('Column', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
         self._listBoxErrors.column('File', width=100, minwidth=100, stretch=tk.YES, anchor=tk.CENTER)

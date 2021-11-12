@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test(t: tplFieldElem[Nat ~ n]) {true}
+    }
+}

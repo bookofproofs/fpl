@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        func Test() -> tplFieldElem[Nat ~ n] {}
+    }
+}

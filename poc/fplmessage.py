@@ -25,7 +25,8 @@ class FplParserError(Exception):
         pos = str(self.error_context).find("\n")
         if pos > -1:
             msg += self.error_context[:pos]
-            msg += str(self.inner_exception)
+
+            msg += " " + str(self.inner_exception.stack)
         return msg
 
     def get_line(self):

@@ -16,7 +16,7 @@ class FplInterpreter(object):
         AnyNode(outline=AuxSymbolTable.globalLookup, parent=self._symbol_table_root)
         self._is_verbose = AuxISourceAnalyser.verbose
         self._analyser = None
-        self.version = "1.2.3"
+        self.version = "1.2.4"
 
     def syntax_analysis(self, theory_name: str, fpl_source: str):
         self._analyser = poc.fplsourceanalyser.FPLSourceAnalyser(self._symbol_table_root, theory_name,

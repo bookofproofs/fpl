@@ -2,7 +2,7 @@
 /* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */
 
 
-/* fpl Version 1.1.0 */
+/* fpl Version 1.1.1 */
 /* a mathematical theory written in FPL can be split between different files having */
 /* Every theory part block starts with an optional syntax extension block, followed by */
 /* optional usage of other libraries, followed by optional inference rules, */
@@ -125,7 +125,7 @@ regular_expression '/((?!:end).)*/'
         ClassHeader
         SW PredicateIdentifier
         (IW)? Colon
-        (IW)? GeneralType
+        (IW)? Type
         ( CW )* ObjectDefinitionBlock
     ObjectDefinitionBlock ::=
         LeftBrace
@@ -355,8 +355,17 @@ regular_expression '/((?!:end).)*/'
     TypeWithCoord ::=
         Type
         LeftBound
-        (IW)? ( RangeInSignature | CoordInSignature )
+        (IW)? ( RangeInType | CoordInType )
         (IW)? RightBound
+    RangeInType ::=
+        (CoordInType)?
+        (IW)? Tilde
+        (IW)? (CoordInType)?
+    CoordInType ::=
+        (
+        PredicateWithArguments
+        | Variable
+        )
     EntityWithCoord ::=
         Entity
         LeftBracket
@@ -364,12 +373,6 @@ regular_expression '/((?!:end).)*/'
         (IW)? RightBracket
     CoordList ::=
         Coord ( (IW)? Comma (IW)? Coord )*
-    CoordInSignature ::=
-        (
-        Type
-        | Variable
-        | extDigit
-        )
     Entity ::=
         (
         Variable
@@ -383,10 +386,6 @@ regular_expression '/((?!:end).)*/'
         Assignee
         | PrimePredicate
         )
-    RangeInSignature ::=
-        (CoordInSignature)?
-        (IW)? Tilde
-        (IW)? (CoordInSignature)?
     Range ::=
         (Coord)?
         (IW)? Tilde
@@ -560,6 +559,7 @@ regular_expression '/((?!:end).)*/'
         | false
         | UndefinedHeader
         | ArgumentParam
+        | extDigit
         )
     QualifiedIdentifier ::=
         Identifier ( Dot PredicateWithArguments )+
@@ -574,7 +574,6 @@ regular_expression '/((?!:end).)*/'
         | AmpersandVariable
         | IndexValue
         | Assignee
-        | extDigit
         )
     AmpersandVariable ::=
         Ampersand Variable

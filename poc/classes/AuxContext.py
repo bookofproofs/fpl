@@ -8,6 +8,7 @@ class AuxContext:
     aftercase = "aftercase"
     allquantor = "all"
     axiom = "axiom"
+    bound = "bound"
     block = "block"
     case = "case"
     classConstructor = "constructor"

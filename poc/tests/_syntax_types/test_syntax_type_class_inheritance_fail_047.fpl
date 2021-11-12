@@ -1,0 +1,9 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: tplFieldElem[1~n] {}
+
+    }
+}
+

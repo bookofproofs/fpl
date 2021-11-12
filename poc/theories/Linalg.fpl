@@ -24,20 +24,22 @@ Fpl.LinAlg
             }
         }
 
-        func VecAdd(v,w: tplFieldElem[1 ~ n]) -> tplFieldElem[1 ~ n]
+        func VecAdd(from,to: Nat, v,w: tplFieldElem[from ~ to]) -> tplFieldElem[from ~ to]
         {
-            self[1~n]:=addInField(v[1~n],w[1~n])
+            self[from ~ to]:=addInField(v[from ~ to],w[from ~ to])
         }
 
         lemma VecAddIsCommutative()
         {
-            x,y: tplFieldElem[1~n]
+            from, to: Nat
+            from := Nat(1)
+            x,y: tplFieldElem[from~to]
             fieldPowerN: FieldPowerN
                 (
                 field: Field(f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem)),
                 n:Nat
                 )
-            vecAdd: VecAdd(v,w: tplFieldElem[1~n])
+            vecAdd: VecAdd(v,w: tplFieldElem[from~to])
             pre:
                 and
                 (
@@ -52,7 +54,9 @@ Fpl.LinAlg
         {
             ZeroVectorN(n: Nat, field: Field)
             {
-                zero: tplFieldElem[1~n]
+                from, to: Nat
+                from := Nat(1)
+                zero: tplFieldElem[from~to]
                 i: Nat
                 range i [1~n]
                 (

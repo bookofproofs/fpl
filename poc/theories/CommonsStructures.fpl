@@ -6,7 +6,7 @@ Fpl.Commons.Structures
     {
 
         // defines a fixed length tuple template using a generic type tplIndex for an index in a range
-        class Tuple : tpl[Nat~Nat]
+        class Tuple : tpl
         {
             myLength: Nat
 
@@ -23,7 +23,7 @@ Fpl.Commons.Structures
                 myLength:=i
             }
 
-            Tuple(length:Nat, arr: tpl[1 ~ length])
+            Tuple(from, length:Nat, arr: tpl[from ~ length])
             {
                 self:=arr
                 myLength:=length
@@ -37,7 +37,7 @@ Fpl.Commons.Structures
         }
 
         // defines a tuple template starting from a specific index with an arbitrary length
-        class UnlimitedTupleFrom: tpl[Nat~]
+        class UnlimitedTupleFrom: tpl
         {
             UnlimitedTupleFrom(from:Nat, x: tpl[from~])
             {
@@ -50,10 +50,11 @@ Fpl.Commons.Structures
             }
         }
 
-        class CartesianProduct: Set[Nat~Nat]
+        class CartesianProduct: Set
         {
 
             myLength: Nat
+            myFrom: Nat
 
             CartesianProduct(setList: +Set)
             {
@@ -65,13 +66,14 @@ Fpl.Commons.Structures
                     i:=Succ(i)
                     self[i]:=setItem
                 )
+                myFrom := Nat(1)
                 myLength:=i
             }
 
-            CartesianProduct(n: Nat, setArray: Set[1~n])
+            CartesianProduct(from, to: Nat, setArray: Set[from ~ to])
             {
                 self:=setArray
-                myLength:=n
+                myLength:=to
             }
 
             mandatory Nat Length()
@@ -93,7 +95,7 @@ Fpl.Commons.Structures
                         (
                             In(tupleElem,@self),
                             and (
-                                is(tupleElem,Tuple[1~myLength]),
+                                is(tupleElem,Tuple[myFrom~myLength]),
                                 loop i [1~myLength]
                                 (
                                     assert In(tupleElem[i],@self[i])
@@ -244,7 +246,10 @@ Fpl.Commons.Structures
 
         pred AreRelated(u,v: Set, r: BinaryRelation)
         {
-            tuple: Tuple[1~2]
+            one, two:Nat
+            one := Nat(1)
+            two := Nat(2)
+            tuple: Tuple[one~two]
             tuple:=Tuple(u,v)
             assert
                 and

@@ -46,20 +46,20 @@ TestNamespace
         axiom Test(arr: Nat[~]) {true}
         axiom Test(arr: Real[k~]) {true}
         axiom Test(arr: Int[k~]) {true}
-        axiom Test(a : tpl[Nat~Nat]) {true}
         axiom Test(listOfTpl: +tpl) {true}
-        axiom Test(arr: tpl[1 ~ length]) {true}
-        axiom Test(a: tpl[Nat~]) {true}
+        axiom Test(arr: tpl[Nat(1) ~ length]) {true}
         axiom Test(x: tpl[from~]) {true}
-        axiom Test(a: Set[Nat~Nat]) {true}
+        axiom Test(a : tpl[Nat(1)~Nat(199)]) {true}
+        axiom Test(a: tpl[Nat(0)~]) {true}
+        axiom Test(a: Set[Nat(1) ~ Nat(199)]) {true}
         axiom Test(setList: +Set) {true}
-        axiom Test(setArray: Set[1~n]) {true}
-        axiom Test(tuple: Tuple[1~2]) {true}
+        axiom Test(setArray: Set[Nat(1)~n]) {true}
+        axiom Test(tuple: Tuple[Nat(1)~Nat(2)]) {true}
         axiom Test(p: +pred) {true}
-        axiom Test(t: tplFieldElem[1 ~ n]) {true}
-        axiom Test(x,y: tplFieldElem[1~n]) {true}
+        axiom Test(t: tplFieldElem[Nat(1) ~ n]) {true}
+        axiom Test(x,y: tplFieldElem[n~Nat(1)]) {true}
         axiom Test(field: Field (f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem))) {true}
-        axiom Test(vecAdd: VecAdd(v,w: tplFieldElem[1~n])) {true}
+        axiom Test(vecAdd: VecAdd(v,w: tplFieldElem[Nat(1)~n])) {true}
         axiom Test(testVar: Field(a: Test1,b: Test2,c: obj,d: pred,e: +pred,f: *func)) {true}
         axiom Test(a: *func) {true}
         axiom Test(a: +func) {true}

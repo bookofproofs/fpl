@@ -1,0 +1,10 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: index {}
+    }
+}
+
+
+

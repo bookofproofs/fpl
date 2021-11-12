@@ -1,0 +1,12 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test() {
+            a: Set[Nat~Nat]
+
+            // because we are in an axiom, we need at least one predicate to avoid causing syntax errors
+            true
+        }
+    }
+}

@@ -1,0 +1,9 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: +pred {}
+
+    }
+}
+
