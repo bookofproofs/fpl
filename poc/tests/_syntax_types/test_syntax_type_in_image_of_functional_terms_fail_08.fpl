@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        func Test() -> VecAdd(a,b: tplFieldElem[Nat~n]) {}
+    }
+}

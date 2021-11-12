@@ -28,8 +28,6 @@ class FplInvalidInheritanceTests(unittest.TestCase):
     @parameterized.expand([
         "test_FplInvalidInheritance_func",
         "test_FplInvalidInheritance_function",
-        "test_FplInvalidInheritance_ind",
-        "test_FplInvalidInheritance_index",
         "test_FplInvalidInheritance_pred",
         "test_FplInvalidInheritance_predicate",
         "test_FplInvalidInheritance_tpl",

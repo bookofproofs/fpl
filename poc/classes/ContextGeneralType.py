@@ -15,33 +15,7 @@ class ContextGeneralType:
         general_type = GeneralType(i.parse_list, parsing_info)
 
         # Handle the different contexts
-        if i.context.is_parsing_context([AuxContext.classType]):
-            # in the context of a class declaration, we have to update the type of the class
-            class_node = i.touch_node()
-            if AuxBits.is_functional_term(general_type.pattern_int):
-                parsing_info.all_errors().append(
-                    FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "a functional term type"))
-            elif AuxBits.is_predicate(general_type.pattern_int):
-                parsing_info.all_errors().append(
-                    FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "a predicate type"))
-            elif AuxBits.is_generic(general_type.pattern_int):
-                parsing_info.all_errors().append(
-                    FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "a generic type"))
-            elif AuxBits.is_index(general_type.pattern_int):
-                parsing_info.all_errors().append(
-                    FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id, "an index type"))
-            elif AuxBits.is_extension(general_type.pattern_int):
-                parsing_info.all_errors().append(
-                    FplInvalidInheritance(parsing_info.get_ast_info(), general_type.id,
-                                          "a user-defined syntax extension"))
-            else:
-                # register the type of the class
-                class_node.type = general_type.id
-                class_node.type_pattern = general_type.pattern_int
-                class_node.type_mod = general_type.mod
-            # we clear the context of classType
-            i.context.pop_context([AuxContext.classType], i.get_debug_parsing_info(parsing_info))
-        elif i.context.is_parsing_context([AuxContext.optionalProperty]) or \
+        if i.context.is_parsing_context([AuxContext.optionalProperty]) or \
                 i.context.is_parsing_context([AuxContext.mandatoryProperty]):
             # as the type of property definition that is not a class instance
             ContextClassInstance.start(i, general_type)

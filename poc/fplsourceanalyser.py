@@ -6,6 +6,7 @@ from anytree import AnyNode
 from poc.classes.ContextAllQuantor import ContextAllQuantor
 from poc.classes.ContextAxiom import ContextAxiom
 from poc.classes.ContextBlock import ContextBlock
+from poc.classes.ContextBound import ContextBound
 from poc.classes.ContextClass import ContextClass
 from poc.classes.ContextExQuantor import ContextExQuantor
 from poc.classes.ContextFunctionalTerm import ContextFunctionalTerm
@@ -31,6 +32,7 @@ from poc.classes.ContextTheory import ContextTheory
 from poc.classes.ContextType import ContextType
 from poc.classes.ContextXid import ContextXid
 from poc.classes.ContextUses import ContextUses
+from poc.classes.ContextVariable import ContextVariable
 from poc.classes.ContextVariableList import ContextVariableList
 from poc.classes.ContextVariableType import ContextVariableType
 from poc.classes.ContextWildcardTheoryNamespace import ContextWildcardTheoryNamespace
@@ -98,7 +100,7 @@ class FPLSourceAnalyser(object):
             "Conjunction": self.default_interpretation,
             "Constructor": ContextConstructor.stop,
             "Coord": self.default_interpretation,
-            "CoordInSignature": self.default_interpretation,
+            "CoordInType": self.default_interpretation,
             "CoordList": self.default_interpretation,
             "cor": self.default_interpretation,
             "corollary": self.default_interpretation,
@@ -166,7 +168,7 @@ class FPLSourceAnalyser(object):
             "Justification": self.default_interpretation,
             "KeysOfVariadicVariable": self.default_interpretation,
             "LanguageCode": self.default_interpretation,
-            "LeftBound": self.default_interpretation,
+            "LeftBound": ContextBound.start,
             "LeftBrace": ContextBlock.start,
             "LeftBracket": self.default_interpretation,
             "LeftParen": ContextParen.start,
@@ -241,7 +243,7 @@ class FPLSourceAnalyser(object):
             "QualifiedIdentifier": self.default_interpretation,
             "Range": self.default_interpretation,
             "range": self.default_interpretation,
-            "RangeInSignature": self.default_interpretation,
+            "RangeInType": self.default_interpretation,
             "RangeOrLoopBody": self.default_interpretation,
             "RangeStatement": self.default_interpretation,
             "ret": self.default_interpretation,
@@ -252,7 +254,7 @@ class FPLSourceAnalyser(object):
             "Revoke": self.default_interpretation,
             "revoke": self.default_interpretation,
             "RevokeHeader": self.default_interpretation,
-            "RightBound": self.default_interpretation,
+            "RightBound": ContextBound.stop,
             "RightBrace": ContextBlock.stop,
             "RightBracket": self.default_interpretation,
             "RightParen": ContextParen.stop,
@@ -291,7 +293,7 @@ class FPLSourceAnalyser(object):
             "UndefinedHeader": self.default_interpretation,
             "uses": ContextUses.start,
             "UsesClause": ContextUses.stop,
-            "Variable": self.default_interpretation,
+            "Variable": ContextVariable.dispatch,
             "VariableList": ContextVariableList.dispatch,
             "VariableSpecification": self.default_interpretation,
             "VariableSpecificationList": self.default_interpretation,

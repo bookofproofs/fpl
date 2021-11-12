@@ -1,0 +1,12 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test() {
+            arr: tpl[1 ~ length]
+
+            // because we are in an axiom, we need at least one predicate to avoid causing syntax errors
+            true
+        }
+    }
+}

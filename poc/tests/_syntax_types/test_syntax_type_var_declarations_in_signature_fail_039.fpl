@@ -1,0 +1,7 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Test(vecAdd: VecAdd(v,w: tplFieldElem[Nat~n])) {true}
+    }
+}

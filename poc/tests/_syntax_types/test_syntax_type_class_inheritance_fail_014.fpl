@@ -1,0 +1,11 @@
+TestNamespace
+{
+    theory
+    {
+
+        class Test: obj[!n~m!] {}
+
+    }
+}
+
+

@@ -30,13 +30,9 @@ class TypeTests(unittest.TestCase):
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
-        "test_Types_class_capsid",
-        "test_Types_class_capsid_star",
-        "test_Types_class_capsid_plus",
+        "test_Types_class_capsid_01",
+        "test_Types_class_capsid_02",
         "test_Types_class_obj",
-        "test_Types_class_obj_star",
-        "test_Types_class_obj_plus",
-        "test_Types_class_objN_M",
         "test_Types_class_object",
     ])
     def test_possibilities(self, use_case):

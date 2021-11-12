@@ -6,6 +6,7 @@ via the 'uses' keyword.
 """
 
 import anytree.resolver
+import anytree.search
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.NamedVariableDeclaration import NamedVariableDeclaration
 from anytree import AnyNode, Resolver
@@ -421,3 +422,17 @@ class AuxSymbolTable:
                     raise NotImplementedError(node.outline)
                 return global_node
         return None
+
+    @staticmethod
+    def get_variable_type_in_current_scope(node: AnyNode, parsing_info: AuxInterpretation):
+        if node.outline in [AuxSymbolTable.classConstructor, AuxSymbolTable.property]:
+            # if the node is a constructor or a property, set it to the building block (class or functional term)
+            # because we want to identify all variables that are already declared in that scope.
+            node = node.parent.parent
+        # identify all variables in the scope with the id of the parsing info
+        vars = anytree.search.findall(node,
+                                      filter_=lambda n: n.outline == AuxSymbolTable.var and n.id == parsing_info.id)
+        if len(vars) == 0:
+            # the variable was not found
+            parsing_info.all_errors().append(
+                poc.fplerror.FplUndeclaredVariable(parsing_info.get_ast_info(), parsing_info.id))

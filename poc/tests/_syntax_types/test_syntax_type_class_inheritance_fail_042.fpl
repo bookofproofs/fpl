@@ -1,0 +1,8 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: +Set {}
+    }
+}
+

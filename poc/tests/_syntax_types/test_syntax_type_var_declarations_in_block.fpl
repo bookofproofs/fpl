@@ -49,21 +49,20 @@ TestNamespace
             arr: Nat[~]
             arr: Real[k~]
             arr: Int[k~]
-            a : tpl[Nat~Nat]
+            a : tpl[Nat(1)~Nat(1)]
             listOfTpl: +tpl
-            arr: tpl[1 ~ length]
-            a: tpl[Nat~]
+            arr: tpl[Nat(1) ~ length]
+            a: tpl[Nat(100)~]
             x: tpl[from~]
-            a: Set[Nat~Nat]
+            a: Set[Nat(0)~Nat(1)]
             setList: +Set
-            setArray: Set[1~n]
-            tuple: Tuple[1~2]
+            setArray: Set[Nat(1)~n]
+            tuple: Tuple[Nat(1)~Nat(2)]
             p: +pred
-            t: tplFieldElem[1 ~ n]
-            x,y: tplFieldElem[1~n]
+            t: tplFieldElem[Nat(1) ~ n]
 
             field: Field(f: tplFieldSet, opAdd, opMul: BinOp(a,b: tplFieldElem))
-            vecAdd: VecAdd(v,w: tplFieldElem[1~n])
+            vecAdd: VecAdd(v,w: tplFieldElem[Nat(1)~n])
             testVar: Test(a: Test1,b: Test2,c: obj,d: pred,e: +pred,f: *func)
             testVar: Test(a: *func)
             testVar: *func

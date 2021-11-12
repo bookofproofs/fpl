@@ -1,0 +1,16 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: Set[Nat~Nat] {}
+        class Test: +Set {}
+        class Test: Set[1~n] {}
+        class Test: Tuple[1~2] {}
+        class Test: +pred {}
+        class Test: tplFieldElem[1 ~ n] {}
+        class Test: tplFieldElem[1~n] {}
+        class Test: *func {}
+        class Test: +func {}
+        class Test: *pred {}
+    }
+}

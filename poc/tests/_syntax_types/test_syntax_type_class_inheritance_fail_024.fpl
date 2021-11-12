@@ -1,0 +1,9 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: obj[!1~42] {}
+
+    }
+}
+

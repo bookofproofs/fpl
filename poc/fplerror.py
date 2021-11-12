@@ -55,3 +55,10 @@ class FplAliasConflict(FplInterpreterMessage):
                                        info.line,
                                        info.col,
                                        info.file)
+
+
+class FplUndeclaredVariable(FplInterpreterMessage):
+    def __init__(self, info: AuxAstInfo, var_name: str):
+        FplInterpreterMessage.__init__(self, "The name '{0}' does not exist in the current context".format(var_name),
+                                       info.line, info.col,
+                                       info.file)

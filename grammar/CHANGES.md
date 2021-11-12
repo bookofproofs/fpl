@@ -24,3 +24,10 @@ Initial grammar
 * Renamed AnonymousSignature to ParenthesisedGeneralType
 * Removed TupleOfTypes since replaced by a more general ParamTuple
 * Removed TypeOrTupleOfTypes since its option rules simplified to only one rule VariableType
+## 1.1.1
+* Removed extDigit from CoordInSignature, so that special types (like natural numbers) have to be disambiguated by declaring/initializing them as variables previously
+* Moved extDigit from Identifier to PrimePredicate to allow calling the more disambiguated Nat(100) instead of 100 and to prevent derivations of PredicateWithArgument starting with a extDigit. 
+* Replaced GeneralType by Type in DefinitionClass, since the complexity of the type of a class consistently and fully described by its constructors.
+* Replaced Type in CoordInSignature by PredicateWithArguments to enable using calls of constructors instead of types (disambiguation).
+* Renamed CoordInSignature by CoordInType.
+* Renamed RangeInSignature by RangeInType.
