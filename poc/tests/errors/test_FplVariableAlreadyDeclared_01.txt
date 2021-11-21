@@ -1,0 +1,18 @@
+Test.Namespace
+{
+    theory
+    {
+        class Nat: obj
+        {
+            Nat(x, y: Int)
+            {
+                x: Nat
+                self := x
+            }
+        }
+    }
+}
+
+##############################
+
+FplVariableDuplicateInVariableList:7:23: Variable x already listed at 7:17

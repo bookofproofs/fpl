@@ -1,6 +1,5 @@
 import unittest
 from parameterized import parameterized
-from poc.util.fplutil import Utils
 from poc.classes.AuxBits import AuxBits
 
 """

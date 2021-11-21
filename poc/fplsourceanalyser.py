@@ -3,14 +3,26 @@ from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from anytree import AnyNode
-from poc.classes.ContextAllQuantor import ContextAllQuantor
+from poc.classes.ContextAll import ContextAll
+from poc.classes.ContextAssertionStatement import ContextAssertionStatement
+from poc.classes.ContextAssignee import ContextAssignee
 from poc.classes.ContextAxiom import ContextAxiom
+from poc.classes.ContextAxiomBlock import ContextAxiomBlock
 from poc.classes.ContextBlock import ContextBlock
 from poc.classes.ContextBound import ContextBound
 from poc.classes.ContextClass import ContextClass
-from poc.classes.ContextExQuantor import ContextExQuantor
+from poc.classes.ContextCompoundPredicate import ContextCompoundPredicate
+from poc.classes.ContextConjunction import ContextConjunction
+from poc.classes.ContextDisjunction import ContextDisjunction
+from poc.classes.ContextEntity import ContextEntity
+from poc.classes.ContextEquivalence import ContextEquivalence
+from poc.classes.ContextExclusiveOr import ContextExclusiveOr
+from poc.classes.ContextExists import ContextExists
 from poc.classes.ContextFunctionalTerm import ContextFunctionalTerm
 from poc.classes.ContextGeneralType import ContextGeneralType
+from poc.classes.ContextIdentifier import ContextIdentifier
+from poc.classes.ContextImplication import ContextImplication
+from poc.classes.ContextIndexValue import ContextIndexValue
 from poc.classes.ContextInference import ContextInference
 from poc.classes.ContextInferenceRules import ContextInferenceRules
 from poc.classes.ContextClassInstance import ContextClassInstance
@@ -19,16 +31,23 @@ from poc.classes.ContextIsOperator import ContextIsOperator
 from poc.classes.ContextMapping import ContextMapping
 from poc.classes.ContextNamedVariableDeclaration import ContextNamedVariableDeclaration
 from poc.classes.ContextNamespaceIdentifier import ContextNamespaceIdentifier
+from poc.classes.ContextNegation import ContextNegation
 from poc.classes.ContextParamTuple import ContextParamTuple
 from poc.classes.ContextParen import ContextParen
 from poc.classes.ContextParenthesisedGeneralType import ContextParenthesisedGeneralType
-from poc.classes.ContextPredicateDeclaration import ContextPredicateDeclaration
+from poc.classes.ContextParenthesisedPredicate import ContextParenthesisedPredicate
+from poc.classes.ContextPredicate import ContextPredicate
+from poc.classes.ContextPredicateWithArguments import ContextPredicateWithArguments
+from poc.classes.ContextDefinitionPredicate import ContextDefinitionPredicate
+from poc.classes.ContextPredicateDefinitionBlock import ContextPredicateDefinitionBlock
 from poc.classes.ContextPredicateHeader import ContextPredicateHeader
 from poc.classes.ContextPredicateIdentifier import ContextPredicateIdentifier
+from poc.classes.ContextPrimePredicate import ContextPrimePredicate
 from poc.classes.ContextProperty import ContextProperty
 from poc.classes.ContextSignature import ContextSignature
 from poc.classes.ContextTheoremLikeStatement import ContextTheoremLikeStatement
 from poc.classes.ContextTheory import ContextTheory
+from poc.classes.ContextTrueFalse import ContextTrueFalse
 from poc.classes.ContextType import ContextType
 from poc.classes.ContextXid import ContextXid
 from poc.classes.ContextUses import ContextUses
@@ -50,19 +69,16 @@ class FPLSourceAnalyser(object):
             "Alias": self.default_interpretation,
             "alias": self.default_interpretation,
             "AliasedId": self.default_interpretation,
-            "All": ContextAllQuantor.stop,
-            "all": ContextAllQuantor.start,
-            "Ampersand": self.default_interpretation,
-            "AmpersandVariable": self.default_interpretation,
+            "All": ContextAll.stop,
+            "all": ContextAll.start,
             "and": self.default_interpretation,
             "ArgumentIdentifier": self.default_interpretation,
             "ArgumentInference": self.default_interpretation,
             "ArgumentParam": self.default_interpretation,
             "ass": self.default_interpretation,
-            "ass": self.default_interpretation,
             "assert": self.default_interpretation,
-            "AssertionStatement": self.default_interpretation,
-            "Assignee": self.default_interpretation,
+            "AssertionStatement": ContextAssertionStatement.dispatch,
+            "Assignee": ContextAssignee.dispatch,
             "AssignmentStatement": self.default_interpretation,
             "assume": self.default_interpretation,
             "AssumedPredicate": self.default_interpretation,
@@ -72,7 +88,7 @@ class FPLSourceAnalyser(object):
             "ax": self.default_interpretation,
             "Axiom": ContextAxiom.stop,
             "axiom": self.default_interpretation,
-            "AxiomBlock": self.default_interpretation,
+            "AxiomBlock": ContextAxiomBlock.dispatch,
             "AxiomHeader": ContextAxiom.start,
             "BuildingBlock": self.default_interpretation,
             "BuildingBlockList": self.default_interpretation,
@@ -88,7 +104,7 @@ class FPLSourceAnalyser(object):
             "ColonEqual": self.default_interpretation,
             "Comma": self.default_interpretation,
             "Comment": self.default_interpretation,
-            "CompoundPredicate": self.default_interpretation,
+            "CompoundPredicate": ContextCompoundPredicate.dispatch,
             "con": self.default_interpretation,
             "conclusion": self.default_interpretation,
             "ConclusionBlock": self.default_interpretation,
@@ -97,7 +113,7 @@ class FPLSourceAnalyser(object):
             "ConditionFollowedByResultList": self.default_interpretation,
             "conj": self.default_interpretation,
             "conjecture": self.default_interpretation,
-            "Conjunction": self.default_interpretation,
+            "Conjunction": ContextConjunction.dispatch,
             "Constructor": ContextConstructor.stop,
             "Coord": self.default_interpretation,
             "CoordInType": self.default_interpretation,
@@ -111,11 +127,11 @@ class FPLSourceAnalyser(object):
             "DefinitionContent": self.default_interpretation,
             "DefinitionContentList": self.default_interpretation,
             "DefinitionFunctionalTerm": ContextFunctionalTerm.stop,
-            "DefinitionPredicate": ContextPredicateDeclaration.stop,
+            "DefinitionPredicate": ContextDefinitionPredicate.stop,
             "DefinitionProperty": self.default_interpretation,
             "DerivedPredicate": self.default_interpretation,
             "Digit": self.default_interpretation,
-            "Disjunction": self.default_interpretation,
+            "Disjunction": ContextDisjunction.dispatch,
             "Dollar": self.default_interpretation,
             "Dot": self.default_interpretation,
             "EBNFBar": self.default_interpretation,
@@ -125,13 +141,13 @@ class FPLSourceAnalyser(object):
             "EBNFTransl": self.default_interpretation,
             "else": self.default_interpretation,
             "end": self.default_interpretation,
-            "Entity": self.default_interpretation,
+            "Entity": ContextEntity.dispatch,
             "EntityWithCoord": self.default_interpretation,
-            "Equivalence": self.default_interpretation,
-            "ex": ContextExQuantor.start,
+            "Equivalence": ContextEquivalence.dispatch,
+            "ex": ContextExists.start,
             "ExclamationMark": self.default_interpretation,
-            "ExclusiveOr": self.default_interpretation,
-            "Exists": ContextExQuantor.stop,
+            "ExclusiveOr": ContextExclusiveOr.dispatch,
+            "Exists": ContextExists.stop,
             "ExistsHeader": self.default_interpretation,
             "ExistsTimesN": self.default_interpretation,
             "ext": self.default_interpretation,
@@ -140,7 +156,7 @@ class FPLSourceAnalyser(object):
             "ExtensionContent": self.default_interpretation,
             "ExtensionHeader": self.default_interpretation,
             "ExtensionTail": self.default_interpretation,
-            "false": self.default_interpretation,
+            "false": ContextTrueFalse.dispatch,
             "func": self.default_interpretation,
             "function": self.default_interpretation,
             "FunctionalTermDefinitionBlock": self.default_interpretation,
@@ -148,22 +164,22 @@ class FPLSourceAnalyser(object):
             "FunctionalTermInstance": ContextFunctionalTerm.stop,
             "FunctionalTermSignature": self.default_interpretation,
             "GeneralType": ContextGeneralType.dispatch,
-            "Identifier": self.default_interpretation,
+            "Identifier": ContextIdentifier.dispatch,
             "IdStartsWithCap": self.default_interpretation,
             "IdStartsWithSmallCase": self.default_interpretation,
             "iif": self.default_interpretation,
             "impl": self.default_interpretation,
-            "Implication": self.default_interpretation,
+            "Implication": ContextImplication.dispatch,
             "ind": self.default_interpretation,
             "index": self.default_interpretation,
             "IndexHeader": self.default_interpretation,
-            "IndexValue": self.default_interpretation,
+            "IndexValue": ContextIndexValue.dispatch,
             "inf": self.default_interpretation,
             "inference": self.default_interpretation,
             "InferenceHeader": ContextInferenceRules.start,
             "InstanceBlock": self.default_interpretation,
-            "is": ContextIsOperator.start,
-            "IsOperator": ContextIsOperator.stop,
+            "is": self.default_interpretation,
+            "IsOperator": ContextIsOperator.dispatch,
             "IW": self.ignore_production,
             "Justification": self.default_interpretation,
             "KeysOfVariadicVariable": self.default_interpretation,
@@ -193,7 +209,7 @@ class FPLSourceAnalyser(object):
             "NamespaceBlock": self.default_interpretation,
             "NamespaceIdentifier": ContextNamespaceIdentifier.dispatch,
             "NamespaceModifier": self.default_interpretation,
-            "Negation": self.default_interpretation,
+            "Negation": ContextNegation.dispatch,
             "not": self.default_interpretation,
             "obj": self.default_interpretation,
             "object": self.default_interpretation,
@@ -204,26 +220,26 @@ class FPLSourceAnalyser(object):
             "or": self.default_interpretation,
             "ParamTuple": ContextParamTuple.dispatch,
             "ParenthesisedGeneralType": ContextParenthesisedGeneralType.dispatch,
-            "ParenthesisedPredicate": self.default_interpretation,
+            "ParenthesisedPredicate": ContextParenthesisedPredicate.dispatch,
             "Plus": self.default_interpretation,
             "post": self.default_interpretation,
             "postulate": self.default_interpretation,
             "pre": self.default_interpretation,
-            "pred": self.default_interpretation,
+            "pred": self.default_interpretation,  # noqa
             "predicate": self.default_interpretation,
-            "Predicate": self.default_interpretation,
-            "PredicateDefinitionBlock": self.default_interpretation,
+            "Predicate": ContextPredicate.dispatch,
+            "PredicateDefinitionBlock": ContextPredicateDefinitionBlock.dispatch,
             "PredicateHeader": ContextPredicateHeader.dispatch,
             "PredicateIdentifier": ContextPredicateIdentifier.dispatch,
             "PredicateList": self.default_interpretation,
-            "PredicateWithArguments": self.default_interpretation,
+            "PredicateWithArguments": ContextPredicateWithArguments.dispatch,
             "premise": self.default_interpretation,
             "PremiseBlock": self.default_interpretation,
             "PremiseConclusionBlock": self.default_interpretation,
             "PremiseHeader": self.default_interpretation,
             "PremiseOrOtherPredicate": self.default_interpretation,
             "prf": self.default_interpretation,
-            "PrimePredicate": self.default_interpretation,
+            "PrimePredicate": ContextPrimePredicate.dispatch,
             "Proof": self.default_interpretation,
             "proof": self.default_interpretation,
             "ProofArgument": self.default_interpretation,
@@ -285,7 +301,7 @@ class FPLSourceAnalyser(object):
             "Translation": self.default_interpretation,
             "TranslationList": self.default_interpretation,
             "trivial": self.default_interpretation,
-            "true": self.default_interpretation,
+            "true": ContextTrueFalse.dispatch,
             "Type": ContextType.dispatch,
             "TypeWithCoord": self.default_interpretation,
             "undef": self.default_interpretation,
@@ -305,7 +321,8 @@ class FPLSourceAnalyser(object):
             "xor": self.default_interpretation,
         }
 
-    def _default(self, ast):
+    @staticmethod
+    def _default(ast):
         """
         If there’s no method matching the rule’s name, TatSu will invoke this method.
         :param ast: ast
@@ -313,7 +330,7 @@ class FPLSourceAnalyser(object):
         """
         return ast
 
-    def _postproc(self, context, ast):
+    def _postproc(self, context, ast):  # noqa
         """
         This TatSu method will be called after each rule is processed.
         In contrast to _default, this method receives the current parsing context as a parameter that contains
@@ -364,7 +381,7 @@ class FPLSourceAnalyser(object):
         return None
 
     @staticmethod
-    def ignore_production(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
+    def ignore_production(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):  # noqa
         """
         Returns None so that the rule will be ignored
         :param i: interface to the classes named Context<Something>

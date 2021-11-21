@@ -1,7 +1,7 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxContext import AuxContext
-from poc.classes.ContextPredicateDeclaration import ContextPredicateDeclaration
+from poc.classes.ContextDefinitionPredicate import ContextDefinitionPredicate
 
 
 class ContextPredicateHeader:
@@ -10,12 +10,12 @@ class ContextPredicateHeader:
         # a predicate header can occur in the following contexts:
         if i.context.is_parsing_context([AuxContext.theory, AuxContext.block]):
             # inside a theory as a global predicate definition
-            ContextPredicateDeclaration.start(i, parsing_info)
+            ContextDefinitionPredicate.start(i, parsing_info)
             return
         elif i.context.is_parsing_context([AuxContext.optionalProperty]) or \
                 i.context.is_parsing_context([AuxContext.mandatoryProperty]):
             # inside a class, or functional term as a predicate property
-            ContextPredicateDeclaration.start(i, parsing_info)
+            ContextDefinitionPredicate.start(i, parsing_info)
             return
         else:
             if i.verbose:

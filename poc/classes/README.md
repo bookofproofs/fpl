@@ -4,4 +4,4 @@ rule, the semantics of which they implement.
 All other files contain other auxiliary classes. Please name them with an "Aux" to better distinguish them from the FPL
 grammar classes.
 
-Some classes were generated using the TatSu syntax analyser generator tool.
+Some classes were generated using the (experimental) TatSu syntax analyser generator tool.

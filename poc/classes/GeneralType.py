@@ -5,9 +5,10 @@ from poc.classes.AuxBits import AuxBits
 class GeneralType(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        self.clone(parsing_info)
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
         self.id = ""
         self.mod = None
+        self.symbol_node = None  # this will become a pointer to the class if the GeneralType is a derived Type
         self.pattern_int = 0
         self.aggregate_previous_rules(parse_list,
                                       ["CallModifier", "Type", "TypeWithCoord", "Plus", "Star", "object", "obj",
@@ -23,4 +24,3 @@ class GeneralType(AuxInterpretation):
         elif rule in ["index", "ind"]:
             self.pattern_int = self.pattern_int | AuxBits.isIndex
             self.id = parsing_info.id
-

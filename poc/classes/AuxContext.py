@@ -6,7 +6,6 @@ in which context a grammar rule was used.
 
 class AuxContext:
     aftercase = "aftercase"
-    allquantor = "all"
     axiom = "axiom"
     bound = "bound"
     block = "block"
@@ -16,7 +15,6 @@ class AuxContext:
     classInstanceDeclaration = "classInstanceDeclaration"
     classType = "classtype"
     dolinebreaks = "dolinereaks"
-    exquantor = "ex"
     functionalTerm = "functionalTerm"
     functionalTermImage = "image"
     inferenceRule = "inferenceRule"

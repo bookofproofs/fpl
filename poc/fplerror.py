@@ -62,3 +62,32 @@ class FplUndeclaredVariable(FplInterpreterMessage):
         FplInterpreterMessage.__init__(self, "The name '{0}' does not exist in the current context".format(var_name),
                                        info.line, info.col,
                                        info.file)
+
+
+class FplVariableAlreadyDeclared(FplInterpreterMessage):
+    def __init__(self, info: AuxAstInfo, other_info: AuxAstInfo, var_name: str):
+        FplInterpreterMessage.__init__(self,
+                                       "The name '{0}' was already declared the current context at ({1},{2})".format(
+                                           var_name, str(other_info.line), str(other_info.col)),
+                                       info.line, info.col,
+                                       info.file)
+
+
+class FplIdentifierNotDeclared(FplInterpreterMessage):
+    def __init__(self, info: AuxAstInfo, class_name: str):
+        FplInterpreterMessage.__init__(self,
+                                       "Undeclared identifier '{0}'".format(class_name),
+                                       info.line, info.col,
+                                       info.file)
+
+
+class FplIdentifierAmbiguous(FplInterpreterMessage):
+    def __init__(self, info: AuxAstInfo, class_name: str, found_nodes:tuple):
+        global_names = []
+        for c in found_nodes:
+            global_names.append(c.gid + " ({0})".format(c.outline))
+        names = ",".join(global_names)
+        FplInterpreterMessage.__init__(self,
+                                       "Ambiguous identifier '{0}'. Found in ({1})".format(class_name, names),
+                                       info.line, info.col,
+                                       info.file)

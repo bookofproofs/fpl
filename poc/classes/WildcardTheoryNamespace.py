@@ -4,7 +4,7 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 class WildcardTheoryNamespace(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        self.clone(parsing_info)
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
         self.modifier = None
         self.id = ""
         self._modifierFound = False

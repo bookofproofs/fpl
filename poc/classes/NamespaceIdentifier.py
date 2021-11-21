@@ -11,7 +11,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 class NamespaceIdentifier(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        self.clone(parsing_info)
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
         self.info = parsing_info
         self.id = ""
         self.aggregate_previous_rules(parse_list,
@@ -20,5 +20,5 @@ class NamespaceIdentifier(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "IdStartsWithCap":
             self.id = parsing_info.id + self.id
-        if rule == "Dot":
+        elif rule == "Dot":
             self.id = parsing_info.id + self.id

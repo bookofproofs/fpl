@@ -61,3 +61,13 @@ Initial interpreter
   * undeclared variables (initial)
   * more tests, some bug-fixes
   * adjustments of the FPL interpreter according to FPL grammar changed to version 1.1.1, in particular, ranges in types.
+## 1.3.0
+* Symbol table functionality (cont.)
+  * representation and evaluation of predicates (initial)
+    * compound predicates (and, or, xor, iif, impl, not)
+    * variable predicates
+  * Entity (self, @self, ...)
+  * representation of statements (initial)
+  * more tests
+  * adjustments of the FPL interpreter according to FPL grammar changed to version 1.1.2
+* Known issues: this version of the interpreter's syntax analysis will run into errors when you try to open, parse and interpret FPL theories from the poc.

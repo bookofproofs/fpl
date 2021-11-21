@@ -3,7 +3,6 @@ from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
 import os
-import re
 
 """
 Tests if the interpreter produces the expected symbol tables for different syntactically correct fpl files.
@@ -70,6 +69,7 @@ class SymbolTableTests(unittest.TestCase):
         "uc_lemma_two",
         "uc_conjecture_one",
         "uc_conjecture_two",
+        "uc_self_with_at",
     ])
     def test_symbol_table_correct(self, use_case):
         interpreter = FplInterpreter(self.fpl_parser)

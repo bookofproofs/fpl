@@ -31,3 +31,6 @@ Initial grammar
 * Replaced Type in CoordInSignature by PredicateWithArguments to enable using calls of constructors instead of types (disambiguation).
 * Renamed CoordInSignature by CoordInType.
 * Renamed RangeInSignature by RangeInType.
+## 1.1.2
+* Simplified syntax of the is operator by replacing VariableType by GeneralType according to changes made in 1.1.1
+* Removed rules AmpersandVariable and Ampersand (no use cases in proof-based mathematics identified that could not be covered by the remaining FPL syntax)

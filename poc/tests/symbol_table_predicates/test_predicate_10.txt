@@ -1,0 +1,35 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            p,q: pred
+            and (p, q)
+        }
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='global')
+│   └── AnyNode(gid='TestNamespace.Test[]', node=AnyNode(), outline='predicateDeclaration', type_pattern=2, uid='Test')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='test_predicate_10')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    │   └── AnyNode(id='Test[]', info=<AuxAstInfo.AuxAstInfo>, outline='predicateDeclaration')
+    │       ├── AnyNode(outline='variables')
+    │       │   ├── AnyNode(id='p', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='pred', type_mod=None, type_pattern=18)
+    │       │   └── AnyNode(id='q', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='pred', type_mod=None, type_pattern=18)
+    │       ├── AnyNode(outline='statements')
+    │       └── AuxPredicate(type='and')
+    │           ├── AuxPredicate(reference=AnyNode(id='p', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='pred', type_mod=None, type_pattern=18), type='var')
+    │           └── AuxPredicate(reference=AnyNode(id='q', info=<AuxAstInfo.AuxAstInfo>, is_signature=False, outline='var', type='pred', type_mod=None, type_pattern=18), type='var')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')
