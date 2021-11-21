@@ -10,7 +10,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 class RulesOfInferenceBlock(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        self.clone(parsing_info)
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
         self.info = parsing_info
         self.aggregate_previous_rules(parse_list,
                                       AuxRuleDependencies.dep["RulesOfInferenceBlock"], self.rule_aggregator)
@@ -18,11 +18,11 @@ class RulesOfInferenceBlock(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "InferenceHeader":
             pass
-        if rule == "CW":
+        elif rule == "CW":
             pass
-        if rule == "LeftBrace":
+        elif rule == "LeftBrace":
             pass
-        if rule == "RuleOfInferenceList":
+        elif rule == "RuleOfInferenceList":
             pass
-        if rule == "RightBrace":
+        elif rule == "RightBrace":
             pass

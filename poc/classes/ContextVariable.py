@@ -8,15 +8,17 @@ from poc.classes.AuxContext import AuxContext
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.Variable import Variable
 
 
 class ContextVariable:
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        i.parse_list.append(parsing_info)
+        new_info = Variable(i.parse_list, parsing_info)
+        i.parse_list.append(new_info)
         if i.context.is_parsing_context([AuxContext.bound]):
             # In this context, variable may be used only if they have been previously properly declared.
             # Try to find out if the variable in the scope.
-            var = AuxSymbolTable.get_variable_type_in_current_scope(i.touch_node(), parsing_info)
+            var = AuxSymbolTable.get_variable_in_current_scope(i.touch_node(), parsing_info)
 
 

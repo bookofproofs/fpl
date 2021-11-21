@@ -1,4 +1,4 @@
-# fpl Version 1.1.1
+# fpl Version 1.1.2
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -865,7 +865,7 @@
 # ----------------------------------------------------------------
 # Boolean Keywords
 
-    @@keyword :: true false not and or impl iif xor
+    @@keyword :: true false not and or impl iif xor is
 
     true =
         "true"
@@ -907,7 +907,7 @@
 # ----------------------------------------------------------------
 # Predicates
 
-    @@keyword :: all ex py is
+    @@keyword :: all ex py
 
     Predicate =
         (
@@ -945,22 +945,13 @@
     Identifier =
         (
         PredicateIdentifier
-        | AmpersandVariable
         | IndexValue
         | Assignee
         )
         ;
 
-    AmpersandVariable =
-        Ampersand Variable
-        ;
-
     IndexValue =
         Variable Dollar ( Digit | Variable )
-        ;
-
-    Ampersand =
-        "&"
         ;
 
     self =
@@ -988,9 +979,9 @@
     IsOperator =
         is
         [ IW ] LeftParen
-        { CW }*  Identifier
+        { CW }* Identifier
         { CW }* Comma
-        [ IW ] VariableType
+        [ IW ] GeneralType
         [ IW ] RightParen
         ;
 

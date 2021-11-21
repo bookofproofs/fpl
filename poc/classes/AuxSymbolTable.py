@@ -17,7 +17,7 @@ from poc.classes.AuxContext import AuxContext
 
 
 class AuxSymbolTable:
-    aliasId = "aliasid"
+    aliasId = "aliasid"  # noqa
     axiom = "axiom"
     axioms = "axioms"
     classConstructors = "constructors"
@@ -35,9 +35,22 @@ class AuxSymbolTable:
     ids = "id"
     inferenceRule = "inferenceRule"
     inferenceRules = "inferenceRules"
+    isOperator = "is"
     mandatory = "mandatory"
     namespace = "namespace"
     param = "param"
+    predicate_all = "all"
+    predicate_conjunction = "and"
+    predicate_disjunction = "or"
+    predicate_equivalence = "<=>"
+    predicate_exists = "ex"
+    predicate_exclusiveOr = "xor"
+    predicate_false = "false"
+    predicate_implication = "=>"
+    predicate_negation = "not"
+    predicate_true = "true"
+    predicate_identifier = "predicateIdentifier"
+    predicate_with_arguments = "predicateWithArgs"
     predicates = "predicates"
     predicateDeclaration = "predicateDeclaration"
     properties = "properties"
@@ -46,7 +59,11 @@ class AuxSymbolTable:
     outline = "outline"
     property = "property"
     root = "root"
-    theoremLikeStmts = "theoremLikeStatements"
+    selfInstance = "self"
+    statements = "statements"
+    statement = "statement"
+    statement_assert = "assert"
+    theoremLikeStmts = "theoremLikeStatements"  # noqa
     theoremLikeStmt = "theoremLikeStmt"
     theory = "theory"
     theoryName = "theory_name"
@@ -84,10 +101,6 @@ class AuxSymbolTable:
             return theory_node
 
     @staticmethod
-    def get_global_identifiers(root: AnyNode):
-        return anytree.search.findall_by_attr(root, name="is_global", value=True)
-
-    @staticmethod
     def get_child_by_outline(parent: AnyNode, outline: str):
         r = Resolver(AuxSymbolTable.outline)
         return r.get(parent, outline)
@@ -102,7 +115,7 @@ class AuxSymbolTable:
             parsing_info.all_errors().append(
                 poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
         except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=uses_node, id=identifier, modifier=parsing_info.modifier,
+            node = AnyNode(parent=uses_node, id=identifier, modifier=parsing_info.modifier,  # noqa
                            info=parsing_info.get_ast_info())
             return node
 
@@ -118,8 +131,9 @@ class AuxSymbolTable:
         except anytree.resolver.ChildResolverError:
             node = AnyNode(parent=inference_rules_node, outline=AuxSymbolTable.inferenceRule, id=identifier,
                            info=parsing_info.get_ast_info())
-            # add specific subnodes
+            # add specific sub nodes
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
+            AnyNode(parent=node, outline=AuxSymbolTable.statements)
         return node
 
     @staticmethod
@@ -134,14 +148,14 @@ class AuxSymbolTable:
         except anytree.resolver.ChildResolverError:
             node = AnyNode(parent=classes_node, outline=AuxSymbolTable.classDeclaration, id=identifier,
                            info=parsing_info.get_ast_info())
-            # add properties and constructors subnodes to this node
+            # add properties and constructors sub nodes to this node
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
             AnyNode(parent=node, outline=AuxSymbolTable.classConstructors)
             AnyNode(parent=node, outline=AuxSymbolTable.properties)
             # register the global reference for the class
             theory_node = classes_node.parent
-            gid = '.'.join([theory_node.namespace, node.id])
-            AuxSymbolTable._register_global_reference(theory_node, gid, node.id, node, parsing_info.all_errors())
+            gid = '.'.join([theory_node.namespace, node.id])  # noqa
+            AuxSymbolTable._register_global_reference(theory_node, gid, node.id, node, parsing_info.all_errors())  # noqa
         return node
 
     @staticmethod
@@ -156,8 +170,9 @@ class AuxSymbolTable:
         except anytree.resolver.ChildResolverError:
             node = AnyNode(parent=predicates_node, outline=AuxSymbolTable.predicateDeclaration, id=identifier,
                            info=parsing_info.get_ast_info())
-            # add specific subnodes
+            # add specific sub nodes
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
+            AnyNode(parent=node, outline=AuxSymbolTable.statements)
         return node
 
     @staticmethod
@@ -172,9 +187,10 @@ class AuxSymbolTable:
         except anytree.resolver.ChildResolverError:
             node = AnyNode(parent=functional_terms_node, outline=AuxSymbolTable.functionalTerm, id=identifier,
                            info=parsing_info.get_ast_info())
-            # add specific subnodes
+            # add specific sub nodes
             AnyNode(parent=node, outline=AuxSymbolTable.functionalTermImage)
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
+            AnyNode(parent=node, outline=AuxSymbolTable.statements)
             AnyNode(parent=node, outline=AuxSymbolTable.properties)
         return node
 
@@ -196,8 +212,9 @@ class AuxSymbolTable:
         except anytree.resolver.ChildResolverError:
             node = AnyNode(parent=axiom_nodes, outline=AuxSymbolTable.axiom, id=identifier,
                            info=parsing_info.get_ast_info())
-            # add specific subnodes
+            # add specific sub nodes
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
+            AnyNode(parent=node, outline=AuxSymbolTable.statements)
         return node
 
     @staticmethod
@@ -217,17 +234,18 @@ class AuxSymbolTable:
         except anytree.resolver.ChildResolverError:
             node = AnyNode(parent=parent, outline=outline, id=identifier,
                            info=parsing_info.get_ast_info(), statement_type=statement_type)
-            # add specific subnodes
+            # add specific sub nodes
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
+            AnyNode(parent=node, outline=AuxSymbolTable.statements)
         return node
 
     @staticmethod
     def add_constructor_to_class(class_node: AnyNode, parsing_info: AuxInterpretation):
         identifier = parsing_info.id
-        if class_node.id != identifier:
+        if class_node.id != identifier:  # noqa
             # the name of the constructor must not be different from the class name. If it is, th
             parsing_info.all_errors().append(
-                poc.fplerror.FplMisspelledConstructor(parsing_info.get_ast_info(), class_node.id, parsing_info.id))
+                poc.fplerror.FplMisspelledConstructor(parsing_info.get_ast_info(), class_node.id, parsing_info.id))  # noqa
 
         r = Resolver(AuxSymbolTable.outline)
         constructors_node = r.get(class_node, AuxSymbolTable.classConstructors)
@@ -239,8 +257,9 @@ class AuxSymbolTable:
         except anytree.resolver.ChildResolverError:
             node = AnyNode(parent=constructors_node, outline=AuxSymbolTable.classConstructor, id=identifier,
                            info=parsing_info.get_ast_info())
-            # add specific subnodes
+            # add specific sub nodes
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
+            AnyNode(parent=node, outline=AuxSymbolTable.statements)
         return node
 
     @staticmethod
@@ -268,15 +287,15 @@ class AuxSymbolTable:
                            info=parsing_info.get_ast_info(), is_mandatory=is_mandatory)
 
             node.type = property_type.id
-            node.type_pattern = property_type.pattern_int
-            node.type_mod = property_type.mod
+            node.type_pattern = property_type.pattern_int  # noqa
+            node.type_mod = property_type.mod  # noqa
 
-            # in case of functional term nodes, add image as a subnode
+            # in case of functional term nodes, add image as a sub node
             if property_type.id in ["func", "function"]:
                 AnyNode(parent=node, outline=AuxSymbolTable.functionalTermImage)
-            # add specific subnodes
+            # add specific sub nodes
             AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            # register the global reference for the property
+            AnyNode(parent=node, outline=AuxSymbolTable.statements)
         return node
 
     @staticmethod
@@ -295,7 +314,6 @@ class AuxSymbolTable:
         """
         Clones a node and attaches recursively all its cloned children
         :param source: AnyNode object
-        :param target: AnyNode object
         :return: a clone of source
         """
         target = AnyNode()
@@ -310,7 +328,7 @@ class AuxSymbolTable:
         return target
 
     @staticmethod
-    def add_vars_to_nodes(parent: AnyNode, named_var_decl: NamedVariableDeclaration, is_signature: bool):
+    def add_vars_to_nodes(parent: AnyNode, named_var_decl: NamedVariableDeclaration, is_signature: bool):  # noqa
         distinct_vars = dict()
         for var in reversed(named_var_decl.var_list):
             if var.id in distinct_vars:
@@ -328,9 +346,20 @@ class AuxSymbolTable:
                                is_signature=is_signature
                                )
             if named_var_decl.var_type.paramTuple is not None:
-                for next_var_decl in reversed(named_var_decl.var_type.paramTuple.tuple):
+                for next_var_decl in reversed(named_var_decl.var_type.paramTuple.tuple):  # noqa
                     AuxSymbolTable.add_vars_to_nodes(var_node, next_var_decl, is_signature)
             var_node.parent = parent
+
+    @staticmethod
+    def add_statement_to_node(parent: AnyNode, statement):
+        """
+        Adds a statement to a node in the symbol table that usually represents an FPL building block
+        :param parent: node of the FPL building block to which we want to add a statement node
+        :param statement: a statement node
+        :return: None
+        """
+        statements_node = AuxSymbolTable.get_child_by_outline(parent, AuxSymbolTable.statements)
+        statement.parent = statements_node
 
     @staticmethod
     def set_global_id(building_block_node: AnyNode, signature: Signature):
@@ -344,29 +373,29 @@ class AuxSymbolTable:
         """
         parent = building_block_node.parent
         r = Resolver(AuxSymbolTable.ids)
-        override_name = building_block_node.id + signature.to_signature_string()
+        override_name = building_block_node.id + signature.to_signature_string()  # noqa
         try:
             other = r.get(parent, override_name)
             # the override id already exists
             signature.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(building_block_node.id, building_block_node.info, other.info))
+                poc.fplerror.FplIdentifierAlreadyDeclared(building_block_node.id, building_block_node.info, other.info))  # noqa
         except anytree.resolver.ChildResolverError:
-            uid = building_block_node.id
+            uid = building_block_node.id  # noqa
             building_block_node.id = override_name
-            theory_node = None
-            if building_block_node.outline in [AuxSymbolTable.classConstructor, AuxSymbolTable.property]:
+            theory_node = None  # noqa
+            if building_block_node.outline in [AuxSymbolTable.classConstructor, AuxSymbolTable.property]:  # noqa
                 theory_node = parent.parent.parent.parent
-                gid = '.'.join([theory_node.namespace, parent.parent.id, building_block_node.id])
+                gid = '.'.join([theory_node.namespace, parent.parent.id, building_block_node.id])  # noqa
             else:
                 theory_node = parent.parent
-                gid = '.'.join([theory_node.namespace, building_block_node.id])
+                gid = '.'.join([theory_node.namespace, building_block_node.id])  # noqa
             AuxSymbolTable._register_global_reference(theory_node, gid, uid, building_block_node,
                                                       signature.all_errors())
 
             # add signature to node's info because we will need it whenever the FPL interpreter
             # identifies a reference to the node in the FPL code ("call") and will have to check if this references
             # uses a compatible parameter specifications to use the "call".
-            building_block_node.info.signature = signature
+            building_block_node.info.signature = signature  # noqa
 
     @staticmethod
     def _register_global_reference(theory_node: AnyNode, gid: str, uid: str, node: AnyNode, errors: list):
@@ -424,15 +453,57 @@ class AuxSymbolTable:
         return None
 
     @staticmethod
-    def get_variable_type_in_current_scope(node: AnyNode, parsing_info: AuxInterpretation):
-        if node.outline in [AuxSymbolTable.classConstructor, AuxSymbolTable.property]:
+    def get_variable_in_current_scope(node: AnyNode, parsing_info: AuxInterpretation):
+        if node.outline in [AuxSymbolTable.classConstructor, AuxSymbolTable.property]:  # noqa
             # if the node is a constructor or a property, set it to the building block (class or functional term)
             # because we want to identify all variables that are already declared in that scope.
             node = node.parent.parent
         # identify all variables in the scope with the id of the parsing info
-        vars = anytree.search.findall(node,
-                                      filter_=lambda n: n.outline == AuxSymbolTable.var and n.id == parsing_info.id)
-        if len(vars) == 0:
+        var_tuple = anytree.search.findall_by_attr(node, name="outline", value=AuxSymbolTable.var)
+        var_list = []
+        for var in var_tuple:
+            if var.id == parsing_info.id:
+                var_list.append(var)
+
+        if len(var_list) == 0:
             # the variable was not found
             parsing_info.all_errors().append(
                 poc.fplerror.FplUndeclaredVariable(parsing_info.get_ast_info(), parsing_info.id))
+            return None
+        elif len(var_list) > 1:
+            # FPL should not support local variables overriding variables with the same name declared
+            # in outer scope (because mathematicians never do such things in proof-based mathematics).
+            other_info = var_list[-2].info
+            parsing_info.all_errors().append(
+                poc.fplerror.FplVariableAlreadyDeclared(parsing_info.get_ast_info(), other_info, parsing_info.id))
+            return None
+        return var_list[0]
+
+    @staticmethod
+    def get_nodes_by_identifier(root: AnyNode, parsing_info: AuxInterpretation, uid: str, outline=None):
+        """
+        Searches for a pointer in the symbol table to a declared building block by name
+        :param root: root not of the FPL interpreter
+        :param parsing_info: name of the identifier to be searched
+        :param uid: a name to be looking for
+        :param outline: additional filter to limit the search result (e.g. classes only)
+        :return: a tuple of pointers to global nodes in the symbol table with the given uid.
+        """
+        global_references_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.globalLookup)
+        if outline is not None:
+            result = anytree.search.findall(global_references_node, filter_=lambda n: n.uid == uid)
+        else:
+            result = anytree.search.findall(global_references_node, filter_=lambda n: n.uid == uid and
+                                            n.outline == outline)
+        if len(result) == 0:
+            # the identifier was not found
+            parsing_info.all_errors().append(
+                poc.fplerror.FplIdentifierNotDeclared(parsing_info.get_ast_info(), parsing_info.id))
+            return None
+        elif len(result) > 1 and outline is not None:
+            # The user referred to a class name that is ambiguous because it co-exists in different namespaces
+            parsing_info.all_errors().append(
+                poc.fplerror.FplIdentifierAmbiguous(parsing_info.get_ast_info(), parsing_info.id, result))
+            return None
+        # return the result tuple
+        return result

@@ -14,6 +14,13 @@ class ContextGeneralType:
         # consume all proceeding variables into a GeneralType and remove them from self.i.parse_list
         general_type = GeneralType(i.parse_list, parsing_info)
 
+        # identify the corresponding symbol node (when GeneralType is parsed in FPL, it always refers to a type that
+        # is either in-built or was previously declared by the user as a class
+        if AuxBits.is_class(general_type.pattern_int):
+            node = AuxSymbolTable.get_nodes_by_identifier(i.theory_node.parent, general_type, general_type.id,
+                                                          AuxSymbolTable.classDeclaration)
+            general_type.symbol_node = node[0]
+
         # Handle the different contexts
         if i.context.is_parsing_context([AuxContext.optionalProperty]) or \
                 i.context.is_parsing_context([AuxContext.mandatoryProperty]):

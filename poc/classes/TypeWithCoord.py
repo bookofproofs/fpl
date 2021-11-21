@@ -11,7 +11,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 class CTypeWithCoord(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        self.clone(parsing_info)
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
         self.info = parsing_info
         self.type = None
         self.left_bound_included = True
@@ -22,14 +22,14 @@ class CTypeWithCoord(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Type":
             self.type = parsing_info
-        if rule == "LeftBound":
+        elif rule == "LeftBound":
             self.left_bound_included = parsing_info.bound_included
-        if rule == "IW":
+        elif rule == "IW":
             pass
-        if rule == "RangeInSignature":
+        elif rule == "RangeInType":
             pass
-        if rule == "CoordInSignature":
+        elif rule == "CoordInType":
             pass
-        if rule == "RightBound":
+        elif rule == "RightBound":
             self.right_bound_included = parsing_info.bound_included
 

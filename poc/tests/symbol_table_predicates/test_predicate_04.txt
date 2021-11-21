@@ -1,0 +1,40 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            and
+            (
+                 true
+                ,not(true)
+                ,not(false)
+            )
+        }
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='global')
+│   └── AnyNode(gid='TestNamespace.Test[]', node=AnyNode(), outline='predicateDeclaration', type_pattern=2, uid='Test')
+└── AnyNode(namespace='TestNamespace', outline='theory', theory_name='test_predicate_04')
+    ├── AnyNode(outline='uses')
+    ├── AnyNode(outline='inferenceRules')
+    ├── AnyNode(outline='classes')
+    ├── AnyNode(outline='predicates')
+    │   └── AnyNode(id='Test[]', info=<AuxAstInfo.AuxAstInfo>, outline='predicateDeclaration')
+    │       ├── AnyNode(outline='variables')
+    │       ├── AnyNode(outline='statements')
+    │       └── AuxPredicate(type='and')
+    │           ├── AuxPredicate(type='true')
+    │           ├── AuxPredicate(type='not')
+    │           │   └── AuxPredicate(type='true')
+    │           └── AuxPredicate(type='not')
+    │               └── AuxPredicate(type='false')
+    ├── AnyNode(outline='functionalTerms')
+    ├── AnyNode(outline='axioms')
+    ├── AnyNode(outline='theoremLikeStatements')
+    └── AnyNode(outline='conjectures')

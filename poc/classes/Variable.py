@@ -11,7 +11,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 class Variable(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        self.clone(parsing_info)
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
         self.info = parsing_info
         self.id = ""
         self.var_type = None
@@ -21,4 +21,5 @@ class Variable(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "IdStartsWithSmallCase":
             self.id = parsing_info.get_cst()
+            self.stop_aggregation = True
 

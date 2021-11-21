@@ -5,7 +5,7 @@ from poc.classes.AuxBits import AuxBits
 class Type(AuxInterpretation):
 
     def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        self.clone(parsing_info)
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
         self.pattern_int = 0
         self._colon_read = False
         self.aggregate_previous_rules(parse_list,

@@ -12,7 +12,14 @@ class AuxInterpretation:
         # any errors from the caller. Classes inheriting from AuxInterpretation can add to to this list own errors.
         self._errors = errors  # a pointer to all the errors of the semantics, so we can add new errors to this list
         # internal semantical representation of the rule
-        self.id = str(ast_info.cst)
+        if type(ast_info.cst) is str:
+            self.id = str(ast_info.cst)
+        else:
+            self.id = str(ast_info)
+        # some rules require stopping the aggregation of sub rules from the parse list after a certain
+        # sub rule was aggregated. This flag will be set to true in the specific rule_aggregator implementation
+        # of the class inheriting from AuxInterpretation
+        self.stop_aggregation = False
 
     def rule_name(self):
         """ name of the corresponding grammar rule """
@@ -55,11 +62,6 @@ class AuxInterpretation:
     def all_errors(self):
         return self._errors
 
-    def clone(self, other):
-        self._ast_info = other.get_ast_info()
-        self._errors = other.get_errors()
-        self.id = ""
-
     def __str__(self):
         return self._ast_info.rule + ":" + str(self._ast_info.pos) + ":(" + str(self._ast_info.line) + ":" + \
                str(self._ast_info.col) + "):" + str(self.id).replace("\n", "\\n")
@@ -82,10 +84,11 @@ class AuxInterpretation:
         if len(parse_list) > 0:
             rule = parse_list[-1].rule_name()
             can_be_aggregated = rule in aggr_rules
-            while can_be_aggregated:
+            while can_be_aggregated and not self.stop_aggregation:
                 rule_aggregator(rule, parse_list[-1])
 
-                # remove ignored rule
+                # remove the rule from the parse list after it was
+                # handled by the rule_aggregator implemented in the subclass
                 parse_list.pop()
                 if len(parse_list) > 0:
                     rule = parse_list[-1].rule_name()
