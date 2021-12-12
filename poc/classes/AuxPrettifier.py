@@ -56,7 +56,8 @@ class AuxPrettifier:
                 # last word:
                 if self.__last_word() in ["con", "conclusion", "pre", "premise"]:
                     self._append_indented(": ", strip=True)
-                elif self._context.is_parsing_context([AuxContext.case, AuxContext.dolinebreaks, AuxContext.paren, AuxContext.aftercase]):
+                elif self._context.is_parsing_context(
+                        [AuxContext.case, AuxContext.dolinebreaks, AuxContext.paren, AuxContext.aftercase]):
                     self._append(":")
                     self._increase_indent()  # increase indent after the case
                     self._append_indented("")
@@ -78,7 +79,8 @@ class AuxPrettifier:
                 self._last_cst = "("
                 self._context.push_context(AuxContext.paren)
                 # line break if we are in the context of a starting compound predicate, ex., "and (...."
-                self._open_left_block("(", linebreak=self._context.is_parsing_context([AuxContext.dolinebreaks, AuxContext.paren]))
+                self._open_left_block("(", linebreak=self._context.is_parsing_context(
+                    [AuxContext.dolinebreaks, AuxContext.paren]))
             elif ast_info.rule == "LeftBrace":
                 self._last_cst = "{"
                 self._open_left_block("{", linebreak=True)
@@ -89,7 +91,8 @@ class AuxPrettifier:
             elif ast_info.rule == "RightParen":
                 self._last_cst = ")"
                 # line break if we are in the context of a starting compound predicate, ex., "and (...."
-                self._close_right_block(")", linebreak=self._context.is_parsing_context([AuxContext.dolinebreaks, AuxContext.paren]))
+                self._close_right_block(")", linebreak=self._context.is_parsing_context(
+                    [AuxContext.dolinebreaks, AuxContext.paren]))
                 if self._context.is_parsing_context([AuxContext.paren]):
                     self._context.pop_context([AuxContext.paren])
                 else:
@@ -116,7 +119,7 @@ class AuxPrettifier:
                     if ast_info.cst in ["and", "or", "impl", "iif", "xor", "not", "all", "ex"]:
                         self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
                         one_line_predicates = self.config.get(Settings.section_codereform,
-                                           Settings.option_codereform_1linecomppred)
+                                                              Settings.option_codereform_1linecomppred)
                         if one_line_predicates == "False":
                             self._context.push_context(AuxContext.dolinebreaks)
                     elif ast_info.cst in ["loop", "range"]:
@@ -178,7 +181,7 @@ class AuxPrettifier:
                             self._append_indented("")
                     elif ast_info.cst in ["postulate", "post"]:
                         self._replace_long_by_short("post", ast_info.cst, line_separator="\n\n")
-                    elif ast_info.cst in ["proof", "prf"]:
+                    elif ast_info.cst in ["ProofArgument", "prf", "proof"]:
                         self._replace_long_by_short("prf", ast_info.cst, line_separator="\n\n")
                         self._context.push_context(AuxContext.insideproof)
                     elif ast_info.cst in ["proposition", "prop"]:
@@ -216,12 +219,14 @@ class AuxPrettifier:
                     self._decrease_indent()
                     self._append_indented("")
             elif ast_info.rule == "CaseStatement":
-                self._context.pop_context([AuxContext.case, AuxContext.dolinebreaks])  # remove the "case", "dolinebreaks" flag from the context
+                # remove the "case", "dolinebreaks" flag from the context
+                self._context.pop_context([AuxContext.case, AuxContext.dolinebreaks])
             elif ast_info.rule == "CompoundPredicate":
                 one_line_predicates = self.config.get(Settings.section_codereform,
                                                       Settings.option_codereform_1linecomppred)
                 if one_line_predicates == "False":
-                    self._context.pop_context([AuxContext.dolinebreaks])  # remove the "dolinebreaks" flag from the context
+                    # remove the "dolinebreaks" flag from the context
+                    self._context.pop_context([AuxContext.dolinebreaks])
             elif ast_info.rule in ["RangeStatement", "LoopStatement"]:
                 self._context.pop_context([AuxContext.dolinebreaks])  # remove the "dolinebreaks" flag from the context
             elif ast_info.rule == "ExtensionHeader":
@@ -362,4 +367,3 @@ class AuxPrettifier:
                 prettyfied_lines.append(lines[i])
             i += 1
         self._prettified = "\n".join(prettyfied_lines)
-

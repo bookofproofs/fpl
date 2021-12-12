@@ -5,40 +5,71 @@ By design of the FPL interpreter, there is only one FPL SymbolTable for all theo
 via the 'uses' keyword.
 """
 
-import anytree.resolver
-import anytree.search
-from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.NamedVariableDeclaration import NamedVariableDeclaration
-from anytree import AnyNode, Resolver
+from anytree import Resolver
+from poc.classes.AuxST import AuxSTOutline
+from poc.classes.AuxSTGlobal import AuxSTGlobal
+from poc.classes.AuxSTVarDec import AuxSTVarDec
 import poc.fplerror
-from poc.classes.Signature import Signature
-from poc.classes.AuxBits import AuxBits
-from poc.classes.AuxContext import AuxContext
+
+"""
+from poc.classes.AuxInterpretation import AuxInterpretation
+"""
 
 
 class AuxSymbolTable:
     aliasId = "aliasid"  # noqa
-    axiom = "axiom"
-    axioms = "axioms"
+    block_def = "definition"
+    block_def_root = "definitions"
+    block_thm = "theorem"
+    block_thm_root = "theorems"
+    block_axiom = "axiom"
+    block_axiom_root = "axioms"
+    block_ir = "inferenceRule"
+    block_ir_root = "inferenceRules"
+    block_lem = "lemma"
+    block_lem_root = "lemmas"
+    block_prop = "proposition"
+    block_prop_root = "propositions"
+    block_cor = "corollary"
+    block_cor_root = "corollaries"
+    block_proof = "proofArgument"
+    block_proof_root = "proofs"
+    block_conj = "conjecture"
+    block_conj_root = "conjectures"
+    cases = "cases"
+    case = "case"
+    case_default = "else"
     classConstructors = "constructors"
-    classes = "classes"
     classConstructor = "constructor"
+    classDefaultConstructor = "defaultConstructor"
     classDeclaration = "class"
     classProperty = "property"
-    conjectures = "conjectures"
-    conjecture = "conjecture"
+    con = "con"
+    content = "content"
+    coord_list = "coordinates"
+    digit = "digit"
+    ebnf_factor = "EBNFFactor"
+    ebnf_string = "EBNFString"
+    ebnf_term = "EBNFTerm"
+    ebnf_transl = "EBNFTransl"
+    entity_with_coord = "entity[]"
+    entity = "entity"
+    extDigit = "extDigit"
     functionalTerm = "functionalTerm"
     functionalTermImage = "image"
-    functionalTerms = "functionalTerms"
-    gid = "gid"
-    globalLookup = "global"
+    globals = "globals"
     ids = "id"
-    inferenceRule = "inferenceRule"
-    inferenceRules = "inferenceRules"
+    intrinsic = "intrinsic"
+    image = "image"
+    index_value = "indexValue"
     isOperator = "is"
+    justification = "justification"
+    localization = "localization"
+    localization_root = "localizations"
     mandatory = "mandatory"
     namespace = "namespace"
     param = "param"
+    pre = "pre"
     predicate_all = "all"
     predicate_conjunction = "and"
     predicate_disjunction = "or"
@@ -51,459 +82,194 @@ class AuxSymbolTable:
     predicate_true = "true"
     predicate_identifier = "predicateIdentifier"
     predicate_with_arguments = "predicateWithArgs"
-    predicates = "predicates"
     predicateDeclaration = "predicateDeclaration"
     properties = "properties"
-    proof = "proof"
+    proofArgument = "argument"
+    proofArgument_root = "arguments"
     optional = "optional"
     outline = "outline"
     property = "property"
+    rng = "range"
     root = "root"
     selfInstance = "self"
+    signature = "signature"
     statements = "statements"
     statement = "statement"
+    statement_list = "stmtList"
+    statement_py = "py"
+    statement_cases = "cases"
     statement_assert = "assert"
-    theoremLikeStmts = "theoremLikeStatements"  # noqa
+    statement_assign = ":="
+    statement_range = "range"
+    statement_loop = "loop"
+    statement_return = "return"
     theoremLikeStmt = "theoremLikeStmt"
     theory = "theory"
     theoryName = "theory_name"
+    translation = "translation"
+    translation_list = "translationList"
     type = "type"
+    undefined = "undefined"
     uses = "uses"
     var = "var"
-    variables = "variables"
+    var_declaration = "varDeclaration"
+    var_spec = "specificationList"
+    variadic_var = "variadicVar"
 
     @staticmethod
-    def add_or_get_theory(root: AnyNode, theory_name: str):
-        """
-        Adds a new theory tree to the symbol table with the root AnyNode.
-        If the theory subtree already existed, simply its root node will be returned.
-        If the theory subtree did not exist, the function will add a whole subtree with all relevant subsections.
-        :param root: root AnyNode of the whole symbol table
-        :param theory_name: name of the theory
-        :return: node of the theory
-        """
-        r = Resolver(AuxSymbolTable.theoryName)
-        try:
-            node = r.get(root, theory_name)
-            return node
-        except anytree.resolver.ChildResolverError:
-            # we have to add a whole subtree
-            theory_node = AnyNode(parent=root, outline=AuxSymbolTable.theory, theory_name=theory_name, namespace=None)
-            # add all relevant outline sections to the theory node
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.uses)
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.inferenceRules)
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.classes)
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.predicates)
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.functionalTerms)
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.axioms)
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.theoremLikeStmts)
-            AnyNode(parent=theory_node, outline=AuxSymbolTable.conjectures)
-            return theory_node
-
-    @staticmethod
-    def get_child_by_outline(parent: AnyNode, outline: str):
+    def get_child_by_outline(parent: AuxSTOutline, outline: str):
         r = Resolver(AuxSymbolTable.outline)
         return r.get(parent, outline)
 
     @staticmethod
-    def add_usage_to_theory(theory_node: AnyNode, parsing_info: AuxInterpretation):
-        uses_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.uses)
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(uses_node, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=uses_node, id=identifier, modifier=parsing_info.modifier,  # noqa
-                           info=parsing_info.get_ast_info())
-            return node
+    def add_localization(locals_node: AuxSTOutline, localization):
+        localization.parent = locals_node
 
     @staticmethod
-    def add_inference_rule_to_theory(theory_node: AnyNode, parsing_info: AuxInterpretation):
-        inference_rules_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.inferenceRules)
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(inference_rules_node, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=inference_rules_node, outline=AuxSymbolTable.inferenceRule, id=identifier,
-                           info=parsing_info.get_ast_info())
-            # add specific sub nodes
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.statements)
-        return node
-
-    @staticmethod
-    def add_class_to_theory(theory_node: AnyNode, parsing_info: AuxInterpretation):
-        classes_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.classes)
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(classes_node, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=classes_node, outline=AuxSymbolTable.classDeclaration, id=identifier,
-                           info=parsing_info.get_ast_info())
-            # add properties and constructors sub nodes to this node
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.classConstructors)
-            AnyNode(parent=node, outline=AuxSymbolTable.properties)
-            # register the global reference for the class
-            theory_node = classes_node.parent
-            gid = '.'.join([theory_node.namespace, node.id])  # noqa
-            AuxSymbolTable._register_global_reference(theory_node, gid, node.id, node, parsing_info.all_errors())  # noqa
-        return node
-
-    @staticmethod
-    def add_predicate_to_theory(theory_node: AnyNode, parsing_info: AuxInterpretation):
-        predicates_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.predicates)
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(predicates_node, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=predicates_node, outline=AuxSymbolTable.predicateDeclaration, id=identifier,
-                           info=parsing_info.get_ast_info())
-            # add specific sub nodes
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.statements)
-        return node
-
-    @staticmethod
-    def add_functional_term_to_theory(theory_node: AnyNode, parsing_info: AuxInterpretation):
-        functional_terms_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.functionalTerms)
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(functional_terms_node, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=functional_terms_node, outline=AuxSymbolTable.functionalTerm, id=identifier,
-                           info=parsing_info.get_ast_info())
-            # add specific sub nodes
-            AnyNode(parent=node, outline=AuxSymbolTable.functionalTermImage)
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.statements)
-            AnyNode(parent=node, outline=AuxSymbolTable.properties)
-        return node
-
-    @staticmethod
-    def add_axiom_to_theory(theory_node: AnyNode, parsing_info: AuxInterpretation):
+    def add_axiom_to_theory(theory_node: AuxSTOutline, block):
         """
         Adds an axiom to the theory node
         :param theory_node: the theory node
-        :param parsing_info: an interpretation of the axiom identifier to be added
+        :param block: an interpretation of the axiom identifier to be added
         :return: Node of the newly added axiom
         """
-        axiom_nodes = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.axioms)
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(axiom_nodes, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=axiom_nodes, outline=AuxSymbolTable.axiom, id=identifier,
-                           info=parsing_info.get_ast_info())
-            # add specific sub nodes
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.statements)
-        return node
+        axiom_nodes = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_axiom_root)
+        block.parent = axiom_nodes
 
     @staticmethod
-    def add_theorem_like_stmt_or_conj(theory_node: AnyNode, parsing_info: AuxInterpretation, statement_type: str):
-        parent = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.theoremLikeStmts)
-        outline = AuxSymbolTable.theoremLikeStmt
-        # correct the parent and outline, if the statement is a conjecture
-        if statement_type == AuxContext.theoremLikeStmtConj:
-            parent = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.conjectures)
-            outline = AuxSymbolTable.conjecture
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(parent, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=parent, outline=outline, id=identifier,
-                           info=parsing_info.get_ast_info(), statement_type=statement_type)
-            # add specific sub nodes
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.statements)
-        return node
+    def add_inference_rule_to_theory(theory_node: AuxSTOutline, ir):
+        inference_rules = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_ir_root)
+        ir.parent = inference_rules
 
     @staticmethod
-    def add_constructor_to_class(class_node: AnyNode, parsing_info: AuxInterpretation):
-        identifier = parsing_info.id
-        if class_node.id != identifier:  # noqa
-            # the name of the constructor must not be different from the class name. If it is, th
-            parsing_info.all_errors().append(
-                poc.fplerror.FplMisspelledConstructor(parsing_info.get_ast_info(), class_node.id, parsing_info.id))  # noqa
-
-        r = Resolver(AuxSymbolTable.outline)
-        constructors_node = r.get(class_node, AuxSymbolTable.classConstructors)
-        r = Resolver(AuxSymbolTable.ids)
-        try:
-            node = r.get(constructors_node, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=constructors_node, outline=AuxSymbolTable.classConstructor, id=identifier,
-                           info=parsing_info.get_ast_info())
-            # add specific sub nodes
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.statements)
-        return node
+    def add_theorem_to_theory(theory_node: AuxSTOutline, block):
+        theorems_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_thm_root)
+        block.parent = theorems_node
+        AuxSTOutline(outline=AuxSymbolTable.block_cor_root, parent=block)
+        AuxSTOutline(outline=AuxSymbolTable.block_proof_root, parent=block)
 
     @staticmethod
-    def add_property_to_node(parent: AnyNode, parsing_info: AuxInterpretation, is_mandatory: bool,
-                             property_type: AuxInterpretation):
-        """
-        Adds a property to a node that can be either a class node or a functional term node.
-        In FPL, classes and functional terms can have a property
-        :param parent: class or functional term node
-        :param parsing_info: the interpretation of the predicate identifier to be added
-        :param is_mandatory: indicates if the property is mandatory
-        :param property_type: type of the property
-        :return:
-        """
-        identifier = parsing_info.id
-        r = Resolver(AuxSymbolTable.outline)
-        properties_node = r.get(parent, AuxSymbolTable.properties)
-        try:
-            r = Resolver(AuxSymbolTable.ids)
-            node = r.get(properties_node, identifier)
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(parsing_info.id, parsing_info.get_ast_info(), node.info))
-        except anytree.resolver.ChildResolverError:
-            node = AnyNode(parent=properties_node, outline=AuxSymbolTable.property, id=identifier,
-                           info=parsing_info.get_ast_info(), is_mandatory=is_mandatory)
-
-            node.type = property_type.id
-            node.type_pattern = property_type.pattern_int  # noqa
-            node.type_mod = property_type.mod  # noqa
-
-            # in case of functional term nodes, add image as a sub node
-            if property_type.id in ["func", "function"]:
-                AnyNode(parent=node, outline=AuxSymbolTable.functionalTermImage)
-            # add specific sub nodes
-            AnyNode(parent=node, outline=AuxSymbolTable.variables)
-            AnyNode(parent=node, outline=AuxSymbolTable.statements)
-        return node
+    def add_proposition_to_theory(theory_node: AuxSTOutline, block):
+        propositions_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_prop_root)
+        block.parent = propositions_node
+        AuxSTOutline(outline=AuxSymbolTable.block_cor_root, parent=block)
+        AuxSTOutline(outline=AuxSymbolTable.block_proof_root, parent=block)
 
     @staticmethod
-    def get_image_node(func_node: AnyNode):
-        r = Resolver(AuxSymbolTable.outline)
-        return r.get(func_node, AuxSymbolTable.functionalTermImage)
+    def add_lemma_to_theory(theory_node: AuxSTOutline, block):
+        lemmas_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_lem_root)
+        block.parent = lemmas_node
+        AuxSTOutline(outline=AuxSymbolTable.block_cor_root, parent=block)
+        AuxSTOutline(outline=AuxSymbolTable.block_proof_root, parent=block)
 
     @staticmethod
-    def add_param_to_image_node(image_node: AnyNode, parsing_info: AuxInterpretation):
-        identifier = parsing_info.id
-        AnyNode(parent=image_node, info=parsing_info.get_ast_info(), id=identifier,
-                outline=AuxSymbolTable.param)
+    def add_corollary_to_theory(theory_node: AuxSTOutline, block):
+        corollary_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_cor_root)
+        block.parent = corollary_node
+        # we allow creating corollaries of corollaries
+        AuxSTOutline(outline=AuxSymbolTable.block_cor_root, parent=block)
+        AuxSTOutline(outline=AuxSymbolTable.block_proof_root, parent=block)
 
     @staticmethod
-    def clone_tree(source: AnyNode):
-        """
-        Clones a node and attaches recursively all its cloned children
-        :param source: AnyNode object
-        :return: a clone of source
-        """
-        target = AnyNode()
-        for attr_name in [a for a in dir(source) if
-                          not a.startswith('__') and a != "children" and a != "parent" and
-                          not callable(getattr(source, a))]:
-            setattr(target, attr_name, getattr(source, attr_name))
-
-        for child in source.children:
-            child_clone = AuxSymbolTable.clone_tree(child)
-            child_clone.parent = target
-        return target
+    def add_proof_to_theory(theory_node: AuxSTOutline, block):
+        proof_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_proof_root)
+        block.parent = proof_node
 
     @staticmethod
-    def add_vars_to_nodes(parent: AnyNode, named_var_decl: NamedVariableDeclaration, is_signature: bool):  # noqa
+    def add_conjecture_to_theory(theory_node: AuxSTOutline, block):
+        conjectures_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_conj_root)
+        block.parent = conjectures_node
+        AuxSTOutline(outline=AuxSymbolTable.block_cor_root, parent=block)
+        AuxSTOutline(outline=AuxSymbolTable.block_proof_root, parent=block)
+
+    @staticmethod
+    def add_class_to_theory(theory_node: AuxSTOutline, block):
+        definitions_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_def_root)
+        block.parent = definitions_node
+
+    @staticmethod
+    def add_predicate_to_theory(theory_node: AuxSTOutline, block):
+        definitions_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_def_root)
+        block.parent = definitions_node
+
+    @staticmethod
+    def add_functional_term_to_theory(theory_node: AuxSTOutline, block):
+        definitions_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_def_root)
+        block.parent = definitions_node
+
+    @staticmethod
+    def populate_global_nodes(theory_node: AuxSTOutline):
+        all_globally_registered = tuple()
+        other_blocks = AuxSymbolTable.get_child_by_outline(theory_node,
+                                                           AuxSymbolTable.block_axiom_root).children
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_ir_root).children
+        def_nodes = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_def_root).children
+        for def_node in def_nodes:
+            def_node.set_relative_id("")
+            all_globally_registered += (def_node,)
+            if def_node.def_type == AuxSymbolTable.classDeclaration:
+                # add all constructors of class
+                constructors = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.classConstructors).children
+                for constructor in constructors:
+                    constructor.set_relative_id("")
+                    all_globally_registered += (constructor,)
+                # add all properties of class (if any)
+                properties = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.properties).children
+                for prop in properties:
+                    prop.set_relative_id(def_node.id)
+                    all_globally_registered += (prop,)
+            elif def_node.def_type == AuxSymbolTable.functionalTerm:
+                # add all properties of functional term (if any)
+                properties = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.properties).children
+                for prop in properties:
+                    prop.set_relative_id(def_node.id)
+                    all_globally_registered += (prop,)
+            elif def_node.def_type == AuxSymbolTable.predicateDeclaration:
+                # add all properties of predicate (if any)
+                properties = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.properties).children
+                for prop in properties:
+                    prop.set_relative_id(def_node.id)
+                    all_globally_registered += (prop,)
+
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_thm_root).children
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_lem_root).children
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_prop_root).children
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_conj_root).children
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_cor_root).children
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_proof_root).children
+
+        for block in other_blocks:
+            block.set_relative_id("")
+            all_globally_registered += (block,)
+
+        global_references = AuxSymbolTable.get_child_by_outline(theory_node.parent, AuxSymbolTable.globals)
+        # todo: special treatment of corollaries
+        for block in all_globally_registered:
+            gid = '.'.join([theory_node.namespace, block.get_relative_id()])  # noqa
+            AuxSTGlobal(global_references, gid, block)
+
+    @staticmethod
+    def add_vars_to_node(parent: AuxSTOutline, named_var_declaration):
         distinct_vars = dict()
-        for var in reversed(named_var_decl.var_list):
-            if var.id in distinct_vars:
-                named_var_decl.all_errors().append(
+        for var in reversed(named_var_declaration.var_list):
+            if var.var.id in distinct_vars:
+                named_var_declaration.all_errors().append(
                     poc.fplerror.FplVariableDuplicateInVariableList(var, distinct_vars[var.id]))
             else:
-                distinct_vars[var.id] = var
-            var_node = AnyNode(parent=None,
-                               id=var.id,
-                               outline=AuxSymbolTable.var,
-                               type=named_var_decl.var_type.generalType.id,
-                               type_pattern=named_var_decl.var_type.generalType.pattern_int,
-                               type_mod=named_var_decl.var_type.generalType.mod,
-                               info=var.get_ast_info(),
-                               is_signature=is_signature
-                               )
-            if named_var_decl.var_type.paramTuple is not None:
-                for next_var_decl in reversed(named_var_decl.var_type.paramTuple.tuple):  # noqa
-                    AuxSymbolTable.add_vars_to_nodes(var_node, next_var_decl, is_signature)
-            var_node.parent = parent
-
-    @staticmethod
-    def add_statement_to_node(parent: AnyNode, statement):
-        """
-        Adds a statement to a node in the symbol table that usually represents an FPL building block
-        :param parent: node of the FPL building block to which we want to add a statement node
-        :param statement: a statement node
-        :return: None
-        """
-        statements_node = AuxSymbolTable.get_child_by_outline(parent, AuxSymbolTable.statements)
-        statement.parent = statements_node
-
-    @staticmethod
-    def set_global_id(building_block_node: AnyNode, signature: Signature):
-        """
-        Sets the (cross-namespace) global id for a given building block of a the FPL theory. This is unique
-        globally but reflects overriding in FPL. This is accomplished by using different derivations
-        signatures with the same PredicateIdentifier of the building block.
-        :param building_block_node: a building block node in the symbol table whose id is some PredicateIdentifier
-        :param signature: A Signature instance that was created by the FPLInterpreter during the parsing process.
-        :return: None
-        """
-        parent = building_block_node.parent
-        r = Resolver(AuxSymbolTable.ids)
-        override_name = building_block_node.id + signature.to_signature_string()  # noqa
-        try:
-            other = r.get(parent, override_name)
-            # the override id already exists
-            signature.all_errors().append(
-                poc.fplerror.FplIdentifierAlreadyDeclared(building_block_node.id, building_block_node.info, other.info))  # noqa
-        except anytree.resolver.ChildResolverError:
-            uid = building_block_node.id  # noqa
-            building_block_node.id = override_name
-            theory_node = None  # noqa
-            if building_block_node.outline in [AuxSymbolTable.classConstructor, AuxSymbolTable.property]:  # noqa
-                theory_node = parent.parent.parent.parent
-                gid = '.'.join([theory_node.namespace, parent.parent.id, building_block_node.id])  # noqa
-            else:
-                theory_node = parent.parent
-                gid = '.'.join([theory_node.namespace, building_block_node.id])  # noqa
-            AuxSymbolTable._register_global_reference(theory_node, gid, uid, building_block_node,
-                                                      signature.all_errors())
-
-            # add signature to node's info because we will need it whenever the FPL interpreter
-            # identifies a reference to the node in the FPL code ("call") and will have to check if this references
-            # uses a compatible parameter specifications to use the "call".
-            building_block_node.info.signature = signature  # noqa
-
-    @staticmethod
-    def _register_global_reference(theory_node: AnyNode, gid: str, uid: str, node: AnyNode, errors: list):
-        root = theory_node.parent
-        global_references_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.globalLookup)
-        # there can be nodes with the same global id in the symbol table. This can happen if the
-        r = Resolver(AuxSymbolTable.gid)
-        try:
-            # There cannot be nodes with the same global id in the symbol table. If this happens, we have some bug
-            # in the proceeding steps.
-            node = r.get(global_references_node, gid)
-            raise AssertionError("Name conflict was not discovered for " + gid + " and " + str(node.info))
-        except anytree.resolver.ChildResolverError:
-            at_least_one_error = False
-            significant_name = gid.split(".")[-1]
-            # It can happen that the significant name is the same as some part other of the gid (for instance,
-            # an FPL class could be named the same as the namespace or the same as its property). In this case, we
-            # have another error.
-            names = gid.split(".")
-            for name in names[:-1]:
-                if significant_name == name:
-                    errors.append(poc.fplerror.FplMalformedGlobalId(node.info, gid))
-                    at_least_one_error = True
-                elif len(significant_name) > len(name):
-                    if significant_name.startswith(name) and significant_name[len(name)] == "[":
-                        # Note that the constructor's name of a class is an exception from this rule:
-                        # it MUST be named the same as the class name.
-                        if node.outline == AuxSymbolTable.classConstructor and name == names[-2]:
-                            # ok
-                            pass
-                        else:
-                            errors.append(poc.fplerror.FplMalformedGlobalId(node.info, gid))
-                            at_least_one_error = True
-
-            if not at_least_one_error:
-                # if there were no errors, we can register the new node
-                global_node = AnyNode(parent=global_references_node, outline=node.outline, gid=gid, uid=uid, node=node)
-                # set the global node's  type pattern
-                if node.outline == AuxSymbolTable.classConstructor:
-                    global_node.type_pattern = AuxBits.isObject
-                elif node.outline == AuxSymbolTable.classDeclaration:
-                    global_node.type_pattern = AuxBits.isClass
-                    global_node.inherits = AnyNode()
-                elif node.outline == AuxSymbolTable.property:
-                    global_node.type_pattern = node.type_pattern
-                elif node.outline in [AuxSymbolTable.theoremLikeStmt, AuxSymbolTable.conjecture,
-                                      AuxSymbolTable.predicateDeclaration, AuxSymbolTable.inferenceRule,
-                                      AuxSymbolTable.axiom]:
-                    global_node.type_pattern = AuxBits.isPredicate
-                elif node.outline == AuxSymbolTable.functionalTerm:
-                    global_node.type_pattern = AuxBits.isFunctionalTerm
-                else:
-                    raise NotImplementedError(node.outline)
-                return global_node
-        return None
-
-    @staticmethod
-    def get_variable_in_current_scope(node: AnyNode, parsing_info: AuxInterpretation):
-        if node.outline in [AuxSymbolTable.classConstructor, AuxSymbolTable.property]:  # noqa
-            # if the node is a constructor or a property, set it to the building block (class or functional term)
-            # because we want to identify all variables that are already declared in that scope.
-            node = node.parent.parent
-        # identify all variables in the scope with the id of the parsing info
-        var_tuple = anytree.search.findall_by_attr(node, name="outline", value=AuxSymbolTable.var)
-        var_list = []
-        for var in var_tuple:
-            if var.id == parsing_info.id:
-                var_list.append(var)
-
-        if len(var_list) == 0:
-            # the variable was not found
-            parsing_info.all_errors().append(
-                poc.fplerror.FplUndeclaredVariable(parsing_info.get_ast_info(), parsing_info.id))
-            return None
-        elif len(var_list) > 1:
-            # FPL should not support local variables overriding variables with the same name declared
-            # in outer scope (because mathematicians never do such things in proof-based mathematics).
-            other_info = var_list[-2].info
-            parsing_info.all_errors().append(
-                poc.fplerror.FplVariableAlreadyDeclared(parsing_info.get_ast_info(), other_info, parsing_info.id))
-            return None
-        return var_list[0]
-
-    @staticmethod
-    def get_nodes_by_identifier(root: AnyNode, parsing_info: AuxInterpretation, uid: str, outline=None):
-        """
-        Searches for a pointer in the symbol table to a declared building block by name
-        :param root: root not of the FPL interpreter
-        :param parsing_info: name of the identifier to be searched
-        :param uid: a name to be looking for
-        :param outline: additional filter to limit the search result (e.g. classes only)
-        :return: a tuple of pointers to global nodes in the symbol table with the given uid.
-        """
-        global_references_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.globalLookup)
-        if outline is not None:
-            result = anytree.search.findall(global_references_node, filter_=lambda n: n.uid == uid)
-        else:
-            result = anytree.search.findall(global_references_node, filter_=lambda n: n.uid == uid and
-                                            n.outline == outline)
-        if len(result) == 0:
-            # the identifier was not found
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierNotDeclared(parsing_info.get_ast_info(), parsing_info.id))
-            return None
-        elif len(result) > 1 and outline is not None:
-            # The user referred to a class name that is ambiguous because it co-exists in different namespaces
-            parsing_info.all_errors().append(
-                poc.fplerror.FplIdentifierAmbiguous(parsing_info.get_ast_info(), parsing_info.id, result))
-            return None
-        # return the result tuple
-        return result
+                distinct_vars[var.var.id] = var
+            var_dec = AuxSTVarDec(var)
+            var_dec.id = var.var.id
+            var_dec.parent = parent
+            var_dec.type = named_var_declaration.var_type.generalType.id
+            var_dec.type_pattern = named_var_declaration.var_type.generalType.type_pattern
+            var_dec.type_mod = named_var_declaration.var_type.generalType.type_mod
+            if named_var_declaration.var_type.paramTuple is not None:
+                for next_var_decl in named_var_declaration.var_type.paramTuple.tuple:  # noqa
+                    AuxSymbolTable.add_vars_to_node(var_dec, next_var_decl)

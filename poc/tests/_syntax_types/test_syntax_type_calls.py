@@ -40,19 +40,7 @@ class FplSyntaxTests(unittest.TestCase):
     def test_parser(self, use_case):
         interpreter = FplInterpreter(self.fpl_parser)
         code = self.util.get_file_content(self.path_to_usecases + "/" + use_case + ".fpl")
-        if interpreter.is_in_verbose_mode():
-            try:
-                interpreter.syntax_transform(use_case, code)
-            except FailedToken as ex:
-                return
-            self.assertFalse(True)
-        else:
-            interpreter.syntax_transform(use_case, code)
-            # exactly no error was found
-            # (unfortunately, TatSu parsers do not support error recovery and stop after the first error)
-            if len(interpreter.get_errors()) > 0:
-                print(interpreter.get_errors()[0])
-            self.assertEqual(0, len(interpreter.get_errors()))
+        interpreter.syntax_transform(use_case, code)
 
     @parameterized.expand([
         "test_syntax_type_calls_fail_01",

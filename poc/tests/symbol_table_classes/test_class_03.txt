@@ -1,0 +1,114 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myOps1,myOps2,myOps3: +Composition(a,b,c: *tplSetElem, d,e,f: obj)
+            myCarrierSet: tplSet
+            myCarrierSet1: Nat
+
+            AlgebraicStructure(x: tplSet, ops: +Composition(e: *tplSetElem))
+            {
+
+                a: obj
+                myOps := ops
+                myCarrierSet := x
+
+                // Assert that all types used in the declaration of AlgebraicStructure
+                // can be treated like they were sets, even if they are not derived from the type "Set" in their original
+                // definition! This, means that the In predicate has a non-transitive model
+                // this is comparable to implementing an interface (or comparable to multiple inheritance).
+                // The interpreter only asserts the types tplSet, and tplSetElement to be sets
+                assert
+                    and
+                    (
+                        is(tplSet,Set),
+                        is(tplSetElem,Set)
+                    )
+
+                assert
+                    all a
+                    (
+                        impl ( is(a,tplSetElem), In(a,myCarrierSet) )
+                    )
+            }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure', id='AlgebraicStructure', reference=AuxSTClass())
+│   └── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', id='AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', reference=AuxSTConstructor())
+├── AuxSTTheory(namespace='TestNamespace', outline='theory', theory_name='test_class_03')
+│   ├── AuxSTOutline(outline='uses')
+│   ├── AuxSTOutline(outline='axioms')
+│   ├── AuxSTOutline(outline='inferenceRules')
+│   ├── AuxSTOutline(outline='definitions')
+│   │   └── AuxSTClass(class_types=['obj'], def_type='class', id='AlgebraicStructure', info=AuxAstInfo(), outline='definition')
+│   │       ├── AuxSTVarSpecList(outline='specificationList')
+│   │       │   ├── AuxSTVarDec(id='myOps1', info=AuxAstInfo(), outline='var_dec', type='Composition', type_mod='+', type_pattern=1)
+│   │       │   │   ├── AuxSTVarDec(id='a', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='b', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='c', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='d', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='e', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   │   └── AuxSTVarDec(id='f', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   ├── AuxSTVarDec(id='myOps2', info=AuxAstInfo(), outline='var_dec', type='Composition', type_mod='+', type_pattern=1)
+│   │       │   │   ├── AuxSTVarDec(id='a', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='b', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='c', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='d', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='e', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   │   └── AuxSTVarDec(id='f', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   ├── AuxSTVarDec(id='myOps3', info=AuxAstInfo(), outline='var_dec', type='Composition', type_mod='+', type_pattern=1)
+│   │       │   │   ├── AuxSTVarDec(id='a', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='b', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='c', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='d', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   │   ├── AuxSTVarDec(id='e', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   │   └── AuxSTVarDec(id='f', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │   ├── AuxSTVarDec(id='myCarrierSet', info=AuxAstInfo(), outline='var_dec', type='tplSet', type_mod=None, type_pattern=17)
+│   │       │   └── AuxSTVarDec(id='myCarrierSet1', info=AuxAstInfo(), outline='var_dec', type='Nat', type_mod=None, type_pattern=1)
+│   │       ├── AuxSTConstructors(outline='constructors')
+│   │       │   └── AuxSTConstructor(id='AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', info=AuxAstInfo(), outline='constructor')
+│   │       │       ├── AuxSTSignature(info=AuxAstInfo(), outline='signature')
+│   │       │       │   ├── AuxSTVarDec(id='x', info=AuxAstInfo(), outline='var_dec', type='tplSet', type_mod=None, type_pattern=17)
+│   │       │       │   └── AuxSTVarDec(id='ops', info=AuxAstInfo(), outline='var_dec', type='Composition', type_mod='+', type_pattern=1)
+│   │       │       │       └── AuxSTVarDec(id='e', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       │       └── AuxSTVarSpecList(outline='specificationList')
+│   │       │           ├── AuxSTVarDec(id='a', info=AuxAstInfo(), outline='var_dec', type='obj', type_mod=None, type_pattern=17)
+│   │       │           ├── AuxSTStatement(info=AuxAstInfo(), outline='statement', type=':=')
+│   │       │           │   ├── AuxSTVariable(id='myOps', info=AuxAstInfo(), outline='var')
+│   │       │           │   └── AuxSTVariable(id='ops', info=AuxAstInfo(), outline='var')
+│   │       │           ├── AuxSTStatement(info=AuxAstInfo(), outline='statement', type=':=')
+│   │       │           │   ├── AuxSTVariable(id='myCarrierSet', info=AuxAstInfo(), outline='var')
+│   │       │           │   └── AuxSTVariable(id='x', info=AuxAstInfo(), outline='var')
+│   │       │           ├── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='assert')
+│   │       │           │   └── AuxSTPredicate(info=AuxAstInfo(), outline='and')
+│   │       │           │       ├── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='is')
+│   │       │           │       │   ├── AuxSTVariable(id='tplSet', info=AuxAstInfo(), outline='var')
+│   │       │           │       │   └── AuxSTType(id='Set', info=AuxAstInfo(), outline='type', type_mod=None, type_pattern=1)
+│   │       │           │       └── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='is')
+│   │       │           │           ├── AuxSTVariable(id='tplSetElem', info=AuxAstInfo(), outline='var')
+│   │       │           │           └── AuxSTType(id='Set', info=AuxAstInfo(), outline='type', type_mod=None, type_pattern=1)
+│   │       │           └── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='assert')
+│   │       │               └── AuxSTPredicate(bound_vars=['a'], info=AuxAstInfo(), outline='all')
+│   │       │                   └── AuxSTPredicate(info=AuxAstInfo(), outline='=>')
+│   │       │                       ├── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='is')
+│   │       │                       │   ├── AuxSTVariable(id='a', info=AuxAstInfo(), outline='var')
+│   │       │                       │   └── AuxSTType(id='tplSetElem', info=AuxAstInfo(), outline='type', type_mod=None, type_pattern=17)
+│   │       │                       └── AuxSTPredicateWithArgs(id='In', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │                           ├── AuxSTVariable(id='a', info=AuxAstInfo(), outline='var')
+│   │       │                           └── AuxSTVariable(id='myCarrierSet', info=AuxAstInfo(), outline='var')
+│   │       └── AuxSTProperties(outline='properties')
+│   ├── AuxSTOutline(outline='theorems')
+│   ├── AuxSTOutline(outline='lemmas')
+│   ├── AuxSTOutline(outline='propositions')
+│   ├── AuxSTOutline(outline='conjectures')
+│   ├── AuxSTOutline(outline='corollaries')
+│   └── AuxSTOutline(outline='proofs')
+└── AuxSTLocalizations(outline='localizations')

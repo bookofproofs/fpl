@@ -1,0 +1,94 @@
+TestNamespace
+{
+    theory
+    {
+        lem AddIsUnique(op: Add)
+        {
+            n,m: Nat
+            anotherAdd: Add
+            pre:
+                and
+                    (
+                        Equals(Add(n,0),n),
+                        Equals(anotherAdd(n,0),n),
+                        Equals(Add(n,Succ(m)), Succ(Add(n,m))),
+                        Equals(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
+                    )
+            con:
+                all n
+                (
+                    all m
+                    (
+                        Equals(Add(n,m), anotherAdd(n,m))
+                    )
+                )
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.AddIsUnique[1:Add]', id='AddIsUnique[1:Add]', reference=AuxSTLemma())
+├── AuxSTTheory(namespace='TestNamespace', outline='theory', theory_name='test_lemma_01')
+│   ├── AuxSTOutline(outline='uses')
+│   ├── AuxSTOutline(outline='axioms')
+│   ├── AuxSTOutline(outline='inferenceRules')
+│   ├── AuxSTOutline(outline='definitions')
+│   ├── AuxSTOutline(outline='theorems')
+│   ├── AuxSTOutline(outline='lemmas')
+│   │   └── AuxSTLemma(id='AddIsUnique[1:Add]', info=AuxAstInfo(), outline='lemma')
+│   │       ├── AuxSTSignature(info=AuxAstInfo(), outline='signature')
+│   │       │   └── AuxSTVarDec(id='op', info=AuxAstInfo(), outline='var_dec', type='Add', type_mod=None, type_pattern=1)
+│   │       ├── AuxSTVarSpecList(outline='specificationList')
+│   │       │   ├── AuxSTVarDec(id='n', info=AuxAstInfo(), outline='var_dec', type='Nat', type_mod=None, type_pattern=1)
+│   │       │   ├── AuxSTVarDec(id='m', info=AuxAstInfo(), outline='var_dec', type='Nat', type_mod=None, type_pattern=1)
+│   │       │   └── AuxSTVarDec(id='anotherAdd', info=AuxAstInfo(), outline='var_dec', type='Add', type_mod=None, type_pattern=1)
+│   │       ├── AuxSTPredicate(info=AuxAstInfo(), outline='pre')
+│   │       │   └── AuxSTPredicate(info=AuxAstInfo(), outline='and')
+│   │       │       ├── AuxSTPredicateWithArgs(id='Equals', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │   ├── AuxSTPredicateWithArgs(id='Add', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │   │   ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │       │   │   └── AuxSTPredicate(id='0', info=AuxAstInfo(), outline='extDigit')
+│   │       │       │   └── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │       ├── AuxSTPredicateWithArgs(id='Equals', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │   ├── AuxSTPredicateWithArgs(id='anotherAdd', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │   │   ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │       │   │   └── AuxSTPredicate(id='0', info=AuxAstInfo(), outline='extDigit')
+│   │       │       │   └── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │       ├── AuxSTPredicateWithArgs(id='Equals', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │   ├── AuxSTPredicateWithArgs(id='Add', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │   │   ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │       │   │   └── AuxSTPredicateWithArgs(id='Succ', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │   │       └── AuxSTVariable(id='m', info=AuxAstInfo(), outline='var')
+│   │       │       │   └── AuxSTPredicateWithArgs(id='Succ', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │       └── AuxSTPredicateWithArgs(id='Add', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │       │           ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │       │           └── AuxSTVariable(id='m', info=AuxAstInfo(), outline='var')
+│   │       │       └── AuxSTPredicateWithArgs(id='Equals', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │           ├── AuxSTPredicateWithArgs(id='anotherAdd', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │           │   ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │           │   └── AuxSTPredicateWithArgs(id='Succ', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │           │       └── AuxSTVariable(id='m', info=AuxAstInfo(), outline='var')
+│   │       │           └── AuxSTPredicateWithArgs(id='Succ', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │               └── AuxSTPredicateWithArgs(id='anotherAdd', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │                   ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │                   └── AuxSTVariable(id='m', info=AuxAstInfo(), outline='var')
+│   │       ├── AuxSTPredicate(info=AuxAstInfo(), outline='con')
+│   │       │   └── AuxSTPredicate(bound_vars=['n'], info=AuxAstInfo(), outline='all')
+│   │       │       └── AuxSTPredicate(bound_vars=['m'], info=AuxAstInfo(), outline='all')
+│   │       │           └── AuxSTPredicateWithArgs(id='Equals', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │               ├── AuxSTPredicateWithArgs(id='Add', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │               │   ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │               │   └── AuxSTVariable(id='m', info=AuxAstInfo(), outline='var')
+│   │       │               └── AuxSTPredicateWithArgs(id='anotherAdd', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │       │                   ├── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   │       │                   └── AuxSTVariable(id='m', info=AuxAstInfo(), outline='var')
+│   │       ├── AuxSTOutline(outline='corollaries')
+│   │       └── AuxSTOutline(outline='proofs')
+│   ├── AuxSTOutline(outline='propositions')
+│   ├── AuxSTOutline(outline='conjectures')
+│   ├── AuxSTOutline(outline='corollaries')
+│   └── AuxSTOutline(outline='proofs')
+└── AuxSTLocalizations(outline='localizations')

@@ -197,7 +197,7 @@ class FrameWithLineNumbers(tk.Frame):
         self.reconfigure_all_tags()
         # add new tags
         list_indices = list()
-        for item in self._parent_notebook.ide.fpl_interpreter.get_ast_list():
+        for item in self._parent_notebook.ide.fpl_interpreter.get_ast_list(self.title):
             current_index = str(item.line) + "." + str(item.col)
             list_indices.append(current_index)
             grammar_tags = self._theme.get_grammar_tags()

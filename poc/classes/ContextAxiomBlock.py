@@ -6,12 +6,30 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AxiomBlock import AxiomBlock
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 
 
-class ContextAxiomBlock:
+class ContextAxiomBlock(AuxInterpretation):
+
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.predicate = None
+        # specification list is optional in the grammar and we initialize it in any case
+        self.variable_spec = AuxSTVarSpecList()
+        self.aggregate_previous_rules(parse_list,
+                                      AuxRuleDependencies.dep["AxiomBlock"], self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
+        if rule == "VariableSpecificationList":
+            self.variable_spec = parsing_info.variable_spec  # noqa
+        elif rule == "Predicate":
+            self.predicate = parsing_info.predicate  # noqa
+        elif rule == "LeftBrace":
+            self.stop_aggregation = True
+
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        p_info = AxiomBlock(i.parse_list, parsing_info)
-        i.parse_list.append(p_info)
+        new_info = ContextAxiomBlock(i.parse_list, parsing_info)
+        i.parse_list.append(new_info)
 

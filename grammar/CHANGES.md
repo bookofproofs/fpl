@@ -34,3 +34,17 @@ Initial grammar
 ## 1.1.2
 * Simplified syntax of the is operator by replacing VariableType by GeneralType according to changes made in 1.1.1
 * Removed rules AmpersandVariable and Ampersand (no use cases in proof-based mathematics identified that could not be covered by the remaining FPL syntax)
+## 1.1.3
+* Added rule VariableRange to simplify the implementation of RangeOrLoopBody
+* Replaced sequence "Variable Dollar" by the existing rule KeysOfVariadicVariable (with the same sequence) in IndexValue
+* Added optional PropertyList to PredicateDefinitionBlock, since predicates might have also properties in PBM.
+* Created new rule PredicateInstance replacing DefinitionPredicate in DefinitionProperty to prevent more than one nesting of predicates and their properties.
+* Create new rule PredicateInstanceBlock as a copy of original PredicateDefinitionBlock without PropertyList.
+* Replaced GeneralType by VariableType in ClassInstance to enable parameterized types using inner variables of a definition.
+* Changed the order of options in DefinitionProperty to disambiguate GeneralType from FunctionalTermHeader / PredicateHeader that it contains. 
+* Renamed ProofHeadHeader to ProofHeader
+* Renamed ProofIdentifier to ReferencingIdentifier (a generalization since it will be used in CorollarySignature)
+* Added rule CorollarySignature to distinguish it from other Signatures
+* Separated a new rule CorollaryHeader from TheoremLikeStatementOrConjectureHeader
+* Added rule DollarDigitList to enable nesting of corollaries.
+* Replaced VariableList by PredicateList in PythonDelegate (generalization)

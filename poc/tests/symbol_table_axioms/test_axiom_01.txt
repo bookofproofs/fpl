@@ -1,0 +1,34 @@
+TestNamespace
+{
+    theory
+    {
+        axiom ZeroIsNat()
+        {
+            is(Zero,Nat)
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.ZeroIsNat[]', id='ZeroIsNat[]', reference=AuxSTAxiom())
+├── AuxSTTheory(namespace='TestNamespace', outline='theory', theory_name='test_axiom_01')
+│   ├── AuxSTOutline(outline='uses')
+│   ├── AuxSTOutline(outline='axioms')
+│   │   └── AuxSTAxiom(id='ZeroIsNat[]', info=AuxAstInfo(), outline='axiom')
+│   │       ├── AuxSTSignature(info=AuxAstInfo(), outline='signature')
+│   │       ├── AuxSTVarSpecList(outline='specificationList')
+│   │       └── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='is')
+│   │           ├── AuxSTPredicate(id='Zero', info=AuxAstInfo(), outline='id')
+│   │           └── AuxSTType(id='Nat', info=AuxAstInfo(), outline='type', type_mod=None, type_pattern=1)
+│   ├── AuxSTOutline(outline='inferenceRules')
+│   ├── AuxSTOutline(outline='definitions')
+│   ├── AuxSTOutline(outline='theorems')
+│   ├── AuxSTOutline(outline='lemmas')
+│   ├── AuxSTOutline(outline='propositions')
+│   ├── AuxSTOutline(outline='conjectures')
+│   ├── AuxSTOutline(outline='corollaries')
+│   └── AuxSTOutline(outline='proofs')
+└── AuxSTLocalizations(outline='localizations')

@@ -1,58 +1,139 @@
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxAstInfo import AuxAstInfo
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from anytree import AnyNode
 from poc.classes.ContextAll import ContextAll
+from poc.classes.ContextArgumentIdentifier import ContextArgumentIdentifier
+from poc.classes.ContextArgumentInference import ContextArgumentInference
+from poc.classes.ContextArgumentParam import ContextArgumentParam
 from poc.classes.ContextAssertionStatement import ContextAssertionStatement
 from poc.classes.ContextAssignee import ContextAssignee
+from poc.classes.ContextAssignmentStatement import ContextAssignmentStatement
+from poc.classes.ContextAssumedPredicate import ContextAssumedPredicate
+from poc.classes.ContextAssumeHeader import ContextAssumeHeader
 from poc.classes.ContextAxiom import ContextAxiom
+from poc.classes.ContextAxiomHeader import ContextAxiomHeader
 from poc.classes.ContextAxiomBlock import ContextAxiomBlock
-from poc.classes.ContextBlock import ContextBlock
-from poc.classes.ContextBound import ContextBound
-from poc.classes.ContextClass import ContextClass
+from poc.classes.ContextBuildingBlock import ContextBuildingBlock
+from poc.classes.ContextCaseStatement import ContextCaseStatement
+from poc.classes.ContextClassHeader import ContextClassHeader
+from poc.classes.ContextClassInstance import ContextClassInstance
+from poc.classes.ContextConclusionHeader import ContextConclusionHeader
+from poc.classes.ContextConstructor import ContextConstructor
+from poc.classes.ContextCoordInType import ContextCoordInType
+from poc.classes.ContextDefaultResult import ContextDefaultResult
+from poc.classes.ContextDefinitionClass import ContextDefinitionClass
+from poc.classes.ContextClosedOrOpenRange import ContextClosedOrOpenRange
 from poc.classes.ContextCompoundPredicate import ContextCompoundPredicate
+from poc.classes.ContextConclusionBlock import ContextConclusionBlock
+from poc.classes.ContextConditionFollowedByResult import ContextConditionFollowedByResult
 from poc.classes.ContextConjunction import ContextConjunction
+from poc.classes.ContextCoord import ContextCoord
+from poc.classes.ContextCoordList import ContextCoordList
+from poc.classes.ContextCorollaryHeader import ContextCorollaryHeader
+from poc.classes.ContextCorollarySignature import ContextCorollarySignature
+from poc.classes.ContextDefinition import ContextDefinition
+from poc.classes.ContextDefinitionContent import ContextDefinitionContent
+from poc.classes.ContextDefinitionContentList import ContextDefinitionContentList
+from poc.classes.ContextDefinitionFunctionalTerm import ContextDefinitionFunctionalTerm
+from poc.classes.ContextDefinitionPredicate import ContextDefinitionPredicate
+from poc.classes.ContextDefinitionProperty import ContextDefinitionProperty
+from poc.classes.ContextDerivedPredicate import ContextDerivedPredicate
 from poc.classes.ContextDisjunction import ContextDisjunction
+from poc.classes.ContextDollarDigitList import ContextDollarDigitList
+from poc.classes.ContextEBNFFactor import ContextEBNFFactor
+from poc.classes.ContextEBNFString import ContextEBNFString
+from poc.classes.ContextEBNFTerm import ContextEBNFTerm
+from poc.classes.ContextEBNFTransl import ContextEBNFTransl
 from poc.classes.ContextEntity import ContextEntity
+from poc.classes.ContextEntityWithCoord import ContextEntityWithCoord
 from poc.classes.ContextEquivalence import ContextEquivalence
 from poc.classes.ContextExclusiveOr import ContextExclusiveOr
 from poc.classes.ContextExists import ContextExists
-from poc.classes.ContextFunctionalTerm import ContextFunctionalTerm
+from poc.classes.ContextExtensionBlock import ContextExtensionBlock
+from poc.classes.ContextFunctionalTermDefinitionBlock import ContextFunctionalTermDefinitionBlock
+from poc.classes.ContextFunctionalTermHeader import ContextFunctionalTermHeader
+from poc.classes.ContextFunctionalTermInstance import ContextFunctionalTermInstance
+from poc.classes.ContextFunctionalTermSignature import ContextFunctionalTermSignature
 from poc.classes.ContextGeneralType import ContextGeneralType
 from poc.classes.ContextIdentifier import ContextIdentifier
 from poc.classes.ContextImplication import ContextImplication
+from poc.classes.ContextIndexHeader import ContextIndexHeader
 from poc.classes.ContextIndexValue import ContextIndexValue
-from poc.classes.ContextInference import ContextInference
-from poc.classes.ContextInferenceRules import ContextInferenceRules
-from poc.classes.ContextClassInstance import ContextClassInstance
-from poc.classes.ContextConstructor import ContextConstructor
+from poc.classes.ContextInferenceHeader import ContextInferenceHeader
+from poc.classes.ContextJustification import ContextJustification
+from poc.classes.ContextLanguageCode import ContextLanguageCode
+from poc.classes.ContextLeftBound import ContextLeftBound
+from poc.classes.ContextLocalization import ContextLocalization
+from poc.classes.ContextLocalizationBlock import ContextLocalizationBlock
+from poc.classes.ContextLocalizationHeader import ContextLocalizationHeader
+from poc.classes.ContextLongTemplateHeader import ContextLongTemplateHeader
+from poc.classes.ContextLoopStatement import ContextLoopStatement
+from poc.classes.ContextInstanceBlock import ContextInstanceBlock
 from poc.classes.ContextIsOperator import ContextIsOperator
+from poc.classes.ContextKeysOfVariadicVariable import ContextKeysOfVariadicVariable
 from poc.classes.ContextMapping import ContextMapping
+from poc.classes.ContextObjectDefinitionBlock import ContextObjectDefinitionBlock
 from poc.classes.ContextNamedVariableDeclaration import ContextNamedVariableDeclaration
+from poc.classes.ContextNamespace import ContextNamespace
 from poc.classes.ContextNamespaceIdentifier import ContextNamespaceIdentifier
 from poc.classes.ContextNegation import ContextNegation
+from poc.classes.ContextObjectHeader import ContextObjectHeader
 from poc.classes.ContextParamTuple import ContextParamTuple
-from poc.classes.ContextParen import ContextParen
 from poc.classes.ContextParenthesisedGeneralType import ContextParenthesisedGeneralType
 from poc.classes.ContextParenthesisedPredicate import ContextParenthesisedPredicate
 from poc.classes.ContextPredicate import ContextPredicate
-from poc.classes.ContextPredicateWithArguments import ContextPredicateWithArguments
-from poc.classes.ContextDefinitionPredicate import ContextDefinitionPredicate
-from poc.classes.ContextPredicateDefinitionBlock import ContextPredicateDefinitionBlock
 from poc.classes.ContextPredicateHeader import ContextPredicateHeader
+from poc.classes.ContextPredicateInstance import ContextPredicateInstance
+from poc.classes.ContextPredicateInstanceBlock import ContextPredicateInstanceBlock
+from poc.classes.ContextPredicateWithArguments import ContextPredicateWithArguments
+from poc.classes.ContextPremiseBlock import ContextPremiseBlock
+from poc.classes.ContextPremiseHeader import ContextPremiseHeader
+from poc.classes.ContextPremiseConclusionBlock import ContextPremiseConclusionBlock
+from poc.classes.ContextPremiseOrOtherPredicate import ContextPremiseOrOtherPredicate
+from poc.classes.ContextPredicateDefinitionBlock import ContextPredicateDefinitionBlock
 from poc.classes.ContextPredicateIdentifier import ContextPredicateIdentifier
 from poc.classes.ContextPrimePredicate import ContextPrimePredicate
+from poc.classes.ContextProof import ContextProof
+from poc.classes.ContextProofArgument import ContextProofArgument
+from poc.classes.ContextProofBlock import ContextProofBlock
+from poc.classes.ContextProofHeader import ContextProofHeader
 from poc.classes.ContextProperty import ContextProperty
+from poc.classes.ContextPropertyHeader import ContextPropertyHeader
+from poc.classes.ContextPythonDelegate import ContextPythonDelegate
+from poc.classes.ContextQualifiedIdentifier import ContextQualifiedIdentifier
+from poc.classes.ContextRange import ContextRange
+from poc.classes.ContextRangeInType import ContextRangeInType
+from poc.classes.ContextRangeOrLoopBody import ContextRangeOrLoopBody
+from poc.classes.ContextRangeStatement import ContextRangeStatement
+from poc.classes.ContextReferencingIdentifier import ContextReferencingIdentifier
+from poc.classes.ContextReturnHeader import ContextReturnHeader
+from poc.classes.ContextReturnStatement import ContextReturnStatement
+from poc.classes.ContextRevoke import ContextRevoke
+from poc.classes.ContextRevokeHeader import ContextRevokeHeader
+from poc.classes.ContextRightBound import ContextRightBound
+from poc.classes.ContextRuleOfInference import ContextRuleOfInference
+from poc.classes.ContextRulesOfInferenceBlock import ContextRulesOfInferenceBlock
 from poc.classes.ContextSignature import ContextSignature
-from poc.classes.ContextTheoremLikeStatement import ContextTheoremLikeStatement
-from poc.classes.ContextTheory import ContextTheory
+from poc.classes.ContextStatement import ContextStatement
+from poc.classes.ContextStatementList import ContextStatementList
+from poc.classes.ContextTemplateHeader import ContextTemplateHeader
+from poc.classes.ContextTheoremLikeStatementOrConjecture import ContextTheoremLikeStatementOrConjecture
+from poc.classes.ContextTheoremLikeStatementOrConjectureHeader import ContextTheoremLikeStatementOrConjectureHeader
+from poc.classes.ContextTheoryBlock import ContextTheoryBlock
+from poc.classes.ContextTheoryHeader import ContextTheoryHeader
+from poc.classes.ContextTranslation import ContextTranslation
 from poc.classes.ContextTrueFalse import ContextTrueFalse
 from poc.classes.ContextType import ContextType
+from poc.classes.ContextTypeWithCoord import ContextTypeWithCoord
 from poc.classes.ContextXid import ContextXid
-from poc.classes.ContextUses import ContextUses
+from poc.classes.ContextUndefinedHeader import ContextUndefinedHeader
+from poc.classes.ContextUsesClause import ContextUsesClause
 from poc.classes.ContextVariable import ContextVariable
 from poc.classes.ContextVariableList import ContextVariableList
+from poc.classes.ContextVariableRange import ContextVariableRange
+from poc.classes.ContextVariableSpecification import ContextVariableSpecification
+from poc.classes.ContextVariableSpecificationList import ContextVariableSpecificationList
 from poc.classes.ContextVariableType import ContextVariableType
 from poc.classes.ContextWildcardTheoryNamespace import ContextWildcardTheoryNamespace
 import poc.fplerror
@@ -63,149 +144,151 @@ class FPLSourceAnalyser(object):
     def __init__(self, root: AnyNode, theory_name: str, errors: list):
         self.i = AuxISourceAnalyser(errors, root, theory_name)
         self.ast_list = []
-        self.i.context.push_context(AuxSymbolTable.root)
 
         self.switcher = {
             "Alias": self.default_interpretation,
             "alias": self.default_interpretation,
             "AliasedId": self.default_interpretation,
-            "All": ContextAll.stop,
-            "all": ContextAll.start,
+            "All": ContextAll.dispatch,
+            "all": self.default_interpretation,
             "and": self.default_interpretation,
-            "ArgumentIdentifier": self.default_interpretation,
-            "ArgumentInference": self.default_interpretation,
-            "ArgumentParam": self.default_interpretation,
+            "ArgumentIdentifier": ContextArgumentIdentifier.dispatch,
+            "ArgumentInference": ContextArgumentInference.dispatch,
+            "ArgumentParam": ContextArgumentParam.dispatch,
             "ass": self.default_interpretation,
             "assert": self.default_interpretation,
             "AssertionStatement": ContextAssertionStatement.dispatch,
             "Assignee": ContextAssignee.dispatch,
-            "AssignmentStatement": self.default_interpretation,
+            "AssignmentStatement": ContextAssignmentStatement.dispatch,
             "assume": self.default_interpretation,
-            "AssumedPredicate": self.default_interpretation,
-            "AssumeHeader": self.default_interpretation,
+            "AssumedPredicate": ContextAssumedPredicate.dispatch,
+            "AssumeHeader": ContextAssumeHeader.dispatch,
             "At": self.default_interpretation,
             "AtList": self.default_interpretation,
             "ax": self.default_interpretation,
-            "Axiom": ContextAxiom.stop,
+            "Axiom": ContextAxiom.dispatch,
             "axiom": self.default_interpretation,
             "AxiomBlock": ContextAxiomBlock.dispatch,
-            "AxiomHeader": ContextAxiom.start,
-            "BuildingBlock": self.default_interpretation,
+            "AxiomHeader": ContextAxiomHeader.dispatch,
+            "BuildingBlock": ContextBuildingBlock.dispatch,
             "BuildingBlockList": self.default_interpretation,
             "CallModifier": self.default_interpretation,
             "case": self.default_interpretation,
-            "CaseStatement": self.default_interpretation,
+            "CaseStatement": ContextCaseStatement.dispatch,
             "cl": self.default_interpretation,
             "class": self.default_interpretation,
-            "ClassHeader": ContextClass.start,
-            "ClassInstance": ContextClassInstance.stop,
-            "ClosedOrOpenRange": self.default_interpretation,
+            "ClassHeader": ContextClassHeader.dispatch,
+            "ClassInstance": ContextClassInstance.dispatch,
+            "ClosedOrOpenRange": ContextClosedOrOpenRange.dispatch,
             "Colon": self.default_interpretation,
             "ColonEqual": self.default_interpretation,
             "Comma": self.default_interpretation,
-            "Comment": self.default_interpretation,
+            "Comment": self.ignore_production,
             "CompoundPredicate": ContextCompoundPredicate.dispatch,
             "con": self.default_interpretation,
             "conclusion": self.default_interpretation,
-            "ConclusionBlock": self.default_interpretation,
-            "ConclusionHeader": self.default_interpretation,
-            "ConditionFollowedByResult": self.default_interpretation,
+            "ConclusionBlock": ContextConclusionBlock.dispatch,
+            "ConclusionHeader": ContextConclusionHeader.dispatch,
+            "ConditionFollowedByResult": ContextConditionFollowedByResult.dispatch,
             "ConditionFollowedByResultList": self.default_interpretation,
             "conj": self.default_interpretation,
             "conjecture": self.default_interpretation,
             "Conjunction": ContextConjunction.dispatch,
-            "Constructor": ContextConstructor.stop,
-            "Coord": self.default_interpretation,
-            "CoordInType": self.default_interpretation,
-            "CoordList": self.default_interpretation,
+            "Constructor": ContextConstructor.dispatch,
+            "Coord": ContextCoord.dispatch,
+            "CoordInType": ContextCoordInType.dispatch,
+            "CoordList": ContextCoordList.dispatch,
             "cor": self.default_interpretation,
             "corollary": self.default_interpretation,
+            "CorollaryHeader": ContextCorollaryHeader.dispatch,
+            "CorollarySignature": ContextCorollarySignature.dispatch,
             "CW": self.ignore_production,
-            "DefaultResult": self.default_interpretation,
-            "Definition": self.default_interpretation,
-            "DefinitionClass": ContextClass.stop,
-            "DefinitionContent": self.default_interpretation,
-            "DefinitionContentList": self.default_interpretation,
-            "DefinitionFunctionalTerm": ContextFunctionalTerm.stop,
-            "DefinitionPredicate": ContextDefinitionPredicate.stop,
-            "DefinitionProperty": self.default_interpretation,
-            "DerivedPredicate": self.default_interpretation,
+            "DefaultResult": ContextDefaultResult.dispatch,
+            "Definition": ContextDefinition.dispatch,
+            "DefinitionClass": ContextDefinitionClass.dispatch,
+            "DefinitionContent": ContextDefinitionContent.dispatch,
+            "DefinitionContentList": ContextDefinitionContentList.dispatch,
+            "DefinitionFunctionalTerm": ContextDefinitionFunctionalTerm.dispatch,
+            "DefinitionPredicate": ContextDefinitionPredicate.dispatch,
+            "DefinitionProperty": ContextDefinitionProperty.dispatch,
+            "DerivedPredicate": ContextDerivedPredicate.dispatch,
             "Digit": self.default_interpretation,
             "Disjunction": ContextDisjunction.dispatch,
             "Dollar": self.default_interpretation,
+            "DollarDigitList": ContextDollarDigitList.dispatch,
             "Dot": self.default_interpretation,
             "EBNFBar": self.default_interpretation,
-            "EBNFFactor": self.default_interpretation,
-            "EBNFString": self.default_interpretation,
-            "EBNFTerm": self.default_interpretation,
-            "EBNFTransl": self.default_interpretation,
+            "EBNFFactor": ContextEBNFFactor.dispatch,
+            "EBNFString": ContextEBNFString.dispatch,
+            "EBNFTerm": ContextEBNFTerm.dispatch,
+            "EBNFTransl": ContextEBNFTransl.dispatch,
             "else": self.default_interpretation,
             "end": self.default_interpretation,
             "Entity": ContextEntity.dispatch,
-            "EntityWithCoord": self.default_interpretation,
+            "EntityWithCoord": ContextEntityWithCoord.dispatch,
             "Equivalence": ContextEquivalence.dispatch,
-            "ex": ContextExists.start,
+            "ex": self.default_interpretation,
             "ExclamationMark": self.default_interpretation,
             "ExclusiveOr": ContextExclusiveOr.dispatch,
-            "Exists": ContextExists.stop,
+            "Exists": ContextExists.dispatch,
             "ExistsHeader": self.default_interpretation,
             "ExistsTimesN": self.default_interpretation,
             "ext": self.default_interpretation,
             "extDigit": self.default_interpretation,
-            "ExtensionBlock": self.default_interpretation,
+            "ExtensionBlock": ContextExtensionBlock.dispatch,
             "ExtensionContent": self.default_interpretation,
             "ExtensionHeader": self.default_interpretation,
             "ExtensionTail": self.default_interpretation,
             "false": ContextTrueFalse.dispatch,
             "func": self.default_interpretation,
             "function": self.default_interpretation,
-            "FunctionalTermDefinitionBlock": self.default_interpretation,
-            "FunctionalTermHeader": ContextFunctionalTerm.start,
-            "FunctionalTermInstance": ContextFunctionalTerm.stop,
-            "FunctionalTermSignature": self.default_interpretation,
+            "FunctionalTermDefinitionBlock": ContextFunctionalTermDefinitionBlock.dispatch,
+            "FunctionalTermHeader": ContextFunctionalTermHeader.dispatch,
+            "FunctionalTermInstance": ContextFunctionalTermInstance.dispatch,
+            "FunctionalTermSignature": ContextFunctionalTermSignature.dispatch,
             "GeneralType": ContextGeneralType.dispatch,
             "Identifier": ContextIdentifier.dispatch,
             "IdStartsWithCap": self.default_interpretation,
-            "IdStartsWithSmallCase": self.default_interpretation,
+            "IdStartsWithSmallCase": self.ignore_production,
             "iif": self.default_interpretation,
             "impl": self.default_interpretation,
             "Implication": ContextImplication.dispatch,
             "ind": self.default_interpretation,
             "index": self.default_interpretation,
-            "IndexHeader": self.default_interpretation,
+            "IndexHeader": ContextIndexHeader.dispatch,
             "IndexValue": ContextIndexValue.dispatch,
             "inf": self.default_interpretation,
             "inference": self.default_interpretation,
-            "InferenceHeader": ContextInferenceRules.start,
-            "InstanceBlock": self.default_interpretation,
+            "InferenceHeader": ContextInferenceHeader.dispatch,
+            "InstanceBlock": ContextInstanceBlock.dispatch,
             "is": self.default_interpretation,
             "IsOperator": ContextIsOperator.dispatch,
             "IW": self.ignore_production,
-            "Justification": self.default_interpretation,
-            "KeysOfVariadicVariable": self.default_interpretation,
-            "LanguageCode": self.default_interpretation,
-            "LeftBound": ContextBound.start,
-            "LeftBrace": ContextBlock.start,
+            "Justification": ContextJustification.dispatch,
+            "KeysOfVariadicVariable": ContextKeysOfVariadicVariable.dispatch,
+            "LanguageCode": ContextLanguageCode.dispatch,
+            "LeftBound": ContextLeftBound.dispatch,
+            "LeftBrace": self.default_interpretation,
             "LeftBracket": self.default_interpretation,
-            "LeftParen": ContextParen.start,
+            "LeftParen": self.default_interpretation,
             "lem": self.default_interpretation,
             "lemma": self.default_interpretation,
             "loc": self.default_interpretation,
-            "Localization": self.default_interpretation,
+            "Localization": ContextLocalization.dispatch,
             "localization": self.default_interpretation,
-            "LocalizationBlock": self.default_interpretation,
-            "LocalizationHeader": self.default_interpretation,
+            "LocalizationBlock": ContextLocalizationBlock.dispatch,
+            "LocalizationHeader": ContextLocalizationHeader.dispatch,
             "LocalizationList": self.default_interpretation,
             "LongComment": self.default_interpretation,
-            "LongTemplateHeader": self.default_interpretation,
+            "LongTemplateHeader": ContextLongTemplateHeader.dispatch,
             "loop": self.default_interpretation,
-            "LoopStatement": self.default_interpretation,
+            "LoopStatement": ContextLoopStatement.dispatch,
             "mand": self.default_interpretation,
             "mandatory": self.default_interpretation,
-            "Mapping": ContextMapping.stop,
-            "NamedVariableDeclaration": ContextNamedVariableDeclaration.stop,
+            "Mapping": ContextMapping.dispatch,
+            "NamedVariableDeclaration": ContextNamedVariableDeclaration.dispatch,
             "NamedVariableDeclarationList": self.default_interpretation,
-            "Namespace": self.default_interpretation,
+            "Namespace": ContextNamespace.dispatch,
             "NamespaceBlock": self.default_interpretation,
             "NamespaceIdentifier": ContextNamespaceIdentifier.dispatch,
             "NamespaceModifier": self.default_interpretation,
@@ -213,8 +296,8 @@ class FPLSourceAnalyser(object):
             "not": self.default_interpretation,
             "obj": self.default_interpretation,
             "object": self.default_interpretation,
-            "ObjectDefinitionBlock": self.default_interpretation,
-            "ObjectHeader": self.default_interpretation,
+            "ObjectDefinitionBlock": ContextObjectDefinitionBlock.dispatch,
+            "ObjectHeader": ContextObjectHeader.dispatch,
             "opt": self.default_interpretation,
             "optional": self.default_interpretation,
             "or": self.default_interpretation,
@@ -225,94 +308,98 @@ class FPLSourceAnalyser(object):
             "post": self.default_interpretation,
             "postulate": self.default_interpretation,
             "pre": self.default_interpretation,
-            "pred": self.default_interpretation,  # noqa
+            "pred": self.default_interpretation,
             "predicate": self.default_interpretation,
             "Predicate": ContextPredicate.dispatch,
             "PredicateDefinitionBlock": ContextPredicateDefinitionBlock.dispatch,
             "PredicateHeader": ContextPredicateHeader.dispatch,
             "PredicateIdentifier": ContextPredicateIdentifier.dispatch,
+            "PredicateInstance": ContextPredicateInstance.dispatch,
+            "PredicateInstanceBlock": ContextPredicateInstanceBlock.dispatch,
             "PredicateList": self.default_interpretation,
             "PredicateWithArguments": ContextPredicateWithArguments.dispatch,
             "premise": self.default_interpretation,
-            "PremiseBlock": self.default_interpretation,
-            "PremiseConclusionBlock": self.default_interpretation,
-            "PremiseHeader": self.default_interpretation,
-            "PremiseOrOtherPredicate": self.default_interpretation,
+            "PremiseBlock": ContextPremiseBlock.dispatch,
+            "PremiseConclusionBlock": ContextPremiseConclusionBlock.dispatch,
+            "PremiseHeader": ContextPremiseHeader.dispatch,
+            "PremiseOrOtherPredicate": ContextPremiseOrOtherPredicate.dispatch,
             "prf": self.default_interpretation,
             "PrimePredicate": ContextPrimePredicate.dispatch,
-            "Proof": self.default_interpretation,
             "proof": self.default_interpretation,
-            "ProofArgument": self.default_interpretation,
+            "Proof": ContextProof.dispatch,
+            "proofArgument": self.default_interpretation,
+            "ProofArgument": ContextProofArgument.dispatch,
             "ProofArgumentList": self.default_interpretation,
-            "ProofBlock": self.default_interpretation,
-            "ProofHeadHeader": self.default_interpretation,
-            "ProofIdentifier": self.default_interpretation,
+            "ProofBlock": ContextProofBlock.dispatch,
+            "ProofHeader": ContextProofHeader.dispatch,
             "prop": self.default_interpretation,
-            "Property": ContextProperty.stop,
-            "PropertyHeader": ContextProperty.start,
+            "Property": ContextProperty.dispatch,
+            "PropertyHeader": ContextPropertyHeader.dispatch,
             "PropertyList": self.default_interpretation,
             "proposition": self.default_interpretation,
             "py": self.default_interpretation,
-            "PythonDelegate": self.default_interpretation,
+            "PythonDelegate": ContextPythonDelegate.dispatch,
             "PythonIdentifier": self.default_interpretation,
             "qed": self.default_interpretation,
-            "QualifiedIdentifier": self.default_interpretation,
-            "Range": self.default_interpretation,
+            "QualifiedIdentifier": ContextQualifiedIdentifier.dispatch,
+            "Range": ContextRange.dispatch,
             "range": self.default_interpretation,
-            "RangeInType": self.default_interpretation,
-            "RangeOrLoopBody": self.default_interpretation,
-            "RangeStatement": self.default_interpretation,
+            "RangeInType": ContextRangeInType.dispatch,
+            "RangeOrLoopBody": ContextRangeOrLoopBody.dispatch,
+            "RangeStatement": ContextRangeStatement.dispatch,
+            "ReferencingIdentifier": ContextReferencingIdentifier.dispatch,
             "ret": self.default_interpretation,
             "return": self.default_interpretation,
-            "ReturnHeader": self.default_interpretation,
-            "ReturnStatement": self.default_interpretation,
+            "ReturnHeader": ContextReturnHeader.dispatch,
+            "ReturnStatement": ContextReturnStatement.dispatch,
             "rev": self.default_interpretation,
-            "Revoke": self.default_interpretation,
+            "Revoke": ContextRevoke.dispatch,
             "revoke": self.default_interpretation,
-            "RevokeHeader": self.default_interpretation,
-            "RightBound": ContextBound.stop,
-            "RightBrace": ContextBlock.stop,
+            "RevokeHeader": ContextRevokeHeader.dispatch,
+            "RightBound": ContextRightBound.dispatch,
+            "RightBrace": self.default_interpretation,
             "RightBracket": self.default_interpretation,
-            "RightParen": ContextParen.stop,
-            "RuleOfInference": ContextInference.stop,
+            "RightParen": self.default_interpretation,
+            "RuleOfInference": ContextRuleOfInference.dispatch,
             "RuleOfInferenceList": self.default_interpretation,
-            "RulesOfInferenceBlock": ContextInferenceRules.stop,
+            "RulesOfInferenceBlock": ContextRulesOfInferenceBlock.dispatch,
             "self": self.default_interpretation,
             "SemiColon": self.default_interpretation,
-            "Signature": ContextSignature.stop,
+            "Signature": ContextSignature.dispatch,
             "Slash": self.default_interpretation,
             "Star": self.default_interpretation,
-            "Statement": self.default_interpretation,
-            "StatementList": self.default_interpretation,
+            "Statement": ContextStatement.dispatch,
+            "StatementList": ContextStatementList.dispatch,
             "SW": self.ignore_production,
             "template": self.default_interpretation,
-            "TemplateHeader": self.default_interpretation,
+            "TemplateHeader": ContextTemplateHeader.dispatch,
             "th": self.default_interpretation,
             "theorem": self.default_interpretation,
-            "TheoremLikeStatementOrConjecture": ContextTheoremLikeStatement.stop,
-            "TheoremLikeStatementOrConjectureHeader": ContextTheoremLikeStatement.start,
+            "TheoremLikeStatementOrConjecture": ContextTheoremLikeStatementOrConjecture.dispatch,
+            "TheoremLikeStatementOrConjectureHeader": ContextTheoremLikeStatementOrConjectureHeader.dispatch,
             "theory": self.default_interpretation,
-            "TheoryBlock": ContextTheory.stop,
-            "TheoryHeader": ContextTheory.start,
+            "TheoryBlock": ContextTheoryBlock.dispatch,
+            "TheoryHeader": ContextTheoryHeader.dispatch,
             "thm": self.default_interpretation,
             "Tilde": self.default_interpretation,
             "To": self.default_interpretation,
             "tpl": self.default_interpretation,
-            "Translation": self.default_interpretation,
+            "Translation": ContextTranslation.dispatch,
             "TranslationList": self.default_interpretation,
             "trivial": self.default_interpretation,
             "true": ContextTrueFalse.dispatch,
             "Type": ContextType.dispatch,
-            "TypeWithCoord": self.default_interpretation,
+            "TypeWithCoord": ContextTypeWithCoord.dispatch,
             "undef": self.default_interpretation,
             "undefined": self.default_interpretation,
-            "UndefinedHeader": self.default_interpretation,
-            "uses": ContextUses.start,
-            "UsesClause": ContextUses.stop,
+            "UndefinedHeader": ContextUndefinedHeader.dispatch,
+            "uses": self.default_interpretation,
+            "UsesClause": ContextUsesClause.dispatch,
             "Variable": ContextVariable.dispatch,
             "VariableList": ContextVariableList.dispatch,
-            "VariableSpecification": self.default_interpretation,
-            "VariableSpecificationList": self.default_interpretation,
+            "VariableRange": ContextVariableRange.dispatch,
+            "VariableSpecification": ContextVariableSpecification.dispatch,
+            "VariableSpecificationList": ContextVariableSpecificationList.dispatch,
             "VariableType": ContextVariableType.dispatch,
             "VDash": self.default_interpretation,
             "WildcardTheoryNamespace": ContextWildcardTheoryNamespace.dispatch,
@@ -360,8 +447,7 @@ class FPLSourceAnalyser(object):
         rule = parsing_info.rule_name()
         func = self.switcher.get(rule, lambda: "Invalid rule")
         if self.i.verbose:
-            print("switched " + (str(func)).split(" ")[1] + " for " + str(parsing_info) + " in context " + str(
-                self.i.context.get_context()))
+            print("switched " + (str(func)).split(" ")[1] + " for " + str(parsing_info))
         # call the function depending on the rule in the switcher and modify its interpretation and returns its value
         return func(self.i, parsing_info)
 

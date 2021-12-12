@@ -1,4 +1,4 @@
-# fpl Version 1.1.2
+# fpl Version 1.1.3
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -346,6 +346,14 @@
         LeftBrace
         { CW }* [ VariableSpecificationList ]
         { CW }* [ Predicate ]
+        { CW }* [ PropertyList ]
+        { CW }* RightBrace
+        ;
+
+    PredicateInstanceBlock =
+        LeftBrace
+        { CW }* [ VariableSpecificationList ]
+        { CW }* Predicate
         { CW }* RightBrace
         ;
 
@@ -492,14 +500,14 @@
 
     DefinitionProperty =
         (
-        ClassInstance
-        | DefinitionPredicate
+        PredicateInstance
         | FunctionalTermInstance
+        | ClassInstance
         )
         ;
 
     ClassInstance =
-        GeneralType
+        VariableType
         SW Signature
         { CW }* InstanceBlock
         ;
@@ -507,6 +515,12 @@
     FunctionalTermInstance =
         FunctionalTermSignature
         { CW }* InstanceBlock
+        ;
+
+    PredicateInstance =
+        PredicateHeader
+        SW Signature
+        { CW }* PredicateInstanceBlock
         ;
 
     PropertyHeader =
@@ -667,7 +681,7 @@
 
     # A Theorem is a headed Signature, followed by a TheoremLikeBlock
     TheoremLikeStatementOrConjecture =
-        TheoremLikeStatementOrConjectureHeader SW Signature
+        TheoremLikeStatementOrConjectureHeader SW (CorollarySignature | Signature)
         [ IW ] PremiseConclusionBlock
         ;
 
@@ -681,11 +695,21 @@
         | prop
         | lemma
         | lem
-        | corollary
-        | cor
+        | CorollaryHeader
         )
         ;
 
+    CorollarySignature =
+        ReferencingIdentifier
+        [ IW ] ParamTuple
+        ;
+
+    CorollaryHeader =
+        (
+        corollary
+        | cor
+        )
+        ;
 
     theorem =
         "theorem"
@@ -736,14 +760,18 @@
     # after the Theorem they prove. This is to enable the users to mix
     # with natural language an provide a proof long after the Theorem was stated.
     Proof =
-        ProofHeadHeader SW ProofIdentifier [ IW ] ProofBlock
+        ProofHeader SW ReferencingIdentifier [ IW ] ProofBlock
         ;
 
-    ProofIdentifier =
-        PredicateIdentifier Dollar Digit
+    ReferencingIdentifier =
+        PredicateIdentifier DollarDigitList
         ;
 
-    ProofHeadHeader =
+    DollarDigitList =
+        Dollar Digit { Dollar Digit }*
+        ;
+
+    ProofHeader =
         (
         proof
         | prf
@@ -951,7 +979,7 @@
         ;
 
     IndexValue =
-        Variable Dollar ( Digit | Variable )
+        KeysOfVariadicVariable ( Digit | Variable )
         ;
 
     self =
@@ -1076,7 +1104,7 @@
     PythonDelegate =
         py Dot PythonIdentifier
         [ IW ] LeftParen
-        [ IW ] VariableList
+        [ IW ] PredicateList
         [ IW ] RightParen
         ;
 
@@ -1142,10 +1170,16 @@
 
     RangeOrLoopBody =
         Assignee
-        SW ( KeysOfVariadicVariable | ClosedOrOpenRange | Assignee )
+        SW VariableRange
         { CW }* LeftParen
         { CW }* StatementList
         { CW }* RightParen
+        ;
+
+    VariableRange =
+        KeysOfVariadicVariable
+        | ClosedOrOpenRange
+        | Assignee
         ;
 
     KeysOfVariadicVariable =

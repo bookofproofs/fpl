@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
 
@@ -26,56 +27,23 @@ class PrettifyTestCase(unittest.TestCase):
         self.interpreter_after_prettify.clear()
 
         self.interpreter.syntax_transform("test_theory_name", theory_source)
-        self.interpreter_after_prettify.syntax_transform("prettified_test_theory_name", self.interpreter.prettyfied())
+        self.interpreter_after_prettify.syntax_transform("prettified_test_theory_name",
+                                                         self.interpreter.prettyfied("test_theory_name"))
         if self.interpreter_after_prettify.has_errors():
             self.interpreter_after_prettify.print_errors()
 
-    def test_prettify_common(self):
-        self.prettify("../theories/Commons.fpl")
+
+    @parameterized.expand([
+        "../theories/Commons.fpl",
+        "../theories/ArithmeticsNat.fpl",
+        "../theories/Set.fpl",
+        "../theories/CommonsStructures.fpl",
+        "../theories/Algebra.fpl",
+        "../theories/Geometry.fpl",
+        "../theories/Linalg.fpl",
+        "../theories/Example4-7.fpl",
+    ])
+    def test_cases(self, use_case):
+        self.prettify(use_case)
         self.assertFalse(self.interpreter.has_errors())
         self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-    def test_prettify_ArithmeticsNat(self):
-        self.prettify("../theories/ArithmeticsNat.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-    # test case minification
-    def test_prettify_Set(self):
-        self.prettify("../theories/Set.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-    # test case minification
-    def test_prettify_CommonStructures(self):
-        self.prettify("../theories/CommonsStructures.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-    # test case minification
-    def test_prettify_Algebra(self):
-        self.prettify("../theories/Algebra.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-    # test case minification
-    def test_prettify_Geometry(self):
-        self.prettify("../theories/Geometry.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-    # test case minification
-    def test_prettify_Linalg(self):
-        self.prettify("../theories/Linalg.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-    # test case minification
-    def test_prettify_example25(self):
-        self.prettify("../theories/Example4-7.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_prettify.has_errors())
-
-
-if __name__ == '__main__':
-    unittest.main()

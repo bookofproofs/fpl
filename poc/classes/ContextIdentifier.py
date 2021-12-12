@@ -5,12 +5,33 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.Identifier import Identifier
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTPredicate import AuxSTPredicate
 
 
-class ContextIdentifier:
+class ContextIdentifier(AuxInterpretation):
+
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.predicate = None
+        self.aggregate_previous_rules(parse_list,
+                                      AuxRuleDependencies.dep["Identifier"], self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
+        if rule == "PredicateIdentifier":
+            # wrap the identifier for the symbol table
+            self.predicate = AuxSTPredicate(AuxSymbolTable.ids, parsing_info)
+            self.predicate.set_id(parsing_info.id)
+            self.stop_aggregation = True
+        elif rule == "IndexValue":
+            self.predicate = parsing_info.predicate  # noqa
+            self.stop_aggregation = True
+        elif rule == "Assignee":
+            self.predicate = parsing_info.predicate  # noqa
+            self.stop_aggregation = True
+
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = Identifier(i.parse_list, parsing_info)
+        new_info = ContextIdentifier(i.parse_list, parsing_info)
         i.parse_list.append(new_info)

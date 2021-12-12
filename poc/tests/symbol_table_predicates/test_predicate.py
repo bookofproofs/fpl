@@ -3,10 +3,10 @@ from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
 import os
-from poc.classes.AuxContext import AuxContext
+from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 
 """
-Tests of FPL implementation of the predicate auxiliary class
+Tests of FPL predicate definitions and how they are represented in the symbol table
 """
 
 
@@ -38,11 +38,17 @@ class AuxPredicateTests(unittest.TestCase):
         "test_predicate_09",
         "test_predicate_10",
         "test_predicate_11",
+        "test_predicate_12",
+        "test_predicate_13",
+        "test_predicate_14",
+        "test_predicate_15",
+        "test_predicate_16",
     ])
     def test_correct(self, use_case):
         interpreter = FplInterpreter(self.fpl_parser)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(use_case, result[0])
         actual = self.util.remove_object_references_from_string(interpreter.symbol_table_to_str().strip())
-        print(actual)
+        if AuxISourceAnalyser.verbose:
+            print(actual)
         self.assertEqual(result[1].strip(), actual)

@@ -1,0 +1,47 @@
+TestNamespace
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+
+            mandatory tplSetElem LeftNeutralElement()
+            {
+                assert IsLeftNeutralElement(self)
+            }
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.BinOp[2:tplSetElem]', id='BinOp[2:tplSetElem]', reference=AuxSTDefinitionFunctionalTerm())
+│   └── AuxSTGlobal(gid='TestNamespace.BinOp[2:tplSetElem].LeftNeutralElement[]', id='BinOp[2:tplSetElem].LeftNeutralElement[]', reference=AuxSTClassInstance())
+├── AuxSTTheory(namespace='TestNamespace', outline='theory', theory_name='test_func_03')
+│   ├── AuxSTOutline(outline='uses')
+│   ├── AuxSTOutline(outline='axioms')
+│   ├── AuxSTOutline(outline='inferenceRules')
+│   ├── AuxSTOutline(outline='definitions')
+│   │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='BinOp[2:tplSetElem]', info=AuxAstInfo(), outline='definition')
+│   │       ├── AuxSTSignature(info=AuxAstInfo(), outline='signature')
+│   │       │   ├── AuxSTVarDec(id='x', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod=None, type_pattern=17)
+│   │       │   └── AuxSTVarDec(id='y', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod=None, type_pattern=17)
+│   │       ├── AuxSTType(id='tplSetElem', info=AuxAstInfo(), outline='type', type_mod=None, type_pattern=17)
+│   │       ├── AuxSTVarSpecList(outline='specificationList')
+│   │       └── AuxSTProperties(outline='properties')
+│   │           └── AuxSTClassInstance(def_type='property', id='LeftNeutralElement[]', info=AuxAstInfo(), outline='property')
+│   │               ├── AuxSTType(id='tplSetElem', info=AuxAstInfo(), outline='type', type_mod=None, type_pattern=17)
+│   │               ├── AuxSTSignature(info=AuxAstInfo(), outline='signature')
+│   │               └── AuxSTVarSpecList(outline='specificationList')
+│   │                   └── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='assert')
+│   │                       └── AuxSTPredicateWithArgs(id='IsLeftNeutralElement', info=AuxAstInfo(), outline='predicateWithArgs', reference=None)
+│   │                           └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None)
+│   ├── AuxSTOutline(outline='theorems')
+│   ├── AuxSTOutline(outline='lemmas')
+│   ├── AuxSTOutline(outline='propositions')
+│   ├── AuxSTOutline(outline='conjectures')
+│   ├── AuxSTOutline(outline='corollaries')
+│   └── AuxSTOutline(outline='proofs')
+└── AuxSTLocalizations(outline='localizations')

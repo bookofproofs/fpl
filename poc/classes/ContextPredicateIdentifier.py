@@ -1,17 +1,29 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxContext import AuxContext
-from poc.classes.PredicateIdentifier import PredicateIdentifier
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.ContextInference import ContextInference
-from poc.classes.ContextClassInstance import ContextClassInstance
-from poc.classes.ContextConstructor import ContextConstructor
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
-class ContextPredicateIdentifier:
+class ContextPredicateIdentifier(AuxInterpretation):
+
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.aggregate_previous_rules(parse_list, AuxRuleDependencies.dep["PredicateIdentifier"],
+                                      self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parse_info: AuxInterpretation):
+        if rule == "IdStartsWithCap":
+            self.id = parse_info.get_cst()
+        elif rule == "AliasedId":
+            self.id = parse_info.get_cst()
+
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
+        new_info = ContextPredicateIdentifier(i.parse_list, parsing_info)
+        i.parse_list.append(new_info)
+
+        """ todo
         pred_identifier = PredicateIdentifier(i.parse_list, parsing_info)
+      
         # PredicateIdentifier can occur in following different  contexts:
         if i.context.is_parsing_context([AuxContext.inferenceRules, AuxContext.block]):
             # as a name of an inference rule
@@ -75,3 +87,4 @@ class ContextPredicateIdentifier:
                     "########### Unhandled context in ContextPredicateIdentifier.dispatch " + str(
                         i.context.get_context()) + " " + str(pred_identifier))
         i.parse_list.append(pred_identifier)
+        """
