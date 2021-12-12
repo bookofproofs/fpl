@@ -6,11 +6,37 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.CompoundPredicate import CompoundPredicate
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
-class ContextCompoundPredicate:
+class ContextCompoundPredicate(AuxInterpretation):
+
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.predicate = None
+        self.aggregate_previous_rules(parse_list,
+                                      AuxRuleDependencies.dep["CompoundPredicate"], self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
+        if rule == "Conjunction":
+            self.predicate = parsing_info.predicate
+        elif rule == "Disjunction":
+            self.predicate = parsing_info.predicate
+        elif rule == "Implication":
+            self.predicate = parsing_info.predicate
+        elif rule == "Equivalence":
+            self.predicate = parsing_info.predicate
+        elif rule == "ExclusiveOr":
+            self.predicate = parsing_info.predicate
+        elif rule == "Negation":
+            self.predicate = parsing_info.predicate
+        elif rule == "All":
+            self.predicate = parsing_info.predicate
+        elif rule == "Exists":
+            self.predicate = parsing_info.predicate
+        self.stop_aggregation = True
+
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = CompoundPredicate(i.parse_list, parsing_info)
+        new_info = ContextCompoundPredicate(i.parse_list, parsing_info)
         i.parse_list.append(new_info)

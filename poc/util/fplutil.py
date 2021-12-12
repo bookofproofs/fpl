@@ -52,10 +52,13 @@ class Utils:
         # remove "poc.classes." paths
         test_output = test_output.replace("poc.classes.", "")
         # remove dynamic object memory references
-        first = re.sub(' object at 0x[0-9A-F]+', '', test_output)
+        test_output = re.sub(' object at 0x[0-9A-F]+', '', test_output)
         # remove AnyNode string representations that are the "node" attribute of AnyNode
-        second = re.sub(r'(node=AnyNode\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", first)
-        return second
+        test_output = re.sub(r'(=AnyNode\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
+        # remove Aux* string representations
+        test_output = re.sub(r'(=Aux[a-zA-Z]+\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
+        test_output = re.sub('<AuxAstInfo.AuxAstInfo>', "AuxAstInfo()", test_output)
+        return test_output
 
     @staticmethod
     def get_code_and_expected(path_to_usecases, use_case_name):

@@ -354,8 +354,9 @@ class FplIde:
         :param editor_info: Current editor info
         :return: None
         """
+        title = editor_info.title
         self._refresh_items_tree_view(editor_info, interpreter.get_errors(), self.get_error_list(), column=4)
-        self._refresh_items_tree_view(editor_info, interpreter.get_ast_list(), self.get_syntax_list(), column=4)
+        self._refresh_items_tree_view(editor_info, interpreter.get_ast_list(title), self.get_syntax_list(), column=4)
 
     def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, tuple_list: list, tree_view: ttk.Treeview,
                                  column: int):

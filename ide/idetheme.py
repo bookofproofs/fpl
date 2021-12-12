@@ -82,7 +82,7 @@ class DefaultTheme:
             "predicate": "inbuilttype",
             "premise": "keyword",
             "prf": "keyword",
-            "proof": "keyword",
+            "proofArgument": "keyword",
             "ProofIdentifier": "type",
             "prop": "keyword",
             "proposition": "keyword",

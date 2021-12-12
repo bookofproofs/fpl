@@ -1,46 +1,25 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxContext import AuxContext
-from poc.classes.ContextMapping import ContextMapping
-from poc.classes.Signature import Signature
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSTSignature import AuxSTSignature
 
 
-class ContextSignature:
-    @staticmethod
-    def start(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        i.context.push_context(AuxContext.signature, i.get_debug_parsing_info(parsing_info))
-        i.parse_list.append(parsing_info)
+class ContextSignature(AuxInterpretation):
 
-    @staticmethod
-    def stop(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        i.context.pop_context([AuxContext.signature], i.get_debug_parsing_info(parsing_info))
-        signature_info = Signature(i.parse_list, parsing_info)
-        # Now, when we have parsed and interpreted the signature, we have to dispatch it depending on the context
-        # similar to the dispatching done in ContextPredicateIdentifier.
-        ContextSignature.dispatch(i, signature_info)
-        if i.context.is_parsing_context([AuxContext.functionalTerm]):
-            ContextMapping.start(i, signature_info)
-        else:
-            i.parse_list.append(signature_info)
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.symbol_signature = AuxSTSignature(parsing_info)
+        self.aggregate_previous_rules(parse_list, AuxRuleDependencies.dep["Signature"], self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
+        if rule == "PredicateIdentifier":
+            self.symbol_signature.set_id(parsing_info.id)
+            self.stop_aggregation = True
+        elif rule == "ParamTuple":
+            self.symbol_signature.set_params(parsing_info.tuple)
 
     @staticmethod
-    def dispatch(i: AuxISourceAnalyser, signature_info: Signature):
-        # This dispatch method must be synchronized with the ContextPredicateIdentifier.dispatch
-        if i.context.is_parsing_context([AuxContext.inferenceRule]) \
-                or i.context.is_parsing_context([AuxContext.theoremLikeStmtConj]) \
-                or i.context.is_parsing_context([AuxContext.theoremLikeStmtCor]) \
-                or i.context.is_parsing_context([AuxContext.theoremLikeStmtProp]) \
-                or i.context.is_parsing_context([AuxContext.theoremLikeStmtLem]) \
-                or i.context.is_parsing_context([AuxContext.theoremLikeStmtThm]) \
-                or i.context.is_parsing_context([AuxContext.predicateDeclaration]) \
-                or i.context.is_parsing_context([AuxContext.functionalTerm]) \
-                or i.context.is_parsing_context([AuxContext.classConstructor]) \
-                or i.context.is_parsing_context([AuxContext.classInstanceDeclaration]) \
-                or i.context.is_parsing_context([AuxContext.axiom]):
-            # as a signature of an building block
-            AuxSymbolTable.set_global_id(i.touch_node(), signature_info)
-        else:
-            if i.verbose:
-                print("########### Unhandled context in ContextSignature.dispatch" + str(
-                    i.context.get_context()) + " " + str(signature_info))
+    def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
+        new_info = ContextSignature(i.parse_list, parsing_info)
+        new_info.symbol_signature.make()
+        i.parse_list.append(new_info)

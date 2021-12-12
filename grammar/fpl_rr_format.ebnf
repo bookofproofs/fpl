@@ -2,7 +2,7 @@
 /* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */
 
 
-/* fpl Version 1.1.1 */
+/* fpl Version 1.1.3 */
 /* a mathematical theory written in FPL can be split between different files having */
 /* Every theory part block starts with an optional syntax extension block, followed by */
 /* optional usage of other libraries, followed by optional inference rules, */
@@ -219,6 +219,12 @@ regular_expression '/((?!:end).)*/'
         LeftBrace
         ( CW )* (VariableSpecificationList)?
         ( CW )* (Predicate)?
+        ( CW )* (PropertyList)?
+        ( CW )* RightBrace
+    PredicateInstanceBlock ::=
+        LeftBrace
+        ( CW )* (VariableSpecificationList)?
+        ( CW )* Predicate
         ( CW )* RightBrace
     PredicateIdentifier ::=
         (
@@ -304,17 +310,21 @@ regular_expression '/((?!:end).)*/'
         SW DefinitionProperty
     DefinitionProperty ::=
         (
-        ClassInstance
-        | DefinitionPredicate
+        PredicateInstance
         | FunctionalTermInstance
+        | ClassInstance
         )
     ClassInstance ::=
-        GeneralType
+        VariableType
         SW Signature
         ( CW )* InstanceBlock
     FunctionalTermInstance ::=
         FunctionalTermSignature
         ( CW )* InstanceBlock
+    PredicateInstance ::=
+        PredicateHeader
+        SW Signature
+        ( CW )* PredicateInstanceBlock
     PropertyHeader ::=
         (
         mandatory
@@ -406,7 +416,7 @@ regular_expression '/((?!:end).)*/'
 /* Theorem-like statements */
 /* A Theorem is a headed Signature, followed by a TheoremLikeBlock */
     TheoremLikeStatementOrConjecture ::=
-        TheoremLikeStatementOrConjectureHeader SW Signature
+        TheoremLikeStatementOrConjectureHeader SW (CorollarySignature | Signature)
         (IW)? PremiseConclusionBlock
     TheoremLikeStatementOrConjectureHeader ::=
         (
@@ -418,7 +428,14 @@ regular_expression '/((?!:end).)*/'
         | prop
         | lemma
         | lem
-        | corollary
+        | CorollaryHeader
+        )
+    CorollarySignature ::=
+        ReferencingIdentifier
+        (IW)? ParamTuple
+    CorollaryHeader ::=
+        (
+        corollary
         | cor
         )
     theorem ::=
@@ -447,10 +464,12 @@ regular_expression '/((?!:end).)*/'
 /* after the Theorem they prove. This is to enable the users to mix */
 /* with natural language an provide a proof long after the Theorem was stated. */
     Proof ::=
-        ProofHeadHeader SW ProofIdentifier (IW)? ProofBlock
-    ProofIdentifier ::=
-        PredicateIdentifier Dollar Digit
-    ProofHeadHeader ::=
+        ProofHeader SW ReferencingIdentifier (IW)? ProofBlock
+    ReferencingIdentifier ::=
+        PredicateIdentifier DollarDigitList
+    DollarDigitList ::=
+        Dollar Digit ( Dollar Digit )*
+    ProofHeader ::=
         (
         proof
         | prf
@@ -571,16 +590,11 @@ regular_expression '/((?!:end).)*/'
     Identifier ::=
         (
         PredicateIdentifier
-        | AmpersandVariable
         | IndexValue
         | Assignee
         )
-    AmpersandVariable ::=
-        Ampersand Variable
     IndexValue ::=
-        Variable Dollar ( Digit | Variable )
-    Ampersand ::=
-        "&"
+        KeysOfVariadicVariable ( Digit | Variable )
     self ::=
         "self"
     PredicateList ::=
@@ -600,9 +614,9 @@ regular_expression '/((?!:end).)*/'
     IsOperator ::=
         is
         (IW)? LeftParen
-        ( CW )*  Identifier
+        ( CW )* Identifier
         ( CW )* Comma
-        (IW)? VariableType
+        (IW)? GeneralType
         (IW)? RightParen
     Negation ::=
         not
@@ -664,7 +678,7 @@ regular_expression '/((?!:end).)*/'
     PythonDelegate ::=
         py Dot PythonIdentifier
         (IW)? LeftParen
-        (IW)? VariableList
+        (IW)? PredicateList
         (IW)? RightParen
     PythonIdentifier ::=
 regular_expression '/[a-z_]+/'
@@ -703,10 +717,14 @@ regular_expression '/[a-z_]+/'
         SW RangeOrLoopBody
     RangeOrLoopBody ::=
         Assignee
-        SW ( KeysOfVariadicVariable | ClosedOrOpenRange | Assignee )
+        SW VariableRange
         ( CW )* LeftParen
         ( CW )* StatementList
         ( CW )* RightParen
+    VariableRange ::=
+        KeysOfVariadicVariable
+        | ClosedOrOpenRange
+        | Assignee
     KeysOfVariadicVariable ::=
         Variable Dollar
     ClosedOrOpenRange ::=

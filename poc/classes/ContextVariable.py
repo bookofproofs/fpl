@@ -4,21 +4,26 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 """
 
 
-from poc.classes.AuxContext import AuxContext
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.Variable import Variable
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSTVariable import AuxSTVariable
 
 
-class ContextVariable:
+class ContextVariable(AuxInterpretation):
+
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.var = AuxSTVariable(parsing_info)
+        self.var.id = parsing_info.get_cst()
+        self.aggregate_previous_rules(parse_list,
+                                      AuxRuleDependencies.dep["Variable"], self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
+        pass
+
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = Variable(i.parse_list, parsing_info)
+        new_info = ContextVariable(i.parse_list, parsing_info)
         i.parse_list.append(new_info)
-        if i.context.is_parsing_context([AuxContext.bound]):
-            # In this context, variable may be used only if they have been previously properly declared.
-            # Try to find out if the variable in the scope.
-            var = AuxSymbolTable.get_variable_in_current_scope(i.touch_node(), parsing_info)
-
 

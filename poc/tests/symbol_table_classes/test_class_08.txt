@@ -1,0 +1,55 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myOps: +Composition(x: *tplSetElem)
+
+            mandatory func NthOp(n: index) -> Composition(y: *tplSetElem)
+            {
+                return myOps$n
+            }
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure', id='AlgebraicStructure', reference=AuxSTClass())
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure[]', id='AlgebraicStructure[]', reference=AuxSTConstructor())
+│   └── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure.NthOp[1:index]', id='AlgebraicStructure.NthOp[1:index]', reference=AuxSTFunctionalTermInstance())
+├── AuxSTTheory(namespace='TestNamespace', outline='theory', theory_name='test_class_08')
+│   ├── AuxSTOutline(outline='uses')
+│   ├── AuxSTOutline(outline='axioms')
+│   ├── AuxSTOutline(outline='inferenceRules')
+│   ├── AuxSTOutline(outline='definitions')
+│   │   └── AuxSTClass(class_types=['obj'], def_type='class', id='AlgebraicStructure', info=AuxAstInfo(), outline='definition')
+│   │       ├── AuxSTVarSpecList(outline='specificationList')
+│   │       │   └── AuxSTVarDec(id='myOps', info=AuxAstInfo(), outline='var_dec', type='Composition', type_mod='+', type_pattern=1)
+│   │       │       └── AuxSTVarDec(id='x', info=AuxAstInfo(), outline='var_dec', type='tplSetElem', type_mod='*', type_pattern=17)
+│   │       ├── AuxSTConstructors(outline='constructors')
+│   │       │   └── AuxSTConstructor(id='AlgebraicStructure[]', info=AuxAstInfo(), outline='defaultConstructor')
+│   │       │       ├── AuxSTSignature(info=AuxAstInfo(), outline='signature')
+│   │       │       └── AuxSTVarSpecList(outline='specificationList')
+│   │       └── AuxSTProperties(outline='properties')
+│   │           └── AuxSTFunctionalTermInstance(def_type='functionalTerm', id='NthOp[1:index]', info=AuxAstInfo(), outline='property')
+│   │               ├── AuxSTSignature(info=AuxAstInfo(), outline='signature')
+│   │               │   └── AuxSTVarDec(id='n', info=AuxAstInfo(), outline='var_dec', type='index', type_mod=None, type_pattern=128)
+│   │               ├── AuxSTType(id='Composition', info=AuxAstInfo(), outline='type', type_mod=None, type_pattern=1)
+│   │               └── AuxSTVarSpecList(outline='specificationList')
+│   │                   └── AuxSTStatement(info=AuxAstInfo(), outline='statement', type='return')
+│   │                       └── AuxSTPredicate(info=AuxAstInfo(), outline='indexValue')
+│   │                           └── AuxSTPredicate(info=AuxAstInfo(), outline='variadicVar')
+│   │                               ├── AuxSTVariable(id='myOps', info=AuxAstInfo(), outline='var')
+│   │                               └── AuxSTVariable(id='n', info=AuxAstInfo(), outline='var')
+│   ├── AuxSTOutline(outline='theorems')
+│   ├── AuxSTOutline(outline='lemmas')
+│   ├── AuxSTOutline(outline='propositions')
+│   ├── AuxSTOutline(outline='conjectures')
+│   ├── AuxSTOutline(outline='corollaries')
+│   └── AuxSTOutline(outline='proofs')
+└── AuxSTLocalizations(outline='localizations')

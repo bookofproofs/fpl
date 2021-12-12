@@ -1,23 +1,33 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.Exists import Exists
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
-class ContextExists:
-    @staticmethod
-    def start(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        i.context.push_context(AuxSymbolTable.predicate_exists, i.get_debug_parsing_info(parsing_info))
-        i.parse_list.append(parsing_info)
+class ContextExists(AuxInterpretation):
+
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_exists, parsing_info)
+        self.predicate.bound_vars = []
+        self.predicate.exists_number = -1  # later semantics 'at least one', can be overwritten by user
+        self.aggregate_previous_rules(parse_list,
+                                      AuxRuleDependencies.dep["Exists"] + AuxRuleDependencies.dep["ExistsTimesN"] +
+                                      AuxRuleDependencies.dep["ExistsHeader"], self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
+        if rule == "Digit":
+            self.predicate.exists_number = int(parsing_info.get_cst())
+        elif rule == "VariableList":
+            for var in reversed(parsing_info.var_list):
+                self.predicate.bound_vars.append(var.var.id)
+        elif rule == "ParenthesisedPredicate":
+            self.predicate.register_child(parsing_info.predicate)
+        elif rule == "ex":
+            self.stop_aggregation = True
 
     @staticmethod
-    def stop(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        i.context.pop_context([AuxSymbolTable.predicate_exists], i.get_debug_parsing_info(parsing_info))
-        new_info = Exists(i.parse_list, parsing_info)
-        new_info.predicate.bound_vars = []
-        # check if the bound variables are all declared
-        bound_vars = new_info.predicate.get_bound_vars()
-        for var in bound_vars:
-            declared_vars = AuxSymbolTable.get_variable_in_current_scope(i.touch_node(), bound_vars[var])
-            new_info.predicate.bound_vars.append(declared_vars)
+    def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
+        new_info = ContextExists(i.parse_list, parsing_info)
         i.parse_list.append(new_info)

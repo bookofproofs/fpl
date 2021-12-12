@@ -12,10 +12,7 @@ class AuxInterpretation:
         # any errors from the caller. Classes inheriting from AuxInterpretation can add to to this list own errors.
         self._errors = errors  # a pointer to all the errors of the semantics, so we can add new errors to this list
         # internal semantical representation of the rule
-        if type(ast_info.cst) is str:
-            self.id = str(ast_info.cst)
-        else:
-            self.id = str(ast_info)
+        self.id = ""
         # some rules require stopping the aggregation of sub rules from the parse list after a certain
         # sub rule was aggregated. This flag will be set to true in the specific rule_aggregator implementation
         # of the class inheriting from AuxInterpretation
@@ -33,12 +30,12 @@ class AuxInterpretation:
         """ Current parsing column in the parsed file """
         return self._ast_info.col
 
+    def set_rule(self, rule:str):
+        self._ast_info.rule = rule
+
     def rule_line(self):
         """ Current parsing line in the parsed file """
         return self._ast_info.line
-
-    def rule_pos(self):
-        return self._ast_info.pos
 
     def clear_cst(self):
         """
@@ -98,5 +95,11 @@ class AuxInterpretation:
         # after the aggregation, we can clear the cst to free memory
         self.clear_cst()
 
-    def rule_aggregator(self, rule_interpretation):
+    def rule_aggregator(self, rule: str, parsing_info):
+        # this method must be implemented by classes derived from AuxInterpretation
+        raise NotImplementedError
+
+    @staticmethod
+    def dispatch(i, parsing_info):
+        # this method must be implemented by classes derived from AuxInterpretation
         raise NotImplementedError

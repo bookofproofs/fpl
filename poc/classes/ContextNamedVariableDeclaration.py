@@ -1,24 +1,47 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxContext import AuxContext
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.NamedVariableDeclaration import NamedVariableDeclaration
+from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
-class ContextNamedVariableDeclaration:
+class ContextNamedVariableDeclaration(AuxInterpretation):
+
+    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
+        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+        self.var_list = None
+        self.var_type = None
+        self.aggregate_previous_rules(parse_list,
+                                      AuxRuleDependencies.dep["NamedVariableDeclaration"],
+                                      self.rule_aggregator)
+
+    def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
+        if rule == "VariableList":
+            self.var_list = parsing_info.var_list  # noqa
+        elif rule == "VariableType":
+            self.var_type = parsing_info
+
+    def to_string(self):
+        """
+        Creates a recursive unique string for this named variable declaration that
+        does not depend on the variables' names but their type only and on how many of them there are declared.
+        :return: A string that can be used to distinguish signature overriding in FPL.
+        """
+        ret = str(len(self.var_list)) + ":"
+        if self.var_type.generalType.type_mod is not None:
+            ret += self.var_type.generalType.type_mod
+        ret += self.var_type.generalType.to_string()
+        if self.var_type.paramTuple is not None:
+            ret += "["
+            first_found = False
+            for named_var_declaration in self.var_type.paramTuple.tuple:
+                if not first_found:
+                    ret += named_var_declaration.to_string()
+                    first_found = True
+                else:
+                    ret += "," + named_var_declaration.to_string()
+            ret += "]"
+        return ret
+
     @staticmethod
-    def start(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        i.context.push_context(AuxContext.varDeclaration, i.get_debug_parsing_info(parsing_info))
-        i.parse_list.append(parsing_info)
-
-    @staticmethod
-    def stop(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        named_var_decl = NamedVariableDeclaration(i.parse_list, parsing_info)
-        is_signature = AuxContext.signature in i.context.get_context()
-        if i.context.get_context().count(AuxContext.varDeclaration) == 1:
-            # if there is exactly one varDeclaration in context, we have to add declared variables to the current node.
-            parent = i.touch_node()
-            var_nodes = AuxSymbolTable.get_child_by_outline(parent, AuxSymbolTable.variables)
-            AuxSymbolTable.add_vars_to_nodes(var_nodes, named_var_decl, is_signature)
-        i.parse_list.append(named_var_decl)
-        i.context.pop_context([AuxContext.varDeclaration], i.get_debug_parsing_info(parsing_info))
+    def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
+        new_info = ContextNamedVariableDeclaration(i.parse_list, parsing_info)
+        i.parse_list.append(new_info)

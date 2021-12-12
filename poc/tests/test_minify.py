@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
 
@@ -26,64 +27,25 @@ class MinifyTestCase(unittest.TestCase):
         self.interpreter_after_minify.get_errors().clear()
 
         self.interpreter.syntax_transform("test_theory_name", theory_source)
-        self.interpreter_after_minify.syntax_transform("minified_test_theory_name", self.interpreter.minified())
+        self.interpreter_after_minify.syntax_transform("minified_test_theory_name",
+                                                       self.interpreter.minified("test_theory_name"))
         if self.interpreter_after_minify.has_errors():
             self.interpreter_after_minify.print_errors()
 
-    def test_minify_common(self):
-        self.minify("../theories/Commons.fpl")
+    @parameterized.expand([
+        "../theories/Commons.fpl",
+        "../theories/ArithmeticsNat.fpl",
+        "../theories/Set.fpl",
+        "../theories/CommonsStructures.fpl",
+        "../theories/Algebra.fpl",
+        "../theories/Geometry.fpl",
+        "../theories/Linalg.fpl",
+        "../theories/Example4-7.fpl",
+    ])
+    def test_cases(self, use_case):
+        self.minify(use_case)
         self.assertFalse(self.interpreter.has_errors())
         self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
+        self.assertEqual(self.interpreter.minified("test_theory_name"),
+                         self.interpreter_after_minify.minified("minified_test_theory_name"))
 
-    def test_minify_ArithmeticsNat(self):
-        self.minify("../theories/ArithmeticsNat.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
-
-    # test case minification
-    def test_minify_Set(self):
-        self.minify("../theories/Set.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
-
-    # test case minification
-    def test_minify_CommonStructures(self):
-        self.minify("../theories/CommonsStructures.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
-
-    # test case minification
-    def test_minify_Algebra(self):
-        self.minify("../theories/Algebra.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
-
-    # test case minification
-    def test_minify_Geometry(self):
-        self.minify("../theories/Geometry.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
-
-    # test case minification
-    def test_minify_Linalg(self):
-        self.minify("../theories/Linalg.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
-
-    # test case minification
-    def test_minify_example25(self):
-        self.minify("../theories/Example4-7.fpl")
-        self.assertFalse(self.interpreter.has_errors())
-        self.assertFalse(self.interpreter_after_minify.has_errors())
-        self.assertEqual(self.interpreter.minified(), self.interpreter_after_minify.minified())
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -71,3 +71,12 @@ Initial interpreter
   * more tests
   * adjustments of the FPL interpreter according to FPL grammar changed to version 1.1.2
 * Known issues: this version of the interpreter's syntax analysis will run into errors when you try to open, parse and interpret FPL theories from the poc.
+## 1.4.0
+* Symbol table functionality (cont.)
+  * representation of premisses and conclusions in theorem-like statements
+  * representation of predicates with variable arguments
+  * order of bound variables according to the natural order in the source code (and not to the order of being parsed)
+  * representation of localizations
+  * representation of proofs
+  * representation of definitions corrected (functional terms, classes, and predicates)
+  * bug-fixes 

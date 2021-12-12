@@ -1,7 +1,8 @@
-from poc.classes.AuxContext import AuxContext
 from anytree import AnyNode
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxInterpretation import AuxInterpretation
+from poc.classes.AuxSTTheory import AuxSTTheory
+from poc.classes.AuxSTLocalizations import AuxSTLocalizations
+
 
 """
 Implements an interface between the classes named Context<Something> and the class FPLSourceAnalyser
@@ -18,10 +19,11 @@ class AuxISourceAnalyser:
         :param root: a pointer to the root (cross-theory) node of the symbol table of the FPL interpreter
         :param theory_name: the name of the current theory being interpreted
         """
-        self.context = AuxContext()  # the current context of the source analysis
         self.parse_list = []  # a stack for bottom-up aggregation of parsed FPL source code derivations
         self.errors = errors  # any errors of the FPL interpreter
-        self.theory_node = AuxSymbolTable.add_or_get_theory(root, theory_name)  # root node of the current theory
+        self.theory_node = AuxSTTheory(root, theory_name)
+        self.locals_node = AuxSTLocalizations(root)
+
         # A stack for AnyTree nodes of the symbol table being built in the specific context.
         # contains, typically the running AnyNodes for definitions, theorems, classes, constructors, or even variables.
         self._node_stack = []

@@ -13,44 +13,44 @@ class FplInterpreter(object):
         self._parser = parser
         self._errors = []
         self._symbol_table_root = AnyNode(outline=AuxSymbolTable.root)
-        AnyNode(outline=AuxSymbolTable.globalLookup, parent=self._symbol_table_root)
+        AnyNode(outline=AuxSymbolTable.globals, parent=self._symbol_table_root)
         self._is_verbose = AuxISourceAnalyser.verbose
-        self._analyser = None
-        self.version = "1.3.0"
+        self._analysers = dict()
+        self.version = "1.4.0"
 
     def syntax_analysis(self, theory_name: str, fpl_source: str):
-        self._analyser = poc.fplsourceanalyser.FPLSourceAnalyser(self._symbol_table_root, theory_name,
-                                                                 self._errors)
-        if self._analyser.i.verbose:
-            self._parser.parse(fpl_source, semantics=self._analyser, whitespace='')
+        self._analysers[theory_name] = poc.fplsourceanalyser.FPLSourceAnalyser(self._symbol_table_root, theory_name,
+                                                                               self._errors)
+        if self._analysers[theory_name].i.verbose:
+            self._parser.parse(fpl_source, semantics=self._analysers[theory_name], whitespace='')
         else:
             try:
-                self._parser.parse(fpl_source, semantics=self._analyser, whitespace='')
+                self._parser.parse(fpl_source, semantics=self._analysers[theory_name], whitespace='')
             except tatsu.exceptions.FailedParse as ex:
-                self._analyser.i.errors.append(
+                self._analysers[theory_name].i.errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
             except tatsu.exceptions.FailedToken as ex:
-                self._analyser.i.errors.append(
+                self._analysers[theory_name].i.errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
             except tatsu.exceptions.FailedPattern as ex:
-                self._analyser.i.errors.append(
+                self._analysers[theory_name].i.errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
 
     def syntax_transform(self, theory_name: str, fpl_source: str):
-        self._analyser = poc.fplsourcetransformer.FPLSourceTransformer(theory_name, self._errors)
-        if self._analyser.i.verbose:
-            self._parser.parse(fpl_source, semantics=self._analyser, whitespace='')
+        self._analysers[theory_name] = poc.fplsourcetransformer.FPLSourceTransformer(theory_name, self._errors)
+        if self._analysers[theory_name].i.verbose:
+            self._parser.parse(fpl_source, semantics=self._analysers[theory_name], whitespace='')
         else:
             try:
-                self._parser.parse(fpl_source, semantics=self._analyser, whitespace='')
+                self._parser.parse(fpl_source, semantics=self._analysers[theory_name], whitespace='')
             except tatsu.exceptions.FailedParse as ex:
-                self._analyser.i.errors.append(
+                self._analysers[theory_name].i.errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
             except tatsu.exceptions.FailedToken as ex:
-                self._analyser.i.errors.append(
+                self._analysers[theory_name].i.errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
             except tatsu.exceptions.FailedPattern as ex:
-                self._analyser.i.errors.append(
+                self._analysers[theory_name].i.errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + theory_name + ":" + str(ex)))
 
     def print_symbol_table(self):
@@ -83,19 +83,19 @@ class FplInterpreter(object):
     def get_errors(self):
         return self._errors
 
-    def minified(self):
-        return self._analyser.get_minified()
+    def minified(self, theory_name):
+        return self._analysers[theory_name].get_minified()
 
-    def prettyfied(self):
-        return self._analyser.get_prettified()
+    def prettyfied(self, theory_name):
+        return self._analysers[theory_name].get_prettified()
 
-    def print_semantics(self):
-        for item in self._analyser.parse_list:
+    def print_semantics(self, theory_name):
+        for item in self._analysers[theory_name].parse_list:
             print(item)
-        print(str(len(self._analyser.parse_list)) + " items")
+        print(str(len(self._analysers[theory_name].parse_list)) + " items")
 
-    def get_semantics(self):
-        return self._analyser.parse_list
+    def get_semantics(self, theory_name):
+        return self._analysers[theory_name].parse_list
 
-    def get_ast_list(self):
-        return self._analyser.ast_list
+    def get_ast_list(self, theory_name):
+        return self._analysers[theory_name].ast_list

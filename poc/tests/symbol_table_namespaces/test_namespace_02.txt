@@ -1,0 +1,27 @@
+Fpl.Geometry.Euclidean
+{
+    uses Fpl.Commons
+
+    theory
+    {
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+├── AuxSTTheory(namespace='Fpl.Geometry.Euclidean', outline='theory', theory_name='test_namespace_02')
+│   ├── AuxSTOutline(outline='uses')
+│   │   └── AnyNode(id='Fpl.Commons', info=AuxAstInfo(), modifier=None)
+│   ├── AuxSTOutline(outline='axioms')
+│   ├── AuxSTOutline(outline='inferenceRules')
+│   ├── AuxSTOutline(outline='definitions')
+│   ├── AuxSTOutline(outline='theorems')
+│   ├── AuxSTOutline(outline='lemmas')
+│   ├── AuxSTOutline(outline='propositions')
+│   ├── AuxSTOutline(outline='conjectures')
+│   ├── AuxSTOutline(outline='corollaries')
+│   └── AuxSTOutline(outline='proofs')
+└── AuxSTLocalizations(outline='localizations')
