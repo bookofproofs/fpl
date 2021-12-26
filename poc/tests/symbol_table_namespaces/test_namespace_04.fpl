@@ -1,0 +1,29 @@
+Fpl.Geometry.Euclidean
+{
+    uses Fpl.Commons.*, Fpl, Fpl.Test.Long.Namespace alias Fpl1
+
+    theory
+    {
+
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+└── AuxSTTheory(checksum='2d30a6af25ae6f3918624a395b38d12a', file_name='test_namespace_04.fpl', namespace='Fpl.Geometry.Euclidean', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    │   ├── AuxSTUsedTheory(id='Fpl.Commons.', modifier='*', outline='used', zfrom='3:10:35', zto='3:22:47')
+    │   ├── AuxSTUsedTheory(id='Fpl', modifier=None, outline='used', zfrom='3:24:49', zto='3:27:52')
+    │   └── AuxSTUsedTheory(id='Fpl.Test.Long.Namespace', modifier='Fpl1', outline='used', zfrom='3:29:54', zto='3:63:88')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

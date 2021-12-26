@@ -3,7 +3,7 @@ from anytree import AnyNode
 
 class AuxSTOutline(AnyNode):
     """
-    A class for elements of the symbol table of the FPL interpreter that have an an outline
+    A class for elements of the symbol table of the FPL transformer that have an an outline
     """
 
     def __init__(self, parent: AnyNode, outline: str):
@@ -14,13 +14,14 @@ class AuxSTOutline(AnyNode):
 
 class AuxST(AuxSTOutline):
     """
-    A class for outline elements of the symbol table of the FPL interpreter that have an ast_info and errors
+    A class for outline elements of the symbol table of the FPL transformer that have an ast_info and errors
     """
 
-    def __init__(self, outline: str, parsing_info):
+    def __init__(self, outline: str, i):
         super().__init__(parent=None, outline=outline)
-        self._errors = parsing_info.get_errors()
-        self.info = parsing_info.get_ast_info()
+        self._errors = i.errors
+        self.zto = ""
+        self.zfrom = ""
 
     def register_child(self, node: AuxSTOutline):
         if not issubclass(type(node), AuxSTOutline):
@@ -32,8 +33,8 @@ class AuxST(AuxSTOutline):
 
 
 class AuxSTBlock(AuxST):
-    def __init__(self, outline: str, parsing_info):
-        super().__init__(outline=outline, parsing_info=parsing_info)
+    def __init__(self, outline: str, i):
+        super().__init__(outline, i)
         self.id = ""
         self._relative_id = ""
 

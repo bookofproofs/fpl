@@ -5,11 +5,11 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 class ContextParenthesisedGeneralType(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.generalType = None
         self.paramTuple = None
-        self.aggregate_previous_rules(parse_list, AuxRuleDependencies.dep["ParenthesisedGeneralType"],
+        self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["ParenthesisedGeneralType"],
                                       self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parse_info: AuxInterpretation):
@@ -20,6 +20,6 @@ class ContextParenthesisedGeneralType(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        param_tuple = ContextParenthesisedGeneralType(i.parse_list, parsing_info)
+        param_tuple = ContextParenthesisedGeneralType(i)
         i.parse_list.append(param_tuple)
 

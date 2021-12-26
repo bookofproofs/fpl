@@ -1,74 +1,49 @@
-from fplinterpreter import FplInterpreter
-from util import fplutil
+from poc.fplsourcetransformer import FPLSourceTransformer
+from poc.util import fplutil
 
 u = fplutil.Utils()
 fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
 u.add_distinct_duration("creating tatsu parser")
 
-theoryCommon = fplutil.Utils.get_file_content("theories/Commons.fpl")
-interpreterCommon = FplInterpreter(fpl_parser)
-interpreterCommon.syntax_transform("common", theoryCommon)
-u.add_distinct_duration("interpreting common")
-print(interpreterCommon.minified("common"))
-if interpreterCommon.has_errors():
-    interpreterCommon.print_errors()
+transform = FPLSourceTransformer(fpl_parser)
+transform.syntax_transform("theories/Commons.fpl")
+u.add_distinct_duration("parsing and minifying common")
+print(transform.get_minified())
 
-theoryNat = fplutil.Utils.get_file_content("theories/ArithmeticsNat.fpl")
-interpreterNat = FplInterpreter(fpl_parser)
-interpreterNat.syntax_transform("nat", theoryCommon)
-u.add_distinct_duration("interpreting nat")
-print(interpreterNat.minified("nat"))
-if interpreterNat.has_errors():
-    interpreterNat.print_errors()
+transform.clear()
+transform.syntax_transform("theories/ArithmeticsNat.fpl")
+u.add_distinct_duration("parsing and minifying nat")
+print(transform.get_minified())
 
-theorySet = fplutil.Utils.get_file_content("theories/Set.fpl")
-interpreterSet = FplInterpreter(fpl_parser)
-interpreterSet.syntax_transform("settheory", theorySet)
-u.add_distinct_duration("interpreting set")
-print(interpreterSet.minified("settheory"))
-if interpreterSet.has_errors():
-    interpreterSet.print_errors()
+transform.clear()
+transform.syntax_transform("theories/Set.fpl")
+u.add_distinct_duration("parsing and minifying set")
+print(transform.get_minified())
 
-theoryAlgebra = fplutil.Utils.get_file_content("theories/Algebra.fpl")
-interpreterAlgebra = FplInterpreter(fpl_parser)
-interpreterAlgebra.syntax_transform("algebra", theoryAlgebra)
-u.add_distinct_duration("interpreting algebra")
-print(interpreterAlgebra.minified("algebra"))
-if interpreterAlgebra.has_errors():
-    interpreterAlgebra.print_errors()
+transform.clear()
+transform.syntax_transform("theories/Algebra.fpl")
+u.add_distinct_duration("parsing and minifying algebra")
+print(transform.get_minified())
 
-theoryGeometry = fplutil.Utils.get_file_content("theories/Geometry.fpl")
-interpreterGeometry = FplInterpreter(fpl_parser)
-interpreterGeometry.syntax_transform("geometry", theoryGeometry)
-u.add_distinct_duration("interpreting geometry")
-print(interpreterGeometry.minified("geometry"))
-if interpreterGeometry.has_errors():
-    interpreterGeometry.print_errors()
+transform.clear()
+transform.syntax_transform("theories/Geometry.fpl")
+u.add_distinct_duration("parsing and minifying geometry")
+print(transform.get_minified())
 
-theoryExample25 = fplutil.Utils.get_file_content("theories/Example4-7.fpl")
-interpreterExample25 = FplInterpreter(fpl_parser)
-interpreterExample25.syntax_transform("example25", theoryExample25)
-u.add_distinct_duration("interpreting example25")
-print(interpreterExample25.minified("example25"))
-if interpreterExample25.has_errors():
-    interpreterExample25.print_errors()
+transform.clear()
+transform.syntax_transform("theories/Example4-7.fpl")
+u.add_distinct_duration("parsing and minifying example25")
+print(transform.get_minified())
 
-theoryLinalg = fplutil.Utils.get_file_content("theories/Linalg.fpl")
-interpreterLinalg = FplInterpreter(fpl_parser)
-interpreterLinalg.syntax_transform("linalg", theoryLinalg)
-u.add_distinct_duration("interpreting linalg")
-print(interpreterLinalg.minified("linalg"))
-if interpreterLinalg.has_errors():
-    interpreterLinalg.print_errors()
+transform.clear()
+transform.syntax_transform("theories/Linalg.fpl")
+u.add_distinct_duration("parsing and minifying linalg")
+print(transform.get_minified())
 
-theoryComStruct = fplutil.Utils.get_file_content("theories/CommonsStructures.fpl")
-interpreterComStruct = FplInterpreter(fpl_parser)
-interpreterComStruct.syntax_transform("comstruct", theoryComStruct)
-u.add_distinct_duration("interpreting comstruct")
-print(interpreterComStruct.minified("comstruct"))
-if interpreterComStruct.has_errors():
-    interpreterComStruct.print_errors()
-
+transform.clear()
+transform.syntax_transform("theories/CommonsStructures.fpl")
+u.add_distinct_duration("parsing and minifying comstruct")
+print(transform.get_minified())
 
 u.print_durations()
 

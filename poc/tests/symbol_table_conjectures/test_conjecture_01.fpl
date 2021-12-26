@@ -1,0 +1,93 @@
+TestNamespace
+{
+    theory
+    {
+        conj AddIsUnique(op: Add)
+        {
+            n,m: Nat
+            anotherAdd: Add
+            pre:
+                and
+                    (
+                        Equals(Add(n,0),n),
+                        Equals(anotherAdd(n,0),n),
+                        Equals(Add(n,Succ(m)), Succ(Add(n,m))),
+                        Equals(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
+                    )
+            con:
+                all n
+                (
+                    all m
+                    (
+                        Equals(Add(n,m), anotherAdd(n,m))
+                    )
+                )
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.AddIsUnique[1:Add]', id='AddIsUnique[1:Add]', reference=AuxSTConjecture())
+└── AuxSTTheory(checksum='40aa702cd6dda0378e842834baede8d7', file_name='test_conjecture_01.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    │   └── AuxSTConjecture(id='AddIsUnique[1:Add]', keyword='conj', outline='conjecture', zfrom='5:8:41', zto='25:9:655')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:33:66')
+    │       │   └── AuxSTVarDec(id='op', outline='var_decl', type='Add', type_mod=None, type_pattern=1, zfrom='5:25:58', zto='5:32:65')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='n', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='7:12:89', zto='7:20:97')
+    │       │   ├── AuxSTVarDec(id='m', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='7:12:89', zto='7:20:97')
+    │       │   └── AuxSTVarDec(id='anotherAdd', outline='var_decl', type='Add', type_mod=None, type_pattern=1, zfrom='8:12:110', zto='8:27:125')
+    │       ├── AuxSTPredicate(outline='pre', zfrom='9:12:138', zto='16:21:442')
+    │       │   └── AuxSTPredicate(outline='and', zfrom='10:16:159', zto='16:21:442')
+    │       │       ├── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='12:24:209', zto='12:42:227')
+    │       │       │   ├── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='12:31:216', zto='12:39:224')
+    │       │       │   │   ├── AuxSTVariable(id='n', outline='var', zfrom='12:35:220', zto='12:36:221')
+    │       │       │   │   └── AuxSTPredicate(id='0', outline='extDigit', zfrom='12:37:222', zto='12:38:223')
+    │       │       │   └── AuxSTVariable(id='n', outline='var', zfrom='12:40:225', zto='12:41:226')
+    │       │       ├── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='13:24:253', zto='13:49:278')
+    │       │       │   ├── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='13:41:270', zto='13:46:275')
+    │       │       │   │   ├── AuxSTVariable(id='n', outline='var', zfrom='13:42:271', zto='13:43:272')
+    │       │       │   │   └── AuxSTPredicate(id='0', outline='extDigit', zfrom='13:44:273', zto='13:45:274')
+    │       │       │   └── AuxSTVariable(id='n', outline='var', zfrom='13:47:276', zto='13:48:277')
+    │       │       ├── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='14:24:304', zto='14:62:342')
+    │       │       │   ├── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='14:31:311', zto='14:45:325')
+    │       │       │   │   ├── AuxSTVariable(id='n', outline='var', zfrom='14:35:315', zto='14:36:316')
+    │       │       │   │   └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='14:37:317', zto='14:44:324')
+    │       │       │   │       └── AuxSTVariable(id='m', outline='var', zfrom='14:42:322', zto='14:43:323')
+    │       │       │   └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='14:47:327', zto='14:61:341')
+    │       │       │       └── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='14:52:332', zto='14:60:340')
+    │       │       │           ├── AuxSTVariable(id='n', outline='var', zfrom='14:56:336', zto='14:57:337')
+    │       │       │           └── AuxSTVariable(id='m', outline='var', zfrom='14:58:338', zto='14:59:339')
+    │       │       └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='15:24:368', zto='15:76:420')
+    │       │           ├── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='15:41:385', zto='15:52:396')
+    │       │           │   ├── AuxSTVariable(id='n', outline='var', zfrom='15:42:386', zto='15:43:387')
+    │       │           │   └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='15:44:388', zto='15:51:395')
+    │       │           │       └── AuxSTVariable(id='m', outline='var', zfrom='15:49:393', zto='15:50:394')
+    │       │           └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='15:54:398', zto='15:75:419')
+    │       │               └── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='15:69:413', zto='15:74:418')
+    │       │                   ├── AuxSTVariable(id='n', outline='var', zfrom='15:70:414', zto='15:71:415')
+    │       │                   └── AuxSTVariable(id='m', outline='var', zfrom='15:72:416', zto='15:73:417')
+    │       ├── AuxSTPredicate(outline='con', zfrom='17:12:455', zto='24:17:645')
+    │       │   └── AuxSTPredicate(bound_vars=['n'], outline='all', zfrom='20:17:517', zto='24:17:645')
+    │       │       └── AuxSTPredicate(bound_vars=['m'], outline='all', zfrom='20:20:520', zto='23:21:627')
+    │       │           └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='22:24:572', zto='22:57:605')
+    │       │               ├── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='22:31:579', zto='22:39:587')
+    │       │               │   ├── AuxSTVariable(id='n', outline='var', zfrom='22:35:583', zto='22:36:584')
+    │       │               │   └── AuxSTVariable(id='m', outline='var', zfrom='22:37:585', zto='22:38:586')
+    │       │               └── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='22:51:599', zto='22:56:604')
+    │       │                   ├── AuxSTVariable(id='n', outline='var', zfrom='22:52:600', zto='22:53:601')
+    │       │                   └── AuxSTVariable(id='m', outline='var', zfrom='22:54:602', zto='22:55:603')
+    │       ├── AuxSTOutline(outline='corollaries')
+    │       └── AuxSTOutline(outline='proofs')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

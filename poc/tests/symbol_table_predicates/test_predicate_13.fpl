@@ -1,0 +1,83 @@
+TestNamespace
+{
+    theory
+    {
+        pred Equals(x,y: tpl)
+        {
+            p: pred a,b: tpl
+
+            all a, b
+            (
+                iif
+                (
+                    Equals(a,b),
+                    all p
+                    (
+                        iif
+                        (
+                            p(a),
+                            p(b)
+                        )
+                    )
+                )
+            )
+        }
+
+        pred NotEquals(x,y: tpl)
+        {
+            not
+            (
+                Equals(x,y)
+            )
+        }
+
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Equals[2:tpl]', id='Equals[2:tpl]', reference=AuxSTDefinitionPredicate())
+│   └── AuxSTGlobal(gid='TestNamespace.NotEquals[2:tpl]', id='NotEquals[2:tpl]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='7305dbafc8f3247ba17b6524e2ad399c', file_name='test_predicate_13.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   ├── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Equals[2:tpl]', keyword='pred', outline='definition', zfrom='7:15:88', zto='24:9:467')
+    │   │   ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:29:62')
+    │   │   │   ├── AuxSTVarDec(id='x', outline='var_decl', type='tpl', type_mod=None, type_pattern=9, zfrom='5:20:53', zto='5:28:61')
+    │   │   │   └── AuxSTVarDec(id='y', outline='var_decl', type='tpl', type_mod=None, type_pattern=9, zfrom='5:20:53', zto='5:28:61')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   │   ├── AuxSTVarDec(id='p', outline='var_decl', type='pred', type_mod=None, type_pattern=18, zfrom='7:12:85', zto='7:19:92')
+    │   │   │   ├── AuxSTVarDec(id='a', outline='var_decl', type='tpl', type_mod=None, type_pattern=9, zfrom='7:20:93', zto='7:28:101')
+    │   │   │   └── AuxSTVarDec(id='b', outline='var_decl', type='tpl', type_mod=None, type_pattern=9, zfrom='7:20:93', zto='7:28:101')
+    │   │   ├── AuxSTPredicate(bound_vars=['a', 'b'], outline='all', zfrom='14:17:226', zto='23:13:457')
+    │   │   │   └── AuxSTPredicate(outline='<=>', zfrom='16:21:278', zto='22:17:443')
+    │   │   │       ├── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='13:20:196', zto='13:31:207')
+    │   │   │       │   ├── AuxSTVariable(id='a', outline='var', zfrom='13:27:203', zto='13:28:204')
+    │   │   │       │   └── AuxSTVariable(id='b', outline='var', zfrom='13:29:205', zto='13:30:206')
+    │   │   │       └── AuxSTPredicate(bound_vars=['p'], outline='all', zfrom='14:20:229', zto='21:21:425')
+    │   │   │           └── AuxSTPredicate(outline='<=>', zfrom='16:24:281', zto='20:25:403')
+    │   │   │               ├── AuxSTPredicateWithArgs(id='p', outline='predicateWithArgs', reference=None, zfrom='18:29:340', zto='18:32:343')
+    │   │   │               │   └── AuxSTVariable(id='a', outline='var', zfrom='18:30:341', zto='18:31:342')
+    │   │   │               └── AuxSTPredicateWithArgs(id='p', outline='predicateWithArgs', reference=None, zfrom='19:29:374', zto='19:32:377')
+    │   │   │                   └── AuxSTVariable(id='b', outline='var', zfrom='19:30:375', zto='19:31:376')
+    │   │   └── AuxSTProperties(outline='properties')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='NotEquals[2:tpl]', keyword='pred', outline='definition', zfrom='26:8:477', zto='32:9:593')
+    │       ├── AuxSTSignature(outline='signature', zfrom='26:14:483', zto='26:32:501')
+    │       │   ├── AuxSTVarDec(id='x', outline='var_decl', type='tpl', type_mod=None, type_pattern=9, zfrom='26:23:492', zto='26:31:500')
+    │       │   └── AuxSTVarDec(id='y', outline='var_decl', type='tpl', type_mod=None, type_pattern=9, zfrom='26:23:492', zto='26:31:500')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicate(outline='not', zfrom='28:12:524', zto='31:13:583')
+    │       │   └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='30:16:558', zto='30:27:569')
+    │       │       ├── AuxSTVariable(id='x', outline='var', zfrom='30:23:565', zto='30:24:566')
+    │       │       └── AuxSTVariable(id='y', outline='var', zfrom='30:25:567', zto='30:26:568')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

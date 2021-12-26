@@ -11,24 +11,26 @@ from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
 
 
 class ContextPredicateInstance(AuxInterpretation):
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.building_block = AuxSTPredicateInstance(parsing_info)
-        self.aggregate_previous_rules(parse_list,
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.building_block = AuxSTPredicateInstance(i)
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["PredicateInstance"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateHeader":
+            self.building_block.keyword = parsing_info.get_ast_info().cst
             self.stop_aggregation = True
         elif rule == "Signature":
-            self.building_block.register_child(parsing_info.symbol_signature)  # noqa
             self.building_block.id = parsing_info.symbol_signature.to_string()  # noqa
+            parsing_info.symbol_signature.children = reversed(parsing_info.symbol_signature.children)  # noqa
+            self.building_block.register_child(parsing_info.symbol_signature)  # noqa
         elif rule == "PredicateInstanceBlock":
             self.building_block.register_child(parsing_info.predicate)  # noqa
             self.building_block.register_child(parsing_info.variable_spec)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextPredicateInstance(i.parse_list, parsing_info)
+        new_info = ContextPredicateInstance(i)
         new_info.building_block.children = reversed(new_info.building_block.children)
         i.parse_list.append(new_info)

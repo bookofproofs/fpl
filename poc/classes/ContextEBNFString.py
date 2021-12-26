@@ -11,11 +11,10 @@ from poc.classes.AuxSTEbnfString import AuxSTEbnfString
 
 
 class ContextEBNFString(AuxInterpretation):
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.string = AuxSTEbnfString()
-        self.string.string = parsing_info.get_cst()
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["EBNFString"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -23,5 +22,6 @@ class ContextEBNFString(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextEBNFString(i.parse_list, parsing_info)
+        new_info = ContextEBNFString(i)
+        new_info.string.string = parsing_info.get_cst()
         i.parse_list.append(new_info)

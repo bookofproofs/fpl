@@ -6,17 +6,15 @@ from poc.classes.AuxSTPredicate import AuxSTPredicate
 
 class ContextTrueFalse(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        if parsing_info.get_ast_info().cst == "true":
-            p = AuxSTPredicate(AuxSymbolTable.predicate_true, parsing_info)
-        elif parsing_info.get_ast_info().cst == "false":
-            p = AuxSTPredicate(AuxSymbolTable.predicate_false, parsing_info)
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        if i.ast_info.cst == "true":
+            p = AuxSTPredicate(AuxSymbolTable.predicate_true, i)
+        elif i.ast_info.cst == "false":
+            p = AuxSTPredicate(AuxSymbolTable.predicate_false, i)
         else:
-            raise NotImplementedError(str(parsing_info.get_ast_info().cst))
-
+            raise NotImplementedError(str(i.ast_info.cst))
         self.predicate = p
-        parsing_info.aggregate_previous_rules(parse_list, ["IdStartsWithSmallCase"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "IdStartsWithSmallCase":
@@ -25,5 +23,6 @@ class ContextTrueFalse(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        p_info = ContextTrueFalse(i.parse_list, parsing_info)
-        i.parse_list.append(p_info)
+        new_info = ContextTrueFalse(i)
+        new_info.aggregate_previous_rules(i.parse_list, ["IdStartsWithSmallCase"], new_info.rule_aggregator)
+        i.parse_list.append(new_info)

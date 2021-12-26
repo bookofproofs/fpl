@@ -27,14 +27,15 @@ class InferenceRulesTests(unittest.TestCase):
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
-        "test_ir_01",
-        "test_ir_02",
+        "test_ir_01.fpl",
+        "test_ir_02.fpl",
     ])
     def test_correct(self, use_case):
-        interpreter = FplInterpreter(self.fpl_parser)
+        path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
-        interpreter.syntax_analysis(use_case, result[0])
-        actual = self.util.remove_object_references_from_string(interpreter.symbol_table_to_str().strip())
+        interpreter.syntax_analysis(path_to_use_cases)
+        actual = self.util.adjust_symbol_table_for_testing(interpreter)
         if AuxISourceAnalyser.verbose:
             print(actual)
         self.assertEqual(result[1].strip(), actual)

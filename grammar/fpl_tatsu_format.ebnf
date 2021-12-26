@@ -1,4 +1,4 @@
-# fpl Version 1.1.3
+# fpl Version 1.1.4
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -198,11 +198,15 @@
 
     # Objects can only be defined with or without inheritance from a parent class cl
     DefinitionClass =
+        ClassSignature
+        { CW }* ObjectDefinitionBlock
+        ;
+
+    ClassSignature =
         ClassHeader
         SW PredicateIdentifier
         [ IW ] Colon
         [ IW ] Type
-        { CW }* ObjectDefinitionBlock
         ;
 
     ObjectDefinitionBlock =

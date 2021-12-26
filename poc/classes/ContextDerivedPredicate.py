@@ -12,10 +12,10 @@ from poc.classes.AuxSTProofStop import AuxSTProofStop
 
 
 class ContextDerivedPredicate(AuxInterpretation):
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.proof_argument = AuxSTProofArgument(parsing_info)
-        self.aggregate_previous_rules(parse_list,
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.proof_argument = AuxSTProofArgument(i)
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["DerivedPredicate"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -32,5 +32,5 @@ class ContextDerivedPredicate(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextDerivedPredicate(i.parse_list, parsing_info)
+        new_info = ContextDerivedPredicate(i)
         i.parse_list.append(new_info)

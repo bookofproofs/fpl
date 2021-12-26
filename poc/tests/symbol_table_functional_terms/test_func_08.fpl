@@ -1,0 +1,54 @@
+TestNamespace
+{
+    theory
+    {
+        func Exp(x: SetReal) -> SetReal
+        {
+
+            mandatory pred IsContinuous()
+            {
+                true
+            }
+
+            mandatory pred IsIntegrable()
+            {
+                true
+            }
+
+        }
+    }
+}
+
+##############################
+
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal]', id='Exp[1:SetReal]', reference=AuxSTDefinitionFunctionalTerm())
+│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsContinuous[]', id='Exp[1:SetReal].IsContinuous[]', reference=AuxSTPredicateInstance())
+│   └── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsIntegrable[]', id='Exp[1:SetReal].IsIntegrable[]', reference=AuxSTPredicateInstance())
+└── AuxSTTheory(checksum='8fa21e96d7b590db99343b56a4d11e2c', file_name='test_func_08.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Exp[1:SetReal]', outline='definition', zfrom='5:8:41', zto='18:9:277')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:28:61')
+    │       │   └── AuxSTVarDec(id='x', outline='var_decl', type='SetReal', type_mod=None, type_pattern=1, zfrom='5:17:50', zto='5:27:60')
+    │       ├── AuxSTType(id='SetReal', outline='type', type_mod=None, type_pattern=1, zfrom='5:25:58', zto='5:39:72')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           ├── AuxSTPredicateInstance(def_type='predicateDeclaration', id='IsContinuous[]', keyword='pred', mandatory=True, outline='property', zfrom='8:12:96', zto='11:13:174')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='8:28:112', zto='8:41:125')
+    │           │   ├── AuxSTVarSpecList(outline='specificationList')
+    │           │   └── AuxSTPredicate(outline='true', zfrom='10:16:156', zto='10:20:160')
+    │           └── AuxSTPredicateInstance(def_type='predicateDeclaration', id='IsIntegrable[]', keyword='pred', mandatory=True, outline='property', zfrom='13:12:188', zto='16:13:266')
+    │               ├── AuxSTSignature(outline='signature', zfrom='13:28:204', zto='13:41:217')
+    │               ├── AuxSTVarSpecList(outline='specificationList')
+    │               └── AuxSTPredicate(outline='true', zfrom='15:16:248', zto='15:20:252')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

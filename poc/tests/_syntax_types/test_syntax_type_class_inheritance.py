@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 from poc.util.fplutil import Utils
-from poc.fplinterpreter import FplInterpreter
+from poc.fplsourcetransformer import FPLSourceTransformer
 from tatsu.exceptions import FailedToken
 from tatsu.exceptions import FailedParse
 from tatsu.exceptions import FailedPattern
@@ -29,26 +29,14 @@ class FplSyntaxTests(unittest.TestCase):
         cls.path_to_usecases = os.path.join(cls.path)
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
+        cls.transformer = FPLSourceTransformer(cls.fpl_parser)
 
     @parameterized.expand([
         "test_syntax_type_class_inheritance",
     ])
     def test_parser(self, use_case):
-        interpreter = FplInterpreter(self.fpl_parser)
-        code = self.util.get_file_content(self.path_to_usecases + "/" + use_case + ".fpl")
-        if interpreter.is_in_verbose_mode():
-            try:
-                interpreter.syntax_transform(use_case, code)
-            except FailedToken as ex:
-                return
-            self.assertFalse(True)
-        else:
-            interpreter.syntax_transform(use_case, code)
-            # exactly no error was found
-            # (unfortunately, TatSu parsers do not support error recovery and stop after the first error)
-            if len(interpreter.get_errors()) > 0:
-                print(interpreter.get_errors()[0])
-            self.assertEqual(0, len(interpreter.get_errors()))
+        self.transformer.clear()
+        self.transformer.syntax_transform(self.path_to_usecases + "/" + use_case + ".fpl")
 
     @parameterized.expand([
         "test_syntax_type_class_inheritance_fail_001",
@@ -107,21 +95,13 @@ class FplSyntaxTests(unittest.TestCase):
     def test_fail_parser_inheritance_type(self, use_case):
         # the above tests should fail syntactically,
         # because the they contain a property type that cannot be disambiguated with its signature
-        interpreter = FplInterpreter(self.fpl_parser)
-        code = self.util.get_file_content(self.path_to_usecases + "/" + use_case + ".fpl")
-        if interpreter.is_in_verbose_mode():
-            try:
-                interpreter.syntax_transform(use_case, code)
-            except FailedToken as ex:
-                return
-            except FailedParse as ex:
-                return
-            except FailedPattern as ex:
-                return
-
-            self.assertFalse(True)
-        else:
-            interpreter.syntax_transform(use_case, code)
-            # exactly one parse error was found
-            self.assertEqual(1, len(interpreter.get_errors()))
-            self.assertIn("FplParserError", str(interpreter.get_errors()[0]))
+        try:
+            self.transformer.clear()
+            self.transformer.syntax_transform(self.path_to_usecases + "/" + use_case + ".fpl")
+        except FailedToken as ex:
+            return
+        except FailedParse as ex:
+            return
+        except FailedPattern as ex:
+            return
+        self.assertFalse(True)

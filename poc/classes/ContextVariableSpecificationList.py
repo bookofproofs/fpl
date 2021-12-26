@@ -12,10 +12,11 @@ from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 
 class ContextVariableSpecificationList(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.variable_spec = AuxSTVarSpecList()
-        self.aggregate_previous_rules(parse_list,
+        self._i = i
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["VariableSpecificationList"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -24,13 +25,13 @@ class ContextVariableSpecificationList(AuxInterpretation):
                 # we have variable declaration and register all its variables as a single variable declaration node
                 # in the symbol table
                 parsing_info.named_var_declaration.var_list.reverse()
-                AuxSymbolTable.add_vars_to_node(self.variable_spec, parsing_info.named_var_declaration)
+                AuxSymbolTable.add_vars_to_node(self._i, self.variable_spec, parsing_info.named_var_declaration)
             else:
                 # we have a statement and register it as a single statement node in the symbol table
                 parsing_info.statement.parent = self.variable_spec  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextVariableSpecificationList(i.parse_list, parsing_info)
+        new_info = ContextVariableSpecificationList(i)
         new_info.variable_spec.children = reversed(new_info.variable_spec.children)
         i.parse_list.append(new_info)

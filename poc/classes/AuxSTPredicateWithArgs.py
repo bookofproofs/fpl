@@ -4,6 +4,8 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class AuxSTPredicateWithArgs(AuxSTBlock):
 
-    def __init__(self, parsing_info):
-        super().__init__(AuxSymbolTable.predicate_with_arguments, parsing_info)
+    def __init__(self, i):
+        super().__init__(AuxSymbolTable.predicate_with_arguments, i)
         self.reference = None
+        self.zto = i.last_positions_by_rule['PredicateWithArguments'].pos_to_str()
+        self.zfrom = i.corrected_position('Identifier')

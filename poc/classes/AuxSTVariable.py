@@ -4,9 +4,11 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class AuxSTVariable(AuxST):
 
-    def __init__(self, parsing_info):
-        super().__init__(AuxSymbolTable.var, parsing_info)
+    def __init__(self, i):
+        super().__init__(AuxSymbolTable.var, i)
         self.id = ""
+        self.zto = i.last_positions_by_rule['Variable'].pos_to_str()
+        self.zfrom = i.corrected_position('IdStartsWithSmallCase')
 
     def to_string(self):
         """

@@ -7,11 +7,11 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class ContextAll(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_all, parsing_info)
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_all, i)
         self.predicate.bound_vars = []
-        self.aggregate_previous_rules(parse_list, AuxRuleDependencies.dep["All"],
+        self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["All"],
                                       self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -25,5 +25,5 @@ class ContextAll(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextAll(i.parse_list, parsing_info)
+        new_info = ContextAll(i)
         i.parse_list.append(new_info)

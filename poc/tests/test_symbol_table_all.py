@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 from poc.util.fplutil import Utils
-from poc.fplinterpreter import FplInterpreter
+from poc.fplsourcetransformer import FPLSourceTransformer
 
 """
 Test if a syntactically correct theory can be prettified and 
@@ -10,15 +10,13 @@ and will produce the same minified representation of itself
 
 
 class PrettifyTestCase(unittest.TestCase):
-    util = None
-    fpl_parser = None
     maxDiff = None
 
     @classmethod
     def setUpClass(cls):
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser("../../grammar/fpl_tatsu_format.ebnf")
-        cls.interpreter = FplInterpreter(cls.fpl_parser)
+        cls.transformer = FPLSourceTransformer(cls.fpl_parser)
 
     @parameterized.expand([
         "../theories/Commons.fpl",
@@ -31,5 +29,5 @@ class PrettifyTestCase(unittest.TestCase):
         "../theories/Example4-7.fpl",
     ])
     def test_cases(self, use_case):
-        source = self.util.get_file_content(use_case)
-        self.interpreter.syntax_analysis("test_theory", source)
+        self.transformer.clear()
+        self.transformer.syntax_transform(use_case)

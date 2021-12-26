@@ -7,7 +7,8 @@ from ide.CustomNotebook import CustomNotebook
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.StatusBar import StatusBar
 from ide.SettingsDialog import SettingsDialog
-from poc import fplinterpreter
+from poc.fplinterpreter import FplInterpreter
+from poc.fplsourcetransformer import FPLSourceTransformer
 from ide.Settings import Settings
 import configparser
 import os
@@ -38,7 +39,7 @@ class FplIde:
     """
 
     def __init__(self):
-        self._version = '1.2.6'
+        self._version = '1.2.7'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -62,7 +63,10 @@ class FplIde:
         self.window.config(cursor="wait")
         self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
         u = Utils()
-        self.fpl_interpreter = fplinterpreter.FplInterpreter(u.get_parser("../grammar/fpl_tatsu_format.ebnf"))
+        self.fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
+        self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)
+        path_to_fpl_root = os.path.abspath(self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
+        self.fpl_interpreter = FplInterpreter(self.fpl_parser, path_to_fpl_root)
         self._statusBar.set_status_text("FPL parser ready.")
         self.window.config(cursor="")
         self.window.mainloop()
@@ -347,10 +351,10 @@ class FplIde:
             if item['values'][column] == file_name:
                 tree_view.delete(i)
 
-    def refresh_info(self, interpreter: fplinterpreter.FplInterpreter, editor_info: FrameWithLineNumbers):
+    def refresh_info(self, interpreter: FplInterpreter, editor_info: FrameWithLineNumbers):
         """
-        Refreshes all information based on the current interpreter like errors, warnings, and syntax tree
-        :param interpreter: Current interpreter
+        Refreshes all information based on the current transformer like errors, warnings, and syntax tree
+        :param interpreter: Current transformer
         :param editor_info: Current editor info
         :return: None
         """
@@ -360,7 +364,7 @@ class FplIde:
 
     def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, tuple_list: list, tree_view: ttk.Treeview,
                                  column: int):
-        # delete all old items in tree_view that belong to the current interpreter, i.e. have its name
+        # delete all old items in tree_view that belong to the current transformer, i.e. have its name
         self.remove_items_from_tree_view(tree_view, column, editor_info.title)
         # insert new items (if any) in tree_view
         for item in tuple_list:

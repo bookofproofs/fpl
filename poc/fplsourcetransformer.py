@@ -1,21 +1,33 @@
-from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.classes.AuxPrettifier import AuxPrettifier
-from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
-from anytree import AnyNode
+from poc.util.fplutil import Utils
+from poc.classes.AuxAstInfo import AuxAstInfo
+import os
 
 
-class FPLSourceTransformer(object):
+class FPLSourceTransformer:
 
-    def __init__(self, theory_name: str, errors: list):
+    def __init__(self, fpl_parser):
         self._prettifier = AuxPrettifier()
-        root = AnyNode()
-        self.i = AuxISourceAnalyser(errors, root, theory_name)
+        self._parser = fpl_parser
+        self._theory_name = ""
+
+    def syntax_transform(self, path_to_theory: str):
+        fpl_source = Utils.get_file_content(path_to_theory)
+        self._theory_name = os.path.basename(path_to_theory)
+        self.syntax_transform_from_source(fpl_source)
+
+    def syntax_transform_from_source(self, fpl_source: str):
+        self._parser.parse(fpl_source, semantics=self, whitespace='')
 
     def get_minified(self):
         return self._prettifier.get_minified()
 
     def get_prettified(self):
         return self._prettifier.get_prettified()
+
+    def clear(self):
+        del self._prettifier
+        self._prettifier = AuxPrettifier()
 
     def _default(self, ast):
         """
@@ -43,20 +55,9 @@ class FPLSourceTransformer(object):
         :return: ast
         """
 
-        ast_info = AuxAstInfo(context, self.i.theory_node.theory_name)
+        ast_info = AuxAstInfo(context, self._theory_name)
         # minify
         self._minify(ast_info)
         return ast
-
-
-
-
-
-
-
-
-
-
-
 
 

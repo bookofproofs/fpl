@@ -1,0 +1,114 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myOps1,myOps2,myOps3: +Composition(a,b,c: *tplSetElem, d,e,f: obj)
+            myCarrierSet: tplSet
+            myCarrierSet1: Nat
+
+            AlgebraicStructure(x: tplSet, ops: +Composition(e: *tplSetElem))
+            {
+
+                a: obj
+                myOps := ops
+                myCarrierSet := x
+
+                // Assert that all types used in the declaration of AlgebraicStructure
+                // can be treated like they were sets, even if they are not derived from the type "Set" in their original
+                // definition! This, means that the In predicate has a non-transitive model
+                // this is comparable to implementing an interface (or comparable to multiple inheritance).
+                // The interpreter only asserts the types tplSet, and tplSetElement to be sets
+                assert
+                    and
+                    (
+                        is(tplSet,Set),
+                        is(tplSetElem,Set)
+                    )
+
+                assert
+                    all a
+                    (
+                        impl ( is(a,tplSetElem), In(a,myCarrierSet) )
+                    )
+            }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure', id='AlgebraicStructure', reference=AuxSTClass())
+│   └── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', id='AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', reference=AuxSTConstructor())
+└── AuxSTTheory(checksum='d98d79a779064fada7ea1dc3e41f8c55', file_name='test_class_03.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='AlgebraicStructure', keyword='class', outline='definition', zfrom='5:8:41', zto='37:9:1270')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='myOps1', outline='var_decl', type='Composition', type_mod='+', type_pattern=1, zfrom='8:12:94', zto='8:78:160')
+    │       │   │   ├── AuxSTVarDec(id='a', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='b', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='c', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='d', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   │   ├── AuxSTVarDec(id='e', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   │   └── AuxSTVarDec(id='f', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   ├── AuxSTVarDec(id='myOps2', outline='var_decl', type='Composition', type_mod='+', type_pattern=1, zfrom='8:12:94', zto='8:78:160')
+    │       │   │   ├── AuxSTVarDec(id='a', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='b', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='c', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='d', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   │   ├── AuxSTVarDec(id='e', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   │   └── AuxSTVarDec(id='f', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   ├── AuxSTVarDec(id='myOps3', outline='var_decl', type='Composition', type_mod='+', type_pattern=1, zfrom='8:12:94', zto='8:78:160')
+    │       │   │   ├── AuxSTVarDec(id='a', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='b', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='c', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:47:129', zto='8:65:147')
+    │       │   │   ├── AuxSTVarDec(id='d', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   │   ├── AuxSTVarDec(id='e', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   │   └── AuxSTVarDec(id='f', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='8:67:149', zto='8:77:159')
+    │       │   ├── AuxSTVarDec(id='myCarrierSet', outline='var_decl', type='tplSet', type_mod=None, type_pattern=9, zfrom='9:12:173', zto='9:32:193')
+    │       │   └── AuxSTVarDec(id='myCarrierSet1', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='10:12:206', zto='10:30:224')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', outline='constructor', zfrom='', zto='')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='12:13:239', zto='12:76:302')
+    │       │       │   ├── AuxSTVarDec(id='x', outline='var_decl', type='tplSet', type_mod=None, type_pattern=9, zfrom='12:31:257', zto='12:40:266')
+    │       │       │   └── AuxSTVarDec(id='ops', outline='var_decl', type='Composition', type_mod='+', type_pattern=1, zfrom='12:42:268', zto='12:75:301')
+    │       │       │       └── AuxSTVarDec(id='e', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='12:60:286', zto='12:74:300')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       │           ├── AuxSTVarDec(id='a', outline='var_decl', type='obj', type_mod=None, type_pattern=17, zfrom='15:16:334', zto='15:22:340')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='16:25:366', zto='16:28:369')
+    │       │           │   ├── AuxSTVariable(id='myOps', outline='var', zfrom='16:16:357', zto='16:21:362')
+    │       │           │   └── AuxSTVariable(id='ops', outline='var', zfrom='16:25:366', zto='16:28:369')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='17:32:402', zto='17:33:403')
+    │       │           │   ├── AuxSTVariable(id='myCarrierSet', outline='var', zfrom='17:16:386', zto='17:28:398')
+    │       │           │   └── AuxSTVariable(id='x', outline='var', zfrom='17:32:402', zto='17:33:403')
+    │       │           ├── AuxSTStatement(outline='statement', type='assert', zfrom='24:16:925', zto='29:21:1082')
+    │       │           │   └── AuxSTPredicate(outline='and', zfrom='25:20:952', zto='29:21:1082')
+    │       │           │       ├── AuxSTStatement(outline='statement', type='is', zfrom='27:24:1002', zto='27:38:1016')
+    │       │           │       │   ├── AuxSTVariable(id='tplSet', outline='var', zfrom='27:27:1005', zto='27:33:1011')
+    │       │           │       │   └── AuxSTType(id='Set', outline='type', type_mod=None, type_pattern=1, zfrom='27:34:1012', zto='15:22:340')
+    │       │           │       └── AuxSTStatement(outline='statement', type='is', zfrom='28:24:1042', zto='28:42:1060')
+    │       │           │           ├── AuxSTVariable(id='tplSetElem', outline='var', zfrom='28:27:1045', zto='28:37:1055')
+    │       │           │           └── AuxSTType(id='Set', outline='type', type_mod=None, type_pattern=1, zfrom='28:38:1056', zto='15:22:340')
+    │       │           └── AuxSTStatement(outline='statement', type='assert', zfrom='31:16:1100', zto='35:21:1246')
+    │       │               └── AuxSTPredicate(bound_vars=['a'], outline='all', zfrom='32:20:1127', zto='35:21:1246')
+    │       │                   └── AuxSTPredicate(outline='=>', zfrom='34:24:1179', zto='34:69:1224')
+    │       │                       ├── AuxSTStatement(outline='statement', type='is', zfrom='34:31:1186', zto='34:47:1202')
+    │       │                       │   ├── AuxSTVariable(id='a', outline='var', zfrom='34:34:1189', zto='34:35:1190')
+    │       │                       │   └── AuxSTType(id='tplSetElem', outline='type', type_mod=None, type_pattern=9, zfrom='34:46:1201', zto='15:22:340')
+    │       │                       └── AuxSTPredicateWithArgs(id='In', outline='predicateWithArgs', reference=None, zfrom='34:49:1204', zto='34:67:1222')
+    │       │                           ├── AuxSTVariable(id='a', outline='var', zfrom='34:52:1207', zto='34:53:1208')
+    │       │                           └── AuxSTVariable(id='myCarrierSet', outline='var', zfrom='34:54:1209', zto='34:66:1221')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

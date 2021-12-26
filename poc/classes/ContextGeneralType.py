@@ -7,12 +7,12 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 class ContextGeneralType(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.generalType = AuxSTType(parsing_info)
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.generalType = AuxSTType(i)
         self.generalType.type_mod = None
         self.generalType.type_pattern = 0
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["GeneralType"] +
                                       AuxRuleDependencies.dep["CallModifier"], self.rule_aggregator)
 
@@ -32,6 +32,6 @@ class ContextGeneralType(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextGeneralType(i.parse_list, parsing_info)
+        new_info = ContextGeneralType(i)
         i.parse_list.append(new_info)
 

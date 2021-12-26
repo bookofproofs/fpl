@@ -1,13 +1,15 @@
-from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.fplmessage import FplInterpreterMessage
 
 
 class FplVariableDuplicateInVariableList(FplInterpreterMessage):
-    def __init__(self, info: AuxInterpretation, other: AuxInterpretation):
+    def __init__(self, var, other, file_name: str):
+        v_s = var.zfrom.split(":")
+        other_s = other.zfrom.split(":")
         FplInterpreterMessage.__init__(self,
-                                       "Variable " + info.id + " already listed at " + str(other.rule_line()) + ":" +
-                                       str(other.rule_col()), info.rule_line(), info.rule_col(), info.rule_line())
+                                       "Variable " + var.id + " already listed at " +
+                                       str(int(other_s[0])) + ":" + str(int(other_s[1]) + 1),
+                                       int(v_s[0]), int(v_s[1]) + 1, file_name)
         self.mainType = "W"  # Warning
 
 
@@ -42,7 +44,7 @@ class FplMalformedGlobalId(FplInterpreterMessage):
 class FplInvalidInheritance(FplInterpreterMessage):
     def __init__(self, info: AuxAstInfo, base_class_name: str, what: str):
         FplInterpreterMessage.__init__(self, "Inheritance from " + base_class_name +
-                                       " not possible (not a defined class but " + what + ")",
+                                       " not possible (not a defined class but " + what + " type)",
                                        info.line,
                                        info.col,
                                        info.file)
@@ -82,7 +84,7 @@ class FplIdentifierNotDeclared(FplInterpreterMessage):
 
 
 class FplIdentifierAmbiguous(FplInterpreterMessage):
-    def __init__(self, info: AuxAstInfo, class_name: str, found_nodes:tuple):
+    def __init__(self, info: AuxAstInfo, class_name: str, found_nodes: tuple):
         global_names = []
         for c in found_nodes:
             global_names.append(c.gid + " ({0})".format(c.outline))

@@ -5,10 +5,9 @@ class AuxBits:
     isFunctionalTerm = 4
     isTemplate = 8
     isInbuilt = 16
-    isGeneric = 32
-    isExtension = 64
-    isIndex = 128
-    hasCoord = 256
+    isExtension = 32
+    isIndex = 64
+    hasCoord = 128
 
     @staticmethod
     def is_class(pattern_int: int):
@@ -32,7 +31,7 @@ class AuxBits:
 
     @staticmethod
     def is_generic(pattern_int: int):
-        return (pattern_int & AuxBits.isGeneric) > 0
+        return (pattern_int & AuxBits.isTemplate) > 0
 
     @staticmethod
     def is_extension(pattern_int: int):

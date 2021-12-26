@@ -1,7 +1,7 @@
 """
-The AuxSymbolTable class provides static methods to create and maintain the symbol table of the FPL interpreter.
+The AuxSymbolTable class provides static methods to create and maintain the symbol table of the FPL transformer.
 It separates the scopes of the corresponding FPL language elements like theorems, predicates, and their variables.
-By design of the FPL interpreter, there is only one FPL SymbolTable for all theories that are imported
+By design of the FPL transformer, there is only one FPL SymbolTable for all theories that are imported
 via the 'uses' keyword.
 """
 
@@ -10,6 +10,7 @@ from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTGlobal import AuxSTGlobal
 from poc.classes.AuxSTVarDec import AuxSTVarDec
 import poc.fplerror
+from anytree import AnyNode, search
 
 """
 from poc.classes.AuxInterpretation import AuxInterpretation
@@ -55,6 +56,7 @@ class AuxSymbolTable:
     entity_with_coord = "entity[]"
     entity = "entity"
     extDigit = "extDigit"
+    file = "file"
     functionalTerm = "functionalTerm"
     functionalTermImage = "image"
     globals = "globals"
@@ -62,8 +64,9 @@ class AuxSymbolTable:
     intrinsic = "intrinsic"
     image = "image"
     index_value = "indexValue"
-    isOperator = "is"
+    statement_is = "is"
     justification = "justification"
+    library = "library"
     localization = "localization"
     localization_root = "localizations"
     mandatory = "mandatory"
@@ -93,6 +96,7 @@ class AuxSymbolTable:
     root = "root"
     selfInstance = "self"
     signature = "signature"
+    signature_class = "signature_class"
     statements = "statements"
     statement = "statement"
     statement_list = "stmtList"
@@ -105,14 +109,14 @@ class AuxSymbolTable:
     statement_return = "return"
     theoremLikeStmt = "theoremLikeStmt"
     theory = "theory"
-    theoryName = "theory_name"
+    theoryName = "theory_file_name"
     translation = "translation"
     translation_list = "translationList"
     type = "type"
     undefined = "undefined"
+    used = "used"
     uses = "uses"
     var = "var"
-    var_declaration = "varDeclaration"
     var_spec = "specificationList"
     variadic_var = "variadicVar"
 
@@ -120,6 +124,11 @@ class AuxSymbolTable:
     def get_child_by_outline(parent: AuxSTOutline, outline: str):
         r = Resolver(AuxSymbolTable.outline)
         return r.get(parent, outline)
+
+    @staticmethod
+    def add_namespace(root: AnyNode, fpl_file):
+        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
+        fpl_file.parent = library_node
 
     @staticmethod
     def add_localization(locals_node: AuxSTOutline, localization):
@@ -256,15 +265,18 @@ class AuxSymbolTable:
             AuxSTGlobal(global_references, gid, block)
 
     @staticmethod
-    def add_vars_to_node(parent: AuxSTOutline, named_var_declaration):
+    def add_vars_to_node(i, parent: AuxSTOutline, named_var_declaration):
         distinct_vars = dict()
+        ast_info = named_var_declaration.get_ast_info()
         for var in reversed(named_var_declaration.var_list):
             if var.var.id in distinct_vars:
                 named_var_declaration.all_errors().append(
-                    poc.fplerror.FplVariableDuplicateInVariableList(var, distinct_vars[var.id]))
+                    poc.fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var, ast_info.file))
             else:
-                distinct_vars[var.var.id] = var
-            var_dec = AuxSTVarDec(var)
+                distinct_vars[var.var.id] = var.var
+            var_dec = AuxSTVarDec(i)
+            var_dec.zto = named_var_declaration.zto
+            var_dec.zfrom = named_var_declaration.zfrom
             var_dec.id = var.var.id
             var_dec.parent = parent
             var_dec.type = named_var_declaration.var_type.generalType.id
@@ -272,4 +284,24 @@ class AuxSymbolTable:
             var_dec.type_mod = named_var_declaration.var_type.generalType.type_mod
             if named_var_declaration.var_type.paramTuple is not None:
                 for next_var_decl in named_var_declaration.var_type.paramTuple.tuple:  # noqa
-                    AuxSymbolTable.add_vars_to_node(var_dec, next_var_decl)
+                    AuxSymbolTable.add_vars_to_node(i, var_dec, next_var_decl)
+
+    @staticmethod
+    def get_theory_by_filename(root: AnyNode, theory_file_name: str):
+        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
+        return search.find(library_node, lambda node: hasattr(node, "file_name") and node.file_name == theory_file_name)
+
+    @staticmethod
+    def get_theory_by_namespace(root: AnyNode, theory_namespace: str):
+        result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
+        found_theory_node = None
+        for node in result:
+            if node.namespace == theory_namespace:
+                found_theory_node = node
+                break
+        return found_theory_node
+
+    @staticmethod
+    def remove_library(root):
+        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
+        library_node.parent = None

@@ -35,7 +35,7 @@ Initial interpreter
 * Bugfix relative folders for importing package files
 * Bugfix instance namespaces for variables of auxiliary classes
 * Separation of syntax transforming (minify/prettify) and syntax analysis
-* Redesign and simplification of the FPLSourceAnalyser class while moving context handling to individual classes named Contex<Something>
+* Redesign and simplification of the FPLSyntaxAnalyzer class while moving context handling to individual classes named Contex<Something>
 ## 1.2.1
 * Class AuxOutline was removed. It mixed up the symbols used for the outline of the symbol table (now in the class AuxSymbolTable) with the symbols used for contexts (now in the class AuxContext). 
 * Symbol table functionality variable declarations (cont.)
@@ -80,3 +80,11 @@ Initial interpreter
   * representation of proofs
   * representation of definitions corrected (functional terms, classes, and predicates)
   * bug-fixes 
+## 1.4.1
+* Corrected misplaced localization node in the symbol table
+* Node stack functionality in AuxISourceAnalyser discontinued
+* Replaced AuxAstInfo objects by public attributes of the nodes to prepare the symbol table for being serializable
+  * adjusted all related test cases
+* Separated FplSourceTransformer from the FplInterpreter
+* Discontinued tree-sitter conversion support
+* Loading of more than one theory based on a root directory and the uses clause.

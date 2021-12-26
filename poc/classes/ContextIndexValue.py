@@ -13,11 +13,11 @@ from poc.classes.AuxSTPredicate import AuxSTPredicate
 
 class ContextIndexValue(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.predicate = AuxSTPredicate(AuxSymbolTable.index_value, parsing_info)
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.predicate = AuxSTPredicate(AuxSymbolTable.index_value, i)
         self._sub_index = None
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["IndexValue"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -25,6 +25,8 @@ class ContextIndexValue(AuxInterpretation):
             # register the index
             parsing_info.predicate.register_child(self._sub_index)  # noqa
             self.predicate.register_child(parsing_info.predicate)  # noqa
+            # correct the starting position of the derivation
+            self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
             self.stop_aggregation = True
         elif rule == "Variable":
             # remember the sub index
@@ -36,7 +38,7 @@ class ContextIndexValue(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextIndexValue(i.parse_list, parsing_info)
+        new_info = ContextIndexValue(i)
         new_info.predicate.children = reversed(new_info.predicate.children)
         i.parse_list.append(new_info)
 

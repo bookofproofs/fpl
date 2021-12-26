@@ -72,7 +72,7 @@ class AuxInterpretation:
     def aggregate_previous_rules(self, parse_list: list, aggr_rules: list, rule_aggregator):
         """
         Implements a generic aggregation method based on the current parse list
-        :param parse_list: current parse list of the interpreter
+        :param parse_list: current parse list of the transformer
         :param aggr_rules: rules that are expected in the parse_list that can be aggregated to the rue
         :param rule_aggregator: a function implemented in the class derived from AuxInterpretation that performs
         the actual aggregation
@@ -93,7 +93,8 @@ class AuxInterpretation:
                 else:
                     can_be_aggregated = False
         # after the aggregation, we can clear the cst to free memory
-        self.clear_cst()
+        if type(self.get_cst()) is not str:
+            self.clear_cst()
 
     def rule_aggregator(self, rule: str, parsing_info):
         # this method must be implemented by classes derived from AuxInterpretation

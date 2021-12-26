@@ -1,0 +1,111 @@
+TestNamespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myOps: +Composition(x: *tplSetElem)
+            myLength: Nat
+            myCarrierSet: tplSet
+
+            mandatory func NthOp(n: index) -> Composition(y: *tplSetElem)
+            {
+                return myOps$n
+            }
+
+            optional func TestProp(n: index) -> obj
+            {
+                return myOps$n
+            }
+
+            mandatory Set CarrierSet()
+            {
+                self:=myCarrierSet
+            }
+
+            optional Nat Length()
+            {
+                self:=myLength
+            }
+
+            opt pred IsFinite()
+            {
+                true
+            }
+
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure', id='AlgebraicStructure', reference=AuxSTClass())
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure[]', id='AlgebraicStructure[]', reference=AuxSTConstructor())
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure.NthOp[1:index]', id='AlgebraicStructure.NthOp[1:index]', reference=AuxSTFunctionalTermInstance())
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure.TestProp[1:index]', id='AlgebraicStructure.TestProp[1:index]', reference=AuxSTFunctionalTermInstance())
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure.CarrierSet[]', id='AlgebraicStructure.CarrierSet[]', reference=AuxSTClassInstance())
+│   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure.Length[]', id='AlgebraicStructure.Length[]', reference=AuxSTClassInstance())
+│   └── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure.IsFinite[]', id='AlgebraicStructure.IsFinite[]', reference=AuxSTPredicateInstance())
+└── AuxSTTheory(checksum='2d481b7f616303af609e4ee23663079b', file_name='test_class_12.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='AlgebraicStructure', keyword='class', outline='definition', zfrom='5:8:41', zto='37:9:724')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='myOps', outline='var_decl', type='Composition', type_mod='+', type_pattern=1, zfrom='8:12:94', zto='8:47:129')
+    │       │   │   └── AuxSTVarDec(id='x', outline='var_decl', type='tplSetElem', type_mod='*', type_pattern=9, zfrom='8:32:114', zto='8:46:128')
+    │       │   ├── AuxSTVarDec(id='myLength', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='9:12:142', zto='9:25:155')
+    │       │   └── AuxSTVarDec(id='myCarrierSet', outline='var_decl', type='tplSet', type_mod=None, type_pattern=9, zfrom='10:12:168', zto='10:32:188')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='AlgebraicStructure[]', outline='defaultConstructor', zfrom='', zto='')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='32:13:646', zto='32:31:664')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           ├── AuxSTFunctionalTermInstance(def_type='functionalTerm', id='NthOp[1:index]', keyword='func', mandatory=True, outline='property', zfrom='12:12:202', zto='15:13:322')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='12:28:218', zto='12:42:232')
+    │           │   │   └── AuxSTVarDec(id='n', outline='var_decl', type='index', type_mod=None, type_pattern=64, zfrom='12:33:223', zto='12:41:231')
+    │           │   ├── AuxSTType(id='Composition', outline='type', type_mod=None, type_pattern=1, zfrom='12:72:262', zto='12:73:263')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       └── AuxSTStatement(outline='statement', type='return', zfrom='14:16:294', zto='14:30:308')
+    │           │           └── AuxSTPredicate(outline='indexValue', zfrom='14:23:301', zto='14:30:308')
+    │           │               └── AuxSTPredicate(outline='variadicVar', zfrom='14:23:301', zto='14:29:307')
+    │           │                   ├── AuxSTVariable(id='myOps', outline='var', zfrom='14:23:301', zto='14:28:306')
+    │           │                   └── AuxSTVariable(id='n', outline='var', zfrom='14:29:307', zto='14:30:308')
+    │           ├── AuxSTFunctionalTermInstance(def_type='functionalTerm', id='TestProp[1:index]', keyword='func', mandatory=False, outline='property', zfrom='17:12:336', zto='20:13:434')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='17:27:351', zto='17:44:368')
+    │           │   │   └── AuxSTVarDec(id='n', outline='var_decl', type='index', type_mod=None, type_pattern=64, zfrom='17:35:359', zto='17:43:367')
+    │           │   ├── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='17:45:369', zto='17:51:375')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       └── AuxSTStatement(outline='statement', type='return', zfrom='19:16:406', zto='19:30:420')
+    │           │           └── AuxSTPredicate(outline='indexValue', zfrom='19:23:413', zto='19:30:420')
+    │           │               └── AuxSTPredicate(outline='variadicVar', zfrom='19:23:413', zto='19:29:419')
+    │           │                   ├── AuxSTVariable(id='myOps', outline='var', zfrom='19:23:413', zto='19:28:418')
+    │           │                   └── AuxSTVariable(id='n', outline='var', zfrom='19:29:419', zto='19:30:420')
+    │           ├── AuxSTClassInstance(def_type='property', id='CarrierSet[]', mandatory=True, outline='property', zfrom='22:12:448', zto='25:13:537')
+    │           │   ├── AuxSTType(id='Set', outline='type', type_mod=None, type_pattern=1, zfrom='22:22:458', zto='17:51:375')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='22:27:463', zto='22:38:474')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       └── AuxSTStatement(outline='statement', type=':=', zfrom='24:22:511', zto='24:34:523')
+    │           │           ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None)
+    │           │           └── AuxSTVariable(id='myCarrierSet', outline='var', zfrom='24:22:511', zto='24:34:523')
+    │           ├── AuxSTClassInstance(def_type='property', id='Length[]', mandatory=False, outline='property', zfrom='27:12:551', zto='30:13:631')
+    │           │   ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='27:21:560', zto='22:22:458')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='27:26:565', zto='27:33:572')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       └── AuxSTStatement(outline='statement', type=':=', zfrom='29:22:609', zto='29:30:617')
+    │           │           ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None)
+    │           │           └── AuxSTVariable(id='myLength', outline='var', zfrom='29:22:609', zto='29:30:617')
+    │           └── AuxSTPredicateInstance(def_type='predicateDeclaration', id='IsFinite[]', keyword='pred', mandatory=False, outline='property', zfrom='32:12:645', zto='35:13:713')
+    │               ├── AuxSTSignature(outline='signature', zfrom='32:22:655', zto='32:31:664')
+    │               ├── AuxSTVarSpecList(outline='specificationList')
+    │               └── AuxSTPredicate(outline='true', zfrom='34:16:695', zto='34:20:699')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

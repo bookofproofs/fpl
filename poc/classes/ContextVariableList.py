@@ -6,10 +6,11 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 class ContextVariableList(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.var_list = []
-        self.aggregate_previous_rules(parse_list,
+        self._i = i
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["VariableList"] + ["Assignee"],
                                       self.rule_aggregator)
 
@@ -18,11 +19,11 @@ class ContextVariableList(AuxInterpretation):
             self.var_list.append(parsing_info)
         elif rule == "Assignee":
             # cast the Assignee to Variable and append it to the named variable declaration
-            var = ContextVariable([], parsing_info)
+            var = ContextVariable(self._i)
             var.var = parsing_info.predicate
             self.var_list.append(var)
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextVariableList(i.parse_list, parsing_info)
+        new_info = ContextVariableList(i)
         i.parse_list.append(new_info)

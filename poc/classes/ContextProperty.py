@@ -10,22 +10,27 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 class ContextProperty(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.building_block = None
-        self.aggregate_previous_rules(parse_list,
-                                      AuxRuleDependencies.dep["Property"] +
-                                      AuxRuleDependencies.dep["PropertyHeader"], self.rule_aggregator)
+        self._i = i
+        self.aggregate_previous_rules(i.parse_list,
+                                      AuxRuleDependencies.dep["Property"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
-        if rule in AuxRuleDependencies.dep["PropertyHeader"]:
+        if rule == "PropertyHeader":
+            if parsing_info.id in ['mandatory', 'mand']:
+                self.building_block.mandatory = True
+            else:
+                self.building_block.mandatory = False
+            self.building_block.zfrom = self._i.corrected_position("PropertyHeader")
             self.stop_aggregation = True
         elif rule == "DefinitionProperty":
             self.building_block = parsing_info.building_block  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextProperty(i.parse_list, parsing_info)
+        new_info = ContextProperty(i)
         i.parse_list.append(new_info)
 
 

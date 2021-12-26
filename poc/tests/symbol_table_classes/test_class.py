@@ -27,24 +27,25 @@ class ClassTests(unittest.TestCase):
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
-        "test_class_01",
-        "test_class_02",
-        "test_class_03",
-        "test_class_04",
-        "test_class_05",
-        "test_class_06",
-        "test_class_07",
-        "test_class_08",
-        "test_class_09",
-        "test_class_10",
-        "test_class_11",
-        "test_class_12",
+        "test_class_01.fpl",
+        "test_class_02.fpl",
+        "test_class_03.fpl",
+        "test_class_04.fpl",
+        "test_class_05.fpl",
+        "test_class_06.fpl",
+        "test_class_07.fpl",
+        "test_class_08.fpl",
+        "test_class_09.fpl",
+        "test_class_10.fpl",
+        "test_class_11.fpl",
+        "test_class_12.fpl",
     ])
     def test_correct(self, use_case):
-        interpreter = FplInterpreter(self.fpl_parser)
+        path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
-        interpreter.syntax_analysis(use_case, result[0])
-        actual = self.util.remove_object_references_from_string(interpreter.symbol_table_to_str().strip())
+        interpreter.syntax_analysis(path_to_use_cases)
+        actual = self.util.adjust_symbol_table_for_testing(interpreter)
         if AuxISourceAnalyser.verbose:
             print(actual)
         self.assertEqual(result[1].strip(), actual)

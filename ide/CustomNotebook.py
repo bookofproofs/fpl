@@ -191,7 +191,7 @@ class CustomNotebook(ttk.Notebook):
         # and select the tab
         self.select(editor_info)
         # interpret the file
-        # get the interpreter, highlight the code, refresh all info
+        # get the transformer, highlight the code, refresh all info
         editor_info.parse_interpret_highlight_update_all()
         self.ide.window.config(cursor="")
 

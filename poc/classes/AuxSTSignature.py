@@ -4,10 +4,18 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class AuxSTSignature(AuxST):
 
-    def __init__(self, parsing_info):
-        super().__init__(AuxSymbolTable.signature, parsing_info)
+    def __init__(self, i):
+        super().__init__(AuxSymbolTable.signature, i)
         self._list_named_declarations = None
         self._id = None
+        self._i = i
+        if 'Signature' in i.last_positions_by_rule:
+            self.zfrom = i.corrected_position('PredicateIdentifier')
+            self.zto = i.last_positions_by_rule['Signature'].pos_to_str()
+        else:
+            # in case of a default constructor there is no Signature parsed previously
+            self.zfrom = ''
+            self.zto = ''
 
     def set_id(self, identifier):
         self._id = identifier
@@ -16,8 +24,10 @@ class AuxSTSignature(AuxST):
         self._list_named_declarations = list_named_declarations
 
     def make(self):
-        for named_var_declaration in self._list_named_declarations:
-            AuxSymbolTable.add_vars_to_node(self, named_var_declaration)
+        if self._list_named_declarations is not None:
+            for named_var_declaration in self._list_named_declarations:
+                named_var_declaration.var_list.reverse()
+                AuxSymbolTable.add_vars_to_node(self._i, self, named_var_declaration)
 
     def to_string(self):
         ret = self._id + "["

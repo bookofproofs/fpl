@@ -48,3 +48,5 @@ Initial grammar
 * Separated a new rule CorollaryHeader from TheoremLikeStatementOrConjectureHeader
 * Added rule DollarDigitList to enable nesting of corollaries.
 * Replaced VariableList by PredicateList in PythonDelegate (generalization)
+* ## 1.1.4
+* Added intermediate rule ClassSignature in DefinitionClass
