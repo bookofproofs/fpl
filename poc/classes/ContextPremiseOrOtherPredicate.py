@@ -12,20 +12,21 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class ContextPremiseOrOtherPredicate(AuxInterpretation):
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self._i = i
         self.predicate = None
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["PremiseOrOtherPredicate"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PremiseHeader":
-            self.predicate = AuxSTPredicate(AuxSymbolTable.pre, parsing_info)
+            self.predicate = AuxSTPredicate(AuxSymbolTable.pre, self._i)
         elif rule == "Predicate":
             self.predicate = parsing_info.predicate  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextPremiseOrOtherPredicate(i.parse_list, parsing_info)
+        new_info = ContextPremiseOrOtherPredicate(i)
         i.parse_list.append(new_info)
 

@@ -14,7 +14,6 @@ class TypeTests(unittest.TestCase):
     maxDiff = None
     path = None
     path_to_grammar = None
-    path_to_usecases = None
     fpl_parser = None
     util = None
 
@@ -24,23 +23,22 @@ class TypeTests(unittest.TestCase):
         if os.path.isfile(cls.path):
             cls.path = os.path.dirname(cls.path)
         cls.path_to_grammar = os.path.join(cls.path, "../../../grammar")
-        cls.path_to_usecases = os.path.join(cls.path)
+        cls.path_to_use_cases = os.path.join(cls.path)
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
-        "test_types_class_01",
-        "test_types_class_02",
-        "test_types_class_03",
-        "test_types_var_01",
+        "test_types_class_01.fpl",
+        "test_types_class_02.fpl",
+        "test_types_class_03.fpl",
+        "test_types_var_01.fpl",
     ])
     def test_possibilities(self, use_case):
-        interpreter = FplInterpreter(self.fpl_parser)
-        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
-        interpreter.syntax_analysis(use_case, result[0])
-        actual = self.util.remove_object_references_from_string(interpreter.symbol_table_to_str().strip())
+        path_to_use_cases = os.path.join(self.path_to_use_cases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
+        result = Utils.get_code_and_expected(self.path_to_use_cases, use_case)
+        interpreter.syntax_analysis(path_to_use_cases)
+        actual = self.util.adjust_symbol_table_for_testing(interpreter)
         if AuxISourceAnalyser.verbose:
             print(actual)
         self.assertEqual(result[1].strip(), actual)
-
-

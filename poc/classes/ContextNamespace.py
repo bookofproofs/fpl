@@ -10,14 +10,14 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class ContextNamespace(AuxInterpretation):
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.extension = None
         self.used_namespaces = None
         self.rules_of_inference = None
         self.building_blocks = None
         self.localisations = None
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Namespace"] +
                                       AuxRuleDependencies.dep["NamespaceBlock"], self.rule_aggregator)
 
@@ -38,7 +38,7 @@ class ContextNamespace(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextNamespace(i.parse_list, parsing_info)
+        new_info = ContextNamespace(i)
         i.theory_node.namespace = new_info.id
         # populate global nodes
         AuxSymbolTable.populate_global_nodes(i.theory_node)

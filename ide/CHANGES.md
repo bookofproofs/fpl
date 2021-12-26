@@ -40,4 +40,6 @@
 * Bugfix relative folders for importing package files
 * Separation of syntax transforming and syntax analysis in the fpl interpreter (since version 1.2.0) reflected in the ide
 ## 1.2.6
-* Font error list changed 
+* Font error list changed
+## 1.2.7
+* Compatibility adjustments to the FPL interpreter version 1.4.1 

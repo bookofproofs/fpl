@@ -11,10 +11,10 @@ from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 
 class ContextDefinitionProperty(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.building_block = AuxSTVarSpecList()
-        self.aggregate_previous_rules(parse_list,
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.building_block = None
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["DefinitionProperty"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -27,6 +27,6 @@ class ContextDefinitionProperty(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextDefinitionProperty(i.parse_list, parsing_info)
+        new_info = ContextDefinitionProperty(i)
         i.parse_list.append(new_info)
 

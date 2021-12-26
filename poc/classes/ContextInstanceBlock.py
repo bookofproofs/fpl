@@ -11,11 +11,11 @@ from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 
 class ContextInstanceBlock(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         # specification list is optional in the grammar and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["InstanceBlock"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -26,7 +26,7 @@ class ContextInstanceBlock(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextInstanceBlock(i.parse_list, parsing_info)
+        new_info = ContextInstanceBlock(i)
         i.parse_list.append(new_info)
 
 

@@ -10,10 +10,10 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 class ContextDefinitionContent(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.building_block = None
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["DefinitionContent"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -24,6 +24,6 @@ class ContextDefinitionContent(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextDefinitionContent(i.parse_list, parsing_info)
+        new_info = ContextDefinitionContent(i)
         i.parse_list.append(new_info)
 

@@ -13,10 +13,10 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class ContextEquivalence(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_equivalence, parsing_info)
-        self.aggregate_previous_rules(parse_list,
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_equivalence, i)
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Equivalence"],
                                       self.rule_aggregator)
 
@@ -28,7 +28,7 @@ class ContextEquivalence(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextEquivalence(i.parse_list, parsing_info)
+        new_info = ContextEquivalence(i)
         # order the children like they appear the FPL source code, not like they were parsed
         new_info.predicate.children = reversed(new_info.predicate.children)
         i.parse_list.append(new_info)

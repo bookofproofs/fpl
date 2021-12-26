@@ -6,7 +6,7 @@ from ide.idetheme import DefaultTheme
 from ide.TextLineNumbers import TextLineNumbers
 from ide.EditorText import EditorText
 import tkinter.font as tkfont
-from poc import fplinterpreter
+import os
 from ide.Settings import Settings
 
 
@@ -135,7 +135,7 @@ class FrameWithLineNumbers(tk.Frame):
             possible_brackets = self.text.get(str(last_row) + "." + str(last_col - 1),
                                               str(last_row) + "." + str(last_col + 1))
         if possible_brackets in ["{}"]:
-            self.__insert_indented_brackets(last_row, last_col, indent-1, possible_brackets, True)
+            self.__insert_indented_brackets(last_row, last_col, indent - 1, possible_brackets, True)
         elif possible_brackets in ["()", "[]"]:
             self.__insert_indented_brackets(last_row, last_col, indent, possible_brackets, False)
         else:
@@ -186,13 +186,14 @@ class FrameWithLineNumbers(tk.Frame):
         """
         Parses the code in self.text and highlights it.
         :param event: Event for any key binding
-        :return: FPL interpreter
+        :return: FPL transformer
         """
         self._parent_notebook.ide.window.config(cursor="wait")
         self._parent_notebook.ide.window.update_idletasks()
         # parse and interpret the code
-        code = self.get_text()
-        self._parent_notebook.ide.fpl_interpreter.syntax_analysis(self.title, code)
+        path = os.path.abspath(self._parent_notebook.ide.config.get(Settings.section_paths,
+                                                                    Settings.option_paths_fpl_theories))
+        self._parent_notebook.ide.fpl_interpreter.syntax_analysis(path + '\\' + self.title)
         # reconfigure all tags
         self.reconfigure_all_tags()
         # add new tags
@@ -229,8 +230,8 @@ class FrameWithLineNumbers(tk.Frame):
         :return: None
         """
         code = self.get_text()
-        self._parent_notebook.ide.fpl_interpreter.syntax_transform(self.title, code)
-        self.set_text(self._parent_notebook.ide.fpl_interpreter.prettyfied(), init=False)
+        self._parent_notebook.ide.fpl_source_transformer.syntax_transform_from_source(code)
+        self.set_text(self._parent_notebook.ide.fpl_source_transformer.get_prettified(), init=False)
         self.parse_interpret_highlight()
 
     def _on_click(self, event):

@@ -12,17 +12,21 @@ from poc.classes.AuxSTPredicate import AuxSTPredicate
 
 class ContextCoordList(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.predicate = AuxSTPredicate(AuxSymbolTable.coord_list, parsing_info)
-        self.aggregate_previous_rules(parse_list,
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.predicate = AuxSTPredicate(AuxSymbolTable.coord_list, i)
+        self._first = True
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["CoordList"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Coord":
+            if self._first:
+                self.predicate.zfrom = parsing_info.predicate.zfrom
+                self._first = False
             self.predicate.register_child(parsing_info.predicate)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextCoordList(i.parse_list, parsing_info)
+        new_info = ContextCoordList(i)
         i.parse_list.append(new_info)

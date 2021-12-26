@@ -1,0 +1,68 @@
+Fpl.Algebra.Structures
+{
+    uses Fpl.Commons
+
+    theory
+    {
+
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+            optional pred IsAssociative()
+            {
+                a,b,c: tplSetElem
+                all a,b,c
+                (
+                    Equals
+                    (
+                        @self(a,@self(b,c)),
+                        @self(@self(a,b),c)
+                    )
+                )
+            }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='Fpl.Algebra.Structures.BinOp[2:tplSetElem]', id='BinOp[2:tplSetElem]', reference=AuxSTDefinitionFunctionalTerm())
+│   └── AuxSTGlobal(gid='Fpl.Algebra.Structures.BinOp[2:tplSetElem].IsAssociative[]', id='BinOp[2:tplSetElem].IsAssociative[]', reference=AuxSTPredicateInstance())
+└── AuxSTTheory(checksum='f72777357828c51d0f3666ca3fc3cdc0', file_name='test_func_09.fpl', namespace='Fpl.Algebra.Structures', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    │   └── AuxSTUsedTheory(id='Fpl.Commons', modifier=None, outline='used', zfrom='3:9:34', zto='3:20:45')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='BinOp[2:tplSetElem]', outline='definition', zfrom='8:8:73', zto='22:9:460')
+    │       ├── AuxSTSignature(outline='signature', zfrom='8:14:79', zto='8:35:100')
+    │       │   ├── AuxSTVarDec(id='x', outline='var_decl', type='tplSetElem', type_mod=None, type_pattern=9, zfrom='8:19:84', zto='8:34:99')
+    │       │   └── AuxSTVarDec(id='y', outline='var_decl', type='tplSetElem', type_mod=None, type_pattern=9, zfrom='8:19:84', zto='8:34:99')
+    │       ├── AuxSTType(id='tplSetElem', outline='type', type_mod=None, type_pattern=9, zfrom='8:49:114', zto='8:49:114')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           └── AuxSTPredicateInstance(def_type='predicateDeclaration', id='IsAssociative[]', keyword='pred', mandatory=False, outline='property', zfrom='10:12:137', zto='21:13:450')
+    │               ├── AuxSTSignature(outline='signature', zfrom='10:27:152', zto='10:41:166')
+    │               ├── AuxSTVarSpecList(outline='specificationList')
+    │               │   ├── AuxSTVarDec(id='a', outline='var_decl', type='tplSetElem', type_mod=None, type_pattern=9, zfrom='12:16:197', zto='12:33:214')
+    │               │   ├── AuxSTVarDec(id='b', outline='var_decl', type='tplSetElem', type_mod=None, type_pattern=9, zfrom='12:16:197', zto='12:33:214')
+    │               │   └── AuxSTVarDec(id='c', outline='var_decl', type='tplSetElem', type_mod=None, type_pattern=9, zfrom='12:16:197', zto='12:33:214')
+    │               └── AuxSTPredicate(bound_vars=['a', 'b', 'c'], outline='all', zfrom='13:16:231', zto='20:17:436')
+    │                   └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='15:20:279', zto='19:21:418')
+    │                       ├── AuxSTPredicateWithArgs(id='self', outline='predicateWithArgs', reference=None, zfrom='17:29:337', zto='17:43:351')
+    │                       │   ├── AuxSTVariable(id='a', outline='var', zfrom='17:30:338', zto='17:31:339')
+    │                       │   └── AuxSTPredicateWithArgs(id='self', outline='predicateWithArgs', reference=None, zfrom='17:37:345', zto='17:42:350')
+    │                       │       ├── AuxSTVariable(id='b', outline='var', zfrom='17:38:346', zto='17:39:347')
+    │                       │       └── AuxSTVariable(id='c', outline='var', zfrom='17:40:348', zto='17:41:349')
+    │                       └── AuxSTPredicateWithArgs(id='self', outline='predicateWithArgs', reference=None, zfrom='18:29:382', zto='18:43:396')
+    │                           ├── AuxSTPredicateWithArgs(id='self', outline='predicateWithArgs', reference=None, zfrom='18:35:388', zto='18:40:393')
+    │                           │   ├── AuxSTVariable(id='a', outline='var', zfrom='18:36:389', zto='18:37:390')
+    │                           │   └── AuxSTVariable(id='b', outline='var', zfrom='18:38:391', zto='18:39:392')
+    │                           └── AuxSTVariable(id='c', outline='var', zfrom='18:41:394', zto='18:42:395')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

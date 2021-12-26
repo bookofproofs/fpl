@@ -12,11 +12,10 @@ from poc.classes.AuxSTVariable import AuxSTVariable
 
 class ContextVariable(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.var = AuxSTVariable(parsing_info)
-        self.var.id = parsing_info.get_cst()
-        self.aggregate_previous_rules(parse_list,
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.var = AuxSTVariable(i)
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Variable"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
@@ -24,6 +23,7 @@ class ContextVariable(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextVariable(i.parse_list, parsing_info)
+        new_info = ContextVariable(i)
+        new_info.var.id = parsing_info.get_cst()
         i.parse_list.append(new_info)
 

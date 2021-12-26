@@ -13,10 +13,10 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class ContextPythonDelegate(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.statement = AuxSTStatement(AuxSymbolTable.statement_py, parsing_info)
-        self.aggregate_previous_rules(parse_list,
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.statement = AuxSTStatement(AuxSymbolTable.statement_py, i)
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["PythonDelegate"] +
                                       AuxRuleDependencies.dep["PredicateList"], self.rule_aggregator)
 
@@ -30,5 +30,5 @@ class ContextPythonDelegate(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextPythonDelegate(i.parse_list, parsing_info)
+        new_info = ContextPythonDelegate(i)
         i.parse_list.append(new_info)

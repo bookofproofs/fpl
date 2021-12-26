@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: @extDigit
+        {
+        }
+    }
+}
+
+##############################
+
+FplInvalidInheritance:5:29: Inheritance from @extDigit not possible (not a defined class but a user-defined syntax extension type)

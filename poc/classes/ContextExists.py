@@ -7,12 +7,12 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class ContextExists(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_exists, parsing_info)
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_exists, i)
         self.predicate.bound_vars = []
         self.predicate.exists_number = -1  # later semantics 'at least one', can be overwritten by user
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Exists"] + AuxRuleDependencies.dep["ExistsTimesN"] +
                                       AuxRuleDependencies.dep["ExistsHeader"], self.rule_aggregator)
 
@@ -29,5 +29,5 @@ class ContextExists(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextExists(i.parse_list, parsing_info)
+        new_info = ContextExists(i)
         i.parse_list.append(new_info)

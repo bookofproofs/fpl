@@ -5,11 +5,13 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 class ContextNamedVariableDeclaration(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         self.var_list = None
         self.var_type = None
-        self.aggregate_previous_rules(parse_list,
+        self.zto = ""
+        self.zfrom = ""
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["NamedVariableDeclaration"],
                                       self.rule_aggregator)
 
@@ -43,5 +45,7 @@ class ContextNamedVariableDeclaration(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextNamedVariableDeclaration(i.parse_list, parsing_info)
+        new_info = ContextNamedVariableDeclaration(i)
+        new_info.zto = i.last_positions_by_rule['NamedVariableDeclaration'].pos_to_str()
+        new_info.zfrom = new_info.var_list[-1].var.zfrom
         i.parse_list.append(new_info)

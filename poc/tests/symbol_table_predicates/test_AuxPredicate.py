@@ -4,6 +4,8 @@ from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxAstInfo import AuxAstInfo
+from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
+from anytree import AnyNode
 
 """
 Tests of FPL implementation of the predicate auxiliary class
@@ -29,7 +31,27 @@ class AuxPredicateTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.aux_info = AuxAstInfo(DummyContext(), "")
-        cls.aux_inter = AuxInterpretation(cls.aux_info, [])
+        cls.root = AnyNode()
+        cls.i = AuxISourceAnalyser([], cls.root, "")
+        cls.i.last_positions_by_rule["true"] = cls.aux_info
+        cls.i.last_positions_by_rule["false"] = cls.aux_info
+        cls.i.last_positions_by_rule["impl"] = cls.aux_info
+        cls.i.last_positions_by_rule["Implication"] = cls.aux_info
+        cls.i.last_positions_by_rule["not"] = cls.aux_info
+        cls.i.last_positions_by_rule["Negation"] = cls.aux_info
+        cls.i.last_positions_by_rule["and"] = cls.aux_info
+        cls.i.last_positions_by_rule["Conjunction"] = cls.aux_info
+        cls.i.last_positions_by_rule["or"] = cls.aux_info
+        cls.i.last_positions_by_rule["Disjunction"] = cls.aux_info
+        cls.i.last_positions_by_rule["iif"] = cls.aux_info
+        cls.i.last_positions_by_rule["Equivalence"] = cls.aux_info
+        cls.i.last_positions_by_rule["xor"] = cls.aux_info
+        cls.i.last_positions_by_rule["ExclusiveOr"] = cls.aux_info
+        cls.i.last_positions_by_rule["ex"] = cls.aux_info
+        cls.i.last_positions_by_rule["Exists"] = cls.aux_info
+        cls.i.last_positions_by_rule["all"] = cls.aux_info
+        cls.i.last_positions_by_rule["All"] = cls.aux_info
+        cls.aux_inter = AuxInterpretation(cls.aux_info, cls.i.errors)
 
     @parameterized.expand([
         AuxSymbolTable.predicate_negation,
@@ -49,7 +71,7 @@ class AuxPredicateTests(unittest.TestCase):
         :param p_type: any type of predicate used to create one
         :return: None
         """
-        p = AuxSTPredicate(p_type, self.aux_inter)
+        p = AuxSTPredicate(p_type, self.i)
         p.assert_predicate()
         self.assertTrue(p.evaluate())
         p.revoke_predicate()
@@ -65,7 +87,7 @@ class AuxPredicateTests(unittest.TestCase):
         :param p_type: true or false predicate type
         :return: None
         """
-        p = AuxSTPredicate(p_type, self.aux_inter)
+        p = AuxSTPredicate(p_type, self.i)
         if p_type == AuxSymbolTable.predicate_true:
             self.assertTrue(p.evaluate())
         elif p_type == AuxSymbolTable.predicate_false:
@@ -83,8 +105,8 @@ class AuxPredicateTests(unittest.TestCase):
         :param p_type: true or false predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_negation, self.aux_inter)
-        p = AuxSTPredicate(p_type, self.aux_inter)
+        result = AuxSTPredicate(AuxSymbolTable.predicate_negation, self.i)
+        p = AuxSTPredicate(p_type, self.i)
         result.register_child(p)
         if p_type == AuxSymbolTable.predicate_true:
             self.assertFalse(result.evaluate())
@@ -106,9 +128,9 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_conjunction, self.aux_inter)
-        p = AuxSTPredicate(p_type, self.aux_inter)
-        q = AuxSTPredicate(q_type, self.aux_inter)
+        result = AuxSTPredicate(AuxSymbolTable.predicate_conjunction, self.i)
+        p = AuxSTPredicate(p_type, self.i)
+        q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
@@ -135,9 +157,9 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_disjunction, self.aux_inter)
-        p = AuxSTPredicate(p_type, self.aux_inter)
-        q = AuxSTPredicate(q_type, self.aux_inter)
+        result = AuxSTPredicate(AuxSymbolTable.predicate_disjunction, self.i)
+        p = AuxSTPredicate(p_type, self.i)
+        q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
@@ -164,9 +186,9 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_equivalence, self.aux_inter)
-        p = AuxSTPredicate(p_type, self.aux_inter)
-        q = AuxSTPredicate(q_type, self.aux_inter)
+        result = AuxSTPredicate(AuxSymbolTable.predicate_equivalence, self.i)
+        p = AuxSTPredicate(p_type, self.i)
+        q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
@@ -193,9 +215,9 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_exclusiveOr, self.aux_inter)
-        p = AuxSTPredicate(p_type, self.aux_inter)
-        q = AuxSTPredicate(q_type, self.aux_inter)
+        result = AuxSTPredicate(AuxSymbolTable.predicate_exclusiveOr, self.i)
+        p = AuxSTPredicate(p_type, self.i)
+        q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
@@ -222,9 +244,9 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_implication, self.aux_inter)
-        p = AuxSTPredicate(p_type, self.aux_inter)
-        q = AuxSTPredicate(q_type, self.aux_inter)
+        result = AuxSTPredicate(AuxSymbolTable.predicate_implication, self.i)
+        p = AuxSTPredicate(p_type, self.i)
+        q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:

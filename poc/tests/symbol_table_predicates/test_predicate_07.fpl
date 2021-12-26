@@ -1,0 +1,41 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            xor
+            (
+                not(true)
+                ,not(false)
+            )
+        }
+
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='b90ccacd8b313bb6f47bc7c8cafca336', file_name='test_predicate_07.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5:8:41', zto='12:9:170')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:19:52')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicate(outline='xor', zfrom='7:12:75', zto='11:13:160')
+    │       │   ├── AuxSTPredicate(outline='not', zfrom='9:16:109', zto='9:25:118')
+    │       │   │   └── AuxSTPredicate(outline='true', zfrom='9:20:113', zto='9:24:117')
+    │       │   └── AuxSTPredicate(outline='not', zfrom='10:17:136', zto='10:27:146')
+    │       │       └── AuxSTPredicate(outline='false', zfrom='10:21:140', zto='10:26:145')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

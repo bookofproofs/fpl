@@ -1,0 +1,83 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            p,q: pred
+            and (p, q)
+
+            mandatory pred PropTest(x,y: Nat)
+            {
+                Equals(x,y)
+            }
+
+            optional func PropTest1(x,y: Nat) -> Nat
+            {
+                return Add(x,y)
+            }
+
+            mandatory Nat PropTest2()
+            {
+                self := Nat(2)
+            }
+
+        }
+
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate())
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[].PropTest[2:Nat]', id='Test[].PropTest[2:Nat]', reference=AuxSTPredicateInstance())
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[].PropTest1[2:Nat]', id='Test[].PropTest1[2:Nat]', reference=AuxSTFunctionalTermInstance())
+│   └── AuxSTGlobal(gid='TestNamespace.Test[].PropTest2[]', id='Test[].PropTest2[]', reference=AuxSTClassInstance())
+└── AuxSTTheory(checksum='1c25ee7ae3634aed4a9052566f4d083b', file_name='test_predicate_16.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='10:18:127', zto='25:9:433')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:19:52')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='p', outline='var_decl', type='pred', type_mod=None, type_pattern=18, zfrom='7:12:75', zto='7:21:84')
+    │       │   └── AuxSTVarDec(id='q', outline='var_decl', type='pred', type_mod=None, type_pattern=18, zfrom='7:12:75', zto='7:21:84')
+    │       ├── AuxSTPredicate(outline='and', zfrom='8:12:97', zto='8:22:107')
+    │       │   ├── AuxSTVariable(id='p', outline='var', zfrom='8:17:102', zto='8:18:103')
+    │       │   └── AuxSTVariable(id='q', outline='var', zfrom='8:20:105', zto='8:21:106')
+    │       └── AuxSTProperties(outline='properties')
+    │           ├── AuxSTPredicateInstance(def_type='predicateDeclaration', id='PropTest[2:Nat]', keyword='pred', mandatory=True, outline='property', zfrom='10:12:121', zto='13:13:210')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='10:28:137', zto='10:45:154')
+    │           │   │   ├── AuxSTVarDec(id='x', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='10:36:145', zto='10:44:153')
+    │           │   │   └── AuxSTVarDec(id='y', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='10:36:145', zto='10:44:153')
+    │           │   ├── AuxSTVarSpecList(outline='specificationList')
+    │           │   └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='12:16:185', zto='12:27:196')
+    │           │       ├── AuxSTVariable(id='x', outline='var', zfrom='12:23:192', zto='12:24:193')
+    │           │       └── AuxSTVariable(id='y', outline='var', zfrom='12:25:194', zto='12:26:195')
+    │           ├── AuxSTFunctionalTermInstance(def_type='functionalTerm', id='PropTest1[2:Nat]', keyword='func', mandatory=False, outline='property', zfrom='15:12:224', zto='18:13:324')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='15:27:239', zto='15:45:257')
+    │           │   │   ├── AuxSTVarDec(id='x', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='15:36:248', zto='15:44:256')
+    │           │   │   └── AuxSTVarDec(id='y', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='15:36:248', zto='15:44:256')
+    │           │   ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='15:46:258', zto='15:52:264')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       └── AuxSTStatement(outline='statement', type='return', zfrom='17:16:295', zto='17:31:310')
+    │           │           └── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='17:23:302', zto='17:31:310')
+    │           │               ├── AuxSTVariable(id='x', outline='var', zfrom='17:27:306', zto='17:28:307')
+    │           │               └── AuxSTVariable(id='y', outline='var', zfrom='17:29:308', zto='17:30:309')
+    │           └── AuxSTClassInstance(def_type='property', id='PropTest2[]', mandatory=True, outline='property', zfrom='20:12:338', zto='23:13:422')
+    │               ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='20:22:348', zto='15:52:264')
+    │               ├── AuxSTSignature(outline='signature', zfrom='20:27:353', zto='20:37:363')
+    │               └── AuxSTVarSpecList(outline='specificationList')
+    │                   └── AuxSTStatement(outline='statement', type=':=', zfrom='22:16:394', zto='22:30:408')
+    │                       ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None)
+    │                       └── AuxSTPredicateWithArgs(id='Nat', outline='predicateWithArgs', reference=None, zfrom='22:21:399', zto='22:30:408')
+    │                           └── AuxSTPredicate(id='2', outline='extDigit', zfrom='22:28:406', zto='22:29:407')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

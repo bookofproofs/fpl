@@ -1,0 +1,146 @@
+TestNamespace
+{
+    theory
+    {
+        conjecture AddIsUnique(op: Add)
+        {
+            n,m: Nat
+            anotherAdd: Add
+            pre:
+                and
+                    (
+                        Equals(Add(n,0),n),
+                        Equals(anotherAdd(n,0),n),
+                        Equals(Add(n,Succ(m)), Succ(Add(n,m))),
+                        Equals(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
+                    )
+            con:
+                all n
+                (
+                    all m
+                    (
+                        Equals(Add(n,m), anotherAdd(n,m))
+                    )
+                )
+        }
+
+        conj SumOfConsecutiveNumbers()
+        {
+            n, limit: Nat
+            f: Addend
+            premise:
+                loop n [Nat(1)~limit]
+                (
+                    assert Equals(f(n),n)
+                )
+            conclusion:
+                all n
+                (
+                    Equals(Sum(1,n,f),Div(Mul(n,Succ(n)),2))
+                )
+
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.AddIsUnique[1:Add]', id='AddIsUnique[1:Add]', reference=AuxSTConjecture())
+│   └── AuxSTGlobal(gid='TestNamespace.SumOfConsecutiveNumbers[]', id='SumOfConsecutiveNumbers[]', reference=AuxSTConjecture())
+└── AuxSTTheory(checksum='032a90c1bcda47a7ca60b01696f300d1', file_name='test_conjecture_02.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    │   ├── AuxSTConjecture(id='AddIsUnique[1:Add]', keyword='conjecture', outline='conjecture', zfrom='5:8:41', zto='25:9:661')
+    │   │   ├── AuxSTSignature(outline='signature', zfrom='5:20:53', zto='5:39:72')
+    │   │   │   └── AuxSTVarDec(id='op', outline='var_decl', type='Add', type_mod=None, type_pattern=1, zfrom='5:31:64', zto='5:38:71')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   │   ├── AuxSTVarDec(id='n', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='7:12:95', zto='7:20:103')
+    │   │   │   ├── AuxSTVarDec(id='m', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='7:12:95', zto='7:20:103')
+    │   │   │   └── AuxSTVarDec(id='anotherAdd', outline='var_decl', type='Add', type_mod=None, type_pattern=1, zfrom='8:12:116', zto='8:27:131')
+    │   │   ├── AuxSTPredicate(outline='pre', zfrom='9:12:144', zto='16:21:448')
+    │   │   │   └── AuxSTPredicate(outline='and', zfrom='10:16:165', zto='16:21:448')
+    │   │   │       ├── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='12:24:215', zto='12:42:233')
+    │   │   │       │   ├── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='12:31:222', zto='12:39:230')
+    │   │   │       │   │   ├── AuxSTVariable(id='n', outline='var', zfrom='12:35:226', zto='12:36:227')
+    │   │   │       │   │   └── AuxSTPredicate(id='0', outline='extDigit', zfrom='12:37:228', zto='12:38:229')
+    │   │   │       │   └── AuxSTVariable(id='n', outline='var', zfrom='12:40:231', zto='12:41:232')
+    │   │   │       ├── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='13:24:259', zto='13:49:284')
+    │   │   │       │   ├── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='13:41:276', zto='13:46:281')
+    │   │   │       │   │   ├── AuxSTVariable(id='n', outline='var', zfrom='13:42:277', zto='13:43:278')
+    │   │   │       │   │   └── AuxSTPredicate(id='0', outline='extDigit', zfrom='13:44:279', zto='13:45:280')
+    │   │   │       │   └── AuxSTVariable(id='n', outline='var', zfrom='13:47:282', zto='13:48:283')
+    │   │   │       ├── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='14:24:310', zto='14:62:348')
+    │   │   │       │   ├── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='14:31:317', zto='14:45:331')
+    │   │   │       │   │   ├── AuxSTVariable(id='n', outline='var', zfrom='14:35:321', zto='14:36:322')
+    │   │   │       │   │   └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='14:37:323', zto='14:44:330')
+    │   │   │       │   │       └── AuxSTVariable(id='m', outline='var', zfrom='14:42:328', zto='14:43:329')
+    │   │   │       │   └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='14:47:333', zto='14:61:347')
+    │   │   │       │       └── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='14:52:338', zto='14:60:346')
+    │   │   │       │           ├── AuxSTVariable(id='n', outline='var', zfrom='14:56:342', zto='14:57:343')
+    │   │   │       │           └── AuxSTVariable(id='m', outline='var', zfrom='14:58:344', zto='14:59:345')
+    │   │   │       └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='15:24:374', zto='15:76:426')
+    │   │   │           ├── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='15:41:391', zto='15:52:402')
+    │   │   │           │   ├── AuxSTVariable(id='n', outline='var', zfrom='15:42:392', zto='15:43:393')
+    │   │   │           │   └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='15:44:394', zto='15:51:401')
+    │   │   │           │       └── AuxSTVariable(id='m', outline='var', zfrom='15:49:399', zto='15:50:400')
+    │   │   │           └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='15:54:404', zto='15:75:425')
+    │   │   │               └── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='15:69:419', zto='15:74:424')
+    │   │   │                   ├── AuxSTVariable(id='n', outline='var', zfrom='15:70:420', zto='15:71:421')
+    │   │   │                   └── AuxSTVariable(id='m', outline='var', zfrom='15:72:422', zto='15:73:423')
+    │   │   ├── AuxSTPredicate(outline='con', zfrom='17:12:461', zto='24:17:651')
+    │   │   │   └── AuxSTPredicate(bound_vars=['n'], outline='all', zfrom='20:17:523', zto='24:17:651')
+    │   │   │       └── AuxSTPredicate(bound_vars=['m'], outline='all', zfrom='20:20:526', zto='23:21:633')
+    │   │   │           └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='22:24:578', zto='22:57:611')
+    │   │   │               ├── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='22:31:585', zto='22:39:593')
+    │   │   │               │   ├── AuxSTVariable(id='n', outline='var', zfrom='22:35:589', zto='22:36:590')
+    │   │   │               │   └── AuxSTVariable(id='m', outline='var', zfrom='22:37:591', zto='22:38:592')
+    │   │   │               └── AuxSTPredicateWithArgs(id='anotherAdd', outline='predicateWithArgs', reference=None, zfrom='22:51:605', zto='22:56:610')
+    │   │   │                   ├── AuxSTVariable(id='n', outline='var', zfrom='22:52:606', zto='22:53:607')
+    │   │   │                   └── AuxSTVariable(id='m', outline='var', zfrom='22:54:608', zto='22:55:609')
+    │   │   ├── AuxSTOutline(outline='corollaries')
+    │   │   └── AuxSTOutline(outline='proofs')
+    │   └── AuxSTConjecture(id='SumOfConsecutiveNumbers[]', keyword='conj', outline='conjecture', zfrom='27:8:671', zto='42:9:1050')
+    │       ├── AuxSTSignature(outline='signature', zfrom='27:14:677', zto='27:38:701')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='n', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='29:12:724', zto='29:25:737')
+    │       │   ├── AuxSTVarDec(id='limit', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='29:12:724', zto='29:25:737')
+    │       │   └── AuxSTVarDec(id='f', outline='var_decl', type='Addend', type_mod=None, type_pattern=1, zfrom='30:12:750', zto='30:21:759')
+    │       ├── AuxSTPredicate(outline='pre', zfrom='31:12:772', zto='35:17:896')
+    │       │   └── AuxSTStatement(outline='statement', type='loop', zfrom='32:16:797', zto='35:17:896')
+    │       │       ├── AuxSTVariable(id='n', outline='var', zfrom='32:21:802', zto='32:22:803')
+    │       │       ├── AuxSTRange(left_included=True, outline='range', right_included=True, zfrom='', zto='')
+    │       │       │   ├── AuxSTPredicateWithArgs(id='Nat', outline='predicateWithArgs', reference=None, zfrom='32:21:802', zto='32:30:811')
+    │       │       │   │   └── AuxSTPredicate(id='1', outline='extDigit', zfrom='32:28:809', zto='32:29:810')
+    │       │       │   └── AuxSTVariable(id='limit', outline='var', zfrom='32:31:812', zto='32:36:817')
+    │       │       └── AuxSTStatement(outline='statement', type='assert', zfrom='34:20:857', zto='34:41:878')
+    │       │           └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='34:27:864', zto='34:41:878')
+    │       │               ├── AuxSTPredicateWithArgs(id='f', outline='predicateWithArgs', reference=None, zfrom='34:35:872', zto='34:38:875')
+    │       │               │   └── AuxSTVariable(id='n', outline='var', zfrom='34:36:873', zto='34:37:874')
+    │       │               └── AuxSTVariable(id='n', outline='var', zfrom='34:39:876', zto='34:40:877')
+    │       ├── AuxSTPredicate(outline='con', zfrom='36:12:909', zto='40:17:1039')
+    │       │   └── AuxSTPredicate(bound_vars=['n'], outline='all', zfrom='37:16:937', zto='40:17:1039')
+    │       │       └── AuxSTPredicateWithArgs(id='Equals', outline='predicateWithArgs', reference=None, zfrom='39:20:981', zto='39:60:1021')
+    │       │           ├── AuxSTPredicateWithArgs(id='Sum', outline='predicateWithArgs', reference=None, zfrom='39:27:988', zto='39:37:998')
+    │       │           │   ├── AuxSTPredicate(id='1', outline='extDigit', zfrom='39:31:992', zto='39:32:993')
+    │       │           │   ├── AuxSTVariable(id='n', outline='var', zfrom='39:33:994', zto='39:34:995')
+    │       │           │   └── AuxSTVariable(id='f', outline='var', zfrom='39:35:996', zto='39:36:997')
+    │       │           └── AuxSTPredicateWithArgs(id='Div', outline='predicateWithArgs', reference=None, zfrom='39:38:999', zto='39:59:1020')
+    │       │               ├── AuxSTPredicateWithArgs(id='Mul', outline='predicateWithArgs', reference=None, zfrom='39:42:1003', zto='39:56:1017')
+    │       │               │   ├── AuxSTVariable(id='n', outline='var', zfrom='39:46:1007', zto='39:47:1008')
+    │       │               │   └── AuxSTPredicateWithArgs(id='Succ', outline='predicateWithArgs', reference=None, zfrom='39:48:1009', zto='39:55:1016')
+    │       │               │       └── AuxSTVariable(id='n', outline='var', zfrom='39:53:1014', zto='39:54:1015')
+    │       │               └── AuxSTPredicate(id='2', outline='extDigit', zfrom='39:57:1018', zto='39:58:1019')
+    │       ├── AuxSTOutline(outline='corollaries')
+    │       └── AuxSTOutline(outline='proofs')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')
+
+

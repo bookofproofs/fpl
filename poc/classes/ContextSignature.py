@@ -6,20 +6,25 @@ from poc.classes.AuxSTSignature import AuxSTSignature
 
 class ContextSignature(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
-        self.symbol_signature = AuxSTSignature(parsing_info)
-        self.aggregate_previous_rules(parse_list, AuxRuleDependencies.dep["Signature"], self.rule_aggregator)
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
+        self.symbol_signature = AuxSTSignature(i)
+        self._i = i
+        self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["Signature"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateIdentifier":
             self.symbol_signature.set_id(parsing_info.id)
+            self.symbol_signature.zfrom = self._i.corrected_zfrom_by(self.symbol_signature.zfrom, len(parsing_info.id))
             self.stop_aggregation = True
         elif rule == "ParamTuple":
             self.symbol_signature.set_params(parsing_info.tuple)
+            # because the signature might contain other PredicateIdentifiers in the ParamTuple,
+            # we have to correct the beginning of the signature by the beginning of the ParamTuple
+            self.symbol_signature.zfrom = parsing_info.zfrom  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextSignature(i.parse_list, parsing_info)
+        new_info = ContextSignature(i)
         new_info.symbol_signature.make()
         i.parse_list.append(new_info)

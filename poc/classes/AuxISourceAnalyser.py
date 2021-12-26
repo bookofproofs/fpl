@@ -1,11 +1,9 @@
 from anytree import AnyNode
-from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxSTTheory import AuxSTTheory
 from poc.classes.AuxSTLocalizations import AuxSTLocalizations
 
-
 """
-Implements an interface between the classes named Context<Something> and the class FPLSourceAnalyser
+Implements an interface between the classes named Context<Something> and the class FPLSyntaxAnalyzer
 """
 
 
@@ -14,61 +12,32 @@ class AuxISourceAnalyser:
 
     def __init__(self, errors: list, root: AnyNode, theory_name: str):
         """
-        Creates a new interface between the classes named Context<Something> and the class FPLSourceAnalyser
-        :param errors: a pointer to the errors of the FPL interpreter
-        :param root: a pointer to the root (cross-theory) node of the symbol table of the FPL interpreter
+        Creates a new interface between the classes named Context<Something> and the class FPLSyntaxAnalyzer
+        :param errors: a pointer to the errors of the FPL transformer
+        :param root: a pointer to the root (cross-theory) node of the symbol table of the FPL transformer
         :param theory_name: the name of the current theory being interpreted
         """
         self.parse_list = []  # a stack for bottom-up aggregation of parsed FPL source code derivations
-        self.errors = errors  # any errors of the FPL interpreter
+        self.errors = errors  # any errors of the FPL transformer
         self.theory_node = AuxSTTheory(root, theory_name)
-        self.locals_node = AuxSTLocalizations(root)
+        self.locals_node = AuxSTLocalizations(self.theory_node)
+        self.last_positions_by_rule = dict()
 
-        # A stack for AnyTree nodes of the symbol table being built in the specific context.
-        # contains, typically the running AnyNodes for definitions, theorems, classes, constructors, or even variables.
-        self._node_stack = []
+    def set_pos(self, ast_info):
+        self.last_positions_by_rule[ast_info.rule] = ast_info
 
-    def get_debug_parsing_info(self, parsing_info: AuxInterpretation):
-        if self.verbose:
-            return str(parsing_info)
-        else:
-            return None
+    def corrected_position(self, rule: str):
+        ast_info = self.last_positions_by_rule[rule]
+        ast_info.pos = ast_info.pos - ast_info.length_cst
+        ast_info.col = ast_info.col - ast_info.length_cst
+        return ast_info.pos_to_str()
 
-    def touch_node(self):
-        if len(self._node_stack) == 0:
-            # this error indicates an asynchronous logic in using the node
-            raise AssertionError("Cannot retrieve value of node, stack empty.")
-        if self.verbose:
-            print("node stack (touch): " + self._str_node_stack())
-        return self._node_stack[-1]
+    def corrected_position_by(self, rule: str, offset: int):
+        ast_info = self.last_positions_by_rule[rule]
+        ast_info.pos = ast_info.pos - offset
+        ast_info.col = ast_info.col - offset
+        return ast_info.pos_to_str()
 
-    def pop_node(self):
-        if len(self._node_stack) == 0:
-            # this error indicates an asynchronous logic in using the node
-            raise AssertionError("Cannot pop node, stack empty.")
-        if self.verbose:
-            print("node stack (pop): " + self._str_node_stack())
-        return self._node_stack.pop()
-
-    def push_node(self, node: AnyNode):
-        self._node_stack.append(node)
-        if self.verbose:
-            print("node stack (push): " + self._str_node_stack())
-        return node
-
-    def _str_node_stack(self):
-        ret = []
-        for node in reversed(self._node_stack):
-            d = dict()
-            if node is not None:
-                d["id"] = node.id
-                d["outline"] = node.outline
-                d["l"] = node.info.line
-                d["c"] = node.info.col
-                ret.append(d)
-            else:
-                # None nodes can occur during the syntax analysis process, for instance,
-                # if we could not create a constructor of a class, because it was misspelled by the user.
-                # in this case, we avoid errors when attempting to access non-existing object attributes
-                pass
-        return str(ret)
+    def corrected_zfrom_by(self, zfrom: str, offset: int):
+        s = zfrom.split(":")
+        return ":".join([s[0], str(int(s[1]) - offset), str(int(s[2]) - offset)])

@@ -13,13 +13,13 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 class ContextFunctionalTermDefinitionBlock(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         # specification list is optional in the grammar and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         # definition property list is optional in the grammar and we initialize it in any case
         self.property_list = AuxSTProperties()
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["FunctionalTermDefinitionBlock"] +
                                       AuxRuleDependencies.dep["PropertyList"], self.rule_aggregator)
 
@@ -33,6 +33,6 @@ class ContextFunctionalTermDefinitionBlock(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextFunctionalTermDefinitionBlock(i.parse_list, parsing_info)
+        new_info = ContextFunctionalTermDefinitionBlock(i)
         new_info.property_list.children = reversed(new_info.property_list.children)
         i.parse_list.append(new_info)

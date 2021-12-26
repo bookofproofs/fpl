@@ -1,0 +1,42 @@
+TestNamespace
+{
+    theory
+    {
+        func Exp(x: SetReal) -> SetReal
+        {
+
+            mandatory pred IsContinuous()
+            {
+                true
+            }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal]', id='Exp[1:SetReal]', reference=AuxSTDefinitionFunctionalTerm())
+│   └── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsContinuous[]', id='Exp[1:SetReal].IsContinuous[]', reference=AuxSTPredicateInstance())
+└── AuxSTTheory(checksum='ed8b4a5d3a8182e59fdf4060095dbc28', file_name='test_func_07.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Exp[1:SetReal]', outline='definition', zfrom='5:8:41', zto='12:9:184')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:28:61')
+    │       │   └── AuxSTVarDec(id='x', outline='var_decl', type='SetReal', type_mod=None, type_pattern=1, zfrom='5:17:50', zto='5:27:60')
+    │       ├── AuxSTType(id='SetReal', outline='type', type_mod=None, type_pattern=1, zfrom='5:25:58', zto='5:39:72')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           └── AuxSTPredicateInstance(def_type='predicateDeclaration', id='IsContinuous[]', keyword='pred', mandatory=True, outline='property', zfrom='8:12:96', zto='11:13:174')
+    │               ├── AuxSTSignature(outline='signature', zfrom='8:28:112', zto='8:41:125')
+    │               ├── AuxSTVarSpecList(outline='specificationList')
+    │               └── AuxSTPredicate(outline='true', zfrom='10:16:156', zto='10:20:160')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

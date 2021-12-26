@@ -1,0 +1,32 @@
+TestNamespace
+{
+    theory
+    {
+        func Succ(n: Nat) -> Nat
+        {
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Succ[1:Nat]', id='Succ[1:Nat]', reference=AuxSTDefinitionFunctionalTerm())
+└── AuxSTTheory(checksum='6dcb980907d5a62921c5e002513b1a63', file_name='test_func_01.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Succ[1:Nat]', outline='definition', zfrom='5:8:41', zto='7:9:85')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:25:58')
+    │       │   └── AuxSTVarDec(id='n', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='5:18:51', zto='5:24:57')
+    │       ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='5:26:59', zto='5:32:65')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

@@ -2,11 +2,13 @@ import time
 import tatsu
 import io
 import re
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class Utils:
     _stopwatch_measurements = dict()
     _stopwatch = time.perf_counter()
+    preprocessor = '##############################'
 
     @staticmethod
     def get_file_content(path_to_file):
@@ -43,12 +45,14 @@ class Utils:
         return tatsu.compile(self.get_file_content(path_to_ebnf_file))
 
     @staticmethod
-    def remove_object_references_from_string(test_output: str):
+    def adjust_symbol_table_for_testing(interpreter):
         """
         Removes from the test output all dynamic object memory addresses because they are irrelevant for the test.
         :param test_output: output of the test
         :return: test_result replaced
         """
+        AuxSymbolTable.remove_library(interpreter.get_symbol_table_root())
+        test_output = interpreter.symbol_table_to_str().strip()
         # remove "poc.classes." paths
         test_output = test_output.replace("poc.classes.", "")
         # remove dynamic object memory references
@@ -57,15 +61,13 @@ class Utils:
         test_output = re.sub(r'(=AnyNode\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
         # remove Aux* string representations
         test_output = re.sub(r'(=Aux[a-zA-Z]+\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
-        test_output = re.sub('<AuxAstInfo.AuxAstInfo>', "AuxAstInfo()", test_output)
         return test_output
 
     @staticmethod
     def get_code_and_expected(path_to_usecases, use_case_name):
-        file_content = Utils.get_file_content(path_to_usecases + "/" + use_case_name + ".txt")
-        return file_content.split('##############################')
+        file_content = Utils.get_file_content(path_to_usecases + "/" + use_case_name)
+        return file_content.split(Utils.preprocessor)
 
-
-
-
-
+    @staticmethod
+    def strip_preprocessor(source: str):
+        return source.split(Utils.preprocessor)[0].strip()

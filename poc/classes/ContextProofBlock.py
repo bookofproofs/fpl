@@ -12,12 +12,12 @@ from poc.classes.AuxSTProofArguments import AuxSTProofArguments
 
 class ContextProofBlock(AuxInterpretation):
 
-    def __init__(self, parse_list: list, parsing_info: AuxInterpretation):
-        super().__init__(parsing_info.get_ast_info(), parsing_info.get_errors())
+    def __init__(self, i: AuxISourceAnalyser):
+        super().__init__(i.ast_info, i.errors)
         # specification list is optional in the grammar and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         self.proof_arguments = AuxSTProofArguments()
-        self.aggregate_previous_rules(parse_list,
+        self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["ProofBlock"] +
                                       AuxRuleDependencies.dep["ProofArgumentList"], self.rule_aggregator)
 
@@ -31,6 +31,6 @@ class ContextProofBlock(AuxInterpretation):
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
-        new_info = ContextProofBlock(i.parse_list, parsing_info)
+        new_info = ContextProofBlock(i)
         new_info.proof_arguments.children = reversed(new_info.proof_arguments.children)
         i.parse_list.append(new_info)

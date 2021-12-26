@@ -1,0 +1,56 @@
+TestNamespace
+{
+    theory
+    {
+        func Exp(x: Real) -> Real
+        {
+            mandatory func Approximation() -> Real
+            {
+                return x
+            }
+
+            mandatory func Approximation1(x:Nat) -> Real
+            {
+                return x
+            }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:Real]', id='Exp[1:Real]', reference=AuxSTDefinitionFunctionalTerm())
+│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:Real].Approximation[]', id='Exp[1:Real].Approximation[]', reference=AuxSTFunctionalTermInstance())
+│   └── AuxSTGlobal(gid='TestNamespace.Exp[1:Real].Approximation1[1:Nat]', id='Exp[1:Real].Approximation1[1:Nat]', reference=AuxSTFunctionalTermInstance())
+└── AuxSTTheory(checksum='fc0ee368cdc7dff2e3055b5b9635843a', file_name='test_func_06.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Exp[1:Real]', outline='definition', zfrom='12:18:200', zto='16:9:301')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:25:58')
+    │       │   └── AuxSTVarDec(id='x', outline='var_decl', type='Real', type_mod=None, type_pattern=1, zfrom='5:17:50', zto='5:24:57')
+    │       ├── AuxSTType(id='Real', outline='type', type_mod=None, type_pattern=1, zfrom='5:25:58', zto='5:33:66')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           ├── AuxSTFunctionalTermInstance(def_type='functionalTerm', id='Approximation[]', keyword='func', mandatory=True, outline='property', zfrom='7:12:89', zto='10:13:180')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='7:28:105', zto='7:42:119')
+    │           │   ├── AuxSTType(id='Real', outline='type', type_mod=None, type_pattern=1, zfrom='7:42:119', zto='7:50:127')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       └── AuxSTStatement(outline='statement', type='return', zfrom='9:16:158', zto='9:24:166')
+    │           │           └── AuxSTVariable(id='x', outline='var', zfrom='9:23:165', zto='9:24:166')
+    │           └── AuxSTFunctionalTermInstance(def_type='functionalTerm', id='Approximation1[1:Nat]', keyword='func', mandatory=True, outline='property', zfrom='12:12:194', zto='15:13:291')
+    │               ├── AuxSTSignature(outline='signature', zfrom='12:28:210', zto='12:48:230')
+    │               │   └── AuxSTVarDec(id='x', outline='var_decl', type='Nat', type_mod=None, type_pattern=1, zfrom='12:42:224', zto='12:47:229')
+    │               ├── AuxSTType(id='Real', outline='type', type_mod=None, type_pattern=1, zfrom='12:48:230', zto='12:56:238')
+    │               └── AuxSTVarSpecList(outline='specificationList')
+    │                   └── AuxSTStatement(outline='statement', type='return', zfrom='14:16:269', zto='14:24:277')
+    │                       └── AuxSTVariable(id='x', outline='var', zfrom='14:23:276', zto='14:24:277')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')
