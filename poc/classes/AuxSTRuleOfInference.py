@@ -1,8 +1,8 @@
-from poc.classes.AuxST import AuxSTBlock
+from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
-class AuxSTRuleOfInference(AuxSTBlock):
+class AuxSTRuleOfInference(AuxSTBlockWithSignature):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_ir, i)

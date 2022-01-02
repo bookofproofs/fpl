@@ -6,21 +6,22 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSTProofArgument import AuxSTProofArgument
 
 
 class ContextRevoke(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self.proof_argument = AuxSTProofArgument(i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Revoke"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "RevokeHeader":
-            raise NotImplementedError("RevokeHeader")
-        elif rule == "SW":
-            raise NotImplementedError("SW")
+            self.proof_argument.type = "revoke"
+            self.stop_aggregation = True
         elif rule == "ArgumentParam":
-            raise NotImplementedError("ArgumentParam")
+            self.proof_argument.register_child(parsing_info.predicate)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

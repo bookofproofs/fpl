@@ -2,6 +2,7 @@ import unittest
 from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
+from poc.classes.SemAnalyzer import SemAnalyzer
 import os
 
 """
@@ -29,10 +30,12 @@ class FplUndeclaredVariable(unittest.TestCase):
         "test_FplUndeclaredVariable_inheritance.fpl",
     ])
     def test_errors(self, use_case):
-        interpreter = FplInterpreter(self.fpl_parser)
-        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
+        sem_analyzer = SemAnalyzer(interpreter.get_symbol_table_root(), interpreter.get_errors())
+        sem_analyzer.check_semantics()
         # exactly one error was found
         self.assertEqual(1, len(interpreter.get_errors()))
         # the error is the same as in the use case file

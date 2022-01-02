@@ -14,7 +14,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 class ContextArgumentParam(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSymbolTable.ids, i)
+        self.predicate = AuxSTPredicate(AuxSymbolTable.arg_id, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["ArgumentParam"], self.rule_aggregator)
 

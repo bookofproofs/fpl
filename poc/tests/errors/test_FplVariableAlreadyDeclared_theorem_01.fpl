@@ -1,0 +1,16 @@
+Test.Namespace
+{
+    theory
+    {
+        theorem Test(x: Nat)
+        {
+            x: Nat
+            pre: True
+            con: True
+        }
+    }
+}
+
+##############################
+
+FplVariableAlreadyDeclared:7:13: The name 'x' was already declared in the current context at (5,22)

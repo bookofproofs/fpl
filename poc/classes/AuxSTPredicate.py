@@ -70,6 +70,12 @@ class AuxSTPredicate(AuxST):
         elif outline == AuxSymbolTable.entity_with_coord:
             self.zto = i.last_positions_by_rule['EntityWithCoord'].pos_to_str()
             self.zfrom = i.corrected_position('Entity')
+        elif outline == AuxSymbolTable.preReferenced:
+            self.zto = i.last_positions_by_rule['PremiseHeader'].pos_to_str()
+            self.zfrom = i.corrected_position('PremiseHeader')
+        elif outline == AuxSymbolTable.arg_id:
+            self.zto = i.last_positions_by_rule['ArgumentParam'].pos_to_str()
+            self.zfrom = i.corrected_position('ArgumentIdentifier')
         else:
             raise NotImplementedError(outline)
 

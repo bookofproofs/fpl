@@ -1,0 +1,17 @@
+Test.Namespace
+{
+    theory
+    {
+        lem Test()
+        {
+            x: Nat
+            x: Nat
+            pre: True
+            con: True
+        }
+    }
+}
+
+##############################
+
+FplVariableAlreadyDeclared:8:13: The name 'x' was already declared in the current context at (7,13)

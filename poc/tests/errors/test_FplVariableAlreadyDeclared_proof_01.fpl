@@ -1,0 +1,15 @@
+TestNamespcase
+{
+    theory
+    {
+        proof Test$1
+        {
+            x: Nat
+            x: Nat
+            1. |- trivial
+        }
+    }
+}
+##############################
+
+FplVariableAlreadyDeclared:8:13: The name 'x' was already declared in the current context at (7,13)
