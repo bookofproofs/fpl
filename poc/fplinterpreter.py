@@ -12,7 +12,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str):
-        self.version = "1.4.1"
+        self.version = "1.4.2"
         self._parser = parser
         self._errors = []
         abs_path = os.path.abspath(root_dir)

@@ -17,9 +17,10 @@ class ContextRevokeHeader(AuxInterpretation):
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "revoke":
-            raise NotImplementedError("revoke")
+            self.id = rule
         elif rule == "rev":
-            raise NotImplementedError("rev")
+            self.id = rule
+        self.stop_aggregation = True
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

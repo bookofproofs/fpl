@@ -1,8 +1,8 @@
-from poc.classes.AuxST import AuxSTBlock
+from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
-class AuxSTProposition(AuxSTBlock):
+class AuxSTProposition(AuxSTBlockWithSignature):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_prop, i)

@@ -88,3 +88,10 @@ Initial interpreter
 * Separated FplSourceTransformer from the FplInterpreter
 * Discontinued tree-sitter conversion support
 * Loading of more than one theory based on a root directory and the uses clause.
+## 1.4.2
+* Bugfix zfrom index, including all affected testcases 
+* Bugfix def_type property of instances changed from (class / predicate / functional term) "declarations" to "instances"
+* Calculation of declared variables in different scopes
+* Added checks for FplVariableAlreadyDeclared errors and corresponding tests
+* Implemented ContextRevokeHeader and ContextRevoke
+* Implemented zfrom and zto positions of two additional predicate types: preReferenced and arg_id

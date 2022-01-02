@@ -22,7 +22,7 @@ class ContextArgumentInference(AuxInterpretation):
         elif rule == "DerivedPredicate":
             self.proof_argument = parsing_info.proof_argument  # noqa
         elif rule == "Revoke":
-            self.proof_argument = parsing_info.statement  # noqa
+            self.proof_argument = parsing_info.proof_argument  # noqa
         self.stop_aggregation = True
 
     @staticmethod

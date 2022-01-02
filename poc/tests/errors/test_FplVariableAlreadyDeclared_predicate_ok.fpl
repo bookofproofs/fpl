@@ -1,0 +1,33 @@
+Test.Namespace
+{
+    theory
+    {
+        pred Test()
+        {
+            y: Nat
+            true
+
+            mandatory Nat TestProperty()
+            {
+                x: Nat
+                self:=x
+            }
+
+            mandatory func TestProperty() -> Nat
+            {
+                x: Nat
+                return x
+            }
+
+            mandatory pred TestProperty()
+            {
+                x: Nat
+                true
+            }
+        }
+    }
+}
+
+##############################
+
+Note: Generates no FplVariableAlreadyDeclared error since the variable x is declared in separate scopes

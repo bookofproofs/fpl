@@ -1,0 +1,10 @@
+TestNamespcase
+{
+    theory
+    {
+        proof Test$1
+        {
+            1. |- trivial
+        }
+    }
+}

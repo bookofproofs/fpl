@@ -1,6 +1,7 @@
 from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from anytree import search
 
 
 class AuxSTClass(AuxSTBlock):
@@ -21,3 +22,12 @@ class AuxSTClass(AuxSTBlock):
                 self.class_types.append("obj")
         else:
             self.class_types.append(class_type)
+
+    def get_declared_vars(self):
+        """
+        Calculates a tuple of variables declared in the scope of the node.
+        :return: tuple of declared variables.
+        """
+        # Class variables only (i.e. do not consider the sub-scopes of constructors and properties)
+        var_spec_list_node = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.var_spec)
+        return search.findall_by_attr(var_spec_list_node, AuxSymbolTable.var_decl, AuxSymbolTable.outline)

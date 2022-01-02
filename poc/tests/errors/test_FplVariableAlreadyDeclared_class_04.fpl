@@ -4,8 +4,9 @@ Test.Namespace
     {
         class Nat: obj
         {
-            Nat(x, y: Int)
+            Nat(ab, cd: Int)
             {
+                x: Nat
                 x: Nat
                 self := x
             }
@@ -15,4 +16,4 @@ Test.Namespace
 
 ##############################
 
-FplVariableDuplicateInVariableList:7:23: Variable x already listed at 7:17
+FplVariableAlreadyDeclared:10:17: The name 'x' was already declared in the current context at (9,17)

@@ -30,8 +30,8 @@ class FplMalformedGlobalIdTests(unittest.TestCase):
         "test_FplMalformedGlobalId_property_namespace.fpl"
     ])
     def test_errors(self, use_case):
-        interpreter = FplInterpreter(self.fpl_parser)
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
         # exactly one error was found

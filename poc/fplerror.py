@@ -67,12 +67,12 @@ class FplUndeclaredVariable(FplInterpreterMessage):
 
 
 class FplVariableAlreadyDeclared(FplInterpreterMessage):
-    def __init__(self, info: AuxAstInfo, other_info: AuxAstInfo, var_name: str):
+    def __init__(self, zfrom: str, other_zfrom: str, var_name: str, file_name: str):
+        s = zfrom.split(":")
+        s_other = other_zfrom.split(":")
         FplInterpreterMessage.__init__(self,
-                                       "The name '{0}' was already declared the current context at ({1},{2})".format(
-                                           var_name, str(other_info.line), str(other_info.col)),
-                                       info.line, info.col,
-                                       info.file)
+                                       "The name '{0}' was already declared in the current context at ({1},{2})".format(
+                                           var_name, s_other[0], s_other[1]), s[0], s[1], file_name)
 
 
 class FplIdentifierNotDeclared(FplInterpreterMessage):

@@ -1,0 +1,13 @@
+TestNamespcase
+{
+    theory
+    {
+        proof Test$1
+        {
+            1. assume premise
+            2. |- false
+            3. revoke /1
+            4. |- qed
+        }
+    }
+}
