@@ -27,6 +27,7 @@ from poc.classes.ContextClosedOrOpenRange import ContextClosedOrOpenRange
 from poc.classes.ContextCompoundPredicate import ContextCompoundPredicate
 from poc.classes.ContextConclusionBlock import ContextConclusionBlock
 from poc.classes.ContextConditionFollowedByResult import ContextConditionFollowedByResult
+from poc.classes.ContextConditionFollowedByResultList import ContextConditionFollowedByResultList
 from poc.classes.ContextConjunction import ContextConjunction
 from poc.classes.ContextCoord import ContextCoord
 from poc.classes.ContextCoordList import ContextCoordList
@@ -93,6 +94,7 @@ from poc.classes.ContextPremiseConclusionBlock import ContextPremiseConclusionBl
 from poc.classes.ContextPremiseOrOtherPredicate import ContextPremiseOrOtherPredicate
 from poc.classes.ContextPredicateDefinitionBlock import ContextPredicateDefinitionBlock
 from poc.classes.ContextPredicateIdentifier import ContextPredicateIdentifier
+from poc.classes.ContextPredicateList import ContextPredicateList
 from poc.classes.ContextPrimePredicate import ContextPrimePredicate
 from poc.classes.ContextProof import ContextProof
 from poc.classes.ContextProofArgument import ContextProofArgument
@@ -175,6 +177,7 @@ class FPLSyntaxAnalyzer:
             "BuildingBlockList": self.default_interpretation,
             "CallModifier": self.default_interpretation,
             "case": self.default_interpretation,
+            "cases": self.default_interpretation,
             "CaseStatement": ContextCaseStatement.dispatch,
             "cl": self.default_interpretation,
             "class": self.default_interpretation,
@@ -192,7 +195,7 @@ class FPLSyntaxAnalyzer:
             "ConclusionBlock": ContextConclusionBlock.dispatch,
             "ConclusionHeader": ContextConclusionHeader.dispatch,
             "ConditionFollowedByResult": ContextConditionFollowedByResult.dispatch,
-            "ConditionFollowedByResultList": self.default_interpretation,
+            "ConditionFollowedByResultList": ContextConditionFollowedByResultList.dispatch,
             "conj": self.default_interpretation,
             "conjecture": self.default_interpretation,
             "Conjunction": ContextConjunction.dispatch,
@@ -215,6 +218,7 @@ class FPLSyntaxAnalyzer:
             "DefinitionProperty": ContextDefinitionProperty.dispatch,
             "DerivedPredicate": ContextDerivedPredicate.dispatch,
             "Digit": self.default_interpretation,
+            "DigitIdSmallCase": self.default_interpretation,
             "Disjunction": ContextDisjunction.dispatch,
             "Dollar": self.default_interpretation,
             "DollarDigitList": ContextDollarDigitList.dispatch,
@@ -318,7 +322,7 @@ class FPLSyntaxAnalyzer:
             "PredicateIdentifier": ContextPredicateIdentifier.dispatch,
             "PredicateInstance": ContextPredicateInstance.dispatch,
             "PredicateInstanceBlock": ContextPredicateInstanceBlock.dispatch,
-            "PredicateList": self.default_interpretation,
+            "PredicateList": ContextPredicateList.dispatch,
             "PredicateWithArguments": ContextPredicateWithArguments.dispatch,
             "premise": self.default_interpretation,
             "PremiseBlock": ContextPremiseBlock.dispatch,

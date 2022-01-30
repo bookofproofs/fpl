@@ -17,11 +17,15 @@ class ContextIsOperator(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Identifier":
             self.predicate.register_child(parsing_info.predicate)
+        elif rule == "IndexValue":
+            self.predicate.register_child(parsing_info.predicate)  # noqa
         elif rule == "GeneralType":
             self.predicate.register_child(parsing_info.generalType)  # noqa
         elif rule == "IdStartsWithSmallCase":
             if hasattr(self.predicate, "reference") and hasattr(self.predicate, "referenced_type"):
                 self.stop_aggregation = True
+        elif rule == "is":
+            self.stop_aggregation = True
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

@@ -1,0 +1,14 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            x
+        }
+    }
+}
+
+##############################
+
+FplUndeclaredVariable:7:13: The name 'x' does not exist in the current context

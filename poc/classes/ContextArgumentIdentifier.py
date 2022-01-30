@@ -19,7 +19,7 @@ class ContextArgumentIdentifier(AuxInterpretation):
         if rule == "Digit":
             self.id = parsing_info.get_cst() + self.id
             self.stop_aggregation = True
-        elif rule == "IdStartsWithSmallCase":
+        elif rule == "DigitIdSmallCase":
             self.id = parsing_info.get_cst() + self.id
 
     @staticmethod

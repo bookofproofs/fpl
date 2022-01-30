@@ -31,7 +31,10 @@ class TypeTests(unittest.TestCase):
         "test_types_class_01.fpl",
         "test_types_class_02.fpl",
         "test_types_class_03.fpl",
-        "test_types_var_01.fpl",
+        "test_types_isOperator_01.fpl",
+        "test_types_var_decl_01.fpl",
+        "test_types_var_decl_02.fpl",
+        "test_types_var_decl_03.fpl",
     ])
     def test_possibilities(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_use_cases, use_case)

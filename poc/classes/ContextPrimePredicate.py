@@ -22,6 +22,8 @@ class ContextPrimePredicate(AuxInterpretation):
             self.predicate = parsing_info.predicate  # noqa
         elif rule == "Statement":
             self.predicate = parsing_info.statement  # noqa
+        elif rule == "IndexValue":
+            self.predicate = parsing_info.predicate  # noqa
         elif rule == "Identifier":
             self.predicate = parsing_info.predicate  # noqa
         elif rule == "IsOperator":
@@ -37,6 +39,7 @@ class ContextPrimePredicate(AuxInterpretation):
         elif rule == "extDigit":
             self.predicate = AuxSTPredicate(AuxSymbolTable.extDigit, self._i)
             self.predicate.id = parsing_info.get_cst()
+        self.stop_aggregation = True
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

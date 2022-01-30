@@ -14,12 +14,14 @@ class ContextAssignee(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self.predicate = None
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["Assignee"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["Assignee"]+["CoordList"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "EntityWithCoord":
             self.predicate = parsing_info.predicate  # noqa
         elif rule == "Entity":
+            self.predicate = parsing_info.predicate  # noqa
+        elif rule == "CoordList":
             self.predicate = parsing_info.predicate  # noqa
 
     @staticmethod

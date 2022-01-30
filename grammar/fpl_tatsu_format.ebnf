@@ -1,4 +1,4 @@
-# fpl Version 1.1.4
+# fpl Version 1.1.5
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -283,6 +283,7 @@
         (
         ParenthesisedGeneralType
         | GeneralType
+        | IndexHeader
         )
         ;
 
@@ -291,7 +292,6 @@
         (
         TypeWithCoord
         | Type
-        | IndexHeader
         )
         ;
 
@@ -357,7 +357,7 @@
     PredicateInstanceBlock =
         LeftBrace
         { CW }* [ VariableSpecificationList ]
-        { CW }* Predicate
+        { CW }* [ Predicate ]
         { CW }* RightBrace
         ;
 
@@ -562,13 +562,13 @@
 
     InstanceBlock =
         LeftBrace
-        { CW }* VariableSpecificationList
+        { CW }* [ VariableSpecificationList ]
         { CW }* RightBrace
         ;
 
 
 # ----------------------------------------------------------------
-    @@keyword :: else case
+    @@keyword :: else case cases
 
     Signature =
         PredicateIdentifier
@@ -610,6 +610,7 @@
     CoordInType =
         (
         PredicateWithArguments
+        | IndexValue
         | Variable
         )
         ;
@@ -640,8 +641,8 @@
 
     Coord =
         (
-        Assignee
-        | PrimePredicate
+        PrimePredicate
+        | Assignee
         )
         ;
 
@@ -670,7 +671,10 @@
         ;
 
     ConditionFollowedByResult =
-        Predicate { CW }* Colon { CW }* StatementList
+        case
+        SW Predicate
+        [ IW ] Colon
+        { CW }* StatementList
         ;
 
     At =
@@ -943,16 +947,17 @@
 
     Predicate =
         (
-        CompoundPredicate
-        | PrimePredicate
+        PrimePredicate
+        | CompoundPredicate
         )
         ;
 
     PrimePredicate =
         (
-        PredicateWithArguments
-        | QualifiedIdentifier
+        QualifiedIdentifier
+        | PredicateWithArguments
         | Statement
+        | IndexValue
         | Identifier
         | IsOperator
         | true
@@ -977,7 +982,6 @@
     Identifier =
         (
         PredicateIdentifier
-        | IndexValue
         | Assignee
         )
         ;
@@ -1011,7 +1015,7 @@
     IsOperator =
         is
         [ IW ] LeftParen
-        { CW }* Identifier
+        { CW }* ( IndexValue | Identifier )
         { CW }* Comma
         [ IW ] GeneralType
         [ IW ] RightParen
@@ -1155,7 +1159,7 @@
         ;
 
     CaseStatement =
-        case
+        cases
         { CW }* LeftParen
         { CW }* ConditionFollowedByResultList
         { CW }* DefaultResult
@@ -1215,7 +1219,9 @@
         ;
 
     DefaultResult =
-        else [ IW ] Colon { CW }* StatementList
+        else
+        [ IW ] Colon
+        { CW }* StatementList
         ;
 
     AssignmentStatement =
@@ -1271,6 +1277,10 @@
         "case"
         ;
 
+    cases =
+        "cases"
+        ;
+
 
 # ----------------------------------------------------------------
 # names and identifiers
@@ -1313,9 +1323,13 @@
 
     ArgumentIdentifier =
         (
-        Digit IdStartsWithSmallCase
+        DigitIdSmallCase
         | Digit
         )
+        ;
+
+    DigitIdSmallCase =
+        /\d+[a-z][a-z0-9A-Z_]*/
         ;
 
     WildcardTheoryNamespace =

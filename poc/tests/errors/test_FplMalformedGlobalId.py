@@ -43,9 +43,9 @@ class FplMalformedGlobalIdTests(unittest.TestCase):
         "test_FplMalformedGlobalId_constructor_is_ok",
     ])
     def test_negative(self, use_case):
-        interpreter = FplInterpreter(self.fpl_parser)
-        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
         # since the name of the constructor is (in FPL always) the same as the name of the class,
         # it should never trigger the FplMalformedGlobalId error

@@ -15,7 +15,7 @@ class ContextSignature(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateIdentifier":
             self.symbol_signature.set_id(parsing_info.id)
-            self.symbol_signature.zfrom = self._i.corrected_zfrom_by(self.symbol_signature.zfrom, len(parsing_info.id))
+            self.symbol_signature.zfrom = self._i.corrected_zpos_by(self.symbol_signature.zfrom, len(parsing_info.id))
             self.stop_aggregation = True
         elif rule == "ParamTuple":
             self.symbol_signature.set_params(parsing_info.tuple)

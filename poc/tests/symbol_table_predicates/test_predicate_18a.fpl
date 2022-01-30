@@ -1,0 +1,61 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test445()
+        {
+            not
+            (
+                cases
+                (
+                    case true:
+                        assert true
+                    case self.self():
+                        assert 61648
+                    else:
+                        assert 90285
+                )
+            )
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test445[]', id='Test445[]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='7f98d05f5c7cb2cfd66ad47d9038d66d', file_name='test_predicate_18a.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test445[]', keyword='pred', outline='definition', zfrom='5:9:42', zto='19:9:382')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:22:55')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicate(outline='not', zfrom='7:13:79', zto='18:13:372')
+    │       │   └── AuxSTStatement(outline='statement', type='cases', zfrom='13:21:224', zto='17:17:358')
+    │       │       ├── AuxSTStatement(outline='statement', type='case', zfrom='11:26:162', zto='13:20:223')
+    │       │       │   ├── AuxSTPredicate(outline='true', zfrom='11:26:162', zto='11:29:165')
+    │       │       │   └── AuxSTVarSpecList(outline='specificationList')
+    │       │       │       └── AuxSTStatement(outline='statement', type='assert', zfrom='12:25:192', zto='12:35:202')
+    │       │       │           └── AuxSTPredicate(outline='true', zfrom='12:32:199', zto='12:35:202')
+    │       │       ├── AuxSTStatement(outline='statement', type='case', zfrom='13:26:229', zto='15:20:298')
+    │       │       │   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='13:26:229', zto='13:29:232')
+    │       │       │   │   └── AuxSTQualified(outline='qualified', zfrom='13:30:233', zto='13:30:233')
+    │       │       │   │       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='13:31:234', zto='13:36:239')
+    │       │       │   │           └── AuxSTArgs(outline='arguments', zfrom='13:35:238', zto='13:36:239')
+    │       │       │   └── AuxSTVarSpecList(outline='specificationList')
+    │       │       │       └── AuxSTStatement(outline='statement', type='assert', zfrom='14:25:266', zto='14:36:277')
+    │       │       │           └── AuxSTPredicate(id='61648', outline='extDigit', zfrom='14:32:273', zto='14:36:277')
+    │       │       └── AuxSTStatement(outline='statement', type='else', zfrom='15:21:299', zto='17:16:357')
+    │       │           └── AuxSTVarSpecList(outline='specificationList')
+    │       │               └── AuxSTStatement(outline='statement', type='assert', zfrom='16:25:329', zto='16:36:340')
+    │       │                   └── AuxSTPredicate(id='90285', outline='extDigit', zfrom='16:32:336', zto='16:36:340')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

@@ -6,21 +6,20 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTArgumentParam import AuxSTArgumentParam
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
 class ContextArgumentParam(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSymbolTable.arg_id, i)
+        self.predicate = AuxSTArgumentParam(i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["ArgumentParam"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "ArgumentIdentifier":
-            self.predicate.set_id(parsing_info.id)
+            self.predicate.id = parsing_info.id
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

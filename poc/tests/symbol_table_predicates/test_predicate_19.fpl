@@ -1,0 +1,55 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test445a()
+        {
+            self.self(self.self().self(80928).self(6386,784),3).self().self()
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test445a[]', id='Test445a[]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='14ea866582dcd5cec68f0c9a04fc5476', file_name='test_predicate_19.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test445a[]', keyword='pred', outline='definition', zfrom='5:9:42', zto='8:9:154')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:23:56')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:13:80', zto='7:16:83')
+    │       │   └── AuxSTQualified(outline='qualified', zfrom='7:17:84', zto='7:17:84')
+    │       │       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:18:85', zto='7:63:130')
+    │       │           ├── AuxSTArgs(outline='arguments', zfrom='7:22:89', zto='7:63:130')
+    │       │           │   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:23:90', zto='7:26:93')
+    │       │           │   │   └── AuxSTQualified(outline='qualified', zfrom='7:27:94', zto='7:27:94')
+    │       │           │   │       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:28:95', zto='7:33:100')
+    │       │           │   │           ├── AuxSTArgs(outline='arguments', zfrom='7:32:99', zto='7:33:100')
+    │       │           │   │           └── AuxSTQualified(outline='qualified', zfrom='7:34:101', zto='7:34:101')
+    │       │           │   │               └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:35:102', zto='7:45:112')
+    │       │           │   │                   ├── AuxSTArgs(outline='arguments', zfrom='7:39:106', zto='7:45:112')
+    │       │           │   │                   │   └── AuxSTPredicate(id='80928', outline='extDigit', zfrom='7:40:107', zto='7:44:111')
+    │       │           │   │                   └── AuxSTQualified(outline='qualified', zfrom='7:46:113', zto='7:46:113')
+    │       │           │   │                       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:47:114', zto='7:60:127')
+    │       │           │   │                           └── AuxSTArgs(outline='arguments', zfrom='7:51:118', zto='7:60:127')
+    │       │           │   │                               ├── AuxSTPredicate(id='6386', outline='extDigit', zfrom='7:52:119', zto='7:55:122')
+    │       │           │   │                               └── AuxSTPredicate(id='784', outline='extDigit', zfrom='7:57:124', zto='7:59:126')
+    │       │           │   └── AuxSTPredicate(id='3', outline='extDigit', zfrom='7:62:129', zto='7:62:129')
+    │       │           └── AuxSTQualified(outline='qualified', zfrom='7:64:131', zto='7:64:131')
+    │       │               └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:65:132', zto='7:70:137')
+    │       │                   ├── AuxSTArgs(outline='arguments', zfrom='7:69:136', zto='7:70:137')
+    │       │                   └── AuxSTQualified(outline='qualified', zfrom='7:71:138', zto='7:71:138')
+    │       │                       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7:72:139', zto='7:77:144')
+    │       │                           └── AuxSTArgs(outline='arguments', zfrom='7:76:143', zto='7:77:144')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

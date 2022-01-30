@@ -6,23 +6,33 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSTQualified import AuxSTQualified
 
 
 class ContextQualifiedIdentifier(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self.predicate = None
+        self._i = i
+        self._sub = []
+        self._current = None
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["QualifiedIdentifier"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Identifier":
-            self.predicate.id = parsing_info.predicate.id + self.predicate.id
+            self.predicate = parsing_info.predicate
+            self._current = self.predicate
+            for pred in reversed(self._sub):
+                dot = AuxSTQualified(self._i)
+                dot.zfrom = self._i.corrected_zpos_by(pred.zfrom, 1)
+                dot.zto = dot.zfrom
+                dot.register_child(pred)
+                self._current.register_child(dot)
+                self._current = pred
             self.stop_aggregation = True
-        elif rule == "Dot":
-            self.predicate.id = parsing_info.get_ast_info().cst + self.predicate.id
         elif rule == "PredicateWithArguments":
-            self.predicate = parsing_info.predicate  # noqa
+            self._sub.append(parsing_info.predicate)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

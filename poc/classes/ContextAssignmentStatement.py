@@ -16,10 +16,11 @@ class ContextAssignmentStatement(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self.statement = AuxSTStatement(AuxSymbolTable.statement_assign, i)
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["AssignmentStatement"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["AssignmentStatement"] +
+                                      ["Identifier"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
-        if rule == "Assignee":
+        if rule == "Assignee" or rule == "Identifier":
             self.statement.register_child(parsing_info.predicate)  # noqa
             self.stop_aggregation = True
         elif rule == "Predicate":

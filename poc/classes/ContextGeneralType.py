@@ -1,14 +1,13 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxSTType import AuxSTType
-from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
 class ContextGeneralType(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
-        super().__init__(i.ast_info, i.errors)
+        super().__init__(i.ast_info, i.errors)  # noqa
         self.generalType = AuxSTType(i)
         self.generalType.type_mod = None
         self.generalType.type_pattern = 0
@@ -23,15 +22,12 @@ class ContextGeneralType(AuxInterpretation):
             self.generalType.id = parsing_info.id  # noqa
             self.generalType.type_pattern = parsing_info.type_pattern  # noqa
         elif rule == "TypeWithCoord":
-            for node in parsing_info.rangeOrCoord.children:  # noqa
-                self.generalType.register_child(node)
-        elif rule in ["IndexHeader"]:
-            self.generalType.id = parsing_info.id
-            self.generalType.type_pattern = 0
-            self.generalType.type_pattern = self.generalType.type_pattern | AuxBits.isIndex
+            if parsing_info.type is not None:  # noqa
+                self.generalType.id = parsing_info.type.id  # noqa
+                self.generalType.type_pattern = parsing_info.type.type_pattern  # noqa
+            self.generalType.register_child(parsing_info.rangeOrCoord)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextGeneralType(i)
         i.parse_list.append(new_info)
-

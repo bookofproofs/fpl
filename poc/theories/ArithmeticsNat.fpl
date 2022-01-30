@@ -80,13 +80,13 @@ Fpl.Arithmetics.Nat.Peano
         {
             Nat(x: @extDecimal)
             {
-                case
+                cases
                 (
-                    Equals(x,0) :
+                    case Equals(x,0) :
                         self := Zero()
-                    Equals(x,1) :
+                    case Equals(x,1) :
                         self := Succ(Zero())
-                    Equals(x,2) :
+                    case Equals(x,2) :
                         self := Succ(Succ(Zero()))
                     else:
                         // else case addressed using a python delegate
@@ -96,9 +96,9 @@ Fpl.Arithmetics.Nat.Peano
 
             Nat(x: Int)
             {
-                case
+                cases
                 (
-                    IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                    case IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
                         self:=x.RightMember()
                     else:
                         self:=undefined
@@ -139,11 +139,11 @@ Fpl.Arithmetics.Nat.Peano
         func Add(n,m: Nat)->Nat
         {
             k: Nat
-            case
+            cases
             (
-                Equals(m,0):
+                case Equals(m,0):
                     return n
-                Equals(Succ(m), k):
+                case Equals(Succ(m), k):
                     return Succ(Add(n,k))
                 else:
                     return undef

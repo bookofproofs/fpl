@@ -16,17 +16,16 @@ class ContextPythonDelegate(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self.statement = AuxSTStatement(AuxSymbolTable.statement_py, i)
-        self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["PythonDelegate"] +
-                                      AuxRuleDependencies.dep["PredicateList"], self.rule_aggregator)
+        self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["PythonDelegate"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "py":
             self.stop_aggregation = True
         elif rule == "PythonIdentifier":
             self.statement.id = parsing_info.id
-        elif rule == "Predicate":
-            self.statement.register_child(parsing_info.predicate)  # noqa
+        elif rule == "PredicateList":
+            for pinfo in parsing_info.prd_list:  # noqa
+                self.statement.register_child(pinfo.predicate)
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

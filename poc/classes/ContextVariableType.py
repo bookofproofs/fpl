@@ -1,7 +1,7 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxBits import AuxBits
 
 
 class ContextVariableType(AuxInterpretation):
@@ -19,12 +19,18 @@ class ContextVariableType(AuxInterpretation):
         elif rule == "ParenthesisedGeneralType":
             self.generalType = parse_info.generalType  # noqa
             self.paramTuple = parse_info.paramTuple  # noqa
+        elif rule == "ParenthesisedGeneralType":
+            self.generalType = parse_info.generalType  # noqa
+            self.paramTuple = parse_info.paramTuple  # noqa
+        elif rule == "IndexHeader":
+            self.generalType = parse_info.indexType  # noqa
         self.stop_aggregation = True
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         var_type_info = ContextVariableType(i)
-        var_type_info.var_type = var_type_info.generalType
-        var_type_info.var_type.set_type(var_type_info)
-        var_type_info.var_type.make()
+        if var_type_info.generalType is not None:
+            var_type_info.var_type = var_type_info.generalType
+            var_type_info.var_type.set_type(var_type_info)
+            var_type_info.var_type.make()
         i.parse_list.append(var_type_info)

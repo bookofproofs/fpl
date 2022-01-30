@@ -203,9 +203,9 @@ Fpl.Algebra.Structures
             n: Nat
             ) -> tplSetElem
         {
-            case
+            cases
             (
-                Equals(n,0):
+                case Equals(n,0):
                     return m.NeutralElem()
                 else:
                     return

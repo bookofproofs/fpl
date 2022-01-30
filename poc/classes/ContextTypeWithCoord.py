@@ -16,6 +16,7 @@ class ContextTypeWithCoord(AuxInterpretation):
         self.type = None
         self.rangeOrCoord = None
         self._right_bound_included = True
+        self._zto = None
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["TypeWithCoord"], self.rule_aggregator)
 
@@ -23,14 +24,17 @@ class ContextTypeWithCoord(AuxInterpretation):
         if rule == "Type":
             self.type = parsing_info
         elif rule == "LeftBound":
-            self.rangeOrCoord.left_bound_included = parsing_info.bound_included  # noqa
+            self.rangeOrCoord.left_included = parsing_info.bound_included  # noqa
+            self.rangeOrCoord.zfrom = parsing_info.zfrom
         elif rule == "RangeInType":
             self.rangeOrCoord = parsing_info.range  # noqa
-            self.rangeOrCoord.right_bound_included = self._right_bound_included
+            self.rangeOrCoord.zto = self._zto
+            self.rangeOrCoord.right_included = self._right_bound_included
         elif rule == "CoordInType":
             self.rangeOrCoord = parsing_info.predicate  # noqa
         elif rule == "RightBound":
             self._right_bound_included = parsing_info.bound_included  # noqa
+            self._zto = parsing_info.zto
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

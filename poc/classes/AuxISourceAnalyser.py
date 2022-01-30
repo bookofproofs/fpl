@@ -38,6 +38,6 @@ class AuxISourceAnalyser:
         ast_info.col = ast_info.col - offset
         return ast_info.pos_to_str()
 
-    def corrected_zfrom_by(self, zfrom: str, offset: int):
-        s = zfrom.split(":")
+    def corrected_zpos_by(self, zpos: str, offset: int):
+        s = zpos.split(":")
         return ":".join([s[0], str(int(s[1]) - offset), str(int(s[2]) - offset)])

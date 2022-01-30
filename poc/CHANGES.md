@@ -91,7 +91,19 @@ Initial interpreter
 ## 1.4.2
 * Bugfix zfrom index, including all affected testcases 
 * Bugfix def_type property of instances changed from (class / predicate / functional term) "declarations" to "instances"
-* Calculation of declared variables in different scopes
+* Identification of declared variables in different scopes
 * Added checks for FplVariableAlreadyDeclared errors and corresponding tests
 * Implemented ContextRevokeHeader and ContextRevoke
 * Implemented zfrom and zto positions of two additional predicate types: preReferenced and arg_id
+## 1.4.3
+* Bug fixes: 
+** More robustness of the syntax analyzer using random derivations of FPL grammar, test cases include:
+*** random predicate derivations
+*** random types in variable declarations (both in a signature or in a block)
+*** random types of classes
+*** random types of properties
+*** random types of images of functional terms
+* Types in the symbol table are now listed separately (AuxSTType) and not inline because they can have complex own structures. 
+* Corrected expected values of all relevant test use cases according to the above redesign
+* Arguments of PredicateWithArguments summarized in a separate node AuxSTArgs 
+* Coordinates of EntityWithCoords summarized in a separate node AuxSTCoords 

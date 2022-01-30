@@ -16,6 +16,7 @@ class ContextIndexValue(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self.predicate = AuxSTPredicate(AuxSymbolTable.index_value, i)
+        self._i = i
         self._sub_index = None
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["IndexValue"], self.rule_aggregator)
@@ -25,6 +26,7 @@ class ContextIndexValue(AuxInterpretation):
             # register the index
             parsing_info.predicate.register_child(self._sub_index)  # noqa
             self.predicate.register_child(parsing_info.predicate)  # noqa
+            self.predicate.set_id(parsing_info.predicate.id + self._sub_index.id)
             # correct the starting position of the derivation
             self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
             self.stop_aggregation = True
@@ -33,8 +35,8 @@ class ContextIndexValue(AuxInterpretation):
             self._sub_index = parsing_info.var  # noqa
         elif rule == "Digit":
             # remember the sub index
-            self._sub_index = AuxSTPredicate(AuxSymbolTable.digit)
-            self._sub_index.value = int(str(parsing_info.get_cst()))
+            self._sub_index = AuxSTPredicate(AuxSymbolTable.digit, self._i)
+            self._sub_index.set_id(parsing_info.get_cst())
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

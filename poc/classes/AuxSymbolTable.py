@@ -18,7 +18,7 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 
 
 class AuxSymbolTable:
-    aliasId = "aliasid"  # noqa
+    arg_list = "arguments"
     block_def = "definition"
     block_def_root = "definitions"
     block_thm = "theorem"
@@ -47,13 +47,12 @@ class AuxSymbolTable:
     classInstance = "classInstance"
     con = "con"
     content = "content"
-    coord_list = "coordinates"
+    coordinates = "coordinates"
     digit = "digit"
     ebnf_factor = "EBNFFactor"
     ebnf_string = "EBNFString"
     ebnf_term = "EBNFTerm"
     ebnf_transl = "EBNFTransl"
-    entity_with_coord = "entity[]"
     entity = "entity"
     extDigit = "extDigit"
     file = "file"
@@ -93,6 +92,7 @@ class AuxSymbolTable:
     properties = "properties"
     proofArgument = "argument"
     proofArgument_root = "arguments"
+    qualified = "qualified"
     optional = "optional"
     outline = "outline"
     property = "property"
@@ -273,23 +273,23 @@ class AuxSymbolTable:
     def add_vars_to_node(i, parent: AuxSTOutline, named_var_declaration):
         distinct_vars = dict()
         ast_info = named_var_declaration.get_ast_info()
-        for var in reversed(named_var_declaration.var_list):
-            if var.var.id in distinct_vars:
-                named_var_declaration.all_errors().append(
-                    poc.fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var, ast_info.file))
-            else:
-                distinct_vars[var.var.id] = var.var
-            var_dec = AuxSTVarDec(i)
-            var_dec.zto = named_var_declaration.zto
-            var_dec.zfrom = named_var_declaration.zfrom
-            var_dec.id = var.var.id
-            var_dec.parent = parent
-            var_dec.type = named_var_declaration.var_type.generalType.id
-            var_dec.type_pattern = named_var_declaration.var_type.generalType.type_pattern
-            var_dec.type_mod = named_var_declaration.var_type.generalType.type_mod
-            if named_var_declaration.var_type.paramTuple is not None:
-                for next_var_decl in named_var_declaration.var_type.paramTuple.tuple:  # noqa
-                    AuxSymbolTable.add_vars_to_node(i, var_dec, next_var_decl)
+        if named_var_declaration.var_list is not None:
+            for var in reversed(named_var_declaration.var_list):
+                if var.var.id in distinct_vars:
+                    named_var_declaration.all_errors().append(
+                        poc.fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var, ast_info.file))
+                else:
+                    distinct_vars[var.var.id] = var.var
+                var_dec = AuxSTVarDec(i)
+                var_dec.zto = named_var_declaration.zto
+                var_dec.zfrom = named_var_declaration.zfrom
+                var_dec.id = var.var.id
+                var_dec.parent = parent
+                cloned_type = named_var_declaration.var_type.generalType.clone()
+                cloned_type.parent = var_dec
+                if named_var_declaration.var_type.paramTuple is not None:
+                    for next_var_decl in named_var_declaration.var_type.paramTuple.tuple:  # noqa
+                        AuxSymbolTable.add_vars_to_node(i, var_dec, next_var_decl)
 
     @staticmethod
     def get_theory_by_filename(root: AnyNode, theory_file_name: str):

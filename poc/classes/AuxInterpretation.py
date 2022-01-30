@@ -1,4 +1,5 @@
 from poc.classes.AuxAstInfo import AuxAstInfo
+from poc.classes.AuxPos import AuxPos
 
 """
 The class AuxInterpretation is the base class of all semantical interpretations that are possible in FPL
@@ -13,6 +14,11 @@ class AuxInterpretation:
         self._errors = errors  # a pointer to all the errors of the semantics, so we can add new errors to this list
         # internal semantical representation of the rule
         self.id = ""
+        self.zto = AuxPos()
+        self.zfrom = AuxPos()
+        self.zto.col = self.zfrom.col = ast_info.col + 1
+        self.zto.line = self.zfrom.line = ast_info.line
+        self.zto.pos = self.zfrom.pos = ast_info.pos + 1
         # some rules require stopping the aggregation of sub rules from the parse list after a certain
         # sub rule was aggregated. This flag will be set to true in the specific rule_aggregator implementation
         # of the class inheriting from AuxInterpretation
@@ -30,7 +36,7 @@ class AuxInterpretation:
         """ Current parsing column in the parsed file """
         return self._ast_info.col
 
-    def set_rule(self, rule:str):
+    def set_rule(self, rule: str):
         self._ast_info.rule = rule
 
     def rule_line(self):

@@ -40,5 +40,13 @@ class SemAnalyzer:
                                                         self._current_filename))
 
     def __check_undeclared_var_usages(self, declared_vars, used_vars):
-        pass
+        all_declared_var_ids = set()
+        for var_node in declared_vars:
+            if var_node.id not in all_declared_var_ids:
+                all_declared_var_ids.add(var_node.id)
 
+        for var_node in used_vars:
+            if var_node.id not in all_declared_var_ids:
+                self.errors.append(
+                    fplerror.FplUndeclaredVariable(var_node.zfrom, var_node.id, self._current_filename)
+                )

@@ -16,19 +16,16 @@ class ContextDisjunction(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self.predicate = AuxSTPredicate(AuxSymbolTable.predicate_disjunction, i)
-        self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["Disjunction"] + AuxRuleDependencies.dep["PredicateList"],
-                                      self.rule_aggregator)
+        self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["Disjunction"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
-        if rule == "Predicate":
-            self.predicate.register_child(parsing_info.predicate)
+        if rule == "PredicateList":
+            for pinfo in parsing_info.prd_list:  # noqa
+                self.predicate.register_child(pinfo.predicate)
         elif rule == "or":
             self.stop_aggregation = True
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextDisjunction(i)
-        # order the children like they appear the FPL source code, not like they were parsed
-        new_info.predicate.children = reversed(new_info.predicate.children)
         i.parse_list.append(new_info)

@@ -20,10 +20,11 @@ class ContextConditionFollowedByResult(AuxInterpretation):
                                       AuxRuleDependencies.dep["ConditionFollowedByResult"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
-        if rule == "Predicate":
+        if rule == "case":
+            self.stop_aggregation = True
+        elif rule == "Predicate":
             self.statement.register_child(parsing_info.predicate)  # noqa
             self.statement.zfrom = parsing_info.predicate.zfrom
-            self.stop_aggregation = True
         elif rule == "StatementList":
             stmt_list = AuxSTVarSpecList()
             for stmt in parsing_info.statement_list:  # noqa

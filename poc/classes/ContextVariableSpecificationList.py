@@ -13,7 +13,7 @@ from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 class ContextVariableSpecificationList(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
-        super().__init__(i.ast_info, i.errors)
+        super().__init__(i.ast_info, i.errors)  # noqa
         self.variable_spec = AuxSTVarSpecList()
         self._i = i
         self.aggregate_previous_rules(i.parse_list,
@@ -24,8 +24,9 @@ class ContextVariableSpecificationList(AuxInterpretation):
             if parsing_info.named_var_declaration is not None:  # noqa
                 # we have variable declaration and register all its variables as a single variable declaration node
                 # in the symbol table
-                parsing_info.named_var_declaration.var_list.reverse()
-                AuxSymbolTable.add_vars_to_node(self._i, self.variable_spec, parsing_info.named_var_declaration)
+                if parsing_info.named_var_declaration.var_list is not None:
+                    parsing_info.named_var_declaration.var_list.reverse()  # noqa
+                AuxSymbolTable.add_vars_to_node(self._i, self.variable_spec, parsing_info.named_var_declaration)  # noqa
             else:
                 # we have a statement and register it as a single statement node in the symbol table
                 parsing_info.statement.parent = self.variable_spec  # noqa

@@ -39,3 +39,12 @@ class AuxSTStatement(AuxST):
             self.zto = i.last_positions_by_rule['ConditionFollowedByResult'].pos_to_str()
         else:
             raise NotImplementedError(statement_type)
+
+    def clone(self):
+        other = AuxSTStatement(self.type, self._i)
+        other.zto = self.zto
+        other.zfrom = self.zfrom
+        for child in self.children:
+            child_clone = child.clone()
+            child_clone.parent = other
+        return other
