@@ -18,7 +18,8 @@ class AuxST(AuxSTOutline):
     """
 
     def __init__(self, outline: str, i):
-        super().__init__(parent=None, outline=outline)
+        super().__init__(parent=None, outline=outline)  # noqa
+        self._i = i
         self._errors = i.errors
         self.zto = ""
         self.zfrom = ""
@@ -30,6 +31,9 @@ class AuxST(AuxSTOutline):
 
     def get_errors(self):
         return self._errors
+
+    def to_string(self):
+        return "AuxST"
 
 
 class AuxSTBlock(AuxST):

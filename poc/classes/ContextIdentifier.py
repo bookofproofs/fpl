@@ -14,22 +14,28 @@ class ContextIdentifier(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = None
+        self.predicate = AuxSTPredicate(AuxSymbolTable.ids, i)
+        self.predicate.set_id("")
         self._i = i
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["Identifier"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["Identifier"] + ["VariableList"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateIdentifier":
             # wrap the identifier for the symbol table
-            self.predicate = AuxSTPredicate(AuxSymbolTable.ids, self._i)
             self.predicate.set_id(parsing_info.id)
-            self.stop_aggregation = True
-        elif rule == "IndexValue":
-            self.predicate = parsing_info.predicate  # noqa
+            self.predicate.zfrom = str(parsing_info.zfrom)
+            self.predicate.zto = str(parsing_info.zto)
             self.stop_aggregation = True
         elif rule == "Assignee":
             self.predicate = parsing_info.predicate  # noqa
+            if not hasattr(self.predicate, "id"):
+                if self.predicate is not None:
+                    if hasattr(self.predicate, "set_id"):
+                        self.predicate.set_id("")  # assignees must have an id, even if anonymous
+            self.stop_aggregation = True
+        elif rule == "VariableList":
+            self.predicate = parsing_info.var_list[0].var  # noqa
             self.stop_aggregation = True
 
     @staticmethod

@@ -129,7 +129,7 @@ class AuxPrettifier:
                         self._append_indented(ast_info.cst)
                         self._increase_indent()  # increase indent after an assert keyword
                         self._append_indented("")
-                    elif ast_info.cst == "case":
+                    elif ast_info.cst == "cases":
                         self._replace_long_by_short(ast_info.cst, ast_info.cst, line_separator="", indent=False)
                         self._context.push_context(AuxContext.case)
                         self._context.push_context(AuxContext.dolinebreaks)

@@ -6,14 +6,18 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTRange import AuxSTRange
+from poc.classes.AuxSTPredicate import AuxSTPredicate
 
 
 class ContextRangeOrLoopBody(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.varCounter = None
-        self.varRange = None
+        self.varCounter = AuxSTPredicate(AuxSymbolTable.ids, i)
+        self.varCounter.set_id("")
+        self.varRange = AuxSTRange(i)
         self.statement_list = None
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["RangeOrLoopBody"], self.rule_aggregator)
@@ -23,7 +27,10 @@ class ContextRangeOrLoopBody(AuxInterpretation):
             self.varCounter = parsing_info.predicate  # noqa
             self.stop_aggregation = True
         elif rule == "VariableRange":
-            self.varRange = parsing_info.predicate  # noqa
+            if type(parsing_info.predicate) is AuxSTRange:
+                self.varRange = parsing_info.predicate
+            else:
+                self.varRange.register_child(parsing_info.predicate)  # noqa
         elif rule == "StatementList":
             self.statement_list = parsing_info.statement_list  # noqa
 

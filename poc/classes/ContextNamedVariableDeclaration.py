@@ -18,6 +18,7 @@ class ContextNamedVariableDeclaration(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "VariableList":
             self.var_list = parsing_info.var_list  # noqa
+            self.zfrom = self.var_list[-1].var.zfrom
         elif rule == "VariableType":
             self.var_type = parsing_info
 
@@ -47,5 +48,4 @@ class ContextNamedVariableDeclaration(AuxInterpretation):
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextNamedVariableDeclaration(i)
         new_info.zto = i.last_positions_by_rule['NamedVariableDeclaration'].pos_to_str()
-        new_info.zfrom = new_info.var_list[-1].var.zfrom
         i.parse_list.append(new_info)

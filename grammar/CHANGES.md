@@ -48,5 +48,16 @@ Initial grammar
 * Separated a new rule CorollaryHeader from TheoremLikeStatementOrConjectureHeader
 * Added rule DollarDigitList to enable nesting of corollaries.
 * Replaced VariableList by PredicateList in PythonDelegate (generalization)
-* ## 1.1.4
+## 1.1.4
 * Added intermediate rule ClassSignature in DefinitionClass
+## 1.1.5
+* Moved IndexHeader from GeneralType to VariableType to syntactically prevent (illegal) parenthesized "index()" or variadic "+index" types.
+* Changed the order of PrimePredicate and Assignee in Coord to parse longer prime predicates first using TatSu
+* Changed the order of QualifiedIdentifier and PredicateWithArguments in PrimePredicate to parse longer prime predicates first using TatSu
+* Introduced DigitIdSmallCase to enable using of concatenations of digits followed by strings (possibly) conflicting with some FPL keywords.
+* Moved IndexValue from Identifier to PrimePredicate to prevent IndexValue being (illegally) parenthesized
+* Extended optional IndexValue (instead of Identifier) in IsOperator to allow variadic variables being used in the operator
+* Extended optional IndexValue in CoordInType to allow  variadic variables being used
+* Disambiguation: New keyword "cases" in CaseStatement (instead of "case"). The keyword "case" now starts every ConditionFollowedByResult.
+* PrimePredicate put before CompoundPredicate in Predicate to avoid conflicts of variables starting with keywords of CompoundPredicate.
+* Allow intrinsic definitions of properties (contents of InstanceBlock and PredicateInstanceBlock are now optional).

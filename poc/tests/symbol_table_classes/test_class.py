@@ -39,6 +39,9 @@ class ClassTests(unittest.TestCase):
         "test_class_10.fpl",
         "test_class_11.fpl",
         "test_class_12.fpl",
+        "test_class_13.fpl",
+        "test_class_14.fpl",
+        "test_class_15.fpl",
     ])
     def test_correct(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

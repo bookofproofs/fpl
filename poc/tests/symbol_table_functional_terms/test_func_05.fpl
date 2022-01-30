@@ -13,7 +13,6 @@ TestNamespace
 }
 
 ##############################
-
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:Real]', id='Exp[1:Real]', reference=AuxSTDefinitionFunctionalTerm())
@@ -25,7 +24,8 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='definitions')
     │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Exp[1:Real]', outline='definition', zfrom='7:20:97', zto='11:9:190')
     │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:25:58')
-    │       │   └── AuxSTVarDec(id='x', outline='var_decl', type='Real', type_mod=None, type_pattern=1, zfrom='5:18:51', zto='5:24:57')
+    │       │   └── AuxSTVarDec(id='x', outline='var_decl', zfrom='5:18:51', zto='5:24:57')
+    │       │       └── AuxSTType(id='Real', outline='type', type_mod=None, type_pattern=1, zfrom='5:21:54', zto='5:24:57')
     │       ├── AuxSTType(id='Real', outline='type', type_mod=None, type_pattern=1, zfrom='5:27:60', zto='5:33:66')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       └── AuxSTProperties(outline='properties')

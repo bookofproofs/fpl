@@ -6,20 +6,25 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
+from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
 class ContextIndexHeader(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self.indexType = AuxSTType(i)
+        self.indexType.type_mod = None
+        self.indexType.type_pattern = AuxBits.isIndex
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["IndexHeader"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "index":
-            self.id = rule
+            self.indexType.id = rule
         elif rule == "ind":
-            self.id = rule
+            self.indexType.id = rule
         self.stop_aggregation = True
 
     @staticmethod

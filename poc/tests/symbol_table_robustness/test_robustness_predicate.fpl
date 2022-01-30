@@ -1,0 +1,566 @@
+TestNamespace
+{
+    theory
+    {
+
+        pred Test288() { iif(/99410879529268,6192) }
+        pred Test289() { iif(all yWAotZJvjGYkSd,q58Qtbc2c(976096731),true) }
+        pred Test290() { iif(ex pTuclRa,zom76zUjCXQPON(true),4844) }
+        pred Test291() { iif(ex$572471 oLe_zV4VIbaa,a9iJet67zIJ(32),/52439785573) }
+        pred Test292() { iif(false,ex upaKOM,l3UFKCUQiY,c6dXhIQC(not(6011))) }
+        pred Test293() { iif(false,self) }
+        pred Test294() { iif(false,undef) }
+        pred Test300() { iif(self[x$lZF7ZTIVq,ozMd](),not(self)) }
+        pred Test301() { iif(undef,/50377t) }
+        pred Test295() { iif(iif(false,@@@self[@self~undef]:=all uVMfD2KTxoRX(false)),wEwwDegKf_b$nFvwIjC) }
+        pred Test298() { iif(or(not(/86680936),self[/6172947006591](undef,false,/490631332296665),BnUawb1j16ojY.@self()),undef) }
+        pred Test299() { iif(return 57547863322,5288314112693) }
+        pred Test237() { cases(case iif(Yv7tn4wbIcI8O.self(true).self(not(all cxmebh,uKo(true)),false,true).self(),range @self[@@self[@self[yMZgr],@@self,@self]~] [~self!](return Xg.QN0_O40m.NsBn8kMT.JEz89I8n1F2AE.HVVeRrjb9i.OLRgA8rzNnv.WLGc.D() )):loop self [~self!](self:=664589550149 range self [!~self](range self ymiWnMZ$(self:=false self:=undef assert s$900251 ) ) loop self ydkSWVOq7ynqhK$(ret /7157 cases(case self.self().self():cases(case /4179273552:loop self self(assert is(qXi6LgDd$omQ,+tpl[lgyyx3mZ!]) ) assert 05 ret is(cvW$x,tpl) case false:py.uga(undefined) else:py.ndztzrugginw(undefined,/84305zLW) ) py.ulp(is(self,+function)) case 58:ret 622 return 0682793605193 case 759509502801974:return 67204106222072 else:ret 38301027101299 ret 14445 ) ret 691689324610301 ) ) else:ret 4604203916 ret 429578523 ) }
+        pred Test297() { iif(kgloqFyAFSt$102444850518427,22194) }
+        pred Test296() { iif(is(esFO0OkjaIKW$y_t,template),is(iJi,+tpl)) }
+        pred Test306() { impl(/463,loop @@@self ma7ggpvsh$(ret eyqMv60aO$mFnwlXvu1mpwZ cases(case ex xFWakhNNVVdoWo(ex$975 bkEcuwLu(self[self].U6cRoK.EW5iwrwxUM42.D7ugipwT7mOuV.QvMjQmmCYFtVIv().URQZu33GyKcYUug.D3FoFZWwabK7fsZ.Zwezwik6R_R(false,8364))):@@@self[@@self[@self,@@@self,self],self,self]:=/74406669893426 loop self xXU6W0ht8IChaK$(cases(case is(b$mIDH7tK8,function[G2HM82.UffOONa2SbpSVL.E()]):range self [!~!](return wB9VYEMK$uJ9oIMgwT ) range self [!self~!](return undef loop self [!self~](range self self(assert /67cW cases(case  undef:assert true py.uyhrwskrhec(false) assert undef else:py.thcf(true,true) ) ) py.jsfrgc_bjpcfxi(31,false) self:=5639367233089 ) self:=is(self,object) ) ret self.self(is(self,template313666496383955),self.self()) else:ret 2442933367 return 670472978736214 ) ret 59845 ret 24 ) case 22075620403322:ret 90338860 ret 211380778 ret 361711993459 case 786:ret 0 else:ret 68246 ret 2509572225 ret 407084702373107 ) ret 31465429 )) }
+        pred Test124() { @@self[Zya9W.UjofaPHcyJ13ra8.RX81aKk.WReBkvR.Tfe5Yg2nKuy.EYH4.Oj7t6PJh.VeU3(nBaNieCcp$01)~G6iveksWz5.IfzAyTqNj(ex$46482410487751 gih1Fl5,v,l(impl(xor(61444192647233,is(m6uzNyJx7SjF$591983035383,+tpl[!self(8)!])),true)))] }
+        pred Test71() { 9 }
+        pred Test72() { 23 }
+        pred Test73() { 63 }
+        pred Test74() { 81 }
+        pred Test75() { 240 }
+        pred Test76() { 296 }
+        pred Test77() { 335 }
+        pred Test78() { 3588 }
+        pred Test79() { 4055 }
+        pred Test80() { 4173 }
+        pred Test81() { 30371 }
+        pred Test82() { 50915 }
+        pred Test83() { 80542 }
+        pred Test84() { 178394 }
+        pred Test85() { 752084 }
+        pred Test86() { 1384201 }
+        pred Test87() { 3325280 }
+        pred Test88() { 4654313 }
+        pred Test89() { 4841214 }
+        pred Test90() { 5021792 }
+        pred Test91() { 9117088 }
+        pred Test92() { 130392229 }
+        pred Test93() { 560021974 }
+        pred Test94() { 601312099 }
+        pred Test95() { 782413863 }
+        pred Test96() { 933332316 }
+        pred Test97() { 960542021 }
+        pred Test98() { 1164899100 }
+        pred Test99() { 1865296145 }
+        pred Test100() { 7112421175 }
+        pred Test101() { 7521125643 }
+        pred Test102() { 7835819611 }
+        pred Test103() { 13690501009 }
+        pred Test104() { 26854752240 }
+        pred Test105() { 70502744137 }
+        pred Test106() { 91653821635 }
+        pred Test107() { 91991919373 }
+        pred Test108() { 174161825202 }
+        pred Test109() { 179660547485 }
+        pred Test110() { 327562759895 }
+        pred Test111() { 343134869312 }
+        pred Test112() { 661026103149 }
+        pred Test113() { 798836033531 }
+        pred Test114() { 7404450975528 }
+        pred Test115() { 8619756292830 }
+        pred Test116() { 9570642321222 }
+        pred Test117() { 93170045705080 }
+        pred Test118() { 100246923636523 }
+        pred Test119() { 840390050695363 }
+        pred Test120() { @@@self }
+        pred Test121() { @@@self(651822,is(SFnkujZpVK.R.T34CgZ2Ry,+tpl),all qkj7kRSe,v6v8iZerRnxEGba(ex xlU0aR7pszx7c(not(39114533109532)))) }
+        pred Test122() { @@self }
+        pred Test123() { @@self.SBFeiuhEO.DeaB().self[true~undef](ex oaE,d(iif(not(true),/34420)),is(eOO0z8$3818464330924,+function[~!]),782534162) }
+        pred Test125() { @self }
+        pred Test126() { @self(is(self,+tplGbU01DfxymBF[rrdBp7PsP!])) }
+        pred Test127() { @self[@self[@@self,8],005311825767974,@@self[o,@@self]]() }
+        pred Test128() { @self[ERjl.RZZyLAmg7C] }
+        pred Test129() { @self[self,self].ZLzyfpfgqQY(1041018186,true,xor(all dhdMxd,zJ8nxe_56vC3U3(not(4710)),false)).MV5Fc.FFL8mnnq.N5e.BUgYYksiYRKSH8().D.MZlxr1f() }
+        pred Test130() { @self[self[self,j$2],rF4q$406] }
+        pred Test131() { @self[w3Lzha49N198BB~self] }
+        pred Test132() { /0 }
+        pred Test133() { /033 }
+        pred Test134() { /0361183 }
+        pred Test135() { /0444561211707 }
+        pred Test136() { /062 }
+        pred Test137() { /067561 }
+        pred Test138() { /0817692nYhh32 }
+        pred Test139() { /0888icTmgbH6lC }
+        pred Test140() { /1036921uh }
+        pred Test141() { /1464749 }
+        pred Test142() { /159619960424 }
+        pred Test143() { /21197dAkeQF }
+        pred Test144() { /2124 }
+        pred Test145() { /2156793016 }
+        pred Test146() { /2446053 }
+        pred Test147() { /25 }
+        pred Test148() { /2577599269 }
+        pred Test149() { /2592350955 }
+        pred Test150() { /2877343581433r }
+        pred Test151() { /29509271214693 }
+        pred Test152() { /31610 }
+        pred Test153() { /337294693 }
+        pred Test154() { /34303351 }
+        pred Test155() { /348980592415 }
+        pred Test156() { /37656941201990 }
+        pred Test157() { /44082403679675 }
+        pred Test158() { /45680lmhY_5aEG }
+        pred Test159() { /4858314 }
+        pred Test160() { /49695125 }
+        pred Test161() { /5 }
+        pred Test162() { /535806179244247 }
+        pred Test163() { /58262878415647 }
+        pred Test164() { /58358559jB3bV_ }
+        pred Test165() { /5861709965 }
+        pred Test166() { /598 }
+        pred Test167() { /59mEdlNo }
+        pred Test168() { /6039358959701 }
+        pred Test169() { /641950160068 }
+        pred Test170() { /646272824 }
+        pred Test171() { /653143q }
+        pred Test172() { /6687887277 }
+        pred Test173() { /676414675 }
+        pred Test174() { /68990 }
+        pred Test175() { /7 }
+        pred Test177() { /73348 }
+        pred Test178() { /758468317 }
+        pred Test179() { /78 }
+        pred Test180() { /800616497 }
+        pred Test181() { /81258953572424 }
+        pred Test182() { /818422953392 }
+        pred Test183() { /82973532552080 }
+        pred Test184() { /844146253hqcLb4 }
+        pred Test185() { /85pHuIncI }
+        pred Test186() { /887059388jwlvN0 }
+        pred Test187() { /88792936789 }
+        pred Test188() { /9281791093601 }
+        pred Test189() { /95389 }
+        pred Test190() { /9585wK4 }
+        pred Test191() { /97dRly }
+        pred Test192() { /98260194609 }
+        pred Test193() { /98v }
+        pred Test194() { a1gwa0D19BgX$a_sP8BYLW }
+        pred Test195() { adIq9IcWUoeHg1$56 }
+        pred Test196() { all ale,y3q1S9GAmf5(xor(is(eWbVNN$86,*@extCBhjRe1zSNV),xRhYVnOCy_jaWPE$162329)) }
+        pred Test197() { all ayEzYGOHAdqW7W(loop self self[self,/4829132948474,h2cSbp_n03b$tS2kid](ret ex$201 fcK6kC(xor(true,020189)) )) }
+        pred Test198() { all b25sQfZ(3) }
+        pred Test199() { all bnS1XzM(xor(iif(assert hk_hfSJr5J$243488783532,true),true)) }
+        pred Test200() { all cfwrNqWgQKVPYQ,kNAGnVKMd(41) }
+        pred Test201() { all cSTBv25,o7Mj(false) }
+        pred Test202() { all dU2NcNi,byl7F,z(assert true) }
+        pred Test203() { all fx4C3Cf(range self [!self[is(UZm_EVtNw.SvXx23.ZOZU1DQ1eMCev1W,+@extD68S_Hlh[!~]),self[true~],@self[@self,@@@self,@@@self]]~vc1On4pWptiEd](ymLDwMOQTr_:=impl(iif(true,is(JtjU9hLP_wf.QU206eSIQF0.MCGqFPwRAF.J2OnOPB,+obj[Gxnv_Lj3_.RXFpwGHYLIQ.NF910JwwxtrH(loop @@@self l9NsteecizjF$(self:=0606794 return /260893072 ),false,self())~!])),5383675025) range self [!self~self!](ret false range self moVR$(loop self [self~self](loop self tbAeozBTjCQRBHb$(assert undef return undefined assert wvMZMBfTT7RYZ$6205647 ) cases(case true:cases(case 052642103:self:=/2236343129bUPUa case /151jH:cases(case is(uHJP9ZiJ7$32996789074,@extU_o1HoIxNiY[!self()~!]):assert undef else:py.ce(false,self.self().self().self(),self.self(self.self(jqlykjIhrr6zm$i7qEViLY,142188).self().self(721461518,66925),87,342808)) py.ctpzqccuwv(43972013,47964054857555,2902342506961) ) py.ufkmedkk_a(531,375772) return 0185 case 48862726:ret 568 else:ret 11936064488694 ) ret 7604102546 case 19100669:ret 86367 ret 6388096863620 else:ret 47341792 ret 126517870 ) ret 89684124210993 ) ret 426366736479344 ) ) )) }
+        pred Test204() { all gc7nZ3bk,dFTzVJaaO,b6xRYO(75880) }
+        pred Test205() { all hOYKcwMORZx(wmdB2JZm2$kseu) }
+        pred Test206() { all iio(undef) }
+        pred Test207() { all j3wb7aj,jg__oxp4WzHkx3U,xKYcBnL7(false) }
+        pred Test208() { all jC_ANZ4Y(and(not(@self(true,/517468)))) }
+        pred Test209() { all k4918E,eyvh2gyNFbDMto(xor(412794425188067,not(/46011769550i2v))) }
+        pred Test210() { all kMlzsBY42USq3j,rKmQSS(undef) }
+        pred Test211() { all kX3(/70997qzSGYGX) }
+        pred Test212() { all l4Ae,gd_eYA_Y8(is(@@@self[~],@extJkvkqj)) }
+        pred Test213() { all lNbL(assert /545288590132852) }
+        pred Test214() { all nl43agiwTC,wy6XYlUeJ(range self[@self] self(bs7jgB[/83768738h4O1h]:=undefined loop @@@self[@@self] [~@@self!](return xor(iif(false,undefined),true) ) )) }
+        pred Test215() { all nxauF7whJ(self[self[false,ztX2UJpU1Yr3NH[~QwX3rZ0A],self],@@@self]) }
+        pred Test216() { all oy,hWv_dv,ly8Qi93(42586829965445) }
+        pred Test217() { all q,xu,zHUqmKHnek(true) }
+        pred Test218() { all qQFe,hW2oJZLE6Oo,i5LAM(self[195,undef]) }
+        pred Test219() { all sWG2DVoT,lEXs,kC8giFGfY_uqW5(is(Vh7orfrWXf,*func)) }
+        pred Test220() { all vDtNb3,bsJU,k(ex wen61WpML(/9438697692)) }
+        pred Test221() { all vTTW1,teiWCIRdqCX1Z,d4a_Btr4qbx(is(self,predicate)) }
+        pred Test222() { all vu6KfT,bH3(not(@@self())) }
+        pred Test223() { all w7WRBm7rxo__D(is(self,LSKznX)) }
+        pred Test224() { all x_W5f2gWhy,cfjtnjXm8SXiiH6,wi(iif(68275874209669,/73867590749818)) }
+        pred Test225() { all x2YQ,kuMql6EeOHqx5g(is(O1i,*tpl)) }
+        pred Test226() { all xMz,oB2p,xKjXBSZLPy(ex$01693 kV3YfvE(all pB0hc9m,u6Uch0,jGcld(false))) }
+        pred Test227() { all yDyUa(ex$95871291483460 h5iyOVVcHNz,t3inBmj,dHdZqM(all vwW1,kqA,vVa(false))) }
+        pred Test228() { and(/4r5) }
+        pred Test229() { and(false) }
+        pred Test230() { and(not(/0519226),not(true)) }
+        pred Test231() { and(undef) }
+        pred Test232() { assert ex tB(is(Kxf9DR,+predicate)) }
+        pred Test233() { assert iif(is(a79MjyumTlxGN$nMNsxTWtfJY,template),xor(impl(is(DvAzTr.GrNLX1h65OPq8i,@extVF3rMjQGOZ1h),Q0Sn.JjCKYkHlnv9SukU.ZbrJ.LXxaFN.self[@self[j3q,@@@self[@@@self,@@@self,@@self]],self]().Qy.UDnHl7VVOgmS().self()),false)) }
+        pred Test234() { B0lPgS9v6n }
+        pred Test235() { Bdk2EwcqbluAV1.KfU0b9CPU.VmFQn_4o2Ju.self(true,/6heH,ex$2625 ipv,shsykNWe2AkRT,vUQlo10Ch(xor(iif(/0067752d0M,true),is(Lyi5h.ZziB.AKHOX4EPfoLrNi.RaBhCI,predicate)))).XsuoWnY5ePPofm.M(is(g3DIl$2804005428639,@extEI6k2vko_QaHi)).@@self(/1210009308,false,is(bSS$qwFGWRO8xT,+func)) }
+        pred Test236() { cases(case all nXgKP(ret /998676):return iif(ex$63589 y6yurwCqTgEIsjN,vl8cJKy4Kv53,pPeSmuYDqCJGB(self),/8487260) else:assert @@@self(/770m46aP,51992666417795) return undefined loop self [!~](assert false range @@@self[@@self[~],@@self[~]] [!~](range @self k5tvXbW$(py.ucgc(624748) assert ENZ9(7728,false) ) py._r(OF.JNz5jXtf08q5.FiR7dI7kD5riZ(is(vHwU$poM,func),undef),undef) ) ) ) }
+        pred Test238() { czg7$87851929337741 }
+        pred Test239() { d00[@@self] }
+        pred Test240() { DLADRnO49Sh8.S2uB3Y7d }
+        pred Test241() { dOou0r1pLaIh3zG$yaCXC9i2mrt }
+        pred Test242() { ex alIz7,qayIpHPs4S5,uG89HrE0K1(all iL(undef)) }
+        pred Test243() { ex bRMiG0Hbl(ex kseM0iaJ2,pj44roUyQRE(is(IKK2lj,@extT))) }
+        pred Test244() { ex cl0dm7,rZpGbg_m(xor(/1138599218495,EIf)) }
+        pred Test245() { ex d,yhg6QXWuNFD,wTfNEdmTWBEo(xNEqD$01611272481) }
+        pred Test246() { ex dCfbdGnl,m3cN6Aliz67Vp(xor(/9292534,iif(/9064,@@self))) }
+        pred Test247() { ex dR3O207jlqnsEcV,dhbdg_VugV9wS8,g6J2Wui9fuv(undefined) }
+        pred Test248() { ex dttKd1WXUSuKe,qyBLoOb(1094155) }
+        pred Test249() { ex fj1qGP63vhV,dZ0C8srJw,lu7(false) }
+        pred Test250() { ex gYUEGsUVWVAW(undef) }
+        pred Test251() { ex hiaQOKBJ0rUzqFf,zaq7zJVN9YrKu,z(true) }
+        pred Test252() { ex hXaOnBJxVv2D,k9iqtg,xh7J3L2_jlU45r(xor(5814609009874,is(eK9Xv2Eh$36226473633539,func[!IOZfxj8Qzx(xor(is(@@@self,+BqLJ_fTGrl[!Eqgeu.YIxXU.FvbbxI()~self(self.@@@self[@self[@self[@self,self,self]~self]](4231099217653).self())!]),undef),2842)]))) }
+        pred Test253() { ex jcD3KIwMLM(/37852169941808) }
+        pred Test254() { ex k4r,aiMJQQ5q00Bj67D,d9ATPMHR3TRkXE6(not(/0601274087602)) }
+        pred Test255() { ex kuNqwvEznGBxzFO(ex xnX,e6njwQV2WTAHMJ(ex$4630490 knz6OFCsLGe,igQshKZb93w34gw(self))) }
+        pred Test256() { ex l7az0Kn(all hNZV,pXepV337u2,d(self[344242081384683~](all j,d5ND,bTDDr(true),is(self[~],obj)))) }
+        pred Test257() { ex m7eMUS0WSJk9V,uWx(is(cgv19I$601141455423274,tpl)) }
+        pred Test258() { ex mr0JlCSA,ud(false) }
+        pred Test259() { ex ob2bG0MKxO(undef) }
+        pred Test260() { ex pcSqgm,we,nT6RCZlKjB(all w,tWLExP5jyJr,vLM1LgV(false)) }
+        pred Test261() { ex s0(/19487463489322) }
+        pred Test262() { ex tJB3Jb_sEPyrLY,xlJXdshYiUmyTVV(loop self @@self(return wn$30 cases(case ex rfx7sv,jhX_7o4m,oV(all z3pu9gY_,g9UmZxLQY,oEMkSP_R3kvb(false)):loop self a$(ret 289937945092966 loop @@@self[~] qCRG1zdxKiG$(ret SlS3h.PKoLpu.V6mV @self[@self[@@@self,self,self]~self]:=/6cLVrH ) cases(case /59154:range self [self~](range self [~!](self:=true ) range self [self~](self:=/764289067 cases(case 667730190:assert false py.mdh_(true,is(r3D0SAVa1KQT$j45aQYbKIMqdR2Z,function[!MsUm.VODOX9I8qUn4.TEvq()~NEj.GML4mFF_s1HR()!]),4580788862) py.vn(false) case is(nXGt$ekY1gkDts7bvV0G,object[!self()~apYbx]):assert true assert is(self,template) case undef:py.tagouy(self.self(undefined,self.self()).self(undef,self.self(13678,52108391851514).self(),375634847742800).self(),35327) return 4 return 635993289621923 else:ret 98539237056685 ret 179 ) ) ret 8440 ) case 6207889063:ret 71869801360337 ret 4 case 122085547847099:ret 563238256095 else:ret 983164001540 ret 695274013 ret 1039 ) ) ret 895933707736 case 44334885074:ret 36035893 ret 2401604 ret 255 case 54:ret 58 ret 3007577 else:ret 69459079213949 ) )) }
+        pred Test263() { ex w1_TVL,xYBth,z2qUEFLCj6P(/0) }
+        pred Test264() { ex xmDDoplArXphs,tfqVlxbF9U,pt7GZ8KzxHn1M(/06053q4u37oryQ) }
+        pred Test265() { ex yYSD39G(5) }
+        pred Test266() { ex$0 rK1Myz,v2IbvDIAULUD(/40623497) }
+        pred Test267() { ex$022433456082157 tc3aM0QJWno,uc00Z49unZk(is(JjaCe2QYP,+func[gqd])) }
+        pred Test268() { ex$0454601 hSqY7,gl_lnfZ(true) }
+        pred Test269() { ex$0548849244840 nMiPcne(all cq,bGnOV2aA,ualsT5aeDd9f(BnzBwOkIXt2xX3())) }
+        pred Test270() { ex$16 o6YpKaA6,yDR,pkj8JGC8mZY(is(self[self[~],CEvXi7p8c7B],tpl)) }
+        pred Test271() { ex$18146887430 jPvF9wI4D,eBxCpFPRo49Ok9,vs1GWzxFtyEYRL4(not(all coFeHdXylJ,uuhmTDJItLk3s2R(is(@@@self[self,@@@self[YmtO2tMdMN(),618,@self[@self]]],predicate)))) }
+        pred Test272() { ex$2 kH,q,wlx_UoYvRw_Hs(impl(/16038906f,iif(562602039866123,false))) }
+        pred Test273() { ex$37435745 a7sWuLa,cxQrBv7(undef) }
+        pred Test274() { ex$54937356503 hCmv,eb2Tq(231) }
+        pred Test275() { ex$77743274915 emnGhszd,hlvBmDlUBuiRa(impl(534215775168375,or(is(self,*tpl),false))) }
+        pred Test276() { ex$9137564344257 cvCaB4uN6YQ,ehlFL,mUuCKJZq(undef) }
+        pred Test277() { ex$97226571659 oE5so2zeq,diPFkbts,uj3(/539318) }
+        pred Test278() { fERe75o67s$fr9rLYQ7MUksYo }
+        pred Test279() { gbqg0nSgou }
+        pred Test280() { giT0Xb$89906314 }
+        pred Test281() { H }
+        pred Test282() { H9Y() }
+        pred Test283() { ia_Pvrau_I$uZrkLqt7wk }
+        pred Test284() { iif(@@self(ex p8fKP,qS1voHJZrK7iZbS,a(all wawYoWyKY_O,zmIWjB(false))),true) }
+        pred Test285() { iif(@self,WXOLPwF9t.CfmP7iItW3k42wQ.SK5y65wCcg7f3d) }
+        pred Test286() { iif(/56365808615,false) }
+        pred Test287() { iif(/637p,EtQDQ3h2U) }
+        pred Test302() { iif(undef,895261359077258) }
+        pred Test303() { iif(undef,is(@self,+obj[self(undefined)~p7XPJPQZLC53!])) }
+        pred Test304() { iif(undefined,all r34v(43470)) }
+        pred Test305() { iif(xor(undef,819401195265),true) }
+        pred Test307() { impl(/529062351,all r9vGvnd9(impl(true,undef))) }
+        pred Test308() { impl(/77g9ZpTFkeg,/99392) }
+        pred Test309() { impl(01428491,undefined) }
+        pred Test310() { impl(cqCzUHV_GN623d$677944134720,KOJB0uhlYO()) }
+        pred Test311() { impl(false,impl(is(XP,obj),false)) }
+        pred Test312() { impl(iif(iif(false,dLHCXspvXhsKus$7372481469),false),true) }
+        pred Test313() { impl(is(@self,func),xor(7176918144017,undef)) }
+        pred Test314() { impl(not(825433220),/7087606) }
+        pred Test315() { impl(not(all nYjeQ5hZzvQg,sKbKVucy8t1Qr,iQSBdos(undef)),false) }
+        pred Test316() { impl(undefined,impl(iif(14,true),wUtayfm4dBPyK$6)) }
+        pred Test317() { impl(undefined,mGcKjNcnmaY8Ena$ckvRlqAa6) }
+        pred Test318() { iraF8zmKF9M$886 }
+        pred Test319() { is(@@@self,+Rb9rtYxedEByH2Q) }
+        pred Test320() { is(@@@self,pred[a10TojRmIU3or]) }
+        pred Test321() { is(@@self[~],*@extU3gGPCljqF4Mf[!kf612svS4q9Yr~!]) }
+        pred Test322() { is(@@self[self[@self,QA4.F9pctKT9o6CsW.OpXom.OSkRI,undefined]],EQEttq3S.MG8bnqvuQ) }
+        pred Test323() { is(@self,pred) }
+        pred Test324() { is(@self[hWbsiL9V~],*QzME.QUFOGaH5C.Q7wmbYe52e.FJ5) }
+        pred Test325() { is(bIOg0hLLpq$wbg5pGI,+obj) }
+        pred Test326() { is(GTqoH,*@extU7v5C6XUPt) }
+        pred Test327() { is(i_5EUWAX$5,func[ti~!]) }
+        pred Test328() { is(IOihTHQ1o.DoGleSHSCtqYjc.JE2BHa4VRaVkUF.H1OgqR1,OHkL6K0A_7cidF.HVfiioVo.Ma9BckZ[!kBBk9jMgCoqK]) }
+        pred Test329() { is(J1NNdDNXemJia9O,pred) }
+        pred Test330() { is(j3aDl$85206,+pred[!jrh!]) }
+        pred Test331() { is(J8_k7,function) }
+        pred Test332() { is(k267IQP,*func) }
+        pred Test333() { is(MsN0Ti1hVM2O,function) }
+        pred Test334() { is(New3f,+@extN622wqp2GkpksX) }
+        pred Test335() { is(qW7APQa0bWcK$0179,func[~]) }
+        pred Test336() { is(self,*pred) }
+        pred Test337() { is(self,*tplUymNauoebs) }
+        pred Test338() { is(self,+pred[!aFouFf2AU_qj7u]) }
+        pred Test339() { is(self,+TO2NkJj[~]) }
+        pred Test340() { is(self,+tpl[!BPwpr()!]) }
+        pred Test341() { is(self,+tpl6842641185981) }
+        pred Test342() { is(self,func) }
+        pred Test343() { is(self,function) }
+        pred Test345() { is(self,predicate[!e_4Odb4ZVoL8h]) }
+        pred Test346() { is(self,tpl01885373889[didh4!]) }
+        pred Test347() { is(self,tpl57587977396594[@self()]) }
+        pred Test348() { is(self[self,/27683063fI8MnT8],pred) }
+        pred Test349() { is(self[self~false],+template[!~sq14xyqUOEHLWHH]) }
+        pred Test350() { is(SGRQKOKAf.Q4,func) }
+        pred Test351() { is(SQ5QxEE,*func[sNJ!]) }
+        pred Test352() { is(tNlCxBWN$rQIXC8uRr,+object[!mmGUJye6Pd]) }
+        pred Test353() { is(ULb,*template070138) }
+        pred Test354() { is(Vje.U2JWf9jdV0d.Rl3PGSdy,tpl183[!uPDM]) }
+        pred Test355() { is(VnCO.HyAdO3LrRcAx4.Ltu6N1Wln2.JE2TH,+func[!self()]) }
+        pred Test356() { is(vyVmx,+func[!g3JC_pQNkXkmmx]) }
+        pred Test357() { is(wctg$25,@extR[!~ukq]) }
+        pred Test358() { is(xbbU5,obj[vm]) }
+        pred Test359() { is(YJ7asfEx95xz2uc,func) }
+        pred Test360() { is(z4rP$m,+func) }
+        pred Test361() { is(zk0xQ$1823,function) }
+        pred Test362() { IzkDX.SRWX() }
+        pred Test363() { j0BO$kaQU }
+        pred Test364() { J2W03 }
+        pred Test365() { jxriP }
+        pred Test366() { K8Z9glQ() }
+        pred Test367() { Ko1EinNLDPqVr(/786020,iif(or(is(xC7pQplJZf4p0$7911162647951,V4aX4),not(/86090227)),x_i$jGN4)) }
+        pred Test368() { kW2$38890 }
+        pred Test369() { l$yod }
+        pred Test370() { LK4kixKsk71cKB }
+        pred Test371() { loop @@@self @@@self(assert impl(/2,/1607) ) }
+        pred Test372() { loop @@@self self(loop self [!262178~!](range lp1VBUVal[/9q8wCE0_znfb~w3[~@@self[@@self,@self,r]]] [@@self~!](ret all z6,bSPct,qLt4be(ex$0837 pnK2CUr3O0nVmVL,qhdNn_rJ2pI6Q(impl(/9953099,false))) return qq3pI$802797237 ) ret true self:=33753812606 ) range self [!self~!](loop self o9cLRzuDd$(cases(case GSnIwNfK:assert false cases(case /9145741fY:cases(case true:self:=sjAlfxhKG$kJyYzTyr8 case undefined:range self self(assert ypqYLs$bvr self:=9627937262 assert undef ) py.eptmep(undefined,It4kSYAiR9_YF) py.lpge_cyhxesuqh(true) else:py.jvxhqfkarvzewhl(false) ) return H.Nl.TtJsHAasS8.U58TAh1R2gvl2 ret self.self().self(self.self(is(self,+tpl78[!oJERYO2eHZeewlx!])).self().self(),is(self,+pred)) case is(self,func[!cuVdIO9OW7gnF3U!]):return self.self(2882434550886,3,9) case 449032326478:ret 5063390 else:ret 060120 ) ret 1282814 case 94292189:ret 91229901379242 case 346715873:ret 0661104 ret 14602284125 else:ret 731657 ) ) ret 493095229 ret 196876515142 ) ret 30 ) }
+        pred Test373() { loop @@@self ugDAEEyvc8dF[undefined,self[true~]](range @@@self[@@self] [!~@self](ret ex f4Oprw4m2Ov,jWEArjkCAQEDKm(iif(ex w,nw,awyWkSAB60dhn(false),true)) py.rebqselh(734255224808,is(KlXyCn1hClrXa,pred)) @self:=Ot9AA6rx ) assert 671691012527 return LKlh3NKnDmKkQ5 ) }
+        pred Test374() { loop @@self [!~self[@@@self]](loop qqDnrC8H[82459484355373,true,@@@self[@self]] pZtNCU$(@@@self:=xor(not(ex$138962353 ygdvms_dBsxa1,aG,h_Dj9rGLYHAC(false)),kCBB$50228114097) self:=4 py.ndbaursbqlcr(undefined,/715659957405652,LSB2sKnqn.GWH1Czg.H102v.U.YuJBElmHXzetyS(is(UNSMNJOO0jCkQj.N8S,+tpl496716[self()!]),7216150744848)) ) cases(case false:assert undef range self [~self](ret is(seraVGH4ElI$yRpejaLumsME,+template[!vrsgqUQLbiUd3ud!]) self:=false ret /632875u ) ret /1501642g case true:loop self [self~](range self self(range self self(assert undef cases(case true:assert self.self() py.vobrret(self.self(9433016065,3169361875,8527574343)) case 52820454265663:cases(case 9516:py._hjathtqzrtbjql(006744331797104,51) return 7492 return 05 else:return 17698 ) ret 0951083070411 ret 20 case 06917:ret 477831659 ret 73 else:ret 0 ret 914517362 ) ) ) ) ret 4925775 ret 5 case 98189392290688:ret 520 else:ret 76982905 ret 12 ret 0630 ) ) }
+        pred Test375() { loop @@self [~!](loop sGu[@@@self~] [!~range self[undef,0] [~2254!](return ex yBnqt(all sbc,y,hT(or(/27,Y()))) assert YWE )](py.ape(is(xh$1,+tplYcS)) ) ) }
+        pred Test376() { loop @self [s[~]~self[false,false,true]!](ret iif(xor(ex g(undefined),true),/37895) ) }
+        pred Test377() { loop self [true~](py.dcku(not(true),xor(ex vgTlR(false),/8)) range self self(@@@self[~]:=is(t6I$rk0RK,+obj) ) return /02 ) }
+        pred Test378() { loop self zcUeziLE$(range self[47576426] wattIlsAIRt$(loop self tIoC$(range @@self[true,@@self[@self~]] [!@self~!](assert xor(not(ex iMnrbA(74216871)),Bv_.Ebk41VX6W.ApLDr7_Xdd.EXz1W.RL9gXzGtlbNo1r.VmGsY.ONaSm1xBWu2Gz.MNQd6gzOG(J.LTiBT1d4.Jlesf.Sprv)) loop self [!~self!](ret /30588980f assert undef ) ) self:=false self:=420070 ) return false ) ret self.self(undefined,/47332844) ) }
+        pred Test379() { loop self[@@@self[~]~] self(@self[77~Uy]:=or(xor(ex dLa(7),9),qT12$89023) ) }
+        pred Test380() { loop self[61155,self[56]] [!oHzn~false](range self[true,false,/71] [!~!](loop @@@self [!undef~true!](py.n(ex$607 u(iif(not(/9zayZ),is(uq$g8amW,+function[v$oY!])))) py.qh(/6956m,undef,undef) ) assert ydvy$gXdR ) ) }
+        pred Test381() { m2Rsbl }
+        pred Test382() { mhQQ$mlUeb }
+        pred Test383() { mp[~] }
+        pred Test384() { mVVQ5$37951 }
+        pred Test385() { N }
+        pred Test386() { n_qnc$75661362463 }
+        pred Test387() { n$a }
+        pred Test388() { nEZzlL3j_Mf }
+        pred Test389() { Nf.AcEZF }
+        pred Test390() { nO:=self[~undef] }
+        pred Test391() { not(@@@self) }
+        pred Test392() { not(@@@self[000]) }
+        pred Test393() { not(@@@self[self,b0XT$yDk89,2159]) }
+        pred Test394() { not(@@self[/5nJXC]) }
+        pred Test395() { not(/0963240813) }
+        pred Test396() { not(/162) }
+        pred Test397() { not(/16l) }
+        pred Test398() { not(/54487) }
+        pred Test399() { not(/72351) }
+        pred Test400() { not(/73) }
+        pred Test401() { not(/7c59Dx) }
+        pred Test402() { not(/8086) }
+        pred Test403() { not(/8506) }
+        pred Test404() { not(/889441641031277) }
+        pred Test405() { not(0) }
+        pred Test406() { not(0324) }
+        pred Test407() { not(04853) }
+        pred Test408() { not(11656) }
+        pred Test409() { not(17652) }
+        pred Test410() { not(2922) }
+        pred Test411() { not(3) }
+        pred Test412() { not(4) }
+        pred Test413() { not(43) }
+        pred Test414() { not(6) }
+        pred Test415() { not(9) }
+        pred Test416() { not(9862755) }
+        pred Test417() { not(all bL,pCuJM,miR7F(5)) }
+        pred Test418() { not(all h,q(4079)) }
+        pred Test419() { not(all iCUS,qv5MD,qc6(4826)) }
+        pred Test420() { not(all kMMWz,cZd(/35682)) }
+        pred Test421() { not(all lKKS,o(xor(is(F,@extUn0),/0171))) }
+        pred Test422() { not(all rdx(not(true))) }
+        pred Test423() { not(all vN(3)) }
+        pred Test424() { not(ex bu08,o7f_T,z9(all a(/7))) }
+        pred Test425() { not(ex epwC7,dq8(undefined)) }
+        pred Test426() { not(ex g,eXCR,ycl(or(true))) }
+        pred Test427() { not(ex l,ligmW,iV(not(false))) }
+        pred Test428() { not(ex yAYqR7IfBYUkdK,z8EMPXQMdbMLUV(g5zdErsudVLm$1696381829837)) }
+        pred Test429() { not(ex$27397217159 u,nr3HGsxAVy,vf2QgAWTUzY(@self)) }
+        pred Test430() { not(ex$5392 u4q,dZGYizSJD,qiM73qFp0raERtT(all cD4,zA_jcI7(false))) }
+        pred Test431() { not(false) }
+        pred Test433() { not(gWY4orIY$sMN) }
+        pred Test434() { not(iif(undefined,undefined)) }
+        pred Test435() { not(iif(Y(),6)) }
+        pred Test436() { not(impl(is(self,function),is(self[self],*function[a]))) }
+        pred Test437() { not(is(@@@self,+@extNR)) }
+        pred Test438() { not(is(atqYQ$bpvV,+@extAVM0)) }
+        pred Test439() { not(is(BKE7,+func)) }
+        pred Test440() { not(is(we5$y_,tpl24513)) }
+        pred Test441() { not(KZIdtbP8X4xLWdC) }
+        pred Test442() { not(not(/382)) }
+        pred Test443() { not(not(3984)) }
+        pred Test444() { not(not(not(false))) }
+        pred Test445() { not(not(xor(loop @self [~self[~undef]!](return undef loop self[65436,/511,false] [!false~/4603!](cases(case is(O.Hic.X_.O5c,object):range @self[undefined] [~false!](return aw1$r ) bR:=/7 case true:range @@@self ctk$(loop @@@self e$(@@self:=e$c4F ) range self self(cases(case 9:cases(case true:py.iks(2) assert true case is(r$fu,*function[jq]):ret is(self,obj) case self.self(self.self().self(80928).self(6386,784),3).self().self():self:=94 assert 61648 else:assert 90285 py.dp(541,1,93) py.deohz(3257) ) ret 904 ret 03704 case 7:return 66 ret 46 ret 03016 case 760:ret 7 else:ret 340 ) ) ret 5565 ) ret 8733 else:ret 97 ret 4 ) ) ),73))) }
+        pred Test446() { not(or(/6967,and(p$itz,5473))) }
+        pred Test447() { not(ret undefined) }
+        pred Test448() { not(true) }
+        pred Test451() { not(undef) }
+        pred Test453() { not(x$eWtwph) }
+        pred Test454() { not(xor(/478,undef)) }
+        pred Test455() { not(xor(py.yny(undef,ex tiaOi,wHX5(is(wGcKV,+func[self()]))),undefined)) }
+        pred Test456() { not(xor(xvU$z9,/34088)) }
+        pred Test457() { not(YNz41Jt5o8.LMV_C5wHrpI.Ap4EEiWBX.B.self[self[r0AfD8OXC~is(wexOz$wgjdIoPOP96,function)]](xor(iif(false,42264712986),bSDouOol9N7T$0086406),false).M0W.BAf().MNPwvU2cgF.FSrDadF.BzLlKQ7niof.Z1WL(32774098543)) }
+        pred Test458() { nV5AXuHqJaxcJ$kZDnnc }
+        pred Test459() { or(@self[/98827pi9]) }
+        pred Test460() { or(/22817625747dhjV) }
+        pred Test461() { or(/46722loo) }
+        pred Test462() { or(/8741oR1Jj,true) }
+        pred Test463() { or(/9565) }
+        pred Test464() { or(140,all e9V_h,j9lA(iif(is(XxE1F,+@extAsAnW[Wd(/13)~v7h]),is(kI$136,+func))),true) }
+        pred Test465() { or(80492,all xjWIlSvPCgpPIyI,ch0AVcG_rmUEQDG(xor(false,62443450307)),undefined) }
+        pred Test466() { or(96443,false) }
+        pred Test467() { or(all fxs,eCe,o(true)) }
+        pred Test468() { or(all p3n6Zl,glszgky(970464501236)) }
+        pred Test469() { or(ex ioo8,i(/750),undef,undef) }
+        pred Test470() { or(false,/026115068,all ra,xRyBcVCVgy(undefined)) }
+        pred Test471() { or(false,true) }
+        pred Test472() { or(false) }
+        pred Test473() { or(G(),ex$55 l(all pF,l5N,avZvG(false))) }
+        pred Test474() { or(impl(vxOEPNm[undefined~@@self[self[78329559097335~],self]].QYGUYpYEHcnXFy().E(),xor(undefined,/045606467144253)),064247424126310,true) }
+        pred Test475() { or(is(dqOvN1HZBZvR$552344735,obj),0590246) }
+        pred Test476() { or(not(ex vif(is(eX[/26250,/012,q[@@@self]],+function))),5354,true) }
+        pred Test477() { or(not(not(undef)),false) }
+        pred Test478() { or(range self self(assert all ghFLA,wW47Q(iif(false,undefined)) ret 6 return undefined ),is(@self,+predicate)) }
+        pred Test479() { or(ret undefined) }
+        pred Test480() { or(return and(xor(undefined,/80547u),true)) }
+        pred Test481() { or(self.U9C(),false,is(Y.P.SrS,pred)) }
+        pred Test482() { or(undef,ex$20350 l44e,i(undefined)) }
+        pred Test483() { or(undefined) }
+        pred Test485() { or(vnGXBNFbpzLW_B$j4PaF) }
+        pred Test486() { or(xor(224,1624),all faWJ7(70672),/8013) }
+        pred Test487() { p7N3abe2ifg5EFY$irT3gZt }
+        pred Test488() { pc0o }
+        pred Test489() { py.fl(0659,m44257(all d3ET5(not(or(qb74(),/05fwxht))),false,undef)) }
+        pred Test490() { py.uaj(not(1549),undef,all o6YeNuUw0ojAmi(ex pbUldmzPyq7l9m,v1luTJ,l2iZ(@self[self[self[@@@self],@@@self,@@self]~@@self]))) }
+        pred Test491() { qp(self:=xor(/3193,ex vaN40,kt(and(self[self~].x566(55,true,undef))))) }
+        pred Test492() { QbL.HwRuPKyjM7I7yX.self(impl(not(ex jE4frjdvRR,ovQD04nfxxs2so(undef)),undef),N1H2T9Yhfi3.DqCOnK__C.D98TP0IvXZ(),@self.self(false,false).T.CB7D.RpjU.S(is(xyCzNCqwJxg8rTm$8755115421563,tpl55216716329)).@@@self[~]()) }
+        pred Test493() { R68P }
+        pred Test494() { range @@@self [~](range self xJQVri2(self[false,/06290jiIR]:=all uu_Hx,o6CY5(ex km4KPWDM,kgv1P98KCK0p,qXb6QFoFhvcfsf(not(/5057))) @self[@@self[@self,@self],self,self]:=Z25IXG3xCIh.QN.YHZ6h6fV.Ri139PYQgdXJcim.Xioa0toD4ejXE(undefined) range self [!self~!](ret undefined self:=true ) ) loop self [~self](ret c5D06du5o83R8O$74 ret 711822180204 py.ocmmpgbofc(03683,/132349) ) loop self nwIoJ$(assert k9V$so1C4pCurOC ) ) }
+        pred Test495() { range @@@self @@@self[~@@self](loop @@self[undefined] [false~zYsJS3[vgV6LAYGS68,sBVsoJ]](@@@self:=all jzE,lryY,zWfeS2MKucJ9(iif(all u7Ku6BDYYNA(false),j$54)) ) ) }
+        pred Test496() { range @@self [~](ret self loop @@@self[zOhKi7a.q0v148(iif(iif(all kIC,kW,tlRZ(undefined),is(EXp3R,@extRkXju)),657)).NIENc.Qq3zJ.BXu.B8w(/855,undef)] [!undef~true](ret 443 ret false assert /15660xzN ) ) }
+        pred Test498() { range self self[501~](range self [!~/9801xj9z!](@self[true,uYu$f,true]:=all cU4JF(ex k,uV,c(xor(/75959iN,/9))) ) ) }
+        pred Test499() { range self[211] [!undef~self!](range self[@self[@@@self~@@@self],@@@self,@@@self] cCTaN(cases(case not(all t0xkGu4Uf,s,yzJ4(iif(false,false))):self:=/32145 self:=true case false:loop self [!~](range self [self~!](return 3608139 ret is(A4Zj5,+func[!FfLhmwqw()!]) ) ) loop self uLEycCxcvJg(loop self eqgnCsLbuilG$(return undefined ) assert /0423487060zvW ) cases(case ZTfu(/11):assert undef else:assert self(true,508882335101) self:=xSxYlFZjBcKZ$21 py.h(true) ) case jqgEiKiy8GhF:py.xdzis(fovwmTY4ZG$nXEJRN,is(self,func[!p]),is(self,+tpl[!a4Uc~lxmi!])) else:cases(case self.self(self.self(self.self(4),7366066327).self(83808766,075).self(),17404,0):py.tpmgpay_qxberr(8) case 31:ret 00825461 else:ret 74956220 ) ) return 596 ret 13260 ) ) }
+        pred Test500() { range self[return /79n,self[self~],392] [4~undefined!](@@@self[/20,/25365,8962]:=ex ed,rwknz,gYl(not(or(is(uy$gYo,JA[!fY$vW9sS]),undef,true))) ) }
+        pred Test501() { range self[self[@@self],is(NuGzUJzz,+func[!yK9yPvoWb_AGt]),false] [!d[@@self~dq_o1LBVT96PD]~@self](loop @self [~](@self:=ex ymf_RHg,p_8AzG(not(xor(false,41559))) ) return /76643872197 self:=/999619581298 ) }
+        pred Test502() { range self[true,false,self[uXEy8R7]] [@@@self[@@@self~@@self]~@@@self!](mesyODm9UcQ:=not(ex rm,mcOEBHIf__n,u(not(/81986941))) range @@@self [self~!](ret fx$664890 range self [!self~!](self:=M19kqFQ cases(case 634447390:return rZbar$55480 ret false else:self:=undefined py.pcvlvzemx(9,undef,undefined) ) ) loop self iEbPOQDKZS$(py.lncrcjtbvl(/6kUloWNEC,09035397636,false) ) ) assert true ) }
+        pred Test503() { ret @@self[true,@self[self[7071,true],/70anlMo],is(JNEb,+function[!~])] }
+        pred Test504() { ret 77 }
+        pred Test505() { ret 895135914471 }
+        pred Test506() { ret ex$10 d,jv4HE(is(li,function[!kvQl2(all kZV,jNoCY(is(i$897,*pred[!~!])))~ZqKe.Q48.Fw.HLC(impl(false,@self.sZjeu(true,undef)))])) }
+        pred Test507() { ret is(z$m70H,+@extY) }
+        pred Test508() { ret or(all h(is(yxZ$hf9n,*tpl)),true) }
+        pred Test509() { ret true }
+        pred Test510() { return false }
+        pred Test511() { return is(QA.DfbpM,+pred) }
+        pred Test512() { return self.self[undef,lLC2](all wy,s,hmDP8(impl(all wZ,h1y(false),0977)),zaj$5).l3(undef,undef,ret false).o7KF50(28) }
+        pred Test513() { return undefined }
+        pred Test514() { rFM }
+        pred Test515() { RLIZFtxtIZxcc9 }
+        pred Test516() { RnBd.PF_ }
+        pred Test517() { self }
+        pred Test524() { self:=all fh3baK_PkDQc(/11e) }
+        pred Test525() { self:=is(@self,func) }
+        pred Test526() { self:=is(self,function) }
+        pred Test527() { self.@self(undef,/1,xor(xor(ex$56905 pB,a5d,uJX9(57535),4),4165)).self().XkwZ(true,true,false) }
+        pred Test528() { self.bdMr_m(/6d) }
+        pred Test529() { self.self().oC9AtiIZ() }
+        pred Test530() { self.self(undefined,impl(undef,ex u_e,lPYGh(and(false,c$7667))),8882).self(undef).BXEzx.Y8lp.B.Tn(is(qZ$45744,+predicate)) }
+        pred Test531() { self.XjtY() }
+        pred Test532() { self() }
+        pred Test534() { self(/31xFf,false,xor(ex ad,xNo(not(undef)),is(tC$4,MRJ))) }
+        pred Test535() { self(2,@self.self(iif(ex o4wnDO8X35,jEJDT782V,sLyjqXS(all cEhxCxQOs,pGrwMrpj15(/0455842461)),3935812655116),true).PNVC(sVx7x_$899501,iWGO2e2z0MC$60327088773277,/3305189hEtHj4),/6647uNUOIgIUuTw) }
+        pred Test536() { self[/42132,yywi[self[is(aKjPEOE5$749,pred[~!]),self,hEXlMAmXQ]~@@self]](not(not(ex$5037484 nK(899490714))),28) }
+        pred Test537() { self[~7925]() }
+        pred Test538() { self[A,/946jE,self].@self(xor(ex gii,croqJ,b(not(is(yTV$94,obj))),@@@self[08683,is(aW$945,+templatePlBZ_),undef]:=undef)) }
+        pred Test539() { self[pM[/84]].self().xiAfpd().cF461(true,all rON6N(xor(not(true),9))) }
+        pred Test540() { self[self,zhRR,/4715lLq9E] }
+        pred Test541() { self[self~]:=true }
+        pred Test542() { self[undef] }
+        pred Test543() { sG2V07.C1.VrG() }
+        pred Test544() { sIeK$993689473 }
+        pred Test545() { Sr5KW_ }
+        pred Test546() { SvLCkU7nZAytl3S }
+        pred Test548() { Tfn }
+        pred Test549() { tTWTanP.Mbs(true).self() }
+        pred Test550() { u$654 }
+        pred Test551() { uBvl$lxB }
+        pred Test552() { uK$sh3RK6RfUp2 }
+        pred Test553() { undef }
+        pred Test582() { undefined }
+        pred Test595() { uX6_K() }
+        pred Test596() { ux9C9ChKAbuBr$14246 }
+        pred Test597() { v$bxUJ }
+        pred Test598() { v5Cn394.zz2QTcfL() }
+        pred Test599() { Vgg1vV.TIkwr9vyPDC.Uh8L2M_JRg.@self().G.FPzGH5mqGGv.Be01MPEd.FiG(impl(or(true,/493979616yN,all c2vyWrPS,o7iI(/1uY4BN9d9)),072231647707781),true) }
+        pred Test600() { Vkn_A }
+        pred Test601() { VM2j6TAcPB3N2ab }
+        pred Test602() { VT26ExqW }
+        pred Test603() { w$jPfus }
+        pred Test604() { w5De_.rl31230().self[~](undef).self[self[5,false],420,/0153v9Ny]() }
+        pred Test605() { wciJ2h1o(iif(false,is(eF$25326,pred)),not(all wgUD,nl,cIds8(@@@self:=ret /20pP)),506) }
+        pred Test606() { WjaaJ.self[980,8](all a_s(iif(ex$96 o(a[self]),false)),is(Uui,func),true).jZx210(/757) }
+        pred Test607() { x4j.@self(le34838.@@self(@@self[undef,undef]:=xor(impl(ex txa0(/9),/7),false),undef)) }
+        pred Test608() { xhOgW$g }
+        pred Test609() { XItn6GdnG1 }
+        pred Test611() { xor(@self(ex$37602 fl0(all u,ij(2265)),/8547tuoU,true),range @self self(return 05 range @@@self[074,is(mPW9$7,func)] [!undefined~true](loop @@@self[is(ivYoa$g,function),/8cezm,/71h3] [~DLj.BtlUm(undef,is(xd5o$o0c8p,func[G.OsxD.PDuw()!]),false)!](ret true ) ) )) }
+        pred Test612() { xor(@self[is(@@self,func),self,/106],not(not(undef))) }
+        pred Test613() { xor(/09373,not(false)) }
+        pred Test614() { xor(/0qyQ3,all s_1AQ(not(is(@self,obj)))) }
+        pred Test615() { xor(/0yld9m3ylLdKn,all viwYj_,wWozodsxqk(8206)) }
+        pred Test616() { xor(/10680,range oGE [@@@self~](range self [!~498!](cases(case xor(all zYWs,qM0h(false),false):ret true self[/9lj,72146,95711]:=is(HlQ.EGu.Oh2Yj.UEiB,*obj) else:return is(F8SM.Z.K.AE,+func) loop @@self[undef,undefined,false] [!/61cr2~is(p8$jC,+function[!Z.R.VJfu.MfuK()])!](assert true ) ) ) loop @self[true,undef] sbJ$(cases(case zjYzw(eobYvhh.@@@self(@self.self().self(self.self().self().self()),18118,23110),61,8):range self self(self:=900 loop self self(cases(case 2643:ret 7 else:assert 01846 self:=7193 assert 815 ) py.wosa(97,04) py.edbbu(6422) ) py.olwo(8796,88) ) ret 6455 case 41:return 51 return 10 ret 74912 case 54:ret 76994 ret 08 else:ret 3943 ret 62742 ) ) ret 4 )) }
+        pred Test617() { xor(/396,false) }
+        pred Test618() { xor(/488,/38) }
+        pred Test619() { xor(/5094,@self[/84251~]:=ex$44673 jeY7,we,rFwN(xor(/0hhL,is(n$rnpgj,pred)))) }
+        pred Test620() { xor(/6266258,undef) }
+        pred Test621() { xor(/7,/2) }
+        pred Test622() { xor(/958x4eJ,xor(064875404,8743)) }
+        pred Test623() { xor(656690714118053,all g2M1utz,cFg9,mHrZNAvFiKTDA3(@self)) }
+        pred Test624() { xor(70025,78) }
+        pred Test625() { xor(79,/97mMRVW) }
+        pred Test626() { xor(82,undefined) }
+        pred Test627() { xor(all aZe3_CQ0xkh(/78),true) }
+        pred Test628() { xor(all c,p(all gbDC,jc(assert undef)),false) }
+        pred Test629() { xor(all ePXT,mA4(b410(is(@@@self,*TiYI[~]),false)),all hIJhM,t6(is(jd3l$7643,*@extBj9I))) }
+        pred Test630() { xor(all f,kE,m4(loop self[/1634e538,ixG582.self(impl(true,x9PuP$70340)).a3EhlgU(230,undefined,undefined).@self(undef,true,false)] [/96681cGQ~](loop @@@self[/275pb9l] [!~is(K5s,func[!n])!](loop @@@self[~] [!~!](range @@self @self(return 8134 ) cases(case true:return 999 else:assert is(Xj_,*obj) range self self(self:=is(Noqnq.V4.PJl.CicP,+func) self:=false assert false ) range self self(return self.self().self().self() assert self.self().self().self() self:=701 ) ) py.wqw_(23,96264,9) ) ) )),804) }
+        pred Test631() { xor(all k,fMjl9(self[~n$32981]:=xor(return false,/4)),7) }
+        pred Test632() { xor(all p4Et6(false),true) }
+        pred Test633() { xor(all u(false),/361400if) }
+        pred Test634() { xor(all yiXlnfH5FKn41I(269),/487464683814495) }
+        pred Test635() { xor(apA2f.azBf52702(assert is(TP,+predicate),ex wnx,b3lq,qkTt(iif(undefined,30)),C.@@@self().gjoeA0698().xX7k3(/39769tiS,6,51918)).@self[true,/3092xSR,loop self[is(PDI,+pred)] [!~](cases(case is(@@self[~],tpl1106[~h7!]):range @@self [~!](assert /86363g2T @@self:=true cases(case false:range self [!undef~!](assert false loop self self(range self self(return true self:=undef ) ) ret self.self(false) ) cases(case 96:ret 27 loop self self(py.qbg(8,8169) py.ct(24494,0) ) case 07:py.bpv(27) self:=457 ret 8 else:return 53 ) return 6607 case 574:ret 8312 ret 4 case 41:ret 55 ret 9806 else:ret 762 ret 5030 ) ) ret 57223 ret 5814 else:ret 64 ret 30 ) ret 653 ret 55 )](),5) }
+        pred Test636() { xor(ex aYfwk,tzHS9(6746),not(undefined)) }
+        pred Test637() { xor(ex g,qrN,goJ(/44),false) }
+        pred Test638() { xor(ex h8OWm(Igb()),5) }
+        pred Test639() { xor(ex l,gAXHZ(ex n,i3(undefined)),true) }
+        pred Test640() { xor(ex vBZ(true),B) }
+        pred Test641() { xor(ex xMpGz,yObd,if2uL(self.W.Fi.W2IdF.R(not(true),loop @@@self @self(range @@self[false,cases(case /16245:loop @@self[g0xEj0530(undef,/5744)] [/9540aD3Z~!](@self[889,false,false]:=true ) case 102:range self rKILl$(loop self [!is(YU.KB.BtjGU.VGHNZ,+@extIx)~ZXi.O.akeWjP().tmD4bkmF(true)](assert undef return self.self() ) ) assert 417 range self [~](self:=is(self,+pred) self:=undefined ) else:return is(self,tpl9) py.fdglp(490,66,90) ),24108] self(assert 87912 cases(case 07:ret 35375 py.ea(75325,02258) py.d(687,9302,0262) else:cases(case 20:ret 39049 return 1 case 95728:ret 264 ret 7 case 62440:ret 2 ret 39062 else:ret 28515 ) ret 09 ) ) ret 734 ),2).self(5)),7839) }
+        pred Test642() { xor(ex$2 r,u7Y8,k1nB(16781),iif(is(AQ,+object),98186)) }
+        pred Test643() { xor(ex$86567 cudN,e6gLD(impl(true,is(self,obj))),Lzg6) }
+        pred Test644() { xor(ex$95343 k,mgWW5(ex l(false)),/114) }
+        pred Test645() { xor(false,5) }
+        pred Test646() { xor(false,false) }
+        pred Test647() { xor(false,return true) }
+        pred Test648() { xor(impl(undef,p4$liG4),xor(undefined,undef)) }
+        pred Test649() { xor(is(k$985000782,*tpl),or(is(wS,*pred[!cRcrFMh2sh]),/3179553)) }
+        pred Test650() { xor(is(kySBxK$wV7K5_a,+BZQ0L6kE9),undef) }
+        pred Test651() { xor(not(all gEXZ,r1hPk(/8)),self) }
+        pred Test652() { xor(not(all s2s,d,vv6Wa(false)),ret self) }
+        pred Test653() { xor(not(not(false)),6305) }
+        pred Test654() { xor(not(self()),1577005792) }
+        pred Test655() { xor(or(@self:=/286),true) }
+        pred Test656() { xor(or(false),xor(return ret true,undef)) }
+        pred Test657() { xor(or(or(undef),false),AMf6_yhA) }
+        pred Test658() { xor(or(undefined,true),undefined) }
+        pred Test659() { xor(t0LnVHHQ$82844239670499,iif(@self:=ex fkchqOr6qut,hp1TZu6o,tnb9Xu(true),loop self self(loop @self[@@@self[~]] nDsAfKmgou3b_$(range @@self[@@self] e3pvO$(self:=is(J8I3fdFkzP,func[!Jf1UwFlPJBIxD.UquIkIxEvmq.YCy(false)!]) py.wwp(rkuuY$385840671469) ) ) ))) }
+        pred Test660() { xor(true,false) }
+        pred Test661() { xor(true,self()) }
+        pred Test662() { xor(undef,/5392gl) }
+        pred Test663() { xor(undef,376) }
+        pred Test664() { xor(undef,undef) }
+        pred Test665() { xor(undef,xor(49,iif(is(eDDDa$cP,N7ze[mMv684()]),false))) }
+        pred Test666() { xor(undefined,@@self) }
+        pred Test667() { xor(undefined,impl(or(false),undefined)) }
+        pred Test668() { xor(undefined,not(all uAC(88))) }
+        pred Test669() { xor(undefined,q3) }
+        pred Test670() { xor(xHnZ338(),/58712) }
+        pred Test671() { xor(xjq4Hyhe$21850330,undef) }
+        pred Test672() { xor(xor(all f6dE4HGuz,vq6Jjd,a81Pe6IFuHpKQ_(false),true),false) }
+        pred Test673() { xor(xor(false,is(nVAk,+obj[!self[self[true,3271]~true](ex$0024 in(66338),38)~TCjb()])),/6) }
+        pred Test674() { xor(xor(or(/16083,/07),undefined),is(@@self,func[fQhX])) }
+        pred Test675() { xor(xor(undef,all l8mem,yE(/3)),/44zb) }
+        pred Test676() { xpn }
+        pred Test677() { xQifVJ$jm }
+        pred Test678() { ygUOn$py1le }
+        pred Test679() { Yi2tGBG0O }
+        pred Test680() { Z }
+        pred Test681() { z[~] }
+        pred Test682() { z5lUt$dQI3i }
+        pred Test683() { zKRTu$914840953678587 }
+    }
+}
+
+##############################
+obfuscation unit tests

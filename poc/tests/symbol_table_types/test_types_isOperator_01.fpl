@@ -1,0 +1,38 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test1() { is(baKeJ3l_[true~],template[wkpCLto4TZv6dIg$exqL4ofdGAG5bo]) }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test1[]', id='Test1[]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='a39011d8322bf5eeed2a6761fb332710', file_name='test_types_isOperator_01.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test1[]', keyword='pred', outline='definition', zfrom='5:9:42', zto='5:85:118')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:20:53')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTStatement(outline='statement', type='is', zfrom='5:24:57', zto='5:83:116')
+    │       │   ├── AuxSTVariable(id='baKeJ3l_', outline='var', zfrom='5:27:60', zto='5:41:74')
+    │       │   │   └── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='', zto='')
+    │       │   │       └── AuxSTPredicate(outline='true', zfrom='5:36:69', zto='5:39:72')
+    │       │   └── AuxSTType(id='template', outline='type', type_mod=None, type_pattern=9, zfrom='5:43:76', zto='5:82:115')
+    │       │       └── AuxSTCoords(left_included=True, outline='coordinates', zfrom='5:51:84', zto='5:81:114')
+    │       │           └── AuxSTPredicate(id='wkpCLto4TZv6dIg$exqL4ofdGAG5bo', outline='indexValue', zfrom='5:52:85', zto='5:81:114')
+    │       │               └── AuxSTPredicate(id='wkpCLto4TZv6dIg$', outline='variadicVar', zfrom='5:52:85', zto='5:67:100')
+    │       │                   ├── AuxSTVariable(id='wkpCLto4TZv6dIg', outline='var', zfrom='5:52:85', zto='5:66:99')
+    │       │                   └── AuxSTVariable(id='exqL4ofdGAG5bo', outline='var', zfrom='5:68:101', zto='5:81:114')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

@@ -8,12 +8,15 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
+from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class ContextPredicateInstanceBlock(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = None
+        # Predicate is optional in the grammar and we initialize it in any case
+        self.predicate = AuxSTPredicate(AuxSymbolTable.intrinsic, i)
         # specification list is optional in the grammar and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         self.aggregate_previous_rules(i.parse_list,

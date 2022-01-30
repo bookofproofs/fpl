@@ -15,15 +15,14 @@ class ContextCaseStatement(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self.statement = AuxSTStatement(AuxSymbolTable.cases, i)
-        self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["CaseStatement"] +
-                                      AuxRuleDependencies.dep["ConditionFollowedByResultList"], self.rule_aggregator)
+        self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["CaseStatement"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
-        if rule == "case":
+        if rule == "cases":
             self.stop_aggregation = True
-        elif rule == "ConditionFollowedByResult":
-            self.statement.register_child(parsing_info.statement)  # noqa
+        elif rule == "ConditionFollowedByResultList":
+            for cfr in parsing_info.cfr_list:
+                self.statement.register_child(cfr.statement)  # noqa
         elif rule == "DefaultResult":
             self.statement.register_child(parsing_info.statement)  # noqa
 

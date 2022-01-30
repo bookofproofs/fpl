@@ -22,7 +22,10 @@ class ContextRangeInType(AuxInterpretation):
         if rule == "CoordInType":
             self.range.register_child(parsing_info.predicate)  # noqa
             if self._counter == 2:
+                self.range.zto = parsing_info.predicate.zto  # noqa
                 self.stop_aggregation = True
+            else:
+                self.range.zfrom = parsing_info.predicate.zfrom  # noqa
         elif rule == "Tilde":
             self._counter += 1
 

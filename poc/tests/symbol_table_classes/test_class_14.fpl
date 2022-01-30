@@ -1,0 +1,43 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            mand *pred TestProperty49() { return n }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Test', id='Test', reference=AuxSTClass())
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTConstructor())
+│   └── AuxSTGlobal(gid='TestNamespace.Test.TestProperty49[]', id='Test.TestProperty49[]', reference=AuxSTClassInstance())
+└── AuxSTTheory(checksum='ea73718778f3ac380bcccf4684db71a1', file_name='test_class_14.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='Test', keyword='class', outline='definition', zfrom='5:9:42', zto='8:9:129')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='Test[]', outline='defaultConstructor', zfrom='', zto='')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='7:11:78', zto='7:39:106')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           └── AuxSTClassInstance(def_type='classInstance', id='TestProperty49[]', mandatory=True, outline='property', zfrom='7:13:80', zto='7:52:119')
+    │               ├── AuxSTType(id='pred', outline='type', type_mod='*', type_pattern=18, zfrom='7:19:86', zto='7:22:89')
+    │               ├── AuxSTSignature(outline='signature', zfrom='7:24:91', zto='7:39:106')
+    │               └── AuxSTVarSpecList(outline='specificationList')
+    │                   └── AuxSTStatement(outline='statement', type='return', zfrom='7:43:110', zto='7:50:117')
+    │                       └── AuxSTVariable(id='n', outline='var', zfrom='7:50:117', zto='7:50:117')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')
+

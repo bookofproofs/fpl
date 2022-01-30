@@ -20,7 +20,6 @@ class ContextDefinitionPredicate(AuxInterpretation):
             self.building_block.id = parsing_info.symbol_signature.to_string()
             parsing_info.symbol_signature.children = reversed(parsing_info.symbol_signature.children)  # noqa
             self.building_block.register_child(parsing_info.symbol_signature)  # noqa
-
         elif rule == "PredicateDefinitionBlock":
             self.building_block.register_child(parsing_info.property_list)  # noqa
             self.building_block.register_child(parsing_info.predicate)  # noqa

@@ -13,12 +13,16 @@ class ContextLeftBound(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self.bound_included = True
+        self.zto = ""
+        self.zfrom = ""
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["LeftBound"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "ExclamationMark":
             self.bound_included = False
+        elif rule == "LeftBracket":
+            self.zfrom = parsing_info.get_ast_info().pos_to_str()
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

@@ -15,6 +15,7 @@ class ContextEntity(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self.predicate = None
         self.rule = None
+        self._i = i
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Entity"] +
                                       AuxRuleDependencies.dep["AtList"], self.rule_aggregator)
@@ -30,9 +31,11 @@ class ContextEntity(AuxInterpretation):
         elif rule == "self":
             self.rule = rule
             # wrap self for the symbol table
-            self.predicate = AuxSTSelf()
+            self.predicate = AuxSTSelf(self._i)
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextEntity(i)
+        if type(new_info.predicate) is AuxSTSelf:
+            new_info.predicate.zfrom = i.corrected_zpos_by(new_info.predicate.zfrom, new_info.predicate.number_ats)
         i.parse_list.append(new_info)

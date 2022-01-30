@@ -1,0 +1,78 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test235() {
+            Bdk2EwcqbluAV1.KfU0b9CPU.VmFQn_4o2Ju.self(
+                true,
+                /6heH,
+                ex$2625 ipv,
+                shsykNWe2AkRT,
+                vUQlo10Ch(
+                        xor
+                        (
+                            iif(/0067752d0M,true),
+                            is(Lyi5h.ZziB.AKHOX4EPfoLrNi.RaBhCI,predicate)
+                        )
+                    )
+                ).XsuoWnY5ePPofm.M(
+                    is(g3DIl$2804005428639,@extEI6k2vko_QaHi)
+                    ).@@self(/1210009308,false,is(bSS$qwFGWRO8xT,+func))
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test235[]', id='Test235[]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='44e773b304ae150ce3942139b03de46f', file_name='test_predicate_20.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test235[]', keyword='pred', outline='definition', zfrom='15:65:415', zto='21:9:653')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:47', zto='5:22:55')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicate(id='Bdk2EwcqbluAV1.KfU0b9CPU.VmFQn_4o2Ju', outline='id', zfrom='6:13:71', zto='6:49:107')
+    │       │   └── AuxSTQualified(outline='qualified', zfrom='6:49:107', zto='6:49:107')
+    │       │       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='6:50:108', zto='18:17:490')
+    │       │           ├── AuxSTArgs(outline='arguments', zfrom='6:54:112', zto='18:17:490')
+    │       │           │   ├── AuxSTPredicate(outline='true', zfrom='7:17:130', zto='7:20:133')
+    │       │           │   ├── AuxSTArgumentParam(id='6heH', outline='argID', zfrom='8:18:153', zto='8:21:156')
+    │       │           │   └── AuxSTPredicate(bound_vars=['ipv', 'shsykNWe2AkRT', 'vUQlo10Ch'], exists_number=2625, outline='ex', zfrom='9:17:175', zto='17:21:472')
+    │       │           │       └── AuxSTPredicate(outline='xor', zfrom='12:25:270', zto='16:25:450')
+    │       │           │           ├── AuxSTPredicate(outline='<=>', zfrom='14:29:328', zto='14:49:348')
+    │       │           │           │   ├── AuxSTArgumentParam(id='0067752d0M', outline='argID', zfrom='14:34:333', zto='14:43:342')
+    │       │           │           │   └── AuxSTPredicate(outline='true', zfrom='14:45:344', zto='14:48:347')
+    │       │           │           └── AuxSTStatement(outline='statement', type='is', zfrom='15:29:379', zto='15:74:424')
+    │       │           │               ├── AuxSTPredicate(id='Lyi5h.ZziB.AKHOX4EPfoLrNi.RaBhCI', outline='id', zfrom='15:32:382', zto='15:64:414')
+    │       │           │               └── AuxSTType(id='predicate', outline='type', type_mod=None, type_pattern=18, zfrom='15:65:415', zto='15:73:423')
+    │       │           └── AuxSTQualified(outline='qualified', zfrom='18:18:491', zto='18:18:491')
+    │       │               └── AuxSTPredicateWithArgs(id='XsuoWnY5ePPofm.M', outline='predicateWithArgs', reference=None, zfrom='18:19:492', zto='20:21:592')
+    │       │                   ├── AuxSTArgs(outline='arguments', zfrom='18:35:508', zto='20:21:592')
+    │       │                   │   └── AuxSTStatement(outline='statement', type='is', zfrom='19:21:530', zto='19:61:570')
+    │       │                   │       ├── AuxSTPredicate(id='g3DIl$2804005428639', outline='indexValue', zfrom='19:24:533', zto='19:42:551')
+    │       │                   │       │   └── AuxSTPredicate(id='g3DIl$', outline='variadicVar', zfrom='19:24:533', zto='19:29:538')
+    │       │                   │       │       ├── AuxSTVariable(id='g3DIl', outline='var', zfrom='19:24:533', zto='19:28:537')
+    │       │                   │       │       └── AuxSTPredicate(id='2804005428639', outline='digit', zfrom='19:30:539', zto='19:42:551')
+    │       │                   │       └── AuxSTType(id='@extEI6k2vko_QaHi', outline='type', type_mod=None, type_pattern=32, zfrom='19:61:570', zto='19:60:569')
+    │       │                   └── AuxSTQualified(outline='qualified', zfrom='20:22:593', zto='20:22:593')
+    │       │                       └── AuxSTSelf(id='self', number_ats=2, outline='self', reference=None, zfrom='20:23:594', zto='20:72:643')
+    │       │                           └── AuxSTArgs(outline='arguments', zfrom='20:29:600', zto='20:72:643')
+    │       │                               ├── AuxSTArgumentParam(id='1210009308', outline='argID', zfrom='20:31:602', zto='20:40:611')
+    │       │                               ├── AuxSTPredicate(outline='false', zfrom='20:42:613', zto='20:46:617')
+    │       │                               └── AuxSTStatement(outline='statement', type='is', zfrom='20:48:619', zto='20:71:642')
+    │       │                                   ├── AuxSTPredicate(id='bSS$qwFGWRO8xT', outline='indexValue', zfrom='20:51:622', zto='20:64:635')
+    │       │                                   │   └── AuxSTPredicate(id='bSS$', outline='variadicVar', zfrom='20:51:622', zto='20:54:625')
+    │       │                                   │       ├── AuxSTVariable(id='bSS', outline='var', zfrom='20:51:622', zto='20:53:624')
+    │       │                                   │       └── AuxSTVariable(id='qwFGWRO8xT', outline='var', zfrom='20:55:626', zto='20:64:635')
+    │       │                                   └── AuxSTType(id='func', outline='type', type_mod='+', type_pattern=20, zfrom='20:67:638', zto='20:70:641')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

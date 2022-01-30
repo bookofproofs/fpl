@@ -1,0 +1,42 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            mand predicate TestPropertyA10() { return n }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Test', id='Test', reference=AuxSTClass())
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTConstructor())
+│   └── AuxSTGlobal(gid='TestNamespace.Test.TestPropertyA10[]', id='Test.TestPropertyA10[]', reference=AuxSTPredicateInstance())
+└── AuxSTTheory(checksum='e24ae916136ed66935a1334e5535d436', file_name='test_class_13.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='Test', keyword='class', outline='definition', zfrom='5:9:42', zto='8:9:134')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='Test[]', outline='defaultConstructor', zfrom='', zto='')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='7:14:81', zto='7:44:111')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           └── AuxSTPredicateInstance(def_type='predicateInstance', id='TestPropertyA10[]', keyword='predicate', mandatory=True, outline='property', zfrom='7:13:80', zto='7:57:124')
+    │               ├── AuxSTSignature(outline='signature', zfrom='7:28:95', zto='7:44:111')
+    │               ├── AuxSTVarSpecList(outline='specificationList')
+    │               │   └── AuxSTStatement(outline='statement', type='return', zfrom='7:48:115', zto='7:55:122')
+    │               │       └── AuxSTVariable(id='n', outline='var', zfrom='7:55:122', zto='7:55:122')
+    │               └── AuxSTPredicate(outline='intrinsic', zfrom='', zto='')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

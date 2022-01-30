@@ -64,18 +64,12 @@ class AuxSTPredicate(AuxST):
         elif outline == AuxSymbolTable.index_value:
             self.zto = i.last_positions_by_rule['IndexValue'].pos_to_str()
             self.zfrom = i.corrected_position('Variable')
-        elif outline == AuxSymbolTable.coord_list:
-            self.zto = i.last_positions_by_rule['CoordList'].pos_to_str()
-            self.zfrom = i.corrected_position('Coord')
-        elif outline == AuxSymbolTable.entity_with_coord:
-            self.zto = i.last_positions_by_rule['EntityWithCoord'].pos_to_str()
-            self.zfrom = i.corrected_position('Entity')
         elif outline == AuxSymbolTable.preReferenced:
             self.zto = i.last_positions_by_rule['PremiseHeader'].pos_to_str()
             self.zfrom = i.corrected_position('PremiseHeader')
-        elif outline == AuxSymbolTable.arg_id:
-            self.zto = i.last_positions_by_rule['ArgumentParam'].pos_to_str()
-            self.zfrom = i.corrected_position('ArgumentIdentifier')
+        elif outline == AuxSymbolTable.digit:
+            self.zto = i.last_positions_by_rule['Digit'].pos_to_str()
+            self.zfrom = i.corrected_position('Digit')
         else:
             raise NotImplementedError(outline)
 
@@ -132,3 +126,12 @@ class AuxSTPredicate(AuxST):
                 return not p or q
             else:
                 raise NotImplementedError(self.outline)
+
+    def clone(self):
+        other = AuxSTPredicate(self.outline, self._i)
+        other.zto = self.zto
+        other.zfrom = self.zfrom
+        for child in self.children:
+            child_clone = child.clone()
+            child_clone.parent = other
+        return other

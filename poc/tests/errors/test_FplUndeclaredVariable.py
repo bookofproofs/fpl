@@ -27,7 +27,8 @@ class FplUndeclaredVariable(unittest.TestCase):
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
-        "test_FplUndeclaredVariable_inheritance.fpl",
+        "test_FplUndeclaredVariable_01.fpl",
+        "test_FplUndeclaredVariable_02.fpl",
     ])
     def test_errors(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

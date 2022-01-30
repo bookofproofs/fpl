@@ -16,3 +16,13 @@ class AuxSTVariable(AuxST):
         :return: id of the variable
         """
         return self.id
+
+    def clone(self):
+        other = AuxSTVariable(self._i)
+        other.id = self.id
+        other.zto = self.zto
+        other.zfrom = self.zfrom
+        for child in self.children:
+            child_clone = child.clone()
+            child_clone.parent = other
+        return other

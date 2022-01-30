@@ -6,27 +6,25 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSTCoords import AuxSTCoords
 
 
 class ContextCoordList(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSymbolTable.coord_list, i)
-        self._first = True
+        self.predicate = AuxSTCoords(i)
+        self.predicate.zto = i.last_positions_by_rule['CoordList'].pos_to_str()
+        self.predicate.zfrom = i.last_positions_by_rule['LeftBracket'].pos_to_str()
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["CoordList"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Coord":
-            if self._first:
-                self.predicate.zfrom = parsing_info.predicate.zfrom
-                self._first = False
             self.predicate.register_child(parsing_info.predicate)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextCoordList(i)
+        new_info.predicate.children = reversed(new_info.predicate.children)
         i.parse_list.append(new_info)
