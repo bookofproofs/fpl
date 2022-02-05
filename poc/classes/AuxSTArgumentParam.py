@@ -11,11 +11,6 @@ class AuxSTArgumentParam(AuxST):
         self.zfrom = i.corrected_position('ArgumentIdentifier')
 
     def clone(self):
-        other = AuxSTArgumentParam(self._i)
+        other = self._copy(AuxSTArgumentParam(self._i))
         other.id = self.id
-        other.zto = self.zto
-        other.zfrom = self.zfrom
-        for child in self.children:
-            child_clone = child.clone()
-            child_clone.parent = other
         return other

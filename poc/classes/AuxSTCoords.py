@@ -8,10 +8,4 @@ class AuxSTCoords(AuxST):
         super().__init__(AuxSymbolTable.coordinates, i)
 
     def clone(self):
-        other = AuxSTCoords(self._i)
-        other.zto = self.zto
-        other.zfrom = self.zfrom
-        for child in self.children:
-            child_clone = child.clone()
-            child_clone.parent = other
-        return other
+        return self._copy(AuxSTCoords(self._i))

@@ -128,10 +128,4 @@ class AuxSTPredicate(AuxST):
                 raise NotImplementedError(self.outline)
 
     def clone(self):
-        other = AuxSTPredicate(self.outline, self._i)
-        other.zto = self.zto
-        other.zfrom = self.zfrom
-        for child in self.children:
-            child_clone = child.clone()
-            child_clone.parent = other
-        return other
+        return self._copy(AuxSTPredicate(self.outline, self._i))

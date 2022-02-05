@@ -9,6 +9,7 @@ from anytree import Resolver
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTGlobal import AuxSTGlobal
 from poc.classes.AuxSTVarDec import AuxSTVarDec
+from poc.classes.AuxSTArgs import AuxSTArgs
 import poc.fplerror
 from anytree import AnyNode, search
 
@@ -287,9 +288,6 @@ class AuxSymbolTable:
                 var_dec.parent = parent
                 cloned_type = named_var_declaration.var_type.generalType.clone()
                 cloned_type.parent = var_dec
-                if named_var_declaration.var_type.paramTuple is not None:
-                    for next_var_decl in named_var_declaration.var_type.paramTuple.tuple:  # noqa
-                        AuxSymbolTable.add_vars_to_node(i, var_dec, next_var_decl)
 
     @staticmethod
     def get_theory_by_filename(root: AnyNode, theory_file_name: str):

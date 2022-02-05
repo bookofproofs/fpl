@@ -15,10 +15,4 @@ class AuxSTQualified(AuxST):
         return ret
 
     def clone(self):
-        other = AuxSTQualified(self._i)
-        other.zto = self.zto
-        other.zfrom = self.zfrom
-        for child in self.children:
-            child_clone = child.clone()
-            child_clone.parent = other
-        return other
+        return self._copy(AuxSTQualified(self._i))

@@ -34,7 +34,7 @@ class RobustnessTests(unittest.TestCase):
         ("test_robustness_types_class.fpl", 192),
         ("test_robustness_types_var_decl.fpl", 1),
         ("test_robustness_types_var_in_signature.fpl", 309),
-        ("test_robustness_types_properties.fpl", 309),
+        ("test_robustness_types_properties.fpl", 315),
     ])
     def test_correct(self, use_case, number_of_nodes):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

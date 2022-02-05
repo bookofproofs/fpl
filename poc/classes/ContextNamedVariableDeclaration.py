@@ -9,8 +9,6 @@ class ContextNamedVariableDeclaration(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self.var_list = None
         self.var_type = None
-        self.zto = ""
-        self.zfrom = ""
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["NamedVariableDeclaration"],
                                       self.rule_aggregator)

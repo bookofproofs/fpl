@@ -6,13 +6,13 @@ Test.Namespace
         {
             Nat(x: @extDecimal)
             {
-                case
+                cases
                 (
-                    Equals(x,0) :
+                    case Equals(x,0) :
                         self := Zero()
-                    Equals(x,1) :
+                    case Equals(x,1) :
                         self := Succ(Zero())
-                    Equals(x,2) :
+                    case Equals(x,2) :
                         self := Succ(Succ(Zero()))
                     else:
                         // else case addressed using a python delegate
@@ -22,9 +22,9 @@ Test.Namespace
 
             Nat1(x: Int)
             {
-                case
+                cases
                 (
-                    IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                    case IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
                         self:=x.RightMember()
                     else:
                         self:=undefined

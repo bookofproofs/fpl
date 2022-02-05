@@ -2,7 +2,7 @@
 /* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */
 
 
-/* fpl Version 1.1.4 */
+/* fpl Version 1.1.6 */
 /* a mathematical theory written in FPL can be split between different files having */
 /* Every theory part block starts with an optional syntax extension block, followed by */
 /* optional usage of other libraries, followed by optional inference rules, */
@@ -175,13 +175,13 @@ regular_expression '/((?!:end).)*/'
         (
         ParenthesisedGeneralType
         | GeneralType
+        | IndexHeader
         )
     GeneralType ::=
         (CallModifier)?
         (
         TypeWithCoord
         | Type
-        | IndexHeader
         )
     IndexHeader ::=
         (
@@ -226,7 +226,7 @@ regular_expression '/((?!:end).)*/'
     PredicateInstanceBlock ::=
         LeftBrace
         ( CW )* (VariableSpecificationList)?
-        ( CW )* Predicate
+        ( CW )* (Predicate)?
         ( CW )* RightBrace
     PredicateIdentifier ::=
         (
@@ -348,7 +348,7 @@ regular_expression '/((?!:end).)*/'
         InstanceBlock
     InstanceBlock ::=
         LeftBrace
-        ( CW )* VariableSpecificationList
+        ( CW )* (VariableSpecificationList)?
         ( CW )* RightBrace
     Signature ::=
         PredicateIdentifier
@@ -366,7 +366,7 @@ regular_expression '/((?!:end).)*/'
         NamedVariableDeclaration ( (IW)? Comma (IW)? NamedVariableDeclaration )*
     TypeWithCoord ::=
         Type
-        LeftBound
+        (IW)? LeftBound
         (IW)? ( RangeInType | CoordInType )
         (IW)? RightBound
     RangeInType ::=
@@ -376,6 +376,7 @@ regular_expression '/((?!:end).)*/'
     CoordInType ::=
         (
         PredicateWithArguments
+        | IndexValue
         | Variable
         )
     EntityWithCoord ::=
@@ -395,8 +396,8 @@ regular_expression '/((?!:end).)*/'
         ( At )+
     Coord ::=
         (
-        Assignee
-        | PrimePredicate
+        PrimePredicate
+        | Assignee
         )
     Range ::=
         (Coord)?
@@ -412,7 +413,10 @@ regular_expression '/((?!:end).)*/'
     ConditionFollowedByResultList ::=
         ConditionFollowedByResult ( ( CW )* ConditionFollowedByResult )*
     ConditionFollowedByResult ::=
-        Predicate ( CW )* Colon ( CW )* StatementList
+        case
+        SW Predicate
+        (IW)? Colon
+        ( CW )* StatementList
     At ::=
         "@"
 /* Theorem-like statements */
@@ -566,14 +570,15 @@ regular_expression '/((?!:end).)*/'
 /* Predicates */
     Predicate ::=
         (
-        CompoundPredicate
-        | PrimePredicate
+        PrimePredicate
+        | CompoundPredicate
         )
     PrimePredicate ::=
         (
-        PredicateWithArguments
-        | QualifiedIdentifier
+        QualifiedIdentifier
+        | PredicateWithArguments
         | Statement
+        | IndexValue
         | Identifier
         | IsOperator
         | true
@@ -592,7 +597,6 @@ regular_expression '/((?!:end).)*/'
     Identifier ::=
         (
         PredicateIdentifier
-        | IndexValue
         | Assignee
         )
     IndexValue ::=
@@ -616,7 +620,7 @@ regular_expression '/((?!:end).)*/'
     IsOperator ::=
         is
         (IW)? LeftParen
-        ( CW )* Identifier
+        ( CW )* ( IndexValue | Identifier )
         ( CW )* Comma
         (IW)? GeneralType
         (IW)? RightParen
@@ -706,7 +710,7 @@ regular_expression '/[a-z_]+/'
     ReturnStatement ::=
         ReturnHeader SW Predicate
     CaseStatement ::=
-        case
+        cases
         ( CW )* LeftParen
         ( CW )* ConditionFollowedByResultList
         ( CW )* DefaultResult
@@ -732,9 +736,9 @@ regular_expression '/[a-z_]+/'
     ClosedOrOpenRange ::=
         LeftBound (IW)? Range (IW)? RightBound
     LeftBound ::=
-        LeftBracket (ExclamationMark)?
+        LeftBracket (IW)? (ExclamationMark)?
     RightBound ::=
-        (ExclamationMark)? RightBracket
+        (ExclamationMark)? (IW)? RightBracket
     ExclamationMark ::=
         "!"
     range ::=
@@ -742,7 +746,9 @@ regular_expression '/[a-z_]+/'
     loop ::=
         "loop"
     DefaultResult ::=
-        else (IW)? Colon ( CW )* StatementList
+        else
+        (IW)? Colon
+        ( CW )* StatementList
     AssignmentStatement ::=
         Assignee (IW)? ColonEqual (IW)? Predicate
     Assignee ::=
@@ -774,6 +780,8 @@ regular_expression '/[a-z_]+/'
         "else"
     case ::=
         "case"
+    cases ::=
+        "cases"
 /* names and identifiers */
 /* PascalCase identifiers separated by points */
     Dot ::=
@@ -796,9 +804,11 @@ regular_expression '/[a-z_]+/'
         IdStartsWithCap ( Dot IdStartsWithCap )*
     ArgumentIdentifier ::=
         (
-        Digit IdStartsWithSmallCase
+        DigitIdSmallCase
         | Digit
         )
+    DigitIdSmallCase ::=
+regular_expression '/\d+[a-z][a-z0-9A-Z_]*/'
     WildcardTheoryNamespace ::=
         NamespaceIdentifier (NamespaceModifier)?
     NamespaceModifier ::=

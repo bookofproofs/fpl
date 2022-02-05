@@ -97,13 +97,19 @@ Initial interpreter
 * Implemented zfrom and zto positions of two additional predicate types: preReferenced and arg_id
 ## 1.4.3
 * Bug fixes: 
-** More robustness of the syntax analyzer using random derivations of FPL grammar, test cases include:
-*** random predicate derivations
-*** random types in variable declarations (both in a signature or in a block)
-*** random types of classes
-*** random types of properties
-*** random types of images of functional terms
+  * More robustness of the syntax analyzer using random derivations of FPL grammar, test cases include:
+     * random predicate derivations
+     * random types in variable declarations (both in a signature or in a block)
+     * random types of classes
+     * random types of properties
+     * random types of images of functional terms
 * Types in the symbol table are now listed separately (AuxSTType) and not inline because they can have complex own structures. 
 * Corrected expected values of all relevant test use cases according to the above redesign
 * Arguments of PredicateWithArguments summarized in a separate node AuxSTArgs 
 * Coordinates of EntityWithCoords summarized in a separate node AuxSTCoords 
+## 1.4.4
+* Bug fixes: 
+  * Make subtrees for complex types explicit in the symbol table
+  * Include argument tree nodes in the symbol table when types contain parameters
+  * The syntax of FPL allows semantically incomplete functional terms (e.g. missing images). Enforce producing a correct symbol table (see bugfix ContexClassInstance.py).
+* Utility poc/util/rr_converer.py run for updating the input for the Railroad Diagram Generator to reflect the current FPL grammar.

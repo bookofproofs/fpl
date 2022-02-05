@@ -1,13 +1,13 @@
 class AuxBits:
-    isClass = 0
-    isObject = 1
-    isPredicate = 2
-    isFunctionalTerm = 4
-    isTemplate = 8
-    isInbuilt = 16
-    isExtension = 32
-    isIndex = 64
-    hasCoord = 128
+    classBit = 0
+    objectBit = 1
+    predicateBit = 2
+    functionalTermBit = 4
+    templateBit = 8
+    inbuiltBit = 16
+    extensionBit = 32
+    indexBit = 64
+    hasCoordBit = 128
 
     @staticmethod
     def is_class(pattern_int: int):
@@ -15,32 +15,32 @@ class AuxBits:
 
     @staticmethod
     def is_object(pattern_int: int):
-        return (pattern_int & AuxBits.isObject) > 0
+        return (pattern_int & AuxBits.objectBit) > 0
 
     @staticmethod
     def is_predicate(pattern_int: int):
-        return (pattern_int & AuxBits.isPredicate) > 0
+        return (pattern_int & AuxBits.predicateBit) > 0
 
     @staticmethod
     def is_functional_term(pattern_int: int):
-        return (pattern_int & AuxBits.isFunctionalTerm) > 0
+        return (pattern_int & AuxBits.functionalTermBit) > 0
 
     @staticmethod
     def in_built(pattern_int: int):
-        return (pattern_int & AuxBits.isInbuilt) > 0
+        return (pattern_int & AuxBits.inbuiltBit) > 0
 
     @staticmethod
     def is_generic(pattern_int: int):
-        return (pattern_int & AuxBits.isTemplate) > 0
+        return (pattern_int & AuxBits.templateBit) > 0
 
     @staticmethod
     def is_extension(pattern_int: int):
-        return (pattern_int & AuxBits.isExtension) > 0
+        return (pattern_int & AuxBits.extensionBit) > 0
 
     @staticmethod
     def is_index(pattern_int: int):
-        return (pattern_int & AuxBits.isIndex) > 0
+        return (pattern_int & AuxBits.indexBit) > 0
 
     @staticmethod
     def has_coord(pattern_int: int):
-        return (pattern_int & AuxBits.hasCoord) > 0
+        return (pattern_int & AuxBits.hasCoordBit) > 0

@@ -6,9 +6,9 @@ Test.Namespace
         {
             Nat1(x: Int)
             {
-                case
+                cases
                 (
-                    IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                    case IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
                         self:=x.RightMember()
                     else:
                         self:=undefined

@@ -21,12 +21,7 @@ class AuxSTRange(AuxST):
         return ret
 
     def clone(self):
-        other = AuxSTRange(self._i)
-        other.zto = self.zto
-        other.zfrom = self.zfrom
+        other = self._copy(AuxSTRange(self._i))
         other.left_included = self.left_included
         other.right_included = self.right_included
-        for child in self.children:
-            child_clone = child.clone()
-            child_clone.parent = other
         return other
