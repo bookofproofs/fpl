@@ -1,4 +1,4 @@
-# fpl Version 1.1.5
+# fpl Version 1.1.6
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -596,7 +596,7 @@
 
     TypeWithCoord =
         Type
-        LeftBound
+        [ IW ] LeftBound
         [ IW ] ( RangeInType | CoordInType )
         [ IW ] RightBound
         ;
@@ -1199,11 +1199,11 @@
         ;
 
     LeftBound =
-        LeftBracket [ ExclamationMark ]
+        LeftBracket [ IW ] [ ExclamationMark ]
         ;
 
     RightBound =
-        [ ExclamationMark ] RightBracket
+        [ ExclamationMark ] [ IW ] RightBracket
         ;
 
     ExclamationMark =

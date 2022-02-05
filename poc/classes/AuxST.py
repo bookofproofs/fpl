@@ -33,7 +33,15 @@ class AuxST(AuxSTOutline):
         return self._errors
 
     def to_string(self):
-        return "AuxST"
+        return ""
+
+    def _copy(self, instance):
+        instance.zto = self.zto
+        instance.zfrom = self.zfrom
+        for child in self.children:
+            child_clone = child.clone()
+            child_clone.parent = instance
+        return instance
 
 
 class AuxSTBlock(AuxST):

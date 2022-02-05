@@ -19,13 +19,8 @@ class AuxSTSelf(AuxST):
         return ret
 
     def clone(self):
-        other = AuxSTSelf(self._i)
+        other = self._copy(AuxSTSelf(self._i))
         other.number_ats = self.number_ats
         other.id = self.id
-        other.zto = self.zto
-        other.zfrom = self.zfrom
-        for child in self.children:
-            child_clone = child.clone()
-            child_clone.parent = other
         return other
 

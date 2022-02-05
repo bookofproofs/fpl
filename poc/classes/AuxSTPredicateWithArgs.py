@@ -11,11 +11,5 @@ class AuxSTPredicateWithArgs(AuxSTBlock):
         self.zfrom = i.corrected_position('Identifier')
 
     def clone(self):
-        other = AuxSTPredicateWithArgs(self._i)
-        other.zto = self.zto
-        other.zfrom = self.zfrom
-        for child in self.children:
-            child_clone = child.clone()
-            child_clone.parent = other
-        return other
+        return self._copy(AuxSTPredicateWithArgs(self._i))
 

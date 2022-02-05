@@ -61,3 +61,5 @@ Initial grammar
 * Disambiguation: New keyword "cases" in CaseStatement (instead of "case"). The keyword "case" now starts every ConditionFollowedByResult.
 * PrimePredicate put before CompoundPredicate in Predicate to avoid conflicts of variables starting with keywords of CompoundPredicate.
 * Allow intrinsic definitions of properties (contents of InstanceBlock and PredicateInstanceBlock are now optional).
+## 1.1.6
+* Allow insignificant whitespaces between types, brackets and exclamation marks in ranges

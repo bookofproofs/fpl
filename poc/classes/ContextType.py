@@ -16,31 +16,31 @@ class ContextType(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateIdentifier" and not self._colon_read:
             # colon_read prevents mixing up PredicateIdentifiers of classes with their types
-            self.type_pattern = self.type_pattern | AuxBits.isObject
+            self.type_pattern = self.type_pattern | AuxBits.objectBit
             self.id = parsing_info.id
         elif rule == "ObjectHeader":
-            self.type_pattern = self.type_pattern | AuxBits.isObject
+            self.type_pattern = self.type_pattern | AuxBits.objectBit
             if parsing_info.id in AuxRuleDependencies.dep["TemplateHeader"]:
-                self.type_pattern = self.type_pattern | AuxBits.isTemplate
+                self.type_pattern = self.type_pattern | AuxBits.templateBit
             elif parsing_info.id.startswith("tpl"):
-                self.type_pattern = self.type_pattern | AuxBits.isTemplate
+                self.type_pattern = self.type_pattern | AuxBits.templateBit
             elif parsing_info.id.startswith("template"):
-                self.type_pattern = self.type_pattern | AuxBits.isTemplate
+                self.type_pattern = self.type_pattern | AuxBits.templateBit
             else:
-                self.type_pattern = self.type_pattern | AuxBits.isInbuilt
+                self.type_pattern = self.type_pattern | AuxBits.inbuiltBit
             self.id = parsing_info.id
         elif rule == "FunctionalTermHeader":
-            self.type_pattern = self.type_pattern | AuxBits.isFunctionalTerm
-            self.type_pattern = self.type_pattern | AuxBits.isInbuilt
+            self.type_pattern = self.type_pattern | AuxBits.functionalTermBit
+            self.type_pattern = self.type_pattern | AuxBits.inbuiltBit
             self.id = parsing_info.id
         elif rule == "PredicateHeader":
-            self.type_pattern = self.type_pattern | AuxBits.isPredicate
-            self.type_pattern = self.type_pattern | AuxBits.isInbuilt
+            self.type_pattern = self.type_pattern | AuxBits.predicateBit
+            self.type_pattern = self.type_pattern | AuxBits.inbuiltBit
             self.id = parsing_info.id
         elif rule == "Colon":
             self._colon_read = True
         elif rule == "XId":
-            self.type_pattern = self.type_pattern | AuxBits.isExtension
+            self.type_pattern = self.type_pattern | AuxBits.extensionBit
             self.id = parsing_info.id
 
     @staticmethod

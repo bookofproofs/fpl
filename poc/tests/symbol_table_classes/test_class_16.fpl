@@ -1,0 +1,45 @@
+TestNamespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            // this functional term instance is (for test purposes intentionally syntactically) incorrect
+            // since the image of the function is missing. It will be interpreted as a class instance
+            // with a (wrong) type of a functional Term.
+            mand func TestProperty172() { return n }
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Test', id='Test', reference=AuxSTClass())
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTConstructor())
+│   └── AuxSTGlobal(gid='TestNamespace.Test.TestProperty172[]', id='Test.TestProperty172[]', reference=AuxSTClassInstance())
+└── AuxSTTheory(checksum='f81c8b7423996a9469691437182f42e3', file_name='test_class_16.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='Test', keyword='class', outline='definition', zfrom='5:9:42', zto='11:9:394')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='Test[]', outline='defaultConstructor', zfrom='', zto='')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='10:9:341', zto='10:39:371')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           └── AuxSTClassInstance(def_type='classInstance', id='TestProperty172[]', mandatory=True, outline='property', zfrom='10:13:345', zto='10:52:384')
+    │               ├── AuxSTSignature(outline='signature', zfrom='10:23:355', zto='10:39:371')
+    │               ├── AuxSTType(id='func', outline='type', type_mod=None, type_pattern=20, zfrom='10:18:350', zto='10:21:353')
+    │               └── AuxSTVarSpecList(outline='specificationList')
+    │                   └── AuxSTStatement(outline='statement', type='return', zfrom='10:43:375', zto='10:50:382')
+    │                       └── AuxSTVariable(id='n', outline='var', zfrom='10:50:382', zto='10:50:382')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')
