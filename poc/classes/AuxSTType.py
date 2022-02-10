@@ -11,21 +11,14 @@ class AuxSTType(AuxST):
         self.type_pattern = -1
         self.type_mod = ""
         self._parsing_info = None
-        if "VariableType" in i.last_positions_by_rule:
-            self.zfrom = i.corrected_position('GeneralType')
-            self.zto = i.last_positions_by_rule['VariableType'].pos_to_str()
-        elif "GeneralType" in i.last_positions_by_rule:
-            self.zfrom = i.corrected_position('Type')
-            self.zto = i.last_positions_by_rule['GeneralType'].pos_to_str()
-        elif "Type" in i.last_positions_by_rule:
-            self.zto = i.last_positions_by_rule['Type'].pos_to_str()
-            self.zfrom = i.last_positions_by_rule['Type'].pos_to_str()
 
     def set_type(self, var_type):
         if var_type.generalType is not None:
             self.id = var_type.generalType.id
             self.type_mod = var_type.generalType.type_mod
             self.type_pattern = var_type.generalType.type_pattern
+            self.zfrom = var_type.generalType.zfrom
+            self.zto = var_type.generalType.zto
         self._parsing_info = var_type
 
     def make(self):

@@ -1,0 +1,309 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test1() { ret all ay8yo3cIbybrVZ,rOvHWB8IFS9,vwV92p4a9(ex$4025529238 quskq82Z9(iif(ex bWt6oizv,bd5qaiv,tfWqiDj3WOC(all kbBo3MNA(not(iif(/183964ozqyKK31,impl(GCCDkNRjK.TRZd1.Dlf(N6JVKL.VuJzkriZJL5le2h.QA(),false,undefined),false))))),undefined))) }
+        pred Test2() { ret not(xor(not(xor(iif(not(xor(25480434,ex$5663 hCtASfrgabvuS(818868204281252))),/57),5279842986279)),c7qEBFY$m4)) }
+        pred Test3() { return all eNFu1F8,k6lDHU0n(iif(xor(all xME2D0F,g_XztQlefKFKM(impl(not(281742437887),@self)),all a6JbbFU_ZGO,dmIqKWDz3II(all zZFolb3k6,gKn7t,h_(/15445991589361))),true)) }
+        pred Test4() { return all dcZNd,uSYx06rPDsi,jGH(true) }
+        pred Test5() { ret undef }
+        pred Test6() { return true }
+        pred Test7() { ret ex$1487426821002 lls,oOjFZhlLp(xor(all i9,gVQTYjK(iif(xor(ex$560849 q_fvZ,gHr_aUc8v7KjAiW,o8UhV(false),ex$731030013 fUwqCCtx_KU(not(323166811))),dR_ydT$382711837102491)),885365690489)) }
+        pred Test8() { return or(impl(is(Muv_KyJC0WiZ,SLz9KZlHXm_5sM),B()),false,all sIkRF,lbTCcXGF(undef)) }
+        pred Test9() { ret not(yORQSyZs$hQixTAxKqJod6t) }
+        pred Test10() { return i$lru_k6HDBq }
+        pred Test11() { ret 0858434 }
+        pred Test12() { return false }
+        pred Test13() { ret assert /447231 }
+        pred Test14() { return ex$37548491 nZz_7Bf_q_jTt5(true) }
+        pred Test15() { ret not(not(false)) }
+        pred Test16() { return iif(undef,impl(impl(and(ex$6935343 mPyf8M5MG,xE6aVWFwaHNdmM,esd2lRbMVuGpz(9350377813599)),undef),8737284)) }
+        pred Test17() { return iif(ex tpnFCourXs2(all hbWNzoz(iif(xor(xor(ex$50 jgNC3ey89J_KG,ym3LapYOfB34Q(xor(undef,false)),false),qmTnIgSsu$oxoR6WPp0P),undefined))),99541357) }
+        pred Test18() { ret xor(all tmfQA,yayrI89SG1FEdDu(iif(all dTE8LxaWBI3czkz,dfMpJbwDVijVQJH(ex cYjyeV,k_8cRm3a,sPYmoY(all swlJTD,kQ9tvQBgEkTfAGL,ep9LjL6Vdjd6V(/013692482284369))),ex fqijXd49utXej,iSZQITR9S4M,iv_qI0_yVIKtas(ex$962855594542714 xvbASed(/7564159450)))),true) }
+        pred Test19() { ret not(all xNHfeujmJ(false)) }
+        pred Test20() { ret 61618707048242 }
+        pred Test21() { return undefined }
+        pred Test22() { return ex fVoAF4MYLNjr,y,sZw3Do(all nn,nsQjLdGFoa,q9Xq6(iif(xor(iif(8819057401,not(xor(xor(true,is(exvx1u,func[!lsYM9igHafeKCC~j99LrqqP8svV$625169935])),6765))),/020479646k84L),false))) }
+        pred Test23() { ret /35541858 }
+        pred Test24() { ret undef }
+        pred Test25() { return xor(iif(all cb8Oa,u,nGnTcjvi2R(all kxYQMoi1X3(ex ikarLiTp,fOhi,mdz4J(all wXA,ikdTq3O6HOX7,ul7qNZVT7f(iif(/9692rGeos7T,all wDKyusZ2k,loiAw7q6AmJU(@@self[81692,self,@self])))))),187),true) }
+        pred Test26() { return xor(impl(iif(all sIOSvXdJq_Y(not(not(not(not(true))))),is(e$lfazm7S43S1wXw,pred)),/41568),false) }
+        pred Test27() { return all qysygVcvyLJGZH1,aCUfubzC(20491851320218) }
+        pred Test28() { return not(not(not(iif(37046,not(all qEafYAK,sLKb,yynV6SDECQNvT(self:=ex e,h08r8_j(true))))))) }
+        pred Test29() { ret /813925747787 }
+        pred Test30() { return all o59bXSgizD(not(impl(all yiSMJZN,i_NUFX19rdXYTCH,jaHlIpNv(xor(ex mEaqE39RRaWL1p2,iqJhP3yBKcG8K5U(undefined),impl(ex lHHsI4Gr2fx(undefined),973))),range @@@self self(self[undefined~]:=true )))) }
+        pred Test31() { ret ex$905119 troQq,vFLr4Rw4kRq,oTMfEH7pu(all c2VOEa(true)) }
+        pred Test32() { ret 7 }
+        pred Test33() { return ex ppo,mtzMOj3VvyrmKS(not(iif(false,ex iKRjF9(impl(/5p,all hY5,hC0AG5i,lc(not(8))))))) }
+        pred Test34() { ret 2852 }
+        pred Test35() { ret ex xAJ9hWM0rba37ka,ju,rVSxh8tJxpNk(all tNR,p3sN1,xcis390nBh(not(ret is(nU$81014183070326,SRtAgWeEx8djr[self()!])))) }
+        pred Test36() { ret ex$23501 nxJlhIr2au(@@self()) }
+        pred Test37() { ret ex$850864590 bT3vpNCB,v8K8HUmH,aRJo(or(not(or(true)),impl(xor(ex pgU0(impl(true,false)),uiVZ87q$d2k4),self[is(Dr2Z6.UM.O2yg8.Simxl3,tpl)~@@self]),zNJPe1ChryOn())) }
+        pred Test38() { ret iif(xor(all mKWA8Cwga,v_hpjZB73ft2(ex$72231216059334 t4,a_Rgtv0(not(self))),iif(not(xor(undef,/80nMFpsiIU8Fkhf)),ret assert is(a3JqwL1udNOO$coWNNB8qQ,+template))),true) }
+        pred Test39() { return 202390 }
+        pred Test40() { return true }
+        pred Test41() { ret all j7aqHhCFxD6Ac0W(ex lnR(all jynSfoGUef,o2,mRkCm2x_C(or(ex xJiKu4,rR3L(/08enLoE69tQ8RyG))))) }
+        pred Test42() { ret iif(ex$4252029833 p69iXEzFj2dR8e1,bGc42IwOe9tPDDR,kObrgfN(i9sgU7hx$bWkkc8D),or(not(true),false)) }
+        pred Test43() { ret 267574777176962 }
+        pred Test44() { ret not(false) }
+        pred Test45() { ret true }
+        pred Test46() { ret ex iFuqNjUF,nJNYEdI1GvfauiJ(1831320) }
+        pred Test47() { ret false }
+        pred Test48() { return wklSIbZ7vmcwNcC$11156391059 }
+        pred Test49() { return all wUuoqSM,m(xor(JvNpJAARyH(all ybKMCIPQ_,dDNd5V_CUNSJskU(all q,kcnNPeFuxfHfH0C(ex xo,u3Em4NCbhPYj,dFTPqZ(/73785hIoVhLRm))),ex afUQbtIwM,zOSj(ex b3Udmy(undef)),all c3daN(undef)),/12)) }
+        pred Test50() { ret self(all wblfDo5z(undef)) }
+        pred Test51() { return is(NpG,pred) }
+        pred Test52() { ret ex heE8cn_,rKYLWEpWp3m(xor(xor(or(not(impl(impl(iif(self,/3),3884),/958077824201))),v$86519491),/453)) }
+        pred Test53() { ret all fY9K(ex iuKi2H1cQymWg_(xor(all gjeIIu8m2xW7(all sZCGWz9I,hwMRoNc4K8yv6Tb(iif(xor(true,iif(true,is(hakMvcW$2934799762,+@extF[!~r9RjClht7H]))),/31773309))),false))) }
+        pred Test54() { ret not(is(SQ7,tpl69207467)) }
+        pred Test55() { ret not(iif(ex$4861243 ovldopATr6s,jWzD3CxmZVg6r8,qD(iif(all kl1,zFTFloLvDlUzRFL(ex gV3VSw0,udsXdBxpD3RcT(xor(all rgMVWF2nZJtS(k0GhA7UQazeBn$9603168270999),undef))),undefined)),undef)) }
+        pred Test56() { ret ex$0 gWIeCkP7qwJK,sdspSX0oY,ccSVdq(all zIoWxKfjiyC(false)) }
+        pred Test57() { ret true }
+        pred Test58() { ret /93685887oa }
+        pred Test59() { ret or(xor(/8504,73930830871437)) }
+        pred Test60() { ret xor(ex$8625579958 c65hGBx28zSG(not(ex sU11XN2j,wUUArOgWcH7kS(all du,xRLFSByOd,wok1vG(undef)))),959755802) }
+        pred Test61() { ret or(ex$7 mhTBjrAXnY,jOpeODYOc,xcZBQCrj(xor(/3089,ex$8844174057 drPrnG,zp3JP3a4,y9uG(xor(/1753,iif(ex sUH,gnulWxul99DCzPC(not(undef)),988580229499406))))),undefined,undef) }
+        pred Test62() { ret ex cq,pQdYbe(ex$068750436067566 agfzDmDiTEOLHps,cZECBVAWsIZlWWh,bXWopQvgui5K8Yj(xor(or(undef),OkiNjR7d4Y9OJj))) }
+        pred Test63() { ret q6rg$paYgG1uGFYQ }
+        pred Test64() { ret impl(iif(or(xor(all rH3(ex mY_NKgQksTcZx,qUNbsggcelSJU(all xeWh(xor(undef,746937339759512)))),is(@@self[false~tNDanes8w7[self]],+function))),p$2),self()) }
+        pred Test65() { ret is(w83eByD3P,+obj) }
+        pred Test66() { ret all wVcmEqrXt(is(self,*pred)) }
+        pred Test67() { ret undef }
+        pred Test68() { return false }
+        pred Test69() { return H }
+        pred Test70() { ret i$mV }
+        pred Test71() { ret is(@@@self[@@@self],function) }
+        pred Test72() { ret /787234898724 }
+        pred Test73() { ret not(xor(xenmihu2EgizY$bx0suP6ouKaC4uX,not(impl(/34126ctd3CwcDV,339918)))) }
+        pred Test74() { ret undefined }
+        pred Test75() { ret not(N.WOFJQSQOeRltg.L5rn0C.RWBtJzloA(ex r8UzCL(is(AdABP4KlYKr,+pred)),undef,iif(is(iBl95j6ri$ahpWsN_,+pred),impl(all wESK6,kPPn4_rdM1Pg(404856),ex$336778911 iq6dId9v,u9d0bYw74ekq(iif(816104,iif(24293553,@@@self))))))) }
+        pred Test76() { return all ur0,ha7cznL(xor(iif(2796683967,fPeBc1R$9469946628),undef)) }
+        pred Test77() { return false }
+        pred Test78() { return all v5,wmN6CwtP361S,w_nQMX1JANODdq(true) }
+        pred Test79() { ret xor(ex tXGZp(all pJEkDQR43_,hwNckSBU,rIY8S7KrL(false)),is(self,*@extGGMUr7FgjABKdf[@@self[self,self[true~]]()!])) }
+        pred Test80() { ret ex v,nyiYN,hXLU25jb3bVA(not(not(iif(xor(undef,false),ex$10 vplOoKKH(ex$937829757674 lNb,rlXPYn8wT,sMZrv0(is(UK5aT,func))))))) }
+        pred Test81() { ret not(undef) }
+        pred Test82() { return ex eqb,jbuvbDFG7LRuQ(true) }
+        pred Test83() { return impl(false,ex ydJar6YrIkT,oS5Hbcmksx6ru,kByevBPXIe(ex iFR5VxP3bbhXCR,wY_(undef))) }
+        pred Test84() { return false }
+        pred Test85() { return xor(ex wWFPnmeQs(all xumj6LepnAJ,ftKIAs28ok(undef)),tcnA0oMH$qybBDc) }
+        pred Test86() { return py.mouqeyv_frehjns(all f83X9HQ,tTOEvu5KSo(true),impl(all jqQdOw5t9C,yneqZNHb9(/03913774126238),false),iif(x2$479739908,not(impl(all opEXXU(not(true)),true)))) }
+        pred Test87() { ret not(xor(299096204206208,false)) }
+        pred Test88() { return all m,vn,ckueBW(ex s_MA8wMSZF(all fkACE_a(ex$58175 u,iujmwrrPL(all a,gMVNHhcDA9kPwh,d3EvPvZyP2E5(ex tWhcTCasXQviF5a(uB$172489537)))))) }
+        pred Test89() { ret ex xpjoLPz,pStPMVeD,e7(true) }
+        pred Test90() { ret impl(false,is(bC_R,func)) }
+        pred Test91() { return /653378z9 }
+        pred Test92() { ret all albVRYiuVNlp,bxh,u_t(ex yFRtp(or(all q87JZ8Yzf3lOFO4(iif(iif(all zGjOjnxw(not(is(@self[@@@self],pred))),vdS24$359),0173260167)),undef,true))) }
+        pred Test93() { ret not(dswVsUV2$nz3m) }
+        pred Test94() { ret and(/06152923152899,ex cpHwgBGS,udjGH(all wchtx2Z8,taJnC,v8Uny8g7JcLzGqI(not(/3627306)))) }
+        pred Test95() { return ex yuS,bwILy83U4NxKx,dAZs5l(iif(not(ex$93929308 vBwB5jjdH0mA(ex$11786861681435 mSJT,wQ,kO5atXvThRgd8A(/525456712))),not(ex vIJog7ykbCfE3,u_YA9(true)))) }
+        pred Test96() { ret all rdaEfRQ(self) }
+        pred Test97() { return xor(false,impl(iif(ex pURPh2s3oFr5N,eM9ZQSv8eA,vK7IYZ(true),is(LRpj9lBAKp3,tplHAK3XZb2z)),xdURDIiR2nc2Z())) }
+        pred Test98() { return ex prOgg4joh,hK6J0Jro(is(self,tpl)) }
+        pred Test99() { ret all tt4Sq9n8EpXv,xxCQ6cayVxM6(false) }
+        pred Test100() { ret true }
+        pred Test101() { ret ex aoTV8Qe(undefined) }
+        pred Test102() { return impl(not(undef),undef) }
+        pred Test103() { ret range self self(return ex tb,pbIBuiKms82vI,o(not(all f1e7s,hhKlhUp4mRuoHo(not(impl(undefined,undef))))) ) }
+        pred Test104() { return not(ex sjyCmKc,j9J4CCeFjIHqTz(all pl(not(iif(xor(50362996756,not(all r0RF_VinOybx(492188))),@@self))))) }
+        pred Test105() { ret and(false) }
+        pred Test106() { return ex$786491473438781 lhpZKOm2Cb,jdiLzcX,lbFvf(impl(iif(xor(all nR9WRmTplPWHU,yF2L,hnzKBIr2x2eDL8b(iif(true,3)),false),not(45)),xor(false,862389964886481))) }
+        pred Test107() { return is(at2eEj27vjVg,+predicate) }
+        pred Test108() { ret xor(all l(ldveqRZh0I$ju86e0),/0q5MFW4EH5JX6) }
+        pred Test109() { return not(ex kVrxD,t7,r3A2fXQShXeQ(all nteMcWANAw,vXqg(57448105322))) }
+        pred Test110() { ret not(false) }
+        pred Test111() { ret iif(true,all e5J0(ex ym,cnqdVCcwdpn(true))) }
+        pred Test112() { ret ex ipSbAZU,aYLkQsDwsOt1A,qwr_0caGI0AuE7(is(EB562cbQYYdr6s,function)) }
+        pred Test113() { ret impl(xor(not(73646),3942184075),false) }
+        pred Test114() { ret all r5p1jT(not(xor(xor(is(PrTm7MwhaZ,+tpl70567145),assert tOkgHqjYCawf$dOnwGMT2),/701167))) }
+        pred Test115() { return is(sGXlC2jP7$a1eSuKd3W,pred[s9wSVgeTP$foKeSVc~xRV!]) }
+        pred Test116() { ret or(xor(all bYbrqo,gE(impl(/0904892,true)),550818928898870)) }
+        pred Test117() { ret or(iif(iif(all uRMFmDz2CC0rm,h17ESvKtSWC42,z0dyJnoIsK2LI7(impl(ex f_(all nd2tJCbhh(is(@self,Kpmvf2.KC2N3I8ySIFOkV.NmX2ch[!yHP7ptuifRENdJh$oOowaLtCKFxgm!]))),true)),ex pm1mti6tYE5T,nd(/078735)),/97134053354827),/9780sqdCjrI,true) }
+        pred Test118() { return all e6nF0A46JQP(iif(all oOj6,dLr_4kdT(all nbfA2w,xpEwOBxnhrtK(false)),false)) }
+        pred Test119() { return not(xor(false,all xfr3N8jZHjxSt,hdBX2zWNUnnGWK,x_(not(not(true))))) }
+        pred Test120() { return false }
+        pred Test121() { return or(impl(064433,all rm3FZKPO,r5noIq,gXqyD04Rh7kvH(iif(ex$27162930 cgPD02rxerTSO,fiBN4k5MMn(not(iif(ex yKfMnBWgjlZ(false),true))),/5938761062966he))),6985672126740,undef) }
+        pred Test122() { return xor(/96921136,not(xor(02,false))) }
+        pred Test123() { return all wE7,n1XH4UChJmz2xm,b9yOEuOEwUj626R(or(ex dspOb9LM,vsJyqgI62zYCOUy(all kEJmlmLS32,cjPaHEdfB5PIa,mHC1mB5p1Wj7vkn(iif(xor(all fQOYqO0,k,onYHJzQKWrP2(ex oxDD1,xA3MKaFkCHF,w(true)),is(p4VTA902YyH1cyg$07758430,+tpl[!Sld()])),is(Z30vl2ko3sKkHah.RfTJk.N8quL8Jcl.T1b61kFGx6LbAB3,pred)))))) }
+        pred Test124() { ret ex uR4Ov,bCQR95OoJIk,eah5V(impl(all duPQwJdPjT,cFcs4fF1Hqdd,vNEZo4PMSBHm(ex l_4VJp3Wu5wl,l4_vSKQc,w4jHJPu8(true)),79)) }
+        pred Test125() { return not(impl(not(not(true)),a$cg)) }
+        pred Test126() { ret false }
+        pred Test127() { ret ex srP3bb5qw,c4W0ntiswclLi99,a36vuiyEBCbZ(not(false)) }
+        pred Test128() { ret false }
+        pred Test129() { ret ex wP6,lJKozgtYZ0Eh4,bQGj4aJk(ex w_fgs7bmG1228v(63856611495712)) }
+        pred Test130() { ret xor(ex q1p7Ndutw5J,gX_L3u,lBcJWEBbVHnl(all bhpTLAvPuB,wk3qaref6,cvXzYoCVk9(all y,vwRAEvDCEgV4dIl,bXhCzBGU(ex eJUeTpjv2Ady,yxly4(ex$41347079344158 jKCH71c,vshRY,lEnKszuFtXUGX(/3uc))))),not(true)) }
+        pred Test131() { return not(ex laEhS6xaiOwah(/91739)) }
+        pred Test132() { ret all umyai,n_cVZ5,cBKLvR3lXcMY(all j1uc,a(xor(ex xGOa3XHJh4xIP,xCVAGk_Y(not(or(/4662694279rav))),impl(all jR2kOmAnUc(is(tUJ$981407,+func[~oJyVnQi$441901345!])),undefined)))) }
+        pred Test133() { return undef }
+        pred Test134() { ret xor(iif(and(XzEaLMBK(all hgaokDCikD,b1(iif(false,all dfqy(and(not(334584307),true)))))),false),is(@@self,*@extDuNeTM[!YMi06p6EX.NaxFPyNrrmM3()!])) }
+        pred Test135() { return 1982687 }
+        pred Test136() { ret is(jrNDiO$rVRl_TFkBM7ZB,TGeFlMYQ3[!~]) }
+        pred Test137() { return or(not(iif(3419,9310473593868)),undef) }
+        pred Test138() { ret ex kw6PBvNMmz5XD3,zHuS8Dvnfl6(false) }
+        pred Test139() { ret iif(iif(/2110,iif(not(ex$68910545 j9FC_P8,uyBkKzONOch(/093741w)),impl(/3779849vYWnaF,not(xor(undef,true))))),return @self[~]) }
+        pred Test140() { ret not(iif(iif(undef,40685665),/09008247)) }
+        pred Test141() { ret impl(xor(or(true,iif(true,/1755tce1Bk)),undef),undef) }
+        pred Test142() { ret ex oR9Q927bq3(oA5Y48r5HOjFGG$u) }
+        pred Test143() { return iif(all dQHUjgR(ex wOrec0JGTWztnvv(not(xor(ex dFsNnpjaLSx3(or(bfM5UYQalfkE(),is(@@@self,obj[!vHg8S$796~]))),ex$3478605783844 hQCDTmSax3g,og_vZ0ttv(self.@@self(true).HKg0mL(/997791)))))),undef) }
+        pred Test144() { ret not(impl(not(ex$21241810222717 royqg9kMUw,qEn0jC2WKpl3,cVUoCU(all pe_eJv,bMyyZn7jqFMTi,wPeLIFPLmuqXp(undefined))),false)) }
+        pred Test145() { ret false }
+        pred Test146() { ret ZexH2f54ozJS(false) }
+        pred Test147() { return not(xor(xor(all g2MTsNb6vYQB(ex cjNG_jhB7NIE(not(xor(all aLIjXIOcfsezn,cpR05ScmF_4Jhs,fVHlJm(undefined),/02757835)))),is(rXfasctrY$auYhtt,template[!wYigIDu])),undefined)) }
+        pred Test148() { return ex vRw3XQD2vQOF,m58,g_gm4raA(all sdR38(NNHjcAjgueYjfsS(92))) }
+        pred Test149() { return not(undef) }
+        pred Test150() { ret not(ex x(ex aSyHuUUW7(iif(ex bMWKH8Y,pYIco5ywglL,rlPERhJFytZ3O(all tSLnnc,uHyTNAaT,iifX2SppIBWhf(ex pW5PSg6xd,lRGbCiIhtvK(true))),ex$689474248 iiMuFtdKCSvs0,mxRhqm3x9F(undef))))) }
+        pred Test151() { return assert false }
+        pred Test152() { ret ex$92 vqCDM3wH,yHcwC2Hx3g6tJA(all vO23bljsnRf,ao2O4fNPebFIHl(/855464323053658)) }
+        pred Test153() { return is(OILjvG0Z70m7gEp.QIoSo6z.YH_pb9KEyZG.D,obj) }
+        pred Test154() { return all kYcrJSeWSyLQ,ib6MZ077KcpC,s1QV3xs0kQBJ_(/48748330399) }
+        pred Test155() { ret /411917885273290 }
+        pred Test156() { ret false }
+        pred Test157() { ret /113327 }
+        pred Test158() { ret iif(qt_l$977552707034483,ex$686987669 jKzjf4jpq6b(not(and(ex qewhmpNQIXOo,o4yTlfPsFa9(xor(or(or(wd,true,4),undef),true)),is(xO8gEGN7MTu$wxpzSnR6,*pred[!xgZTL$6!]))))) }
+        pred Test159() { return ex iHzcR(not(/56y)) }
+        pred Test160() { ret iif(all sGopE,yZpSxnHs5doupjC(/8042t02v1),xor(ex$5 bnrALc2Mh,jQB6NHNd24y1N,uCnVwmBSv2_LG_R(impl(ex t(7323282644),@@self())),impl(xor(aJC1mPqoPqJ$weBePfBmWnReEu,false),undef))) }
+        pred Test161() { return not(ex t27qISZCtG,vT2D6wQs,gplZUS9s3BH(and(and(and(undefined)),not(iif(all g,gOLvyUjYf(126254),true)),/295))) }
+        pred Test162() { return ex pyAY8YX2AYj4if,gAwX,uF_fibJg(not(ex lfEkd,zdUHP9kXKCh,ojo02yKflA3(not(ex uXUPuHJU8pO(81408744012))))) }
+        pred Test163() { ret true }
+        pred Test164() { return true }
+        pred Test165() { ret or(true,not(xor(ex$20973335232 w9L8SJiwlp,ppIQqhp4PQXj,mpiw2x2pTZ(ex nP2sN9y2GAY(iif(xor(all mUmrpEw6K,pF8rwrY1,qrS5gOIKzy8o(undefined),undef),g63KedeA_QfjTLz$9243))),false)),73817710745255) }
+        pred Test166() { return or(all lwpxupv7G,sGwjKUVvfvdcd(undef)) }
+        pred Test167() { ret all l_6oBQ,bG9q4so3xU,jJG1HEb0(ex er,nw(ex d(ex gIcU0mH(13885032187)))) }
+        pred Test168() { return /5501a2FkvXD8H9 }
+        pred Test169() { ret undef }
+        pred Test170() { ret 38 }
+        pred Test171() { return 6474313310 }
+        pred Test172() { ret /6995743899164c }
+        pred Test173() { ret ex fdvqqwpiiVzM_X(ex$621709 u9R(and(true,false,false))) }
+        pred Test174() { ret ex bOFtSta3H(true) }
+        pred Test175() { ret false }
+        pred Test176() { return all sbrqGTYO4Dw5c,xiM6,zQXFoe9jPS(all x2n(undef)) }
+        pred Test177() { return all nt7(not(ex me2_yTlyz7q,jx3YScAmAe,xrGXFHTub60ev(false))) }
+        pred Test178() { ret false }
+        pred Test179() { ret ex cyL1WRF(not(ex hYU5R6ChObK(range self vcBNkA0k_IX$(self:=xor(ex xlyWkNHjrM7(and(false)),not(/816741803)) self:=921 wQDyfIgeZr[is(ferTiEs$gr_0GHmqniI6lf,V4OxU[!ZzrobipG()])]:=9251943767554 )))) }
+        pred Test180() { return not(not(ex aV9LP5UWq,mRDNRrJwz1nQADg,h13wzR4aP(or(ex wD5Y0,lF_S7,cKJRBVI0(mCoUCo8(is(self,tpl),ex ktgVWne2gmECHr,sYeMud,mnsI12nw9cQV1r(impl(false,not(false))),false)),@@self:=dz20MquhOIndg$2463,undefined)))) }
+        pred Test181() { return is(@@self[self~self],*func) }
+        pred Test182() { ret true }
+        pred Test183() { ret 82599229880210 }
+        pred Test184() { return ex$5511 k4M,mCd,yZnkA4(iif(self,impl(iif(undef,false),self))) }
+        pred Test185() { ret is(self,*function) }
+        pred Test186() { return ex$127183303 n(0187545965998) }
+        pred Test187() { ret xor(/897867638sXwc,xor(not(is(aGP3$13416,+func)),ex uQIVB9CQ0Nlbtjv,eFiF,eBJnUZEnAt6S6S(is(hemS2mGpbB$a4,*template66568943)))) }
+        pred Test188() { ret not(undef) }
+        pred Test189() { return not(impl(2882,/680)) }
+        pred Test190() { ret impl(jU9iFEiYnZ$5232225205,true) }
+        pred Test191() { ret iif(ex l,q,yB(impl(all h9b8(61376575816090),80209)),iif(or(956,not(all pgUNbg9qj7_Ea(/558185))),false)) }
+        pred Test192() { return self.@@self() }
+        pred Test193() { ret self }
+        pred Test194() { ret not(ex pJvEf5TDdUpnC,e(all vGH8wF,cYScCUt,w6Aa(/8dTPC))) }
+        pred Test195() { ret all nCnR8MHwlk14,trwv_M5hJ,yN(all iUh,dSopyPZHta,g7piYuiu(undef)) }
+        pred Test196() { ret gNdzfEEys$wVnnQK }
+        pred Test197() { ret not(xor(not(all pPfvaLoAGmi,yOi4eN9l0,sErSOIJVdElyghR(22400109732659)),all eYVkxv,cCbU(/9484992337))) }
+        pred Test198() { return all jiONSOAQChHf,s4iKHjH1,eDatq_gNS(iif(ex aqxNbVBB_RST(impl(ex$68961361791 dTuMPb2VLqUQ(undef),and(ex aXo4t(not(false))))),@@self)) }
+        pred Test199() { ret and(true,ex wowUTTwx(self),not(xor(969941,zBYFk_2Rn))) }
+        pred Test200() { ret or(ex f5wM,tuui,sKqrJC(ex yhppEmzM3,kIf13qJ70(all yobNa0WFd9,t_1KM1I7BjtHidv,zs_RUOIa(all z0l5,y(not(false))))),ex$51 uGuQl,l6799VWQXyAQwmu(all b30QouF5hjgTJj_,dRGyPYXtI33sAK,ddZaDZ(false))) }
+        pred Test201() { ret /800554508274521 }
+        pred Test202() { ret iif(all fJ7xxWiB,o50cIubjdKBptj4,bZgqPyrf3_yeltB(vRX0bQadld79$623),ex$4831669452 mD5JR0aChl(or(all doHA6Owz7vt(ex dN4SZaCOL,jM3aSu2G7OS,gh649j(857703514110)),or(true,all m(false))))) }
+        pred Test203() { ret true }
+        pred Test204() { return and(/6629078775bto,impl(is(jtIh2ivpT4qv$09,*@extCbZ0),@@self.EHbbMaY().R3gxeUL(xor(ex$756988 zMguPZ(/26),/086608897981700)).self())) }
+        pred Test205() { ret xor(iif(/498994,ex teAnScn4il10x(ex di_ZMDVtGy(ex eEVTin4qsT(all ebhXwdztV(not(not(7))))))),/4216zacB1jsap) }
+        pred Test206() { ret not(70567) }
+        pred Test207() { ret ex j3FgpnqipDuJmyE,pLn_FEq5(all rZvEvFlF8(all l,k,hOhwlhan1ecM(all dAKS38IljI(/43430822)))) }
+        pred Test208() { ret all pYkk6,bezA6cMPI(false) }
+        pred Test209() { ret impl(all bB,on(WjZ7aLWL2ybYth),ex e92m2VhHuBcBMg,bpOciXN_s(false)) }
+        pred Test210() { ret ex tTVer3Y6u,vadWGciIm,b(all sFuG2GGqAC,eyhWfogqG(impl(xor(all xm0PGqjv,yxUL,n1Dt3dDEL(all ssyAErsL,ocYO,clV5ap(all zqhSioTT(false))),not(true)),1282845209081))) }
+        pred Test211() { ret and(impl(not(is(pdrrdTcqGYrax_Z,+function)),ex$017354752 qG(ex u_xaQOFCpWm38t,bq5U,pBJ7SbDzulRoXvQ(xor(not(all uIjMVgBeTNc,dy,g(false)),KJFzKYLX923i.self[@@@self[~],@@self,self]())))),/9554) }
+        pred Test212() { ret ex iGZ2KkC,eihPP1E3zX(all gw6rXyA(not(false))) }
+        pred Test213() { return xor(ex$1472 pW8hQsIFTH7i,idqRQn3M,hU(all eta,iZeFS,t(impl(assert ex xtN4,r,hW5eQr7zN(ex pcYPBb7bdsPfQQ,vyL1R(self.self[self,self](ex wDgpwuVh41C(20284651227)).self())),/1224984879421))),all iEdhX9pmWuMy,plWwI1tWtuhcVBJ,q(niGAwXlDK3N_kO$93181)) }
+        pred Test214() { ret is(self,+pred) }
+        pred Test215() { ret not(3843756122304) }
+        pred Test216() { ret 84095430351445 }
+        pred Test217() { ret /05rs }
+        pred Test218() { ret ex lFEu,oYvOhR,zMJPgwXRlbI(iif(not(/586883),all xa,k5rFDq,nsI(is(@self[~],*@extLD0G[@@self()!])))) }
+        pred Test219() { ret iif(xor(is(x3IFpOnr0p$l_rMWjl,+template),is(self[@self,self],MF[!~!])),iif(undefined,not(not(/66148064380447)))) }
+        pred Test220() { ret /60027 }
+        pred Test221() { return true }
+        pred Test222() { ret not(all gFBvoM,h(/79447)) }
+        pred Test223() { ret ex$88124102991304 gMiNUhl3QSuEt,u(ex mRfm23nvYE,gavggEnnU8Hg(impl(undef,iif(/797415392577,not(xor(iif(iif(undef,5301615188613),false),/8ctmq8oC5Evo)))))) }
+        pred Test224() { ret all pSjNFcCljp1A7,g_(impl(all rjhmSKaGSEsNBQ(617137745892),loop self c17LWIGd$(py.ttn(all c3bfxl(/21),not(all q97wN,yndJ_m9fSBd1eZc(is(OFx0lm7QPt.WMZ,+predicate))),iif(ex$738311 aXqxH2,t7aPJ,nLN(19784436717),0)) ))) }
+        pred Test225() { return impl(undef,0970) }
+        pred Test226() { ret xor(true,7497528772) }
+        pred Test227() { return iif(not(ret VQ_ASDp),P()) }
+        pred Test228() { ret iif(xor(all h2m5EYT6RVZN,e9skUneft_rs(is(self[~self[sI$5827702]],@extBHPX[l3qqh!])),all mkJCUpmo_,tJsi_W4saiMe0s,iDBe45G(ex fI2UQt5T,u7(true))),undefined) }
+        pred Test229() { return xor(false,/093) }
+        pred Test230() { return xor(/698g,all r4RKXbydRX,vq38sf,lpalI_sf(ex$06529354784457 mw(not(all jxD1yOT,hS7xCsEdYsj7um(ex dzzhnmLEvN1oAgU(all uuP3I,qR(all pT9jNsEr5cs0WBC(true)))))))) }
+        pred Test231() { return not(xor(false,chfqmsb$426257)) }
+        pred Test232() { return xor(and(/29235592597gS),undef) }
+        pred Test233() { ret impl(65727,all o2PLhdX5,fLXG3E9h0aLrww,luV(all fBwL1CuKeDN3T(hPyodE))) }
+        pred Test234() { return impl(/751,not(all gOi,t6jbTLQUu,tleNdaAFCCFIMVV(ex y19PC4,wHjv3gCdH(not(not(not(ex oVzg,fdkRtuL(/32654206ec)))))))) }
+        pred Test235() { return ex krrx_U05WTIsK,z1OPGRdx(not(ex$03267580 x(iif(all mUxanH,rAiGQsM74d895l,u8nYBbX5Q6A5(self),iif(ex mpm(ex iVz,yRn,obQJ7b(undef)),is(xTeb8b4fz2$2,*tpl[!fdRACXTun$768445527])))))) }
+        pred Test236() { return 70466819466 }
+        pred Test237() { ret impl(or(82770555),iif(all o7MeHtzFZ(rDrd$wpwsslMI),all sYHCPvOCfKTF3m2(iif(all oswEn7H7J,ac3A8AwGjdop8r6,p15C7Dvwa(ex$0100506259165 lpV8SGKGNz8,iD5pd,dUCr(is(ZRsO6kVcM19Qt,obj[p$3666118652]))),qBKShL$9988901206)))) }
+        pred Test238() { return xor(not(xor(ex k,vlLa(iif(self(all mNohcV5,nemhQDLdlOF(all ph1Ht9k3dSrmWA,tUvcy,cKzWrcEqaC(iif(262567,false))),true),return true)),false)),426) }
+        pred Test239() { ret /43508405 }
+        pred Test240() { ret not(ex$5164975 mF6hxeNZuO,q0LaKo__ou0f(all sxMfhJs,npFjLmcr,mAoHmOnemc(ex$202684807032558 eKBHARp,bMxTjFi,tgB6SDtAGLOKu(is(mvNDtG20tAO9$816,func))))) }
+        pred Test241() { ret is(@@self,@extR6) }
+        pred Test242() { return all e4__tvOnS(not(or(and(impl(/559607,ex f3lJRcfBDdk,dpaPrks5stqa,nPQ8y(ex fEURv1e6N,sycYOqDlqqXWnEA(wLS3RU$31082626))))))) }
+        pred Test243() { ret 172002562 }
+        pred Test244() { ret ex dme5YtCBGsk_2Gm,ttYjaf6Q0pdi,buUatmgXiDz_(false) }
+        pred Test245() { ret ex daqf66V,dK,zAAJoVam9uoL_oJ(xor(impl(not(true),not(impl(not(all wwGuiQs(XK6t.WBzNXuQK4EaNL.ThIGR_vTkSh9s.FtmxpGs4bhT)),/91351))),259796249)) }
+        pred Test246() { ret all esF0(undef) }
+        pred Test247() { return xor(false,ex$815372952286 huAdpENYCw,bk_bBfEOtmHDehM(false)) }
+        pred Test248() { return ex xn6lxyEmkVK0Qbc,ar,b4(false) }
+        pred Test249() { return impl(ex ax5YThP9w,bwdmlaqrfU3Y_ww,iC0(iif(impl(all bTe7d7dI1p(not(not(xor(false,undef)))),31018813448),784)),169938) }
+        pred Test250() { ret not(undefined) }
+        pred Test251() { ret xor(/87,/913325217) }
+        pred Test252() { ret range self xyywInkaSF$(assert iif(true,true) ) }
+        pred Test253() { ret iif(ex iTtC5lZa6zdTLJ7,jFxYoOwo0NU84La,z(all qGg2WYmD9a3NehZ,mIS8hkEretwpksD(xor(is(self,+tplY),xor(all g8,nNHRDs0Z,d78D(is(bCTS$71198817786,+tpl4[s26zXQ0p4E5$257576535703~])),xor(self.@@@self(),undefined))))),impl(true,/2)) }
+        pred Test254() { ret iif(or(/7762487,false),is(@self[undef,@@@self],+tpl4253[z0kl9!])) }
+        pred Test255() { ret is(self,pred[qw[@@@self[self,self[is(@self,+predicate)~false]]]()~tXwKQU0Ppsiu_]) }
+        pred Test256() { ret not(ex ySTGLfwUPAxWDJJ,kNpm76(false)) }
+        pred Test257() { return 902016745382 }
+        pred Test258() { return all omIFNmU,sWMMIkX,drT_ZdzH6VurE(ex g,xaU0(xor(false,true))) }
+        pred Test259() { return xor(not(xor(xor(iif(all yGzlYx5JCpynkpF,rcjvY(not(ex rt9NpHoFt8Lb,xh_4S2Q1M(GY_YN0td2f9U))),/3248578943196),is(self,+function[p6iMoopp$rpf2VoKz89fjcj!])),true)),true) }
+        pred Test260() { ret undef }
+        pred Test261() { return iif(ex n8llJ,u1lJZBjVxxjp(assert all k2Pt2yS_,her,pnUyi(iif(ex$245782034830029 sqKTNVmlCZ,h9bGavOLVaZ,sTRxMz(all cQHurnIDc2lou,tJMHDo,cAuY6Z5t(xor(iif(false,self),/888051569477g4c))),gG$912899817))),undef) }
+        pred Test262() { return not(iif(is(Gyvs3FyURbdPnc,+template641556047558965),is(WVRg1SiQeHPE,*tpl))) }
+        pred Test263() { return ex pM(not(iif(sexsIgWTKkMR$zsE0iDch,/45233148607))) }
+        pred Test264() { ret not(not(undef)) }
+        pred Test265() { return 0546112 }
+        pred Test266() { ret impl(not(undefined),all iOy3(all kh(iif(and(all c,uaeZFXwJ,uFyuE2P(xor(false,undef))),330)))) }
+        pred Test267() { ret true }
+        pred Test268() { return all t3gycSk(xor(all tG3qXuSi,gZE9KEXN7,cnSkksO(impl(impl(/77948,not(undef)),iif(not(false),/795207717972))),false)) }
+        pred Test269() { ret not(all mTxYnZbjaA1,fQ,sk(not(/3728592923))) }
+        pred Test270() { return all gXSsk(not(undefined)) }
+        pred Test271() { ret ex$441345615 kb0t7D,dFN,tJgdvatS1nR9rA(all mgDDrlNqoDscx0h(xor(is(self,+OuFQrga07kaITgh.DCSTpsKZcTbJBz),all dL6WTxeN9,bG,suY7(all qAWGxJl,hKKMhp3N(all pxxLXfEY0xh_x(xor(xor(H6Od9C4qPcK,@@self),true))))))) }
+        pred Test272() { ret xor(not(is(YEP6vg6TtCu,+P_eUdjQFyHGZC_k[!~!])),xor(ex w4u0psIK7G6Pi,pxyFEDcYItbjhP(not(not(true))),not(impl(false,391092376)))) }
+        pred Test273() { ret iif(all wDJI9yTb_sOmD,jbd6PysD9nw(/829),all oGEQFshX,sT(/8827491)) }
+        pred Test274() { ret true }
+        pred Test275() { ret all m60,kivxLw8iAEV(all iblUmSfwx_,tx(all wNeEbgoEk,joU,hTsf734D9w(undef))) }
+        pred Test276() { ret undefined }
+        pred Test277() { ret xor(all nZi8xzUX9mp(iif(all aBQvyv,n5f,akdy(not(undef)),xor(true,assert xor(ex o8EUHJ(646458003566134),854)))),s0$475129825) }
+        pred Test278() { ret not(false) }
+        pred Test279() { ret xor(false,ex$9555395 vaoi93tkWoC,ci3vYRBmfXH_TP,uevezqp(ex jhApcu,h6mfgxAwg(ex$998146771772870 fm4,sgzBHRU,dpyfQbcnuB2p(ex r,hZTueo(all hE7kWI3NCntAV9,sQIHZNhCPyYBw,odn(qeVTjitt3EQ$06377)))))) }
+        pred Test280() { ret hDL2qPHfX$ewND763xdtRAx }
+        pred Test281() { return ex nH_OMzc7KZbg5d,rJuRl9,s7DLH9FDr2(impl(self[@@@self[self,pviLP6k0cb]~kfp_TTesDVyXNel](all xJOJreB(all q,iG,t08TRPdBwdof(ex$7467289 fJ9q1(undef))),not(ex sc5hrHS19THzKd,y15biX,oIPXT6_rbklf7MN(not(/937240349529726))),assert 093792864),true)) }
+        pred Test282() { ret iif(iif(is(dgwPJYdG$20,+func),xor(self,all sT(m7QDZyjRSQdkJfC$192397411491))),/05098106404604) }
+        pred Test283() { return true }
+        pred Test284() { ret not(/7338o5hub886A) }
+        pred Test285() { return all hy,y(xor(sp9lj$j,75454060)) }
+        pred Test286() { ret all j(all a6,mUZom1SolXJmeXs(undef)) }
+        pred Test287() { return ex a,uAd(all qo,n3nC2NRz,mkpxx2nkae(ex a7(/919))) }
+        pred Test288() { return undefined }
+        pred Test289() { return impl(/148atljkLO,true) }
+        pred Test290() { return all y,uqSV(not(/0064870122)) }
+        pred Test291() { return /8009 }
+        pred Test292() { ret or(all x7Rk0SKTCN(9658816037)) }
+        pred Test293() { return undef }
+        pred Test294() { ret not(impl(/26gJnxd5G98GOdq,ex$28527520768 pg(iif(impl(ex puM5AKqoktPK7ti,mKLSZFw0EpjS(all f64csN,shFhmxpmlWig,nLyxT2q1(not(true))),4470680005804),undef)))) }
+        pred Test295() { ret false }
+        pred Test296() { return 87 }
+        pred Test297() { ret /35893wJjcGPM }
+        pred Test298() { ret OGS_ZMlACfAOtic.self().CMYSKOa2YU_vpg.YX7.OSLQ0X().B3i0tw52Hkoc6.DidvIV() }
+        pred Test299() { return is(fqsbMBno16aq8hY$olvA9N3GjODXE,tpl) }
+        pred Test300() { return a3YCa7owk$738745 }
+   }
+}
+
+##############################
+obfuscation unit tests

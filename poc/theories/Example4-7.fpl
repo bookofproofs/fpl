@@ -85,7 +85,7 @@ T
         lemma Example4()
         {
             x,y,z: obj
-            pre:
+            pre: undefined
             con:
                 ex x ( and (Greater(x,y), Greater(x,z)) )
         }

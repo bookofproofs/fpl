@@ -38,6 +38,8 @@ class ContextPrimePredicate(AuxInterpretation):
             self.predicate = parsing_info.predicate  # noqa
         elif rule == "extDigit":
             self.predicate = AuxSTPredicate(AuxSymbolTable.extDigit, self._i)
+            self.predicate.zto = self._i.last_positions_by_rule['extDigit'].pos_to_str()
+            self.predicate.zfrom = self._i.corrected_position('extDigit')
             self.predicate.id = parsing_info.get_cst()
         self.stop_aggregation = True
 

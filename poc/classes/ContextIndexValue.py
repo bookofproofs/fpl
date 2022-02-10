@@ -36,11 +36,14 @@ class ContextIndexValue(AuxInterpretation):
         elif rule == "Digit":
             # remember the sub index
             self._sub_index = AuxSTPredicate(AuxSymbolTable.digit, self._i)
+            self._sub_index.zto = self._i.last_positions_by_rule['Digit'].pos_to_str()
+            self._sub_index.zfrom = self._i.corrected_position('Digit')
             self._sub_index.set_id(parsing_info.get_cst())
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextIndexValue(i)
+        new_info.predicate.zto = i.last_positions_by_rule['IndexValue'].pos_to_str()
         new_info.predicate.children = reversed(new_info.predicate.children)
         i.parse_list.append(new_info)
 

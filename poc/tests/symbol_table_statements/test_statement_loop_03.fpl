@@ -1,0 +1,62 @@
+TestTheory
+{
+    theory
+    {
+        func Sum(list: *Nat)->Nat
+        {
+            i: index
+            result:=Zero()
+            loop i list$
+            (
+                result:=Add(result,list$i)
+            )
+            return result
+        }
+     }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestTheory.Sum[1:*Nat]', id='Sum[1:*Nat]', reference=AuxSTDefinitionFunctionalTerm())
+└── AuxSTTheory(checksum='6f8fc12b0ebffbfc6f43ae8ca7c01fbe', file_name='test_statement_loop_03.fpl', namespace='TestTheory', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Sum[1:*Nat]', outline='definition', zfrom='5:9:39', zto='14:9:253')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:44', zto='5:28:58')
+    │       │   └── AuxSTVarDec(id='list', outline='var_decl', zfrom='5:18:48', zto='5:27:57')
+    │       │       └── AuxSTType(id='Nat', outline='type', type_mod='*', type_pattern=1, zfrom='5:24:54', zto='5:27:57')
+    │       ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='5:30:60', zto='5:33:63')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='i', outline='var_decl', zfrom='7:13:87', zto='7:20:94')
+    │       │   │   └── AuxSTType(id='index', outline='type', type_mod=None, type_pattern=64, zfrom='7:15:89', zto='7:20:94')
+    │       │   ├── AuxSTStatement(outline='statement', type=':=', zfrom='8:13:108', zto='8:26:121')
+    │       │   │   ├── AuxSTVariable(id='result', outline='var', zfrom='8:13:108', zto='8:18:113')
+    │       │   │   └── AuxSTPredicateWithArgs(id='Zero', outline='predicateWithArgs', reference=None, zfrom='8:21:116', zto='8:26:121')
+    │       │   │       └── AuxSTArgs(outline='arguments', zfrom='8:25:120', zto='8:26:121')
+    │       │   ├── AuxSTStatement(outline='statement', type='loop', zfrom='9:13:135', zto='12:13:217')
+    │       │   │   ├── AuxSTVariable(id='i', outline='var', zfrom='9:18:140', zto='9:18:140')
+    │       │   │   ├── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='', zto='')
+    │       │   │   │   └── AuxSTPredicate(id='list$', outline='variadicVar', zfrom='9:20:142', zto='9:24:146')
+    │       │   │   │       └── AuxSTVariable(id='list', outline='var', zfrom='9:20:142', zto='9:23:145')
+    │       │   │   └── AuxSTStatement(outline='statement', type=':=', zfrom='11:36:197', zto='11:42:203')
+    │       │   │       ├── AuxSTVariable(id='result', outline='var', zfrom='11:17:178', zto='11:22:183')
+    │       │   │       └── AuxSTPredicateWithArgs(id='Add', outline='predicateWithArgs', reference=None, zfrom='11:25:186', zto='11:42:203')
+    │       │   │           └── AuxSTArgs(outline='arguments', zfrom='11:28:189', zto='11:42:203')
+    │       │   │               ├── AuxSTVariable(id='result', outline='var', zfrom='11:29:190', zto='11:34:195')
+    │       │   │               └── AuxSTPredicate(id='list$i', outline='indexValue', zfrom='11:36:197', zto='11:41:202')
+    │       │   │                   └── AuxSTPredicate(id='list$', outline='variadicVar', zfrom='11:36:197', zto='11:40:201')
+    │       │   │                       ├── AuxSTVariable(id='list', outline='var', zfrom='11:36:197', zto='11:39:200')
+    │       │   │                       └── AuxSTVariable(id='i', outline='var', zfrom='11:41:202', zto='11:41:202')
+    │       │   └── AuxSTStatement(outline='statement', type='return', zfrom='13:13:231', zto='13:25:243')
+    │       │       └── AuxSTVariable(id='result', outline='var', zfrom='13:20:238', zto='13:25:243')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

@@ -6,22 +6,26 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class ContextCoord(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = None
+        self.predicate = AuxSTPredicate(AuxSymbolTable.uninterpreted, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Coord"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Assignee":
-            self.predicate = parsing_info.predicate  # noqa
+            if parsing_info.predicate is not None:  # noqa
+                self.predicate = parsing_info.predicate  # noqa
             self.stop_aggregation = True
         elif rule == "PrimePredicate":
-            self.predicate = parsing_info.predicate  # noqa
+            if parsing_info.predicate is not None:  # noqa
+                self.predicate = parsing_info.predicate  # noqa
             self.stop_aggregation = True
 
     @staticmethod

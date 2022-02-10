@@ -30,4 +30,6 @@ class ContextExists(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextExists(i)
+        new_info.predicate.zto = i.last_positions_by_rule['Exists'].pos_to_str()
+        new_info.predicate.zfrom = i.corrected_position('ex')
         i.parse_list.append(new_info)

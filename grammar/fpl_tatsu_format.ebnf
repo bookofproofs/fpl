@@ -1,4 +1,4 @@
-# fpl Version 1.1.6
+# fpl Version 1.1.7
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -142,7 +142,7 @@
         ;
 
     PremiseBlock =
-        PremiseHeader [ IW ] Colon { CW }* [ Predicate ]
+        PremiseHeader [ IW ] Colon { CW }* Predicate SW
         ;
 
     ConclusionBlock =
@@ -469,7 +469,7 @@
     AxiomBlock =
         LeftBrace
         { CW }* [ VariableSpecificationList ]
-        { CW }* Predicate
+        { CW }* [ Predicate ]
         { CW }* RightBrace
         ;
 
@@ -772,11 +772,7 @@
         ;
 
     ReferencingIdentifier =
-        PredicateIdentifier DollarDigitList
-        ;
-
-    DollarDigitList =
-        Dollar Digit { Dollar Digit }*
+        PredicateIdentifier Dollar Digit
         ;
 
     ProofHeader =
@@ -1446,7 +1442,7 @@
         ;
 
     EBNFTerm =
-        EBNFFactor { [ IW ] EBNFFactor }*
+        EBNFFactor { SW EBNFFactor }*
         ;
 
     EBNFFactor =
@@ -1458,7 +1454,7 @@
         ;
 
     EBNFString =
-        /\"[^\"]*\"/
+        /\"[^\"\n]*\"/
         ;
 
     EBNFBar =

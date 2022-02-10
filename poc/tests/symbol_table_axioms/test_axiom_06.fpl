@@ -1,0 +1,76 @@
+TestNamespace
+{
+    theory
+    {
+        // taken from obfuscation tests
+        post TyBR3()
+        {
+            self:= xor
+                    (
+                        false,
+                        or
+                        (
+                            self:=all eOkmk4O5pbZd,r,l4
+                                (
+                                    all pxuzWnp7b,a_caii,a3ND
+                                    (
+                                        ex xRmBfXkBmhv1B,bfu5bwuSQLZZV
+                                        (
+                                            ex$1683281146 u6JZDgRW9TAywu
+                                            (
+                                                iif
+                                                (
+                                                    impl(@@@self,false),
+                                                    /08685454
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                            false
+                        )
+                    )
+
+            self()
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.TyBR3[]', id='TyBR3[]', reference=AuxSTAxiom())
+└── AuxSTTheory(checksum='540d1d21138fac37be803932790d8bd3', file_name='test_axiom_06.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    │   └── AuxSTAxiom(id='TyBR3[]', keyword='post', outline='axiom', zfrom='6:9:82', zto='35:9:1214')
+    │       ├── AuxSTSignature(outline='signature', zfrom='6:14:87', zto='6:20:93')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTStatement(outline='statement', type=':=', zfrom='23:66:823', zto='32:21:1184')
+    │       │       ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='8:13:117', zto='8:16:120')
+    │       │       └── AuxSTPredicate(outline='xor', zfrom='8:20:124', zto='32:21:1184')
+    │       │           ├── AuxSTPredicate(outline='false', zfrom='10:25:174', zto='10:29:178')
+    │       │           └── AuxSTPredicate(outline='or', zfrom='11:25:205', zto='31:25:1162')
+    │       │               ├── AuxSTStatement(outline='statement', type=':=', zfrom='23:65:822', zto='29:33:1101')
+    │       │               │   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='13:29:262', zto='13:32:265')
+    │       │               │   └── AuxSTPredicate(bound_vars=['eOkmk4O5pbZd', 'r', 'l4'], outline='all', zfrom='15:35:358', zto='29:33:1101')
+    │       │               │       └── AuxSTPredicate(bound_vars=['pxuzWnp7b', 'a_caii', 'a3ND'], outline='all', zfrom='15:37:360', zto='28:37:1067')
+    │       │               │           └── AuxSTPredicate(bound_vars=['xRmBfXkBmhv1B', 'bfu5bwuSQLZZV'], exists_number=-1, outline='ex', zfrom='19:44:580', zto='27:41:1029')
+    │       │               │               └── AuxSTPredicate(bound_vars=['u6JZDgRW9TAywu'], exists_number=1683281146, outline='ex', zfrom='19:45:581', zto='26:45:987')
+    │       │               │                   └── AuxSTPredicate(outline='<=>', zfrom='21:49:704', zto='25:49:941')
+    │       │               │                       ├── AuxSTPredicate(outline='=>', zfrom='23:53:810', zto='23:71:828')
+    │       │               │                       │   ├── AuxSTSelf(id='self', number_ats=3, outline='self', reference=None, zfrom='23:58:815', zto='23:64:821')
+    │       │               │                       │   └── AuxSTPredicate(outline='false', zfrom='23:66:823', zto='23:70:827')
+    │       │               │                       └── AuxSTArgumentParam(id='08685454', outline='argID', zfrom='24:54:884', zto='24:61:891')
+    │       │               └── AuxSTPredicate(outline='false', zfrom='30:29:1132', zto='30:33:1136')
+    │       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='34:13:1199', zto='34:18:1204')
+    │           └── AuxSTArgs(outline='arguments', zfrom='34:17:1203', zto='34:18:1204')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

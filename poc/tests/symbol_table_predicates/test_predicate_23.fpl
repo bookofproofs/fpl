@@ -1,0 +1,55 @@
+TestNamespace
+{
+    theory
+    {
+        // taken from obfuscation tests
+        predicate Y8wF3zq96SX()
+        {
+            oqXPRd:*obj()
+            self[@self,undefined,@@@self].self(not(not(jcBQQAtg5HPc[uGH7uBwCrNx5~]))).FhqA5zQedw.OzeSLQ7TWnGsWJy.VKsIKEec3JumaCm.UVk3LEykrd6aPj2().self()
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Y8wF3zq96SX[]', id='Y8wF3zq96SX[]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='109b98bf123114cb3350333ccbc72ae7', file_name='test_predicate_23.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Y8wF3zq96SX[]', keyword='predicate', outline='definition', zfrom='6:9:82', zto='10:9:304')
+    │       ├── AuxSTSignature(outline='signature', zfrom='6:19:92', zto='6:31:104')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTVarDec(id='oqXPRd', outline='var_decl', zfrom='8:13:128', zto='8:25:140')
+    │       │       └── AuxSTType(id='obj', outline='type', type_mod='*', type_pattern=17, zfrom='8:20:135', zto='8:23:138')
+    │       │           └── AuxSTArgs(outline='arguments', zfrom='8:24:139', zto='8:25:140')
+    │       ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='9:41:182', zto='9:41:182')
+    │       │   ├── AuxSTCoords(outline='coordinates', zfrom='9:17:158', zto='9:40:181')
+    │       │   │   ├── AuxSTSelf(id='self', number_ats=1, outline='self', reference=None, zfrom='9:18:159', zto='9:22:163')
+    │       │   │   ├── AuxSTPredicate(outline='undefined', zfrom='9:24:165', zto='9:32:173')
+    │       │   │   └── AuxSTSelf(id='self', number_ats=3, outline='self', reference=None, zfrom='9:34:175', zto='9:40:181')
+    │       │   └── AuxSTQualified(outline='qualified', zfrom='9:42:183', zto='9:42:183')
+    │       │       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='9:43:184', zto='9:85:226')
+    │       │           ├── AuxSTArgs(outline='arguments', zfrom='9:47:188', zto='9:85:226')
+    │       │           │   └── AuxSTPredicate(outline='not', zfrom='9:50:191', zto='9:84:225')
+    │       │           │       └── AuxSTPredicate(outline='not', zfrom='9:52:193', zto='9:83:224')
+    │       │           │           └── AuxSTVariable(id='jcBQQAtg5HPc', outline='var', zfrom='9:69:210', zto='9:82:223')
+    │       │           │               └── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='', zto='')
+    │       │           │                   └── AuxSTVariable(id='uGH7uBwCrNx5', outline='var', zfrom='9:69:210', zto='9:80:221')
+    │       │           └── AuxSTQualified(outline='qualified', zfrom='9:86:227', zto='9:86:227')
+    │       │               └── AuxSTPredicateWithArgs(id='FhqA5zQedw.OzeSLQ7TWnGsWJy.VKsIKEec3JumaCm.UVk3LEykrd6aPj2', outline='predicateWithArgs', reference=None, zfrom='9:87:228', zto='9:146:287')
+    │       │                   ├── AuxSTArgs(outline='arguments', zfrom='9:145:286', zto='9:146:287')
+    │       │                   └── AuxSTQualified(outline='qualified', zfrom='9:147:288', zto='9:147:288')
+    │       │                       └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='9:148:289', zto='9:153:294')
+    │       │                           └── AuxSTArgs(outline='arguments', zfrom='9:152:293', zto='9:153:294')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

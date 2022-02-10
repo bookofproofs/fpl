@@ -2,7 +2,7 @@
 /* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */
 
 
-/* fpl Version 1.1.6 */
+/* fpl Version 1.1.7 */
 /* a mathematical theory written in FPL can be split between different files having */
 /* Every theory part block starts with an optional syntax extension block, followed by */
 /* optional usage of other libraries, followed by optional inference rules, */
@@ -89,7 +89,7 @@ regular_expression '/((?!:end).)*/'
         ( CW )* ConclusionBlock
         ( CW )* RightBrace
     PremiseBlock ::=
-        PremiseHeader (IW)? Colon ( CW )* (Predicate)?
+        PremiseHeader (IW)? Colon ( CW )* Predicate SW
     ConclusionBlock ::=
         ConclusionHeader (IW)? Colon ( CW )* Predicate
     TheoryHeader ::=
@@ -294,7 +294,7 @@ regular_expression '/((?!:end).)*/'
     AxiomBlock ::=
         LeftBrace
         ( CW )* (VariableSpecificationList)?
-        ( CW )* Predicate
+        ( CW )* (Predicate)?
         ( CW )* RightBrace
     axiom ::=
         "axiom"
@@ -472,9 +472,7 @@ regular_expression '/((?!:end).)*/'
     Proof ::=
         ProofHeader SW ReferencingIdentifier (IW)? ProofBlock
     ReferencingIdentifier ::=
-        PredicateIdentifier DollarDigitList
-    DollarDigitList ::=
-        Dollar Digit ( Dollar Digit )*
+        PredicateIdentifier Dollar Digit
     ProofHeader ::=
         (
         proof
@@ -870,7 +868,7 @@ regular_expression '/[a-z]{3}/'
     EBNFTransl ::=
         EBNFTerm ( (IW)? EBNFBar (IW)? EBNFTerm )*
     EBNFTerm ::=
-        EBNFFactor ( (IW)? EBNFFactor )*
+        EBNFFactor ( SW EBNFFactor )*
     EBNFFactor ::=
         (
         Variable
@@ -878,7 +876,7 @@ regular_expression '/[a-z]{3}/'
         | LeftParen (IW)? EBNFTransl (IW)? RightParen
         )
     EBNFString ::=
-regular_expression '/\"[^\"]*\"/'
+regular_expression '/\"[^\"\n]*\"/'
     EBNFBar ::=
         "|"
     LocalizationHeader ::=

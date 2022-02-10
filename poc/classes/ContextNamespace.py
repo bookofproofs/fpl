@@ -17,9 +17,12 @@ class ContextNamespace(AuxInterpretation):
         self.rules_of_inference = None
         self.building_blocks = None
         self.localisations = None
+        # because this is the root rule of the FPL grammar, we have to aggregate all previous rules from the
+        # parsing list using (list(AuxRuleDependencies.dep.keys())
+        # even if (due to problems in the syntax analysis), the parsing list is not matching the children of the
+        # Namespace rule.
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["Namespace"] +
-                                      AuxRuleDependencies.dep["NamespaceBlock"], self.rule_aggregator)
+                                      list(AuxRuleDependencies.dep.keys()), self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "NamespaceIdentifier":

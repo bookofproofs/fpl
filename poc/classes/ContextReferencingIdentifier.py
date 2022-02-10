@@ -19,8 +19,10 @@ class ContextReferencingIdentifier(AuxInterpretation):
         if rule == "PredicateIdentifier":
             self.id = parsing_info.id + self.id
             self.stop_aggregation = True
-        elif rule == "DollarDigitList":
-            self.id = parsing_info.id + self.id
+        elif rule == "Dollar":
+            self.id = parsing_info.get_cst() + self.id
+        elif rule == "Digit":
+            self.id = parsing_info.get_cst() + self.id
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

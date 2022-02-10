@@ -11,6 +11,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 class ContextClosedOrOpenRange(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self._i = i
         self.range = None
         self._right_included = False
         self.aggregate_previous_rules(i.parse_list,
@@ -19,6 +20,7 @@ class ContextClosedOrOpenRange(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "LeftBound":
             self.range.left_included = parsing_info.bound_included  # noqa
+            self.range.zfrom = self._i.corrected_position("LeftBracket")
             self.stop_aggregation = True
         elif rule == "Range":
             self.range = parsing_info.range  # noqa
@@ -29,5 +31,6 @@ class ContextClosedOrOpenRange(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextClosedOrOpenRange(i)
+        new_info.range.zto = i.last_positions_by_rule["ClosedOrOpenRange"].pos_to_str()
         i.parse_list.append(new_info)
 

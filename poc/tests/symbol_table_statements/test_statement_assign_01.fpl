@@ -1,0 +1,97 @@
+TestTheory
+{
+   theory
+    {
+        class Ring: AlgebraicStructure
+        {
+            myX : tpl
+            myAdd,myMul : BinOp(a,b: tplElem)
+
+            Ring (
+                x: tpl,
+                add: BinOp(a,b: tplElem),
+                mul: BinOp(a,b: tplElem)
+            )
+            {
+                myX:= x
+                myAdd:=add
+                myMul:=mul
+                self:=AlgebraicStructure(x, add, mul)
+            }
+        }
+
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestTheory.Ring', id='Ring', reference=AuxSTClass())
+│   └── AuxSTGlobal(gid='TestTheory.Ring[1:tpl,1:BinOp[2:tplElem],1:BinOp[2:tplElem]]', id='Ring[1:tpl,1:BinOp[2:tplElem],1:BinOp[2:tplElem]]', reference=AuxSTConstructor())
+└── AuxSTTheory(checksum='117a51ee5e6eae9a7520121d27e730f3', file_name='test_statement_assign_01.fpl', namespace='TestTheory', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['AlgebraicStructure'], def_type='class', id='Ring', keyword='class', outline='definition', zfrom='5:9:38', zto='21:9:456')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='myX', outline='var_decl', zfrom='7:13:91', zto='7:21:99')
+    │       │   │   └── AuxSTType(id='tpl', outline='type', type_mod=None, type_pattern=9, zfrom='7:18:96', zto='7:21:99')
+    │       │   ├── AuxSTVarDec(id='myAdd', outline='var_decl', zfrom='8:13:113', zto='8:45:145')
+    │       │   │   └── AuxSTType(id='BinOp', outline='type', type_mod=None, type_pattern=1, zfrom='8:26:126', zto='8:31:131')
+    │       │   │       └── AuxSTArgs(outline='arguments', zfrom='8:32:132', zto='8:45:145')
+    │       │   │           ├── AuxSTVarDec(id='a', outline='var_decl', zfrom='8:33:133', zto='8:44:144')
+    │       │   │           │   └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='8:37:137', zto='8:44:144')
+    │       │   │           └── AuxSTVarDec(id='b', outline='var_decl', zfrom='8:33:133', zto='8:44:144')
+    │       │   │               └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='8:37:137', zto='8:44:144')
+    │       │   └── AuxSTVarDec(id='myMul', outline='var_decl', zfrom='8:13:113', zto='8:45:145')
+    │       │       └── AuxSTType(id='BinOp', outline='type', type_mod=None, type_pattern=1, zfrom='8:26:126', zto='8:31:131')
+    │       │           └── AuxSTArgs(outline='arguments', zfrom='8:32:132', zto='8:45:145')
+    │       │               ├── AuxSTVarDec(id='a', outline='var_decl', zfrom='8:33:133', zto='8:44:144')
+    │       │               │   └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='8:37:137', zto='8:44:144')
+    │       │               └── AuxSTVarDec(id='b', outline='var_decl', zfrom='8:33:133', zto='8:44:144')
+    │       │                   └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='8:37:137', zto='8:44:144')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='Ring[1:tpl,1:BinOp[2:tplElem],1:BinOp[2:tplElem]]', outline='constructor', zfrom='10:14:161', zto='20:13:446')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='10:14:161', zto='14:13:286')
+    │       │       │   ├── AuxSTVarDec(id='x', outline='var_decl', zfrom='11:17:183', zto='11:22:188')
+    │       │       │   │   └── AuxSTType(id='tpl', outline='type', type_mod=None, type_pattern=9, zfrom='11:19:185', zto='11:22:188')
+    │       │       │   ├── AuxSTVarDec(id='add', outline='var_decl', zfrom='12:17:207', zto='12:40:230')
+    │       │       │   │   └── AuxSTType(id='BinOp', outline='type', type_mod=None, type_pattern=1, zfrom='12:21:211', zto='12:26:216')
+    │       │       │   │       └── AuxSTArgs(outline='arguments', zfrom='12:27:217', zto='12:40:230')
+    │       │       │   │           ├── AuxSTVarDec(id='a', outline='var_decl', zfrom='12:28:218', zto='12:39:229')
+    │       │       │   │           │   └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='12:32:222', zto='12:39:229')
+    │       │       │   │           └── AuxSTVarDec(id='b', outline='var_decl', zfrom='12:28:218', zto='12:39:229')
+    │       │       │   │               └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='12:32:222', zto='12:39:229')
+    │       │       │   └── AuxSTVarDec(id='mul', outline='var_decl', zfrom='13:17:249', zto='13:40:272')
+    │       │       │       └── AuxSTType(id='BinOp', outline='type', type_mod=None, type_pattern=1, zfrom='13:21:253', zto='13:26:258')
+    │       │       │           └── AuxSTArgs(outline='arguments', zfrom='13:27:259', zto='13:40:272')
+    │       │       │               ├── AuxSTVarDec(id='a', outline='var_decl', zfrom='13:28:260', zto='13:39:271')
+    │       │       │               │   └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='13:32:264', zto='13:39:271')
+    │       │       │               └── AuxSTVarDec(id='b', outline='var_decl', zfrom='13:28:260', zto='13:39:271')
+    │       │       │                   └── AuxSTType(id='tplElem', outline='type', type_mod=None, type_pattern=9, zfrom='13:32:264', zto='13:39:271')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='16:23:324', zto='16:23:324')
+    │       │           │   ├── AuxSTVariable(id='myX', outline='var', zfrom='16:17:318', zto='16:19:320')
+    │       │           │   └── AuxSTVariable(id='x', outline='var', zfrom='16:23:324', zto='16:23:324')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='17:24:349', zto='17:26:351')
+    │       │           │   ├── AuxSTVariable(id='myAdd', outline='var', zfrom='17:17:342', zto='17:21:346')
+    │       │           │   └── AuxSTVariable(id='add', outline='var', zfrom='17:24:349', zto='17:26:351')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='18:24:376', zto='18:26:378')
+    │       │           │   ├── AuxSTVariable(id='myMul', outline='var', zfrom='18:17:369', zto='18:21:373')
+    │       │           │   └── AuxSTVariable(id='mul', outline='var', zfrom='18:24:376', zto='18:26:378')
+    │       │           └── AuxSTStatement(outline='statement', type=':=', zfrom='19:50:429', zto='19:53:432')
+    │       │               ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='19:17:396', zto='19:20:399')
+    │       │               └── AuxSTPredicateWithArgs(id='AlgebraicStructure', outline='predicateWithArgs', reference=None, zfrom='19:23:402', zto='19:53:432')
+    │       │                   └── AuxSTArgs(outline='arguments', zfrom='19:41:420', zto='19:53:432')
+    │       │                       ├── AuxSTVariable(id='x', outline='var', zfrom='19:42:421', zto='19:42:421')
+    │       │                       ├── AuxSTVariable(id='add', outline='var', zfrom='19:45:424', zto='19:47:426')
+    │       │                       └── AuxSTVariable(id='mul', outline='var', zfrom='19:50:429', zto='19:52:431')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

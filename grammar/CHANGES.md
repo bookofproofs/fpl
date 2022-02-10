@@ -63,3 +63,8 @@ Initial grammar
 * Allow intrinsic definitions of properties (contents of InstanceBlock and PredicateInstanceBlock are now optional).
 ## 1.1.6
 * Allow insignificant whitespaces between types, brackets and exclamation marks in ranges
+## 1.1.7
+* Enforce a premise predicate (later semantical convention should be: if omitted then use the undefined keyword).
+* A premise and a conclusion must be terminated by a significant whitespace.
+* Simplify ReferencingIdentifier of proofs or corollaries to allow only one dollar digit after PredicateIdentifier.
+* Remove DollarDigitList rule.

@@ -10,6 +10,7 @@ class ContextClassInstance(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self.building_block = AuxSTClassInstance(i)
         self._var_type = None
+        self._i = i
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["ClassInstance"] + ["FunctionalTermHeader"]
                                       , self.rule_aggregator)
@@ -29,6 +30,7 @@ class ContextClassInstance(AuxInterpretation):
             self._var_type.id = parsing_info.id
             self._var_type.type_pattern = self._var_type.type_pattern | AuxBits.functionalTermBit
             self._var_type.type_pattern = self._var_type.type_pattern | AuxBits.inbuiltBit
+            self._var_type.zfrom = self._i.corrected_zpos_by(self._var_type.zfrom, len(self._var_type.id))
         elif rule == "Signature":
             self.building_block.register_child(parsing_info.symbol_signature)  # noqa
             self.building_block.id = parsing_info.symbol_signature.to_string()  # noqa

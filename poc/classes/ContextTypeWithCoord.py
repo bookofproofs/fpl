@@ -25,7 +25,7 @@ class ContextTypeWithCoord(AuxInterpretation):
             self.type = parsing_info
         elif rule == "LeftBound":
             self.rangeOrCoord.left_included = parsing_info.bound_included  # noqa
-            self.rangeOrCoord.zfrom = parsing_info.zfrom
+            self.rangeOrCoord.zfrom = str(parsing_info.zfrom)
         elif rule == "RangeInType":
             self.rangeOrCoord = parsing_info.range  # noqa
             self.rangeOrCoord.zto = self._zto
@@ -34,7 +34,7 @@ class ContextTypeWithCoord(AuxInterpretation):
             self.rangeOrCoord = parsing_info.predicate  # noqa
         elif rule == "RightBound":
             self._right_bound_included = parsing_info.bound_included  # noqa
-            self._zto = parsing_info.zto
+            self._zto = str(parsing_info.zto)
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
