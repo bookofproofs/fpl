@@ -1,0 +1,93 @@
+TestNamespace
+{
+    theory
+    {
+        // taken from obfuscation tests
+        pred VQf4cqgQZ.HT1ZmuR(upnsH3J50CoukZb:ind)
+        {
+            tYc,o3Z5AioM0MV82:ind
+            rPuWNluG7(
+                ex wH5,uw,zncQcNYX04gIO
+                (
+                    all ow7x,aYJBr8nnBg9pIl,zNdugH1sXL0
+                    (
+                        xor
+                        (
+                            not
+                            (
+                                ex tAG
+                                (
+                                    ex yaAnYiWB,iYQnfk58
+                                    (
+                                        not
+                                        (
+                                            ex$611518 yxA03MlJNqcIFe,hBSC_2Mk
+                                            (
+                                                33263913351125
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            loop self @@self
+                            (
+                                self:=3581123
+                                self:=undef
+                            )
+                        )
+                    )
+                ),
+                /29rRdykDfyvt01r
+            )
+        }
+    }
+}
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.VQf4cqgQZ.HT1ZmuR[1:ind]', id='VQf4cqgQZ.HT1ZmuR[1:ind]', reference=AuxSTDefinitionPredicate())
+└── AuxSTTheory(checksum='ffe3a9b960cad4d950cd85583f6660f1', file_name='test_predicate_24.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='VQf4cqgQZ.HT1ZmuR[1:ind]', keyword='pred', outline='definition', zfrom='6:9:82', zto='42:9:1394')
+    │       ├── AuxSTSignature(outline='signature', zfrom='6:14:87', zto='6:51:124')
+    │       │   └── AuxSTVarDec(id='upnsH3J50CoukZb', outline='var_decl', zfrom='6:32:105', zto='6:50:123')
+    │       │       └── AuxSTType(id='ind', outline='type', type_mod=None, type_pattern=64, zfrom='6:47:120', zto='6:50:123')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='o3Z5AioM0MV82', outline='var_decl', zfrom='8:13:148', zto='8:33:168')
+    │       │   │   └── AuxSTType(id='ind', outline='type', type_mod=None, type_pattern=64, zfrom='8:30:165', zto='8:33:168')
+    │       │   └── AuxSTVarDec(id='tYc', outline='var_decl', zfrom='8:13:148', zto='8:33:168')
+    │       │       └── AuxSTType(id='ind', outline='type', type_mod=None, type_pattern=64, zfrom='8:30:165', zto='8:33:168')
+    │       ├── AuxSTPredicateWithArgs(id='rPuWNluG7', outline='predicateWithArgs', reference=None, zfrom='9:13:182', zto='41:13:1384')
+    │       │   └── AuxSTArgs(outline='arguments', zfrom='9:22:191', zto='41:13:1384')
+    │       │       ├── AuxSTPredicate(bound_vars=['wH5', 'uw', 'zncQcNYX04gIO'], exists_number=-1, outline='ex', zfrom='24:42:740', zto='39:17:1336')
+    │       │       │   └── AuxSTPredicate(bound_vars=['ow7x', 'aYJBr8nnBg9pIl', 'zNdugH1sXL0'], outline='all', zfrom='12:21:271', zto='38:21:1318')
+    │       │       │       └── AuxSTPredicate(outline='xor', zfrom='14:25:353', zto='37:25:1296')
+    │       │       │           ├── AuxSTPredicate(outline='not', zfrom='22:39:651', zto='31:29:1074')
+    │       │       │           │   └── AuxSTPredicate(bound_vars=['tAG'], exists_number=-1, outline='ex', zfrom='24:43:741', zto='30:33:1044')
+    │       │       │           │       └── AuxSTPredicate(bound_vars=['yaAnYiWB', 'iYQnfk58'], exists_number=-1, outline='ex', zfrom='24:44:742', zto='29:37:1010')
+    │       │       │           │           └── AuxSTPredicate(outline='not', zfrom='22:41:653', zto='28:41:972')
+    │       │       │           │               └── AuxSTPredicate(bound_vars=['yxA03MlJNqcIFe', 'hBSC_2Mk'], exists_number=611518, outline='ex', zfrom='24:45:743', zto='27:45:930')
+    │       │       │           │                   └── AuxSTPredicate(id='33263913351125', outline='extDigit', zfrom='26:49:871', zto='26:62:884')
+    │       │       │           └── AuxSTStatement(outline='statement', type='loop', zfrom='32:29:1105', zto='36:29:1270')
+    │       │       │               ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='32:34:1110', zto='32:37:1113')
+    │       │       │               ├── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='', zto='')
+    │       │       │               │   └── AuxSTSelf(id='self', number_ats=2, outline='self', reference=None, zfrom='32:39:1115', zto='32:44:1120')
+    │       │       │               ├── AuxSTStatement(outline='statement', type=':=', zfrom='34:33:1184', zto='34:45:1196')
+    │       │       │               │   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='34:33:1184', zto='34:36:1187')
+    │       │       │               │   └── AuxSTPredicate(id='3581123', outline='extDigit', zfrom='34:39:1190', zto='34:45:1196')
+    │       │       │               └── AuxSTStatement(outline='statement', type=':=', zfrom='35:33:1230', zto='35:43:1240')
+    │       │       │                   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='35:33:1230', zto='35:36:1233')
+    │       │       │                   └── AuxSTPredicate(outline='undefined', zfrom='35:39:1236', zto='35:43:1240')
+    │       │       └── AuxSTArgumentParam(id='29rRdykDfyvt01r', outline='argID', zfrom='40:18:1356', zto='40:32:1370')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

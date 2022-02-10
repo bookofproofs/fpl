@@ -9,12 +9,14 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTConstructors import AuxSTConstructors
 from poc.classes.AuxSTProperties import AuxSTProperties
+from poc.classes.ContextVariableSpecificationList import  ContextVariableSpecificationList
 
 
 class ContextObjectDefinitionBlock(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self._i = i
         # specification list is optional in the grammar and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         # definition content lists (properties and/or constructors) are optional in the grammar
@@ -22,13 +24,16 @@ class ContextObjectDefinitionBlock(AuxInterpretation):
         self.constructor_list = AuxSTConstructors()
         self.property_list = AuxSTProperties()
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["ObjectDefinitionBlock"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["ObjectDefinitionBlock"] +
+                                      ["VariableSpecification"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "LeftBrace":
             self.stop_aggregation = True
         elif rule == "VariableSpecificationList":
             self.variable_spec = parsing_info.variable_spec  # noqa
+        elif rule == "VariableSpecification":
+            ContextVariableSpecificationList.consume_variable_specification(self._i, parsing_info, self)
         elif rule == "DefinitionContentList":
             self.constructor_list = parsing_info.constructor_list  # noqa
             self.property_list = parsing_info.property_list  # noqa

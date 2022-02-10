@@ -28,6 +28,8 @@ class ContextImplication(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextImplication(i)
+        new_info.predicate.zto = i.last_positions_by_rule['Implication'].pos_to_str()
+        new_info.predicate.zfrom = i.corrected_position('impl')
         # order the children like they appear the FPL source code, not like they were parsed
         new_info.predicate.children = reversed(new_info.predicate.children)
         i.parse_list.append(new_info)

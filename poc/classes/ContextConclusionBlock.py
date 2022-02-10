@@ -28,4 +28,6 @@ class ContextConclusionBlock(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextConclusionBlock(i)
+        new_info.predicate.zto = i.last_positions_by_rule['ConclusionBlock'].pos_to_str()
+        new_info.predicate.zfrom = i.corrected_position('ConclusionHeader')
         i.parse_list.append(new_info)

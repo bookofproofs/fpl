@@ -9,8 +9,6 @@ class AuxSTSelf(AuxST):
         self.reference = None
         self.number_ats = 0
         self.id = AuxSymbolTable.selfInstance
-        self.zto = i.last_positions_by_rule['self'].pos_to_str()
-        self.zfrom = i.corrected_position('self')
 
     def to_string(self):
         ret = "@" * self.number_ats + "self"

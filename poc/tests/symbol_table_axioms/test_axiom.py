@@ -3,7 +3,6 @@ from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 import os
 
 """
@@ -30,6 +29,11 @@ class AxiomTests(unittest.TestCase):
     @parameterized.expand([
         "test_axiom_01.fpl",
         "test_axiom_02.fpl",
+        "test_axiom_03.fpl",
+        "test_axiom_04.fpl",
+        "test_axiom_05.fpl",
+        "test_axiom_06.fpl",
+        "test_axiom_07.fpl",
     ])
     def test_correct(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

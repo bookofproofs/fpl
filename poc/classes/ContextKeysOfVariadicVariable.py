@@ -14,6 +14,7 @@ class ContextKeysOfVariadicVariable(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self._i = i
         self.predicate = AuxSTPredicate(AuxSymbolTable.variadic_var, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["KeysOfVariadicVariable"] +
@@ -23,15 +24,18 @@ class ContextKeysOfVariadicVariable(AuxInterpretation):
         if rule == "Variable":
             self.predicate.register_child(parsing_info.var)  # noqa
             self.predicate.set_id(parsing_info.var.id + "$")
-            self.stop_aggregation = True
+            self.predicate.zfrom = parsing_info.var.zfrom  # noqa
+            self.predicate.zto = self._i.corrected_zpos_by(parsing_info.var.zto, -1)  # noqa
         elif rule == "VariableList":
             self.predicate.register_child(parsing_info.var_list[0].var)  # noqa
             self.predicate.set_id(parsing_info.var_list[0].var.id + "$")
-            self.stop_aggregation = True
+            self.predicate.zfrom = parsing_info.var_list[0].var.zfrom  # noqa
+            self.predicate.zto = self._i.corrected_zpos_by(parsing_info.var_list[0].var.zto, -1)  # noqa
         elif rule == "Identifier":
             self.predicate.register_child(parsing_info.predicate)  # noqa
             self.predicate.set_id(parsing_info.predicate.id + "$")
-            self.stop_aggregation = True
+            self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
+            self.predicate.zto = self._i.corrected_zpos_by(parsing_info.predicate.zto, -1)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

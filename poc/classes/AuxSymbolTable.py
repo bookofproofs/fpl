@@ -9,7 +9,6 @@ from anytree import Resolver
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTGlobal import AuxSTGlobal
 from poc.classes.AuxSTVarDec import AuxSTVarDec
-from poc.classes.AuxSTArgs import AuxSTArgs
 import poc.fplerror
 from anytree import AnyNode, search
 
@@ -121,6 +120,7 @@ class AuxSymbolTable:
     undefined = "undefined"
     used = "used"
     uses = "uses"
+    uninterpreted = "uninterpreted"
     var = "var"
     var_decl = "var_decl"  # noqa
     var_spec = "specificationList"

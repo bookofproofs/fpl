@@ -10,12 +10,14 @@ from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTProperties import AuxSTProperties
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.ContextVariableSpecificationList import ContextVariableSpecificationList
 
 
 class ContextPredicateDefinitionBlock(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self._i = i
         # Predicate is optional in the grammar and we initialize it in any case
         self.predicate = AuxSTPredicate(AuxSymbolTable.intrinsic, i)
         # specification list is optional in the grammar and we initialize it in any case
@@ -24,13 +26,17 @@ class ContextPredicateDefinitionBlock(AuxInterpretation):
         self.property_list = AuxSTProperties()
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["PredicateDefinitionBlock"] +
-                                      AuxRuleDependencies.dep["PropertyList"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["PropertyList"] +
+                                      ["VariableSpecification"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "LeftBrace":
             self.stop_aggregation = True
         elif rule == "Predicate":
-            self.predicate = parsing_info.predicate  # noqa
+            if parsing_info.predicate is not None:
+                self.predicate = parsing_info.predicate  # noqa
+        elif rule == "VariableSpecification":
+            ContextVariableSpecificationList.consume_variable_specification(self._i, parsing_info, self)
         elif rule == "VariableSpecificationList":
             self.variable_spec = parsing_info.variable_spec  # noqa
         elif rule == "Property":

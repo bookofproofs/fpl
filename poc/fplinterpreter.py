@@ -6,13 +6,15 @@ from poc.classes.AuxSTFplFile import AuxSTFplFile
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 import poc.fplerror
 import os
+import sys
 from poc.util.fplutil import Utils
 
 
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str):
-        self.version = "1.4.4"
+        self.version = "1.4.5"
+        sys.setrecursionlimit(3500)
         self._parser = parser
         self._errors = []
         abs_path = os.path.abspath(root_dir)

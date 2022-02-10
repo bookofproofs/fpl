@@ -113,3 +113,12 @@ Initial interpreter
   * Include argument tree nodes in the symbol table when types contain parameters
   * The syntax of FPL allows semantically incomplete functional terms (e.g. missing images). Enforce producing a correct symbol table (see bugfix ContexClassInstance.py).
 * Utility poc/util/rr_converer.py run for updating the input for the Railroad Diagram Generator to reflect the current FPL grammar.
+## 1.4.5
+* Obfuscation tests added for axioms, classes, constructors, functional terms, inference rules, proofs, properties, statements and theorem-like building blocks
+* Maximum recursion limit increased to 3500
+* Bugfixes: 
+  * "zfrom", "zto" values in AuxSTType corrected and refactored, relevant unit tests replaced.
+  * "zfrom", "zto" values in AuxSTPredicate corrected and refactored, relevant unit tests replaced.
+  * "zfrom", "zto" values in AuxSTRange corrected and refactored, relevant unit tests replaced.
+  * "zfrom", "zto" values in AuxSTCostructor corrected and refactored, relevant unit tests replaced.
+  * "checksum" error in syntax_analysis as a symptom of incompletely consumed parse_list at the Namespace rule corrected

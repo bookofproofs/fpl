@@ -32,11 +32,11 @@ class ContextType(AuxInterpretation):
         elif rule == "FunctionalTermHeader":
             self.type_pattern = self.type_pattern | AuxBits.functionalTermBit
             self.type_pattern = self.type_pattern | AuxBits.inbuiltBit
-            self.id = parsing_info.id
+            self.id = parsing_info.get_cst()
         elif rule == "PredicateHeader":
             self.type_pattern = self.type_pattern | AuxBits.predicateBit
             self.type_pattern = self.type_pattern | AuxBits.inbuiltBit
-            self.id = parsing_info.id
+            self.id = parsing_info.get_cst()
         elif rule == "Colon":
             self._colon_read = True
         elif rule == "XId":
@@ -46,4 +46,6 @@ class ContextType(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         type_info = ContextType(i)
+        type_info.zto = i.last_positions_by_rule['Type'].pos_to_str()
+        type_info.zfrom = i.corrected_zpos_by(type_info.zto, len(type_info.id))
         i.parse_list.append(type_info)

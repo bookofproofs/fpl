@@ -18,7 +18,8 @@ class ContextIdentifier(AuxInterpretation):
         self.predicate.set_id("")
         self._i = i
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["Identifier"] + ["VariableList"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["Identifier"] +
+                                      ["VariableList", "VariableSpecificationList"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateIdentifier":

@@ -10,8 +10,12 @@ class ContextTrueFalse(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         if i.ast_info.cst == "true":
             p = AuxSTPredicate(AuxSymbolTable.predicate_true, i)
+            p.zto = i.last_positions_by_rule['true'].pos_to_str()
+            p.zfrom = i.corrected_position('true')
         elif i.ast_info.cst == "false":
             p = AuxSTPredicate(AuxSymbolTable.predicate_false, i)
+            p.zto = i.last_positions_by_rule['false'].pos_to_str()
+            p.zfrom = i.corrected_position('false')
         else:
             raise NotImplementedError(str(i.ast_info.cst))
         self.predicate = p

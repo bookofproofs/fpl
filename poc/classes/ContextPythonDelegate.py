@@ -22,7 +22,7 @@ class ContextPythonDelegate(AuxInterpretation):
         if rule == "py":
             self.stop_aggregation = True
         elif rule == "PythonIdentifier":
-            self.statement.id = parsing_info.id
+            self.statement.id = parsing_info.get_cst()
         elif rule == "PredicateList":
             for pinfo in parsing_info.prd_list:  # noqa
                 self.statement.register_child(pinfo.predicate)

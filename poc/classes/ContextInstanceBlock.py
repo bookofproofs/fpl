@@ -7,22 +7,27 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
+from poc.classes.ContextVariableSpecificationList import  ContextVariableSpecificationList
 
 
 class ContextInstanceBlock(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self._i = i
         # specification list is optional in the grammar and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["InstanceBlock"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["InstanceBlock"] +
+                                      ["VariableSpecification"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "LeftBrace":
             self.stop_aggregation = True
         elif rule == "VariableSpecificationList":
             self.variable_spec = parsing_info.variable_spec  # noqa
+        elif rule == "VariableSpecification":
+            ContextVariableSpecificationList.consume_variable_specification(self._i, parsing_info, self)
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

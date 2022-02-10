@@ -40,7 +40,7 @@ class FplMalformedGlobalIdTests(unittest.TestCase):
         self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
 
     @parameterized.expand([
-        "test_FplMalformedGlobalId_constructor_is_ok",
+        "test_FplMalformedGlobalId_constructor_is_ok.fpl",
     ])
     def test_negative(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

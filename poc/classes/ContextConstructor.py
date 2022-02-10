@@ -7,6 +7,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTConstructor import AuxSTConstructor
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class ContextConstructor(AuxInterpretation):
@@ -27,5 +28,8 @@ class ContextConstructor(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextConstructor(i)
+        new_info.building_block.zto = i.last_positions_by_rule["Constructor"].pos_to_str()
+        signature_node = AuxSymbolTable.get_child_by_outline(new_info.building_block, AuxSymbolTable.signature)
+        new_info.building_block.zfrom = signature_node.zfrom
         new_info.building_block.children = reversed(new_info.building_block.children)
         i.parse_list.append(new_info)

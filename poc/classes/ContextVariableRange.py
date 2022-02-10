@@ -30,6 +30,7 @@ class ContextVariableRange(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextVariableRange(i)
+        new_info.predicate.zto = i.last_positions_by_rule["VariableRange"].pos_to_str()
         i.parse_list.append(new_info)
 
 

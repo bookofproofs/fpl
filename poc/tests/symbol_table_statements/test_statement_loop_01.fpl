@@ -1,0 +1,55 @@
+TestTheory
+{
+    inference
+    {
+        ProceedingResults(p: +pred)
+        {
+            proceedingResult: pred
+            premise:
+                loop proceedingResult p
+                (
+                    assert proceedingResult
+                )
+            conclusion:
+                and (p)
+        }
+    }
+
+    theory {}
+
+}
+
+
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestTheory.ProceedingResults[1:+pred]', id='ProceedingResults[1:+pred]', reference=AuxSTRuleOfInference())
+└── AuxSTTheory(checksum='7bf5f7412fa260b03dd08ec5d256b424', file_name='test_statement_loop_01.fpl', namespace='TestTheory', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    │   └── AuxSTRuleOfInference(id='ProceedingResults[1:+pred]', outline='inferenceRule', zfrom='5:9:42', zto='15:9:312')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:9:42', zto='5:35:68')
+    │       │   └── AuxSTVarDec(id='p', outline='var_decl', zfrom='5:27:60', zto='5:34:67')
+    │       │       └── AuxSTType(id='pred', outline='type', type_mod='+', type_pattern=18, zfrom='5:30:63', zto='5:34:67')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTVarDec(id='proceedingResult', outline='var_decl', zfrom='7:13:92', zto='7:34:113')
+    │       │       └── AuxSTType(id='pred', outline='type', type_mod=None, type_pattern=18, zfrom='7:30:109', zto='7:34:113')
+    │       ├── AuxSTPredicate(outline='pre', zfrom='8:13:127', zto='13:12:267')
+    │       │   └── AuxSTStatement(outline='statement', type='loop', zfrom='9:17:152', zto='12:17:254')
+    │       │       ├── AuxSTVariable(id='proceedingResult', outline='var', zfrom='9:22:157', zto='9:37:172')
+    │       │       ├── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='', zto='')
+    │       │       │   └── AuxSTVariable(id='p', outline='var', zfrom='9:39:174', zto='9:39:174')
+    │       │       └── AuxSTStatement(outline='statement', type='assert', zfrom='11:21:214', zto='11:43:236')
+    │       │           └── AuxSTVariable(id='proceedingResult', outline='var', zfrom='11:28:221', zto='11:43:236')
+    │       └── AuxSTPredicate(outline='con', zfrom='13:13:268', zto='14:23:302')
+    │           └── AuxSTPredicate(outline='and', zfrom='14:17:296', zto='14:23:302')
+    │               └── AuxSTVariable(id='p', outline='var', zfrom='14:22:301', zto='14:22:301')
+    ├── AuxSTOutline(outline='definitions')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

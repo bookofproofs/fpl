@@ -51,6 +51,9 @@ class AuxPredicateTests(unittest.TestCase):
         "test_predicate_20.fpl",
         "test_predicate_20a.fpl",
         "test_predicate_21.fpl",
+        "test_predicate_22.fpl",
+        "test_predicate_23.fpl",
+        "test_predicate_24.fpl",
     ])
     def test_correct(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

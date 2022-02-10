@@ -28,6 +28,23 @@ class RobustnessTests(unittest.TestCase):
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
+        ("test_robustness_uses_clause.fpl", 0),
+        ("test_robustness_axiom.fpl", 300),
+        ("test_robustness_theoremlike.fpl", 300),
+        ("test_robustness_proof.fpl", 300),
+        ("test_robustness_property_class_instance.fpl", 900),
+        ("test_robustness_property_functional_term.fpl", 900),
+        ("test_robustness_property_predicate.fpl", 900),
+        ("test_robustness_constructor.fpl", 600),
+        ("test_robustness_class.fpl", 600),
+        ("test_robustness_functional_term.fpl", 300),
+        ("test_robustness_statement_return.fpl", 300),
+        ("test_robustness_statement_range.fpl", 100),
+        ("test_robustness_statement_loop.fpl", 100),
+        ("test_robustness_statement_assignment.fpl", 300),
+        ("test_robustness_statement_assertion.fpl", 300),
+        ("test_robustness_statement_python_delegate.fpl", 300),
+        ("test_robustness_statement_cases.fpl", 100),
         ("test_robustness_isOperator.fpl", 299),
         ("test_robustness_predicate.fpl", 556),
         ("test_robustness_types_image.fpl", 309),

@@ -32,6 +32,8 @@ class ContextEntity(AuxInterpretation):
             self.rule = rule
             # wrap self for the symbol table
             self.predicate = AuxSTSelf(self._i)
+            self.predicate.zto = self._i.last_positions_by_rule['self'].pos_to_str()
+            self.predicate.zfrom = self._i.corrected_position('self')
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

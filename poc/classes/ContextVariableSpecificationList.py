@@ -17,22 +17,28 @@ class ContextVariableSpecificationList(AuxInterpretation):
         self.variable_spec = AuxSTVarSpecList()
         self._i = i
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["VariableSpecificationList"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["VariableSpecificationList"] +
+                                      ["VariableSpecification"], self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "VariableSpecification":
-            if parsing_info.named_var_declaration is not None:  # noqa
-                # we have variable declaration and register all its variables as a single variable declaration node
-                # in the symbol table
-                if parsing_info.named_var_declaration.var_list is not None:
-                    parsing_info.named_var_declaration.var_list.reverse()  # noqa
-                AuxSymbolTable.add_vars_to_node(self._i, self.variable_spec, parsing_info.named_var_declaration)  # noqa
-            else:
-                # we have a statement and register it as a single statement node in the symbol table
-                parsing_info.statement.parent = self.variable_spec  # noqa
+            ContextVariableSpecificationList.consume_variable_specification(self._i, parsing_info, self)
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextVariableSpecificationList(i)
         new_info.variable_spec.children = reversed(new_info.variable_spec.children)
         i.parse_list.append(new_info)
+
+    @staticmethod
+    def consume_variable_specification(i: AuxISourceAnalyser, parsing_info, parent_with_var_spec):
+        if parsing_info.named_var_declaration is not None:  # noqa
+            # we have variable declaration and register all its variables as a single variable declaration node
+            # in the symbol table
+            if parsing_info.named_var_declaration.var_list is not None:
+                parsing_info.named_var_declaration.var_list.reverse()  # noqa
+            AuxSymbolTable.add_vars_to_node(i, parent_with_var_spec.variable_spec,
+                                            parsing_info.named_var_declaration)  # noqa
+        else:
+            # we have a statement and register it as a single statement node in the symbol table
+            parsing_info.statement.parent = parent_with_var_spec.variable_spec  # noqa

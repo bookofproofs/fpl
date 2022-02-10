@@ -22,6 +22,8 @@ class ContextPremiseOrOtherPredicate(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PremiseHeader":
             self.predicate = AuxSTPredicate(AuxSymbolTable.preReferenced, self._i)
+            self.predicate.zto = self._i.last_positions_by_rule['PremiseHeader'].pos_to_str()
+            self.predicate.zfrom = self._i.corrected_position('PremiseHeader')
         elif rule == "Predicate":
             self.predicate = parsing_info.predicate  # noqa
 

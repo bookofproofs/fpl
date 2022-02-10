@@ -36,6 +36,7 @@ class FunctionalTermsTests(unittest.TestCase):
         "test_func_07.fpl",
         "test_func_08.fpl",
         "test_func_09.fpl",
+        "test_func_10.fpl",
     ])
     def test_correct(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

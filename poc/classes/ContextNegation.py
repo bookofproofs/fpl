@@ -29,5 +29,6 @@ class ContextNegation(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextNegation(i)
+        new_info.predicate.zto = i.last_positions_by_rule['Negation'].pos_to_str()
+        new_info.predicate.zfrom = i.corrected_position('not')
         i.parse_list.append(new_info)
-

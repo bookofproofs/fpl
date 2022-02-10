@@ -28,4 +28,6 @@ class ContextPremiseBlock(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextPremiseBlock(i)
+        new_info.predicate.zto = i.last_positions_by_rule['PremiseBlock'].pos_to_str()
+        new_info.predicate.zfrom = i.corrected_position('PremiseHeader')
         i.parse_list.append(new_info)

@@ -1,0 +1,38 @@
+TestTheory
+{
+    theory
+    {
+        func Add(n,m: @extDecimal)->Nat
+        {
+            py.add(n,m)
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestTheory.Add[2:@extDecimal]', id='Add[2:@extDecimal]', reference=AuxSTDefinitionFunctionalTerm())
+└── AuxSTTheory(checksum='5e74631000455229d5411012cd779328', file_name='test_statement_python_delegate_01.fpl', namespace='TestTheory', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Add[2:@extDecimal]', outline='definition', zfrom='5:9:39', zto='8:9:113')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5:14:44', zto='5:34:64')
+    │       │   ├── AuxSTVarDec(id='n', outline='var_decl', zfrom='5:18:48', zto='5:33:63')
+    │       │   │   └── AuxSTType(id='@extDecimal', outline='type', type_mod=None, type_pattern=32, zfrom='5:22:52', zto='5:33:63')
+    │       │   └── AuxSTVarDec(id='m', outline='var_decl', zfrom='5:18:48', zto='5:33:63')
+    │       │       └── AuxSTType(id='@extDecimal', outline='type', type_mod=None, type_pattern=32, zfrom='5:22:52', zto='5:33:63')
+    │       ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='5:36:66', zto='5:39:69')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTStatement(id='add', outline='statement', type='py', zfrom='7:13:93', zto='7:23:103')
+    │       │       ├── AuxSTVariable(id='n', outline='var', zfrom='7:20:100', zto='7:20:100')
+    │       │       └── AuxSTVariable(id='m', outline='var', zfrom='7:22:102', zto='7:22:102')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')
