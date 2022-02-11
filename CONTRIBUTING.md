@@ -18,9 +18,9 @@ It is important to coordinate the project FPL Interpreter among the team.
 * Next, agree with the team upon the work items you will get assigned to cover.
 * Implement the work items and create a pull request.
 
-# Conventions for pull-request
+# Conventions for your pull-requests
 * Never push your repository directly into the master branch.
-* Instead, push repositories using the following naming convention:
+* Instead, create pull requests after pushing repositories using the following naming conventions:
 * ```bugfix/<descriptive_repository_name>```
 * ```feature/<descriptive_repository_name>```
 
