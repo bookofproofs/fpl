@@ -106,16 +106,26 @@ There is a proof of concept (POC) based on the above requirements. It currently 
 2. [FPL demo theories ](https://github.com/bookofproofs/fpl/tree/master/poc/theories/)
 3. A demo python project consisting of a parser generated using the [TatSu package](https://tatsu.readthedocs.io/en/stable/).
 
-# 4 Project
+# 4 Contributing to the Project
 
-The project is still ongoing, and you are invited to collaborate. The possible open tasks are, for instance:
+The project is still ongoing, and you are invited to collaborate. Please refer to the [contributing section](https://github.com/bookofproofs/fpl/blob/master/CONTRIBUTING.md) for details.
 
-1. Along with the existing FPL *parser*, we need an appropriate FPL *interpreter* that would fulfill the semantic requirements of this specification and the PoC.
-2. We need to continue the PoC by translating real use cases of mathematics into FPL to ensure that its syntax and semantics cover all features of proof-based mathematics (PBM) we need.
-3. We need localization sections for every PoC theory.
-4. We have to implement translators from FPL to LaTeX and natural languages based on localization.
-5. We need IDEs with code completion and debugging capabilities.
-6. We have to enhance FPL interpreters to check the correctness of mathematical proofs written in FPL or auto-generate proofs in FPL.
-7. We need a conception of a byte code to pre-compile FPL theories and include libraries without having to parse and interpret them again; also, we need the corresponding FPL compilers.
-8. We should create a globally accessible REST API service to provide the source code and the byte code of broadly accepted FPL formulations of PBM theories to facilitating importing them by end-users via the Internet.
+# 5 Getting Started
+
+## Software dependencies
+* Use python (tested with 3.10 or higher).
+* Install the following packages:
+  * pytest (7.0.1 or higher) 
+  * parameterized (0.8.1 or higher)
+  * tatsu (5.7.3 or higher) 
+  * anytree (2.8.0 or higher)
+## Testing
+* Run the [poc tests](https://github.com/bookofproofs/fpl/tree/master/poc/tests) using pytest. (Note: In many python IDEs, there is a shortcut for doing it. For instance, in PyCharm you can just right-click the fpl/poc/tests folder and select 'Run pytest in tests'). 
+* If the tests are runnable, your repository is all set.
+## Trying out the IDE
+* Run fpl/ide/fplide and open one of the fpl files in the folder fpl/poc/theories.
+
+
+
+
 
