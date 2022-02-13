@@ -25,90 +25,6 @@ class DefaultTheme:
         return ('consolas', '11')
 
     @staticmethod
-    def get_grammar_tags():
-        return {
-            "alias": "keyword",
-            "all": "keyword",
-            "and": "keyword",
-            "assert": "keyword",
-            "ass": "keyword",
-            "assume": "keyword",
-            "ax": "keyword",
-            "axiom": "keyword",
-            "case": "keyword",
-            "cl": "keyword",
-            "class": "keyword",
-            "conj": "keyword",
-            "conjecture": "keyword",
-            "con": "keyword",
-            "conclusion": "keyword",
-            "cor": "keyword",
-            "corollary": "keyword",
-            "Comment": "comment",
-            "else": "keyword",
-            "end": "keyword",
-            "ext": "keyword",
-            "ex": "keyword",
-            "ExistsHeader": "keyword",
-            "false": "keyword",
-            "func": "inbuilttype",
-            "function": "inbuilttype",
-            "IdStartsWithCap": "type",
-            "iif": "keyword",
-            "impl": "keyword",
-            "ind": "keyword",
-            "index": "keyword",
-            "inf": "keyword",
-            "inference": "keyword",
-            "is": "keyword",
-            "lem": "keyword",
-            "lemma": "keyword",
-            "loc": "keyword",
-            "localization": "keyword",
-            "LongComment": "comment",
-            "loop": "keyword",
-            "mand": "keyword",
-            "mandatory": "keyword",
-            "not": "keyword",
-            "obj": "inbuilttype",
-            "object": "inbuilttype",
-            "opt": "keyword",
-            "optional": "keyword",
-            "or": "keyword",
-            "post": "keyword",
-            "postulate": "keyword",
-            "pre": "keyword",
-            "pred": "inbuilttype",
-            "predicate": "inbuilttype",
-            "premise": "keyword",
-            "prf": "keyword",
-            "proofArgument": "keyword",
-            "ProofIdentifier": "type",
-            "prop": "keyword",
-            "proposition": "keyword",
-            "py": "keyword",
-            "PythonIdentifier": "keyword",
-            "qed": "keyword",
-            "range": "keyword",
-            "ret": "keyword",
-            "return": "keyword",
-            "rev": "keyword",
-            "revoke": "keyword",
-            "self": "keyword",
-            "thm": "keyword",
-            "theorem": "keyword",
-            "th": "keyword",
-            "theory": "keyword",
-            "trivial": "keyword",
-            "true": "keyword",
-            "undef": "keyword",
-            "undefined": "keyword",
-            "uses": "keyword",
-            "Variable": "variable",
-            "xor": "keyword"
-        }
-
-    @staticmethod
     def get_tag_formatting():
         return {
             'comment': "#608B4E",
@@ -165,4 +81,43 @@ class DefaultTheme:
                     "background": [("selected", self.get_bg_color_selected())],  # row color when selected
                 }
             },
+        }
+
+
+class TomorrowTheme(DefaultTheme):
+
+    @staticmethod
+    def get_bg_color():
+        return '#262a2d'
+
+    @staticmethod
+    def get_bg_color_selected():
+        return '#2E2E2E'
+
+    @staticmethod
+    def get_fg_color():
+        return '#bcc0c6'
+
+    @staticmethod
+    def get_tag_formatting():
+        return {
+            'comment': "#608B4E",
+            'inbuilttype': "#A3D6A3",
+            'keyword': "#4D9CD5",
+            'type': "#39BCB0",
+            'mcomment': "#616161",
+            'mstring': "#ffd54f",
+            'mconstant': "#7e57c2",
+            'mkeyword': "#ff5722",
+            'mstorage': "#e91e63",
+            'mstoragetype': "#259b24",
+            'mclass': "#8bc34a",
+            'mfunction': "#24bb6d5",
+            'marguments': "#fd971f",
+            'mtagname': "#26a69a",
+            'mtagattr': "#ff5722",
+            'mlibfunc': "#00bcd4",
+            'mlibconstamt': "#03a9f4",
+            'mlibclass': "#607d8b",
+
         }

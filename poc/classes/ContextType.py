@@ -2,6 +2,7 @@ from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
+from poc.classes.AuxHighlightTag import AuxHighlightTag
 
 
 class ContextType(AuxInterpretation):
@@ -48,4 +49,8 @@ class ContextType(AuxInterpretation):
         type_info = ContextType(i)
         type_info.zto = i.last_positions_by_rule['Type'].pos_to_str()
         type_info.zfrom = i.corrected_zpos_by(type_info.zto, len(type_info.id))
+        if AuxBits.is_inbuilt(type_info.type_pattern):
+            i.highlight_tags.append(AuxHighlightTag("inbuilttype", type_info.zfrom, type_info.zto))
+        else:
+            i.highlight_tags.append(AuxHighlightTag("type", type_info.zfrom, type_info.zto))
         i.parse_list.append(type_info)

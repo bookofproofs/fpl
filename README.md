@@ -123,7 +123,7 @@ The project is still ongoing, and you are invited to collaborate. Please refer t
 * Run the [poc tests](https://github.com/bookofproofs/fpl/tree/master/poc/tests) using pytest. (Note: In many python IDEs, there is a shortcut for doing it. For instance, in PyCharm you can just right-click the fpl/poc/tests folder and select 'Run pytest in tests'). 
 * If the tests are runnable, your repository is all set.
 ## Trying out the IDE
-* Run fpl/ide/fplide and open one of the fpl files in the folder fpl/poc/theories.
+* Run fpl/ide/fplide.py and open one of the FPL files in the folder [fpl/poc/theories](https://github.com/bookofproofs/fpl/tree/master/poc/theories).
 
 
 

@@ -43,3 +43,5 @@
 * Font error list changed
 ## 1.2.7
 * Compatibility adjustments to the FPL interpreter version 1.4.1 
+## 1.2.8
+* Bugfix highlighting

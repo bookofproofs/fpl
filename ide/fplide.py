@@ -15,31 +15,9 @@ import os
 
 
 class FplIde:
-    """
-    config = None
-    _theme = None
-    window = None
-    _panedWindow = None
-    _panedMain = None
-    _object_browser_tree = None
-    _panedWindowMainVertical = None
-    _panedWindowVertical = None
-    _panedWindowEditor = None
-    _tabEditor = None
-    _panedWindowBelowEditor = None
-    _tabControl = None
-    _frameErrors = None
-    _frameSyntax = None
-    _frameSemantics = None
-    _frameOutput = None
-    _listBoxErrors = None
-    _listBoxSyntax = None
-    _listBoxSemantics = None
-    _menuBar = None
-    """
 
     def __init__(self):
-        self._version = '1.2.7'
+        self._version = '1.2.8'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')

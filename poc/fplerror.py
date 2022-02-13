@@ -4,12 +4,12 @@ from poc.fplmessage import FplInterpreterMessage
 
 class FplVariableDuplicateInVariableList(FplInterpreterMessage):
     def __init__(self, var, other, file_name: str):
-        v_s = var.zfrom.split(":")
-        other_s = other.zfrom.split(":")
+        v_s = var.zfrom.split(".")
+        other_s = other.zfrom.split(".")
         FplInterpreterMessage.__init__(self,
                                        "Variable " + var.id + " already listed at " +
-                                       str(int(other_s[0])) + ":" + str(int(other_s[1]) + 1),
-                                       int(v_s[0]), int(v_s[1]) + 1, file_name)
+                                       other_s[0] + ":" + str(int(other_s[1]) + 1),
+                                       v_s[0], str(int(v_s[1]) + 1), file_name)
         self.mainType = "W"  # Warning
 
 
@@ -61,18 +61,18 @@ class FplAliasConflict(FplInterpreterMessage):
 
 class FplUndeclaredVariable(FplInterpreterMessage):
     def __init__(self, zfrom: str, var_name: str, file_name: str):
-        s = zfrom.split(":")
+        s = zfrom.split(".")
         FplInterpreterMessage.__init__(self, "The name '{0}' does not exist in the current context".format(var_name),
                                        s[0], s[1], file_name)
 
 
 class FplVariableAlreadyDeclared(FplInterpreterMessage):
     def __init__(self, zfrom: str, other_zfrom: str, var_name: str, file_name: str):
-        s = zfrom.split(":")
-        s_other = other_zfrom.split(":")
+        s = zfrom.split(".")
+        s_other = other_zfrom.split(".")
         FplInterpreterMessage.__init__(self,
                                        "The name '{0}' was already declared in the current context at ({1},{2})".format(
-                                           var_name, s_other[0], s_other[1]), s[0], s[1], file_name)
+                                           var_name, s_other[0], int(s_other[1])+1), s[0], str(int(s[1])+1), file_name)
 
 
 class FplIdentifierNotDeclared(FplInterpreterMessage):

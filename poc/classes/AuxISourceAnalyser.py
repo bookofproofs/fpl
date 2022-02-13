@@ -22,6 +22,7 @@ class AuxISourceAnalyser:
         self.theory_node = AuxSTTheory(root, theory_name)
         self.locals_node = AuxSTLocalizations(self.theory_node)
         self.last_positions_by_rule = dict()
+        self.highlight_tags = list()
 
     def set_pos(self, ast_info):
         self.last_positions_by_rule[ast_info.rule] = ast_info
@@ -39,5 +40,5 @@ class AuxISourceAnalyser:
         return ast_info.pos_to_str()
 
     def corrected_zpos_by(self, zpos: str, offset: int):
-        s = zpos.split(":")
-        return ":".join([s[0], str(int(s[1]) - offset), str(int(s[2]) - offset)])
+        s = zpos.split(".")
+        return ".".join([s[0], str(int(s[1]) - offset)])

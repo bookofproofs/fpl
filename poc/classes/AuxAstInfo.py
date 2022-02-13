@@ -27,4 +27,4 @@ class AuxAstInfo:
         return self.rule, self.line, self.col, self.pos
 
     def pos_to_str(self):
-        return str(self.line) + ":" + str(self.col) + ":" + str(self.pos)
+        return str(self.line) + "." + str(self.col)
