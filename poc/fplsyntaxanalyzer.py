@@ -17,6 +17,7 @@ from poc.classes.ContextBuildingBlock import ContextBuildingBlock
 from poc.classes.ContextCaseStatement import ContextCaseStatement
 from poc.classes.ContextClassHeader import ContextClassHeader
 from poc.classes.ContextClassInstance import ContextClassInstance
+from poc.classes.ContextComment import ContextComment
 from poc.classes.ContextConclusionHeader import ContextConclusionHeader
 from poc.classes.ContextConstructor import ContextConstructor
 from poc.classes.ContextCoordInType import ContextCoordInType
@@ -68,6 +69,7 @@ from poc.classes.ContextLeftBound import ContextLeftBound
 from poc.classes.ContextLocalization import ContextLocalization
 from poc.classes.ContextLocalizationBlock import ContextLocalizationBlock
 from poc.classes.ContextLocalizationHeader import ContextLocalizationHeader
+from poc.classes.ContextLongComment import ContextLongComment
 from poc.classes.ContextLongTemplateHeader import ContextLongTemplateHeader
 from poc.classes.ContextLoopStatement import ContextLoopStatement
 from poc.classes.ContextInstanceBlock import ContextInstanceBlock
@@ -188,7 +190,7 @@ class FPLSyntaxAnalyzer:
             "Colon": self.default_interpretation,
             "ColonEqual": self.default_interpretation,
             "Comma": self.default_interpretation,
-            "Comment": self.ignore_production,
+            "Comment": ContextComment.dispatch,
             "CompoundPredicate": ContextCompoundPredicate.dispatch,
             "con": ContextKeyword.dispatch,
             "conclusion": ContextKeyword.dispatch,
@@ -284,7 +286,7 @@ class FPLSyntaxAnalyzer:
             "LocalizationBlock": ContextLocalizationBlock.dispatch,
             "LocalizationHeader": ContextLocalizationHeader.dispatch,
             "LocalizationList": self.default_interpretation,
-            "LongComment": self.ignore_production,
+            "LongComment": ContextLongComment.dispatch,
             "LongTemplateHeader": ContextLongTemplateHeader.dispatch,
             "loop": ContextKeyword.dispatch,
             "LoopStatement": ContextLoopStatement.dispatch,

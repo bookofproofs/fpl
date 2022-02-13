@@ -6,7 +6,7 @@ class AuxPos:
         self.col = 0
 
     def __str__(self):
-        return str(self.line) + ":" + str(self.col) + ":" + str(self.pos)
+        return str(self.line) + "." + str(self.col)
 
     def correct_offset(self, offset: int):
         self.pos -= offset

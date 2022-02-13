@@ -111,6 +111,7 @@ class CustomNotebook(ttk.Notebook):
             self.tab(editor_info, text=editor_info.title)
             # reset the initial value to the new value
             editor_info.text.init_value(editor_info.get_text())
+            editor_info.is_new = False
 
     def save_file_as(self, event=None):
         editor_info = self.get_current_file_object()
@@ -126,6 +127,7 @@ class CustomNotebook(ttk.Notebook):
             self.tab(editor_info, text=editor_info.title)
             # reset the initial value to the new value
             editor_info.text.init_value(editor_info.get_text())
+
 
     def new_file(self, event=None):
         self._current_file = self._generate_new_file_name()

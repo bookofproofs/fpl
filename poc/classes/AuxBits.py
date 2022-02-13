@@ -44,3 +44,7 @@ class AuxBits:
     @staticmethod
     def has_coord(pattern_int: int):
         return (pattern_int & AuxBits.hasCoordBit) > 0
+
+    @staticmethod
+    def is_inbuilt(pattern_int: int):
+        return (pattern_int & AuxBits.inbuiltBit) > 0

@@ -122,3 +122,8 @@ Initial interpreter
   * "zfrom", "zto" values in AuxSTRange corrected and refactored, relevant unit tests replaced.
   * "zfrom", "zto" values in AuxSTCostructor corrected and refactored, relevant unit tests replaced.
   * "checksum" error in syntax_analysis as a symptom of incompletely consumed parse_list at the Namespace rule corrected
+## 1.4.6
+* Reflected bug-fixed syntax highlighting of the patched IDE version 1.2.8.
+* Changed the convention "line:column:position" in the *zfrom* and *zto* values in the symbol table to represent the start and end indices common in tk.Frame.
+* Bug-fixed the *zfrom* values of AuxSTVariable in the symbol table.
+* Adjusted the expected values for the affected symbol table unit tests. 

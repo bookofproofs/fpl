@@ -11,20 +11,15 @@ from ide.Settings import Settings
 
 
 class FrameWithLineNumbers(tk.Frame):
-    _parent_notebook = None  # parent notebook containing this Frame
-    _theme = None
-    _tag_indices = {}
-    _image_save = None
-    title = ""
-    is_new = True  # is True if this is a new file, or False, if it was loaded from disk
-    _last_pos = "1.0"
-    _number_spaces_per_tab = 3
 
     def __init__(self, parent_note_book, title, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        self._parent_notebook = parent_note_book
+        self._parent_notebook = parent_note_book  # parent notebook containing this Frame
         self._theme = DefaultTheme()
         self.text = EditorText(self, undo=True)
+        self._last_pos = "1.0"
+        self._number_spaces_per_tab = 3
+        self.is_new = True  # is True if this is a new file, or False, if it was loaded from disk
         self.text.settings(self._theme.get_bg_color(), self._theme.get_fg_color())
         self.vsb = tk.Scrollbar(self, orient="vertical", command=self.text.yview)
         self.text.configure(yscrollcommand=self.vsb.set)
@@ -197,20 +192,9 @@ class FrameWithLineNumbers(tk.Frame):
         # reconfigure all tags
         self.reconfigure_all_tags()
         # add new tags
-        list_indices = list()
-        for item in self._parent_notebook.ide.fpl_interpreter.get_ast_list(self.title):
-            current_index = str(item.line) + "." + str(item.col)
-            list_indices.append(current_index)
-            grammar_tags = self._theme.get_grammar_tags()
-            # set all the tags for syntax highlighting while the parsed rules are added to the _listBoxSyntax
-            if item.rule in grammar_tags:
-                tag = grammar_tags[item.rule]
-                last_index = current_index
-                while len(list_indices) > 0 and last_index == current_index:
-                    last_index = list_indices.pop()
-                if len(list_indices) == 0:
-                    last_index = "1.0"
-                self.add_tag(tag, last_index, current_index)
+        grammar_tags = self._parent_notebook.ide.fpl_interpreter.files_highlight_tags[self.title]
+        for item in grammar_tags:
+            self.add_tag(item.tag, item.zfrom, item.zto)
         self._parent_notebook.ide.window.config(cursor="")
         return self._parent_notebook.ide.fpl_interpreter
 

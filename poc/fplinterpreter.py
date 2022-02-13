@@ -13,7 +13,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str):
-        self.version = "1.4.5"
+        self.version = "1.4.6"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._errors = []
@@ -27,6 +27,7 @@ class FplInterpreter:
         AnyNode(outline=AuxSymbolTable.library, parent=self._symbol_table_root)
         AnyNode(outline=AuxSymbolTable.globals, parent=self._symbol_table_root)
         self._gather_all_namespaces_from_root_dir()
+        self.files_highlight_tags = dict()
 
     def syntax_analysis(self, path_to_theory: str):
         theory_file_name = os.path.basename(path_to_theory)
@@ -44,6 +45,10 @@ class FplInterpreter:
                 fpl_theory_node = AuxSymbolTable.get_theory_by_namespace(self._symbol_table_root,
                                                                          fpl_file_node.namespace)
                 fpl_theory_node.checksum = fpl_file_node.checksum
+                # For each file loaded into the symbol table,
+                # remember the FPL code syntax highlight tags identified during the syntax analysis for the file.
+                # as a dictionary by file name and a list of highlighting tags.
+                self.files_highlight_tags[fpl_theory_node.file_name] = fpl_file_node.get_analyser().i.highlight_tags
             else:
                 if fpl_theory_node.file_name != fpl_file_node.file_name:
                     # We have the case that there is another FPL file in the same root directory
@@ -78,7 +83,6 @@ class FplInterpreter:
             except tatsu.exceptions.FailedPattern as ex:
                 self._errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)))
-
 
     def _gather_all_namespaces_from_root_dir(self):
         for file in os.listdir(self._theory_root_dir):
