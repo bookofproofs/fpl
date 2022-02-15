@@ -120,10 +120,16 @@ Initial interpreter
   * "zfrom", "zto" values in AuxSTType corrected and refactored, relevant unit tests replaced.
   * "zfrom", "zto" values in AuxSTPredicate corrected and refactored, relevant unit tests replaced.
   * "zfrom", "zto" values in AuxSTRange corrected and refactored, relevant unit tests replaced.
-  * "zfrom", "zto" values in AuxSTCostructor corrected and refactored, relevant unit tests replaced.
+  * "zfrom", "zto" values in AuxSTConstructor corrected and refactored, relevant unit tests replaced.
   * "checksum" error in syntax_analysis as a symptom of incompletely consumed parse_list at the Namespace rule corrected
 ## 1.4.6
 * Reflected bug-fixed syntax highlighting of the patched IDE version 1.2.8.
 * Changed the convention "line:column:position" in the *zfrom* and *zto* values in the symbol table to represent the start and end indices common in tk.Frame.
 * Bug-fixed the *zfrom* values of AuxSTVariable in the symbol table.
 * Adjusted the expected values for the affected symbol table unit tests. 
+## 1.4.7
+* The symbol table now supports:
+  * loading multiply FPL files with the same namespace (i.e. allowing partial FPL code of a single mathematical theory spread across multiple FPL files),
+  * recursive reloading of further theories referenced in theories that have already been loaded into the symbol table.
+* New semantic error FplNamespaceNotFound including a unit test
+* Every FPL error gets assigned a unique ID (diagnosis ID) that can be used in the error list when FPL code is interpreted. 

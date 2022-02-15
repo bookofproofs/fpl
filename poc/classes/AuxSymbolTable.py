@@ -278,7 +278,8 @@ class AuxSymbolTable:
             for var in reversed(named_var_declaration.var_list):
                 if var.var.id in distinct_vars:
                     named_var_declaration.all_errors().append(
-                        poc.fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var, ast_info.file))
+                        poc.fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var,
+                                                                        ast_info.file))
                 else:
                     distinct_vars[var.var.id] = var.var
                 var_dec = AuxSTVarDec(i)
@@ -290,16 +291,27 @@ class AuxSymbolTable:
                 cloned_type.parent = var_dec
 
     @staticmethod
-    def get_theory_by_filename(root: AnyNode, theory_file_name: str):
+    def get_library_by_filename(root: AnyNode, theory_file_name: str):
         library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
         return search.find(library_node, lambda node: hasattr(node, "file_name") and node.file_name == theory_file_name)
 
     @staticmethod
-    def get_theory_by_namespace(root: AnyNode, theory_namespace: str):
+    def get_library_by_namespace(root: AnyNode, namespace: str, modifier: str):
+        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
+        if modifier == "*":
+            # for the '*' modifier return all nodes whose namespace starts with the searched namespace
+            return search.findall(library_node,
+                                  lambda node: hasattr(node, "namespace") and node.namespace.startswith(namespace))
+        else:
+            # for no (or other modifier) return all nodes whose namespace equals the searched namespace
+            return search.findall(library_node, lambda node: hasattr(node, "namespace") and node.namespace == namespace)
+
+    @staticmethod
+    def get_theory_by_namespace_and_file_name(root: AnyNode, theory_namespace: str, theory_file_name: str):
         result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
         found_theory_node = None
         for node in result:
-            if node.namespace == theory_namespace:
+            if node.namespace == theory_namespace and node.file_name == theory_file_name:
                 found_theory_node = node
                 break
         return found_theory_node

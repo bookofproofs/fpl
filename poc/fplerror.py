@@ -11,6 +11,7 @@ class FplVariableDuplicateInVariableList(FplInterpreterMessage):
                                        other_s[0] + ":" + str(int(other_s[1]) + 1),
                                        v_s[0], str(int(v_s[1]) + 1), file_name)
         self.mainType = "W"  # Warning
+        self.diagnose_id = "SE0010"
 
 
 class FplIdentifierAlreadyDeclared(FplInterpreterMessage):
@@ -21,6 +22,7 @@ class FplIdentifierAlreadyDeclared(FplInterpreterMessage):
                                        info.line,
                                        info.col,
                                        info.file)
+        self.diagnose_id = "SE0020"
 
 
 class FplMisspelledConstructor(FplInterpreterMessage):
@@ -30,6 +32,7 @@ class FplMisspelledConstructor(FplInterpreterMessage):
                                        info.line,
                                        info.col,
                                        info.file)
+        self.diagnose_id = "SE0030"
 
 
 class FplMalformedGlobalId(FplInterpreterMessage):
@@ -39,6 +42,7 @@ class FplMalformedGlobalId(FplInterpreterMessage):
                                        info.line,
                                        info.col,
                                        info.file)
+        self.diagnose_id = "SE0040"
 
 
 class FplInvalidInheritance(FplInterpreterMessage):
@@ -48,6 +52,7 @@ class FplInvalidInheritance(FplInterpreterMessage):
                                        info.line,
                                        info.col,
                                        info.file)
+        self.diagnose_id = "SE0050"
 
 
 class FplAliasConflict(FplInterpreterMessage):
@@ -57,6 +62,7 @@ class FplAliasConflict(FplInterpreterMessage):
                                        info.line,
                                        info.col,
                                        info.file)
+        self.diagnose_id = "SE0060"
 
 
 class FplUndeclaredVariable(FplInterpreterMessage):
@@ -64,6 +70,7 @@ class FplUndeclaredVariable(FplInterpreterMessage):
         s = zfrom.split(".")
         FplInterpreterMessage.__init__(self, "The name '{0}' does not exist in the current context".format(var_name),
                                        s[0], s[1], file_name)
+        self.diagnose_id = "SE0070"
 
 
 class FplVariableAlreadyDeclared(FplInterpreterMessage):
@@ -72,7 +79,9 @@ class FplVariableAlreadyDeclared(FplInterpreterMessage):
         s_other = other_zfrom.split(".")
         FplInterpreterMessage.__init__(self,
                                        "The name '{0}' was already declared in the current context at ({1},{2})".format(
-                                           var_name, s_other[0], int(s_other[1])+1), s[0], str(int(s[1])+1), file_name)
+                                           var_name, s_other[0], int(s_other[1]) + 1), s[0], str(int(s[1]) + 1),
+                                       file_name)
+        self.diagnose_id = "SE0080"
 
 
 class FplIdentifierNotDeclared(FplInterpreterMessage):
@@ -81,6 +90,7 @@ class FplIdentifierNotDeclared(FplInterpreterMessage):
                                        "Undeclared identifier '{0}'".format(class_name),
                                        info.line, info.col,
                                        info.file)
+        self.diagnose_id = "SE0090"
 
 
 class FplIdentifierAmbiguous(FplInterpreterMessage):
@@ -93,3 +103,12 @@ class FplIdentifierAmbiguous(FplInterpreterMessage):
                                        "Ambiguous identifier '{0}'. Found in ({1})".format(class_name, names),
                                        info.line, info.col,
                                        info.file)
+        self.diagnose_id = "SE0100"
+
+
+class FplNamespaceNotFound(FplInterpreterMessage):
+    def __init__(self, namespace: str, file: str, zfrom: str):
+        pos = zfrom.split(".")
+        FplInterpreterMessage.__init__(self,
+                                       "Namespace '{0}' not found".format(namespace), pos[0], pos[1], file)
+        self.diagnose_id = "SE0110"
