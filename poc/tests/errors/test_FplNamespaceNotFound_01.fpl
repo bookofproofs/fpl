@@ -1,0 +1,8 @@
+TestTheory
+{
+    uses Fpl.Commons
+    theory {}
+}
+
+##############################
+FplNamespaceNotFound:3:10: Namespace 'Fpl.Commons' not found

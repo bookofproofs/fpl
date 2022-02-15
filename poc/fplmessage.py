@@ -53,6 +53,7 @@ class FplInterpreterMessage(Exception):
         self.__col = col
         self.__type = str(type(self).__name__)
         self.mainType = "E"  # Error per default
+        self.diagnose_id = "unknown"
         self.file = file
 
     def __str__(self):
