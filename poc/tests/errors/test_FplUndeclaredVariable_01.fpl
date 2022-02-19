@@ -11,4 +11,4 @@ TestNamespace
 
 ##############################
 
-FplUndeclaredVariable:7:13: The name 'x' does not exist in the current context
+FplUndeclaredVariable:7:12: The name 'x' does not exist in the current context

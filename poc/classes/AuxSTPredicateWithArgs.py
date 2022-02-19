@@ -9,5 +9,8 @@ class AuxSTPredicateWithArgs(AuxSTBlock):
         self.reference = None
 
     def clone(self):
-        return self._copy(AuxSTPredicateWithArgs(self._i))
+        new_predicate = self._copy(AuxSTPredicateWithArgs(self._i))
+        new_predicate.id = self.id
+        new_predicate.outline = self.outline
+        return new_predicate
 

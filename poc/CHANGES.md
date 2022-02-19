@@ -132,4 +132,16 @@ Initial interpreter
   * loading multiply FPL files with the same namespace (i.e. allowing partial FPL code of a single mathematical theory spread across multiple FPL files),
   * recursive reloading of further theories referenced in theories that have already been loaded into the symbol table.
 * New semantic error FplNamespaceNotFound including a unit test
-* Every FPL error gets assigned a unique ID (diagnosis ID) that can be used in the error list when FPL code is interpreted. 
+* Every FPL error gets assigned a unique ID (diagnosis ID) that can be used in the error list when FPL code is interpreted.
+## 1.4.8
+* Bugfixes for checking variable declarations and whether all variables are used in their scope:
+  * AuxBlock contains standard methods to initialize and read declared and used variables of building blocks that might be overridden in derived classes by specific implementations.
+  * Refactoring unnecessary implementations (removed) from AuxSTProof, AuxSTConstructor, AuxSTBlockWithSignature
+  * Individual implementations overriding the standard ones in AuxSTClass, AuxSTConstructor, AuxSTInstance, AuxSTDefinitionFunctionalTerm, AuxSTDefinitionPredicate 
+  * Calling the declared and used variables initializations of all blocks when populating globals in AuxSymbolTable
+  * New methods initialize_scope and has_in_scope variable declarations (class AuxSTVarDec)  
+* Bugfixes symbol table for cases when variables are used like predicates:
+  * The outline of these nodes in the symbol table change from 'predicateWithArgs' to 'var'
+  * Added missing id (with the variable name) in these nodes
+  * Expected values in affected unit cases amended 
+* Diagnose_id tests attached to the existing tests FplVariableDuplicateInVariableList, FplVariableAlreadyDeclared, and FplUndeclaredVariable

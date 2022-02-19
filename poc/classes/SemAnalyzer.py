@@ -25,28 +25,19 @@ class SemAnalyzer:
     def _check_variables(self, node: AnyNode):
         referenced_node = node.reference
         declared_vars = referenced_node.get_declared_vars()
-        self.__check_duplicate_var_declarations(declared_vars)
-        used_vars = search.findall_by_attr(referenced_node, AuxSymbolTable.var, AuxSymbolTable.outline)
+        used_vars = referenced_node.get_used_vars()
         self.__check_undeclared_var_usages(declared_vars, used_vars)
 
-    def __check_duplicate_var_declarations(self, declared_vars):
-        all_ids = dict()
-        for var_node in declared_vars:
-            if var_node.id not in all_ids:
-                all_ids[var_node.id] = var_node
-            else:
-                self.errors.append(
-                    fplerror.FplVariableAlreadyDeclared(var_node.zfrom, all_ids[var_node.id].zfrom, var_node.id,
-                                                        self._current_filename))
-
     def __check_undeclared_var_usages(self, declared_vars, used_vars):
-        all_declared_var_ids = set()
-        for var_node in declared_vars:
-            if var_node.id not in all_declared_var_ids:
-                all_declared_var_ids.add(var_node.id)
-
         for var_node in used_vars:
-            if var_node.id not in all_declared_var_ids:
+            if var_node.id not in declared_vars:
+                # the variable is undeclared if it was not found among the declared variables
+                self.errors.append(
+                    fplerror.FplUndeclaredVariable(var_node.zfrom, var_node.id, self._current_filename)
+                )
+            elif not declared_vars[var_node.id].has_in_scope(var_node.zfrom):
+                # the variable is also undeclared if it was found among the declared variables
+                # but is outside the scope of this variable declaration
                 self.errors.append(
                     fplerror.FplUndeclaredVariable(var_node.zfrom, var_node.id, self._current_filename)
                 )

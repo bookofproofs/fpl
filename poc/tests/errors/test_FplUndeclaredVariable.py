@@ -27,10 +27,10 @@ class FplUndeclaredVariable(unittest.TestCase):
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
-        "test_FplUndeclaredVariable_01.fpl",
-        "test_FplUndeclaredVariable_02.fpl",
+        ("test_FplUndeclaredVariable_01.fpl","SE0070"),
+        ("test_FplUndeclaredVariable_02.fpl","SE0070"),
     ])
-    def test_errors(self, use_case):
+    def test_errors(self, use_case, diagnose_id):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
         interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
@@ -41,4 +41,5 @@ class FplUndeclaredVariable(unittest.TestCase):
         self.assertEqual(1, len(interpreter.get_errors()))
         # the error is the same as in the use case file
         self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+        self.assertEqual(diagnose_id, interpreter.get_errors()[0].diagnose_id)
 

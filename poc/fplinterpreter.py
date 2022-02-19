@@ -13,7 +13,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str):
-        self.version = "1.4.7"
+        self.version = "1.4.8"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._errors = []

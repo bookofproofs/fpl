@@ -26,16 +26,19 @@ class FplVariableDuplicateInVariableListTests(unittest.TestCase):
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
     @parameterized.expand([
-        "test_FplVariableDuplicateInVariableList_constructor_signature.fpl",
-        "test_FplVariableDuplicateInVariableList_other_signature.fpl",
-        "test_FplVariableDuplicateInVariableList_var_declaration.fpl",
+        ("test_FplVariableDuplicateInVariableList_constructor_signature.fpl","SE0010"),
+        ("test_FplVariableDuplicateInVariableList_other_signature.fpl","SE0010"),
+        ("test_FplVariableDuplicateInVariableList_var_declaration.fpl","SE0010")
     ])
-    def test_errors(self, use_case):
+    def test_errors(self, use_case, diagnose_id):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
         interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
-        # exactly one error was found
-        self.assertEqual(1, len(interpreter.get_errors()))
+        # exactly two errors were found, because duplicate variable in list cause also the FplVariableAlreadyDeclared
+        # errors
+        self.assertEqual(2, len(interpreter.get_errors()))
         # the error is the same as in the use case file
         self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
+        self.assertEqual(diagnose_id, interpreter.get_errors()[0].diagnose_id)
+

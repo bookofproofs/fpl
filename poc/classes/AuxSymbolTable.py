@@ -213,40 +213,45 @@ class AuxSymbolTable:
         block.parent = definitions_node
 
     @staticmethod
-    def populate_global_nodes(theory_node: AuxSTOutline):
+    def populate_global_nodes(theory_node: AuxSTOutline, errors: list):
         all_globally_registered = tuple()
-        other_blocks = AuxSymbolTable.get_child_by_outline(theory_node,
-                                                           AuxSymbolTable.block_axiom_root).children
-        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
-                                                            AuxSymbolTable.block_ir_root).children
         def_nodes = AuxSymbolTable.get_child_by_outline(theory_node, AuxSymbolTable.block_def_root).children
         for def_node in def_nodes:
             def_node.set_relative_id("")
+            def_node.initialize_vars(theory_node.file_name, errors)
             all_globally_registered += (def_node,)
             if def_node.def_type == AuxSymbolTable.classDeclaration:
                 # add all constructors of class
                 constructors = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.classConstructors).children
                 for constructor in constructors:
                     constructor.set_relative_id("")
+                    constructor.initialize_vars(theory_node.file_name, errors)
                     all_globally_registered += (constructor,)
                 # add all properties of class (if any)
                 properties = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.properties).children
                 for prop in properties:
                     prop.set_relative_id(def_node.id)
+                    prop.initialize_vars(theory_node.file_name, errors)
                     all_globally_registered += (prop,)
             elif def_node.def_type == AuxSymbolTable.functionalTerm:
                 # add all properties of functional term (if any)
                 properties = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.properties).children
                 for prop in properties:
                     prop.set_relative_id(def_node.id)
+                    prop.initialize_vars(theory_node.file_name, errors)
                     all_globally_registered += (prop,)
             elif def_node.def_type == AuxSymbolTable.predicateDeclaration:
                 # add all properties of predicate (if any)
                 properties = AuxSymbolTable.get_child_by_outline(def_node, AuxSymbolTable.properties).children
                 for prop in properties:
                     prop.set_relative_id(def_node.id)
+                    prop.initialize_vars(theory_node.file_name, errors)
                     all_globally_registered += (prop,)
 
+        other_blocks = AuxSymbolTable.get_child_by_outline(theory_node,
+                                                           AuxSymbolTable.block_axiom_root).children
+        other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
+                                                            AuxSymbolTable.block_ir_root).children
         other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
                                                             AuxSymbolTable.block_thm_root).children
         other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
@@ -259,9 +264,9 @@ class AuxSymbolTable:
                                                             AuxSymbolTable.block_cor_root).children
         other_blocks += AuxSymbolTable.get_child_by_outline(theory_node,
                                                             AuxSymbolTable.block_proof_root).children
-
         for block in other_blocks:
             block.set_relative_id("")
+            block.initialize_vars(theory_node.file_name, errors)
             all_globally_registered += (block,)
 
         global_references = AuxSymbolTable.get_child_by_outline(theory_node.parent, AuxSymbolTable.globals)
