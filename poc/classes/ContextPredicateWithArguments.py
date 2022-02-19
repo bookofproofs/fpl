@@ -8,6 +8,8 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTSelf import AuxSTSelf
+from poc.classes.AuxSTVariable import AuxSTVariable
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTArgs import AuxSTArgs
 
 
@@ -27,6 +29,10 @@ class ContextPredicateWithArguments(AuxInterpretation):
                 zto = self.predicate.zto
                 self.predicate = parsing_info.predicate  # noqa
                 self.predicate.zto = zto
+            elif type(parsing_info.predicate) is AuxSTVariable:
+                self.predicate.outline = AuxSymbolTable.var
+                self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
+                self.predicate.id = parsing_info.predicate.id  # noqa
             else:
                 self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
                 self.predicate.id = parsing_info.predicate.id  # noqa

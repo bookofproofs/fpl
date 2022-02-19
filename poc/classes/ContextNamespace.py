@@ -44,5 +44,5 @@ class ContextNamespace(AuxInterpretation):
         new_info = ContextNamespace(i)
         i.theory_node.namespace = new_info.id
         # populate global nodes
-        AuxSymbolTable.populate_global_nodes(i.theory_node)
+        AuxSymbolTable.populate_global_nodes(i.theory_node, i.errors)
         i.parse_list.append(new_info)
