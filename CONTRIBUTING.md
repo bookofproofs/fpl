@@ -30,7 +30,7 @@ It is important to coordinate the project FPL Interpreter among the team.
 * ```refactoring/<descriptive_repository_name>```
 
 # Release management
-There are separate CHANGES.md files with release notes for the [grammar](https://github.com/bookofproofs/fpl/blob/master/grammar/CHANGES.md), the [interpreter](https://github.com/bookofproofs/fpl/blob/master/poc/CHANGES.md), and the [ide](https://github.com/bookofproofs/fpl/blob/master/ide/CHANGES.md). The version numbers follow the semantic versioning MAJOR.MINOR.PATCH convention. Please change the version number in CHANGES.md and describe your specific changes and amendments to the code base accordingly before pushing your repository for a change request. 
+There are separate CHANGES.md files with release notes for the [grammar](https://github.com/bookofproofs/fpl/blob/master/grammar/CHANGES.md), the [interpreter](https://github.com/bookofproofs/fpl/blob/master/poc/CHANGES.md), the [ide](https://github.com/bookofproofs/fpl/blob/master/ide/CHANGES.md), and the [example theories](https://github.com/bookofproofs/fpl/blob/master/poc/theories/CHANGES.md). The version numbers follow the semantic versioning MAJOR.MINOR.PATCH convention. Please change the version number in CHANGES.md and describe your specific changes and amendments to the code base accordingly before pushing your repository for a change request. 
 
 
 

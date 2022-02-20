@@ -66,8 +66,6 @@ class CustomNotebook(ttk.Notebook):
         self.forget(index)
         # remove all errors associated with the closed editor
         self.ide.remove_items_from_tree_view(self.ide.get_error_list(), 4, editor_info.title)
-        # remove all errors associated with the closed editor
-        self.ide.remove_items_from_tree_view(self.ide.get_syntax_list(), 4, editor_info.title)
         del self._my_files[editor_info.title]
 
     def on_close_release(self, event):

@@ -18,7 +18,7 @@ class DefaultTheme:
 
     @staticmethod
     def notebook_font():
-        return ('OpenSymbol', '9')
+        return ('Calibri', '10')
 
     @staticmethod
     def line_number_font():

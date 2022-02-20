@@ -42,7 +42,6 @@ class FrameWithLineNumbers(tk.Frame):
         self.text.bind('<Key>', self._key_pressed)
         self.text.bind('<Tab>', self._press_tab)
         self.text.bind('<Shift-Tab>', self._press_shift_tab)
-        self.text.bind("<Double-1>", self._on_click)
         self.text.bind("<Configure>", self.on_change)
 
     def configure_tab_width(self, number_spaces):
@@ -218,22 +217,6 @@ class FrameWithLineNumbers(tk.Frame):
         self.set_text(self._parent_notebook.ide.fpl_source_transformer.get_prettified(), init=False)
         self.parse_interpret_highlight()
 
-    def _on_click(self, event):
-        pos = self.get_pos()
-        row = int(pos.split('.')[0])
-        column = int(pos.split('.')[1])
-        ide = self._parent_notebook.get_parent()
-        for child in ide.get_syntax_list().get_children():
-            treeview_row = ide.get_syntax_list().item(child)
-            # search for the corresponding row and column in the syntax list
-            if treeview_row['values'][1] == row:
-                if treeview_row['values'][2] <= column:
-                    # if found
-                    ide.get_syntax_list().focus(child)
-                    ide.get_syntax_list().selection_set(child)
-                    ide.get_syntax_list().focus_force()
-                    ide.get_syntax_list().see(child)
-
     def on_change(self, event):
         # rewrite all line numbers
         self.linenumbers.redraw()
@@ -255,7 +238,7 @@ class FrameWithLineNumbers(tk.Frame):
     def _write_pos_in_status_bar(self):
         pos = self.get_pos()
         row = pos.split('.')[0]
-        column = pos.split('.')[1]
+        column = str(int(pos.split('.')[1]) + 1)
         ide = self._parent_notebook.get_parent()
         ide.get_status_bar().set_status_text(self.title + " (R:" + row + " C:" + column + ")")
         return pos
@@ -288,8 +271,9 @@ class FrameWithLineNumbers(tk.Frame):
         :return:
         """
 
+        self.text.tag_config('err', underline=True, underlinefg='red')
         tags = self._theme.get_tag_formatting()
-        self.text.tag_delete(list(tags))
+        self.text.tag_delete(list(tags)+["err"])
         for tag in tags:
             self.text.tag_config(tag, foreground=tags[tag])
 
@@ -297,3 +281,9 @@ class FrameWithLineNumbers(tk.Frame):
         formattings = self._theme.get_tag_formatting()
         if tag in formattings:
             self.text.tag_add(tag, start_index, end_index)
+
+    def add_error_tag(self, start_index, end_index=None):
+        if end_index is None:
+            self.text.tag_add('err', index1=start_index)
+        else:
+            self.text.tag_add('err', index1=start_index, index2=end_index)
