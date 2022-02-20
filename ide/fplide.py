@@ -17,7 +17,7 @@ import os
 class FplIde:
 
     def __init__(self):
-        self._version = '1.2.8'
+        self._version = '1.2.9'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -29,6 +29,7 @@ class FplIde:
         self.window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
         self.window.title('Formal Proving Language IDE (' + self._version + ')')
         self.window.protocol("WM_DELETE_WINDOW", self.exit)
+        self.window.state('zoomed')
         self.images = dict()
         self._root_dir = os.path.dirname(__file__) + "/"
         self.images["warning"] = tk.PhotoImage("warning", file=os.path.join(self._root_dir, "assets/warning.png"))
@@ -45,7 +46,7 @@ class FplIde:
         self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)
         path_to_fpl_root = os.path.abspath(self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
         self.fpl_interpreter = FplInterpreter(self.fpl_parser, path_to_fpl_root)
-        self._statusBar.set_status_text("FPL parser ready.")
+        self._statusBar.set_status_text("FPL interpreter ready.")
         self.window.config(cursor="")
         self.window.mainloop()
 
@@ -99,11 +100,68 @@ class FplIde:
 
     def __add_object_browser_treeview(self):
         self._panedMain = tk.PanedWindow(self.window)
-        self._object_browser_tree = ttk.Treeview(self._panedMain, show='headings')
-        self._object_browser_tree["columns"] = ("object")
-        self._object_browser_tree.column("object", width=270, minwidth=270, stretch=tk.YES)
-        self._object_browser_tree.heading("object", text="Object Browser", anchor=tk.W)
-        self._object_browser_tree.insert("", 0, "TODO", text="item")
+        self._object_browser_tree = ttk.Treeview(self._panedMain, selectmode='browse')
+        self._object_browser_tree["columns"] = ("Name", "Status", "File")
+        self._object_browser_tree.column("#0", minwidth=25, anchor=tk.W)
+        self._object_browser_tree.column("Name", width=270, minwidth=270, stretch=tk.YES, anchor=tk.W)
+        self._object_browser_tree.column("Status", width=25, minwidth=25, stretch=tk.YES, anchor=tk.W)
+        self._object_browser_tree.column("File", width=170, minwidth=170, stretch=tk.YES, anchor=tk.W)
+        self._object_browser_tree.heading("#0", text="Theory Structure", anchor=tk.W)
+        self._object_browser_tree.heading("Name", text="Name", anchor=tk.W)
+        self._object_browser_tree.heading("Status", text="Status", anchor=tk.W)
+        self._object_browser_tree.heading("File", text="File", anchor=tk.W)
+        n = self._object_browser_tree.insert('', index='end', iid='n', text='TestNamespace', values=("", "ok", ""))
+        ir = self._object_browser_tree.insert(n, index='end', iid='i', text='Inference Rules', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=ir, index='end', iid='i.1', text='Inference',
+                                         values=("ExampleInferenceRule()", "ok", "Example.fpl"))
+        a = self._object_browser_tree.insert(parent=n, index='end', iid='a', text='Axioms', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=a, index='end', iid='a.1', text='Axiom',
+                                         values=("ExampleAxiom()", "ok", "Example.fpl"))
+        c = self._object_browser_tree.insert(parent=n, index='end', iid='c', text='Conjectures', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=c, index='end', iid='c.1', text='Conjecture',
+                                         values=("ExampleConjecture()", "ok", "Example.fpl"))
+        d = self._object_browser_tree.insert(parent=n, index='end', iid='d', text='Definitions', values=("", "ok", ""))
+        ob = self._object_browser_tree.insert(parent=d, index='end', iid='d.o', text='Mathematical Objects',
+                                              values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=ob, index='end', iid='d.o.r', text='Object',
+                                         values=("RealNumber()", "ok", "Example.fpl"))
+        fu = self._object_browser_tree.insert(parent=d, index='end', iid='d.f', text='Functions', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=fu, index='end', iid='d.f.i', text='Function',
+                                         values=("RealIntegral(RealNumber,RealNumber)", "ok", "Example.fpl"))
+        pr = self._object_browser_tree.insert(parent=d, index='end', iid='d.p', text='Predicates',
+                                              values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=pr, index='end', iid='d.p.g', text='Predicate',
+                                         values=("IsGreater(RealNumber,RealNumber)", "ok", "Example.fpl"))
+        t = self._object_browser_tree.insert(parent=n, index='end', iid='t', text='Theorems', values=("", "ok", ""))
+        t1 = self._object_browser_tree.insert(parent=t, index='end', iid='t.1', text="Theorem",
+                                              values=("ExampleTheorem()", "ok", "Example.fpl"))
+        self._object_browser_tree.insert(parent=t1, index='end', iid='t.1.1', text="Proof",
+                                         values=("Proof#1", "ok", "Example.fpl"))
+        self._object_browser_tree.insert(parent=t1, index='end', iid='t.1.2', text="Corollary",
+                                         values=("Corollary#1()", "ok", "Example.fpl"))
+        p = self._object_browser_tree.insert(parent=n, index='end', iid='p', text="Propositions", values=("", "ok", ""))
+        self._object_browser_tree.insert(p, index='end', iid='p.1', text="Proposition",
+                                         values=("ExampleProposition()", "ok", "Example.fpl"))
+        l = self._object_browser_tree.insert(parent=n, index='end', iid='l', text="Lemmas", values=("", "ok", ""))
+        self._object_browser_tree.insert(l, index='end', iid='l.1', text="Lemmas",
+                                         values=("ExampleLemma()", "ok", "Example.fpl"))
+        self._object_browser_tree.insert(parent=n, index='end', iid='u', text="Unassigned", values=("", "ok", ""))
+        n1 = self._object_browser_tree.insert('', index='end', iid='n1', text='SecondTestNamespace',
+                                              values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=n1, index='end', iid='i1', text='Inference Rules',
+                                         values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=n1, index='end', iid='a1', text='Axioms', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=n1, index='end', iid='c1', text='Conjectures', values=("", "ok", ""))
+        d1 = self._object_browser_tree.insert(parent=n1, index='end', iid='d1', text='Definitions',
+                                              values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=d1, index='end', iid='d.o1', text='Mathematical Objects',
+                                         values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=d1, index='end', iid='d.f1', text='Functions', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=d1, index='end', iid='d.p1', text='Predicates', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=n1, index='end', iid='t1', text='Theorems', values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=n1, index='end', iid='p1', text="Propositions", values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=n1, index='end', iid='l1', text="Lemmas", values=("", "ok", ""))
+        self._object_browser_tree.insert(parent=n1, index='end', iid='u1', text="Unassigned", values=("", "ok", ""))
         self._panedMain.add(self._object_browser_tree)
         self._statusBar = StatusBar(self._panedWindowMainVertical)
         self._panedWindowMainVertical.add(self._panedMain)
@@ -134,36 +192,11 @@ class FplIde:
 
         self.__add_error_info_box()
 
-        self._frameSyntax = ttk.Frame(self._tabControl)
-        self._listBoxSyntax = ttk.Treeview(self._frameSyntax, selectmode='browse', show='headings')
-        self._listBoxSyntax["columns"] = ("rule", "line", "col", "pos", "file")
-        self._listBoxSyntax.column("rule", width=170, minwidth=170, stretch=tk.YES, anchor=tk.W)
-        self._listBoxSyntax.column('line', width=30, minwidth=50, stretch=tk.YES, anchor=tk.E)
-        self._listBoxSyntax.column('col', width=30, minwidth=50, stretch=tk.YES, anchor=tk.E)
-        self._listBoxSyntax.column('pos', width=30, minwidth=50, stretch=tk.YES, anchor=tk.E)
-        self._listBoxSyntax.column('file', width=100, minwidth=100, stretch=tk.YES, anchor=tk.W)
-        self._listBoxSyntax.heading("rule", text="Grammar Rule", anchor=tk.CENTER)
-        self._listBoxSyntax.heading("line", text="Line", anchor=tk.CENTER)
-        self._listBoxSyntax.heading("col", text="Column", anchor=tk.CENTER)
-        self._listBoxSyntax.heading("pos", text="Position", anchor=tk.CENTER)
-        self._listBoxSyntax.heading("file", text="File", anchor=tk.CENTER)
-        self._listBoxSyntax.bind('<Button-1>', self.__listbox_syntax_item_clicked)
-        self.__add_scrollbar(self._frameSyntax, self._listBoxSyntax)
-        self._listBoxSyntax.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-
-        self._frameSemantics = ttk.Frame(self._tabControl)
-        self._listBoxSemantics = tk.Listbox(self._frameSemantics)
-        self._listBoxSemantics.config(bg=self._theme.get_bg_color(), fg=self._theme.get_fg_color())
-        self._listBoxSemantics.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        self.__add_scrollbar(self._frameSemantics, self._listBoxSemantics)
-
-        self._frameOutput = ttk.Frame(self._tabControl)
-        self._frameOutput.config()
+        self._frameDebug = ttk.Frame(self._tabControl)
+        self._frameDebug.config()
 
         self._tabControl.add(self._gridErrors, text='Error List')
-        self._tabControl.add(self._frameSyntax, text='Syntax Browser')
-        self._tabControl.add(self._frameSemantics, text='Semantics Browser')
-        self._tabControl.add(self._frameOutput, text='Output')
+        self._tabControl.add(self._frameDebug, text='Debug')
 
         self._tabControl.pack(expand=True, fill="both")
 
@@ -224,13 +257,13 @@ class FplIde:
                                            column=('Type', 'Message', 'Line', 'Column', 'File'))
         # self._listBoxErrors["columns"] = ("#0", "#1", "#2", "#3", "#4", "#5")
         self._listBoxErrors.heading("#0", text="", anchor=tk.W)
-        self._listBoxErrors.heading("#1", text="Type", anchor=tk.W)
+        self._listBoxErrors.heading("#1", text="Code", anchor=tk.W)
         self._listBoxErrors.heading("#2", text="Message", anchor=tk.W)
         self._listBoxErrors.heading("#3", text="Line", anchor=tk.E)
         self._listBoxErrors.heading("#4", text="Column", anchor=tk.E)
         self._listBoxErrors.heading("#5", text="File", anchor=tk.CENTER)
         self._listBoxErrors.column('#0', width=40, minwidth=40, stretch=tk.NO, anchor=tk.W)
-        self._listBoxErrors.column('Type', width=100, minwidth=100, stretch=tk.YES, anchor=tk.W)
+        self._listBoxErrors.column('Type', width=40, minwidth=40, stretch=tk.YES, anchor=tk.W)
         self._listBoxErrors.column('Message', width=240, minwidth=240, stretch=tk.YES, anchor=tk.W)
         self._listBoxErrors.column('Line', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
         self._listBoxErrors.column('Column', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
@@ -243,17 +276,6 @@ class FplIde:
         scrollbar = tk.Scrollbar(frame)
         scrollbar.pack(side=tk.RIGHT, fill=tk.BOTH)
         scrollbar.config(command=widget.yview)
-
-    def __listbox_syntax_item_clicked(self, event):
-        """
-        When the user clicks the syntax item, then the editor cursor will go to the position where the
-        parsed item is located.
-        :param event:
-        :return:
-        """
-        record = self.__identify_clicked_treeview_item(self._listBoxSyntax)
-        if record is not None:
-            self.__set_position_in_editor(record[1], record[2], record[4])
 
     def __listbox_error_clicked(self, event):
         """
@@ -293,7 +315,7 @@ class FplIde:
         self._panedWindowEditor.focus_set()
         self._tabEditor.focus_set()
         editor_frame.focus_set()
-        editor_frame.set_pos(line, column)
+        editor_frame.set_pos(line, column - 1)
 
     def update_error_warning_counts(self):
         """
@@ -338,7 +360,6 @@ class FplIde:
         """
         title = editor_info.title
         self._refresh_items_tree_view(editor_info, interpreter.get_errors(), self.get_error_list(), column=4)
-        self._refresh_items_tree_view(editor_info, interpreter.get_ast_list(title), self.get_syntax_list(), column=4)
 
     def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, tuple_list: list, tree_view: ttk.Treeview,
                                  column: int):
@@ -352,7 +373,7 @@ class FplIde:
                 im = self.images["warning"]
             item_tuple = item.to_tuple() + (editor_info.title,)
             tree_view.insert("", tk.END, text="", image=im, values=item_tuple)
-
+            editor_info.add_error_tag(item.get_tkinter_pos())
         self.update_error_warning_counts()
 
     def build_fpl_code(self):
@@ -465,9 +486,6 @@ class FplIde:
 
     def get_error_list(self):
         return self._listBoxErrors
-
-    def get_syntax_list(self):
-        return self._listBoxSyntax
 
     def get_editor_notebook(self):
         return self._tabEditor

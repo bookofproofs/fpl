@@ -1,8 +1,54 @@
 # Changes in the FPL IDE
-## 1.0.0 
-* Initial IDE
-* Open, Save, Save As, Exit menu bars
-* Build menu bar
+## 1.2.9
+* Features: 
+  * The error list now shows the diagnosis id of errors instead of the class name of the error
+  * Object explorer shows an example of how it will be supposed to look like later.
+  * A more readable font family in Error list
+  * Tabs "Syntax Browser" and "Semantic Browser" discontinued
+  * Tab "Output" renamed in "Debug"
+* Bug fixes:
+  * Each editor cursor column in the status bar starts at 1 (instead of 0)
+  * Double-clicking an error from error list jumps to the correct starting column (instead of starting colum + 1) in the editor.
+  * Errors are red underlined in code editor (preliminary implementation - only the first character)
+* Reversed the order of items in release notes to make the last change appear first.
+  * This CHANGES.md file
+  * CHANGES.md file of the FPL grammar
+  * CHANGES.md file of the FPL interpreter
+* New CHANGES.md file added to poc/theories
+## 1.2.8
+* Bugfix highlighting
+## 1.2.7
+* Compatibility adjustments to the FPL interpreter version 1.4.1 
+## 1.2.6
+* Font error list changed
+## 1.2.5
+* Bugfix relative folders for importing package files
+* Separation of syntax transforming and syntax analysis in the fpl interpreter (since version 1.2.0) reflected in the ide
+## 1.2.4
+* Settings window allows editing the settings
+* Unified convention for importing tkinter in different classes 
+* Bugfix indentation when entering new lines
+* Automated entry of closing brackets, braces, and parentheses
+## 1.2.3
+* Indentation when pressing <tab>
+* Outdentation when pressing <Shift-tab>
+* Help menu added (about)
+* Settings menu added (settings)
+* Settings window will open and show the available settings, but no editing is yet possible.
+## 1.2.2
+* Performance improvements while typing: syntax highlighting, error list and syntax tree updates only on demand 
+* Prettify code (experimental)
+* Auto indent when opening new braces or parentheses (experimental)
+* UTF-8 support 
+## 1.2.1
+* Key events for menu items (on Windows 10, press 'Alt')
+* Bug fix closing application
+* Security messages for saving files before quitting
+## 1.2.0
+* Saving bug corrected
+* Error list and highlighting run in a separate thread changing dynamically with the user edits in a file
+* Layout improvements
+* Number of errors and number of warnings added
 ## 1.1.0
 * Paned windows added 
 * Line numbers in the editor added
@@ -11,37 +57,7 @@
 * Syntax highlighting for open files added
 * Syntax tree clickable added (jumps to position in text)
 * Text clickable added (jumps to position in syntax tree)
-## 1.2.0
-* Saving bug corrected
-* Error list and highlighting run in a separate thread changing dynamically with the user edits in a file
-* Layout improvements
-* Number of errors and number of warnings added
-## 1.2.1
-* Key events for menu items (on Windows 10, press 'Alt')
-* Bug fix closing application
-* Security messages for saving files before quitting
-## 1.2.2
-* Performance improvements while typing: syntax highlighting, error list and syntax tree updates only on demand 
-* Prettify code (experimental)
-* Auto indent when opening new braces or parentheses (experimental)
-* UTF-8 support 
-## 1.2.3
-* Indentation when pressing <tab>
-* Outdentation when pressing <Shift-tab>
-* Help menu added (about)
-* Settings menu added (settings)
-* Settings window will open and show the available settings, but no editing is yet possible.
-## 1.2.4
-* Settings window allows editing the settings
-* Unified convention for importing tkinter in different classes 
-* Bugfix indentation when entering new lines
-* Automated entry of closing brackets, braces, and parentheses
-## 1.2.5
-* Bugfix relative folders for importing package files
-* Separation of syntax transforming and syntax analysis in the fpl interpreter (since version 1.2.0) reflected in the ide
-## 1.2.6
-* Font error list changed
-## 1.2.7
-* Compatibility adjustments to the FPL interpreter version 1.4.1 
-## 1.2.8
-* Bugfix highlighting
+## 1.0.0 
+* Initial IDE
+* Open, Save, Save As, Exit menu bars
+* Build menu bar

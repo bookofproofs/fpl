@@ -3,8 +3,16 @@ import re
 
 class FplParserError(Exception):
 
-    def __init__(self, inner_exception, error_context):
+    def __init__(self, inner_exception, error_context, diagnose_id):
         self.error_context = error_context
+        if diagnose_id == 1:
+            self.diagnose_id = "SY0010"  # Syntax parse error
+        elif diagnose_id == 2:
+            self.diagnose_id = "SY0020"  # Syntax token error
+        elif diagnose_id == 3:
+            self.diagnose_id = "SY0030"  # Syntax pattern error
+        else:
+            self.diagnose_id = "unknown"  # Unknown syntax Tatsu error
         result = re.search("\((\d+):(\d+)\)([^:]+)", self.error_context)
         # inner_exception = str(inner_exception).replace("\n", " ")
         if len(result.groups()) >= 2:
@@ -42,7 +50,7 @@ class FplParserError(Exception):
         return self.__msg
 
     def to_tuple(self):
-        return str(type(self).__name__), self.__msg, self.__line, self.__col
+        return self.diagnose_id, self.__msg, self.__line, self.__col
 
 
 class FplInterpreterMessage(Exception):
@@ -71,5 +79,8 @@ class FplInterpreterMessage(Exception):
     def get_msg(self):
         return self.__msg
 
+    def get_tkinter_pos(self):
+        return self.__line + "." + str(int(self.__col)-1)
+
     def to_tuple(self):
-        return self.__type, self.__msg, self.__line, self.__col
+        return self.diagnose_id, self.__msg, self.__line, self.__col
