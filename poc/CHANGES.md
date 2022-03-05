@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.4.9
+* Minor Bugfixes: 
+  * fplerror not found when importing poc.fplerror
+  * string/int concatenation of error position in fplmessage
 ## 1.4.8
 * Bugfixes for checking variable declarations and whether all variables are used in their scope:
   * AuxBlock contains standard methods to initialize and read declared and used variables of building blocks that might be overridden in derived classes by specific implementations.

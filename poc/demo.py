@@ -1,7 +1,7 @@
 from poc.fplsourcetransformer import FPLSourceTransformer
-from poc.util import fplutil
+from poc.util.fplutil import Utils
 
-u = fplutil.Utils()
+u = Utils()
 fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
 u.add_distinct_duration("creating tatsu parser")
 
