@@ -9,7 +9,7 @@ from anytree import Resolver
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTGlobal import AuxSTGlobal
 from poc.classes.AuxSTVarDec import AuxSTVarDec
-import poc.fplerror
+from poc import fplerror
 from anytree import AnyNode, search
 
 """
@@ -283,7 +283,7 @@ class AuxSymbolTable:
             for var in reversed(named_var_declaration.var_list):
                 if var.var.id in distinct_vars:
                     named_var_declaration.all_errors().append(
-                        poc.fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var,
+                        fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var,
                                                                         ast_info.file))
                 else:
                     distinct_vars[var.var.id] = var.var

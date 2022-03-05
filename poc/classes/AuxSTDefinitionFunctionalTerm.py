@@ -2,7 +2,7 @@ from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTProperties import AuxSTProperties
 from anytree import search
-import fplerror
+from poc import fplerror
 
 
 class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):

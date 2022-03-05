@@ -1,7 +1,7 @@
 from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
-import fplerror
+from poc import fplerror
 
 
 class AuxSTConstructor(AuxSTBlock):

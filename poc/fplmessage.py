@@ -80,7 +80,7 @@ class FplInterpreterMessage(Exception):
         return self.__msg
 
     def get_tkinter_pos(self):
-        return self.__line + "." + str(int(self.__col)-1)
+        return str(self.__line) + "." + str(int(self.__col)-1)
 
     def to_tuple(self):
         return self.diagnose_id, self.__msg, self.__line, self.__col

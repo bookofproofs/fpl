@@ -1,10 +1,10 @@
-import poc.fplmessage
 import tatsu
 from anytree import AnyNode, RenderTree
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTFplFile import AuxSTFplFile
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
-import poc.fplerror
+from poc import fplerror
+from poc import fplmessage
 import os
 import sys
 from poc.util.fplutil import Utils
@@ -13,7 +13,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str):
-        self.version = "1.4.8"
+        self.version = "1.4.9"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._errors = []
@@ -81,7 +81,7 @@ class FplInterpreter:
                             # the symbol table was not available in self._theory_root_dir when
                             # the FPL interpreter was constructed.
                             self._errors.append(
-                                poc.fplerror.FplNamespaceNotFound(used_namespace.id, fpl_theory_node.file_name,
+                                fplerror.FplNamespaceNotFound(used_namespace.id, fpl_theory_node.file_name,
                                                                   used_namespace.zfrom))
                         else:
                             for file_node in files_related_to_namespace:
@@ -114,13 +114,13 @@ class FplInterpreter:
                 self._parser.parse(fpl_file_node.get_file_content(), semantics=analyser, whitespace='')
             except tatsu.exceptions.FailedParse as ex:
                 self._errors.append(
-                    poc.fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 1)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 1)
             except tatsu.exceptions.FailedToken as ex:
                 self._errors.append(
-                    poc.fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 2)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 2)
             except tatsu.exceptions.FailedPattern as ex:
                 self._errors.append(
-                    poc.fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 3)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 3)
             except BaseException as ex:
                 self._errors.append(
                     poc.fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 4)
