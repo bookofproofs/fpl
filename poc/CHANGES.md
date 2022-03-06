@@ -1,6 +1,6 @@
 # Changes in the FPL Parser and Interpreter
 ## 1.4.9
-* Minor Bugfixes: 
+* Minor bugfixes: 
   * fplerror not found when importing poc.fplerror
   * string/int concatenation of error position in fplmessage
 ## 1.4.8

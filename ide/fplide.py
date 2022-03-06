@@ -12,12 +12,15 @@ from poc.fplsourcetransformer import FPLSourceTransformer
 from ide.Settings import Settings
 import configparser
 import os
+from anytree import AnyNode
+from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 
 
 class FplIde:
 
     def __init__(self):
-        self._version = '1.2.9'
+        self._version = '1.3.0'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -232,7 +235,7 @@ class FplIde:
                                           fg=self._theme.get_fg_color())
         self._all_file_option_menu.grid(row=0, column=2, sticky=tk.W + tk.E, pady=2)
 
-        # option menue for filtering the error type
+        # option menu for filtering the error type
         self._error_type_list = ["(no types)"]
         self._error_type_option_menu = tk.OptionMenu(self._gridErrors,
                                                      tk.StringVar(self._gridErrors, value="(no types)"),
@@ -358,8 +361,10 @@ class FplIde:
         :param editor_info: Current editor info
         :return: None
         """
-        title = editor_info.title
         self._refresh_items_tree_view(editor_info, interpreter.get_errors(), self.get_error_list(), column=4)
+        if AuxISourceAnalyser.verbose:
+            print(interpreter.symbol_table_to_str())
+        self._refresh_object_tree(interpreter.get_symbol_table_root())
 
     def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, tuple_list: list, tree_view: ttk.Treeview,
                                  column: int):
@@ -376,11 +381,149 @@ class FplIde:
             editor_info.add_error_tag(item.get_tkinter_pos())
         self.update_error_warning_counts()
 
+    def _refresh_object_tree(self, root: AnyNode):
+        """
+        Updates the object tree according to the current syntax tree.
+        :param root: root of the syntax tree
+        :param tree_view: object tree widget in the IDE
+        :return: None
+        """
+        # dictionary prevents creating multiple theory nodes for the same namespace split across different FPL files
+        tree_view_theories = dict()
+        # remove all items from previous tree_view
+        self._object_browser_tree.delete(*self._object_browser_tree.get_children())
+        theories = AuxSymbolTable.get_theories(root)
+        for theory_node in theories:
+            if theory_node.namespace not in tree_view_theories:
+                tree_view_theories[theory_node.namespace] = \
+                    self._object_browser_tree.insert('', index='end',
+                                                     iid=theory_node.namespace,
+                                                     text=theory_node.namespace,
+                                                     values=("", "ok", theory_node.file_name))
+            self.__propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
+                                                  AuxSymbolTable.block_ir_root, "_i", "Inference Rules",
+                                                  "Inference")
+            self.__propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
+                                                  AuxSymbolTable.block_axiom_root, "_a", "Axioms",
+                                                  "Axiom")
+            self.__propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
+                                                  AuxSymbolTable.block_conj_root, "_c", "Conjectures",
+                                                  "Conjecture")
+            self.__propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
+                                                  AuxSymbolTable.block_def_root, "_d", "Definitions",
+                                                  "Definition")
+            self.__propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
+                                                  AuxSymbolTable.block_thm_root, "_t", "Theorems",
+                                                  "Theorem")
+            self.__propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
+                                                  AuxSymbolTable.block_prop_root, "_p", "Propositions",
+                                                  "Proposition")
+            self.__propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
+                                                  AuxSymbolTable.block_lem_root, "_l", "Lemmas",
+                                                  "Lemma")
+
+    def __propagate_object_tree_children(self, theory_node: AnyNode, treeview_theory_node, outline: str, postfix: str,
+                                         node_title: str,
+                                         node_label: str):
+        syntax_tree_node = AuxSymbolTable.get_child_by_outline(theory_node, outline)
+        if len(syntax_tree_node.children):
+            tree_view_node = self._object_browser_tree.insert(treeview_theory_node, index='end',
+                                                              iid=theory_node.namespace + postfix,
+                                                              text=node_title, values=("", "ok", theory_node.file_name))
+            need_def_objects = True
+            need_def_objects_constructors = True
+            need_def_objects_properties = True
+            need_def_predicates = True
+            need_def_predicate_properties = True
+            need_def_functions = True
+            need_def_function_properties = True
+            ob = None
+            pr = None
+            fu = None
+            for child in syntax_tree_node.children:
+                if outline == AuxSymbolTable.block_def_root:
+                    if child.def_type == AuxSymbolTable.classDeclaration:
+                        if need_def_objects:
+                            ob = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                                                                  iid=theory_node.namespace + postfix + '_o',
+                                                                  text='Objects',
+                                                                  values=("", "ok", theory_node.file_name))
+                            need_def_objects = False
+                        obj = self._object_browser_tree.insert(parent=ob, index='end',
+                                                               iid=theory_node.namespace + postfix + '_o' + child.id,
+                                                               text=child.id,
+                                                               values=("", "ok", theory_node.file_name))
+                        self.__propagate_object_tree_children_sub(theory_node, child, obj,
+                                                                  theory_node.namespace + postfix + '_o' + child.id + '_c',
+                                                                  AuxSymbolTable.classConstructors,
+                                                                  need_def_objects_constructors)
+                        self.__propagate_object_tree_children_sub(theory_node, child, obj,
+                                                                  theory_node.namespace + postfix + '_o' + child.id + '_p',
+                                                                  AuxSymbolTable.properties,
+                                                                  need_def_objects_properties)
+                    elif child.def_type == AuxSymbolTable.predicateDeclaration:
+                        if need_def_predicates:
+                            pr = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                                                                  iid=theory_node.namespace + postfix + '_p',
+                                                                  text='Predicates',
+                                                                  values=("", "ok", theory_node.file_name))
+                            need_def_predicates = False
+                        prop = self._object_browser_tree.insert(parent=pr, index='end',
+                                                                iid=theory_node.namespace + postfix + '_p' + child.id,
+                                                                text=child.id,
+                                                                values=("", "ok", theory_node.file_name))
+                        self.__propagate_object_tree_children_sub(theory_node, child, prop,
+                                                                  theory_node.namespace + postfix + '_p' + child.id + '_p',
+                                                                  AuxSymbolTable.properties,
+                                                                  need_def_predicate_properties)
+                    elif child.def_type == AuxSymbolTable.functionalTerm:
+                        if need_def_functions:
+                            fu = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                                                                  iid=theory_node.namespace + postfix + '_f',
+                                                                  text='Functions',
+                                                                  values=("", "ok", theory_node.file_name))
+                            need_def_functions = False
+                        func = self._object_browser_tree.insert(parent=fu, index='end',
+                                                                iid=theory_node.namespace + postfix + '_f' + child.id,
+                                                                text=child.id,
+                                                                values=("", "ok", theory_node.file_name))
+                        self.__propagate_object_tree_children_sub(theory_node, child, func,
+                                                                  theory_node.namespace + postfix + '_f' + child.id + '_p',
+                                                                  AuxSymbolTable.properties,
+                                                                  need_def_function_properties)
+                    else:
+                        raise NotImplementedError(outline)
+                else:
+                    self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                                                     iid=theory_node.namespace + postfix + child.id, text=node_label,
+                                                     values=(child.id, "ok", theory_node.file_name))
+
+    def __propagate_object_tree_children_sub(self, theory_node: AnyNode, node: AnyNode, tree_view_node, postfix: str,
+                                             outline: str, need_for_outline_node: bool):
+        if outline == AuxSymbolTable.classConstructors:
+            sub_node = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.classConstructors)
+            sub_node_title = 'Constructors'
+        else:
+            sub_node = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
+            sub_node_title = 'Properties'
+
+        if len(sub_node.children) > 0:
+            if need_for_outline_node:
+                sub_node_tree_view = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                                                                      iid=postfix + node.id,
+                                                                      text=sub_node_title,
+                                                                      values=("", "ok", theory_node.file_name))
+            for sub_sub_node in sub_node.children:
+                self._object_browser_tree.insert(parent=sub_node_tree_view, index='end',
+                                                 iid=postfix + node.id + sub_sub_node.id,
+                                                 text=sub_sub_node.id,
+                                                 values=("", "ok", theory_node.file_name))
+
     def build_fpl_code(self):
         messagebox.showinfo("FPL", "Not implemented yet! (Build)")
 
     def settings(self):
-        settings_dialog = SettingsDialog(self)
+        SettingsDialog(self)
 
     def about(self):
         messagebox.showinfo("FPL",
