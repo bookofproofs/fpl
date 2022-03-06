@@ -123,7 +123,7 @@ class FplInterpreter:
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 3)
             except BaseException as ex:
                 self._errors.append(
-                    poc.fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 4)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 4)
 
     def _gather_all_namespaces_from_root_dir(self):
         """

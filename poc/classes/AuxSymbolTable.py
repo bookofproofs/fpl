@@ -313,7 +313,7 @@ class AuxSymbolTable:
 
     @staticmethod
     def get_theory_by_namespace_and_file_name(root: AnyNode, theory_namespace: str, theory_file_name: str):
-        result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
+        result = AuxSymbolTable.get_theories(root)
         found_theory_node = None
         for node in result:
             if node.namespace == theory_namespace and node.file_name == theory_file_name:
@@ -325,3 +325,8 @@ class AuxSymbolTable:
     def remove_library(root):
         library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
         library_node.parent = None
+
+    @staticmethod
+    def get_theories(root: AnyNode):
+        result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
+        return result

@@ -1,4 +1,6 @@
 # Changes in the FPL IDE
+## 1.3.0
+* Features: The object tree visualizes the structure of the mathematical theory opened in the IDE.
 ## 1.2.9
 * Features: 
   * The error list now shows the diagnosis id of errors instead of the class name of the error
