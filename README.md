@@ -7,6 +7,10 @@ that is going to serve as a universal language to formulate
 mathematical definitions, theorems, and proofs independently of 
 local natural languages. 
 
+Watch the video:
+
+[![Watch the video](https://i9.ytimg.com/vi/ROCNCDRiBp0/mq3.jpg?sqp=CIjznJEG&rs=AOn4CLAe5n7vIJbN2taCoQ_mW2u-zlIDKg)](https://www.youtube.com/watch?v=ROCNCDRiBp0)
+
 While English is currently the de facto standard natural language for
 mathematical publications, FPL should further facilitate the dialog between 
 mathematicians worldwide, providing a standard for notation, and the  
