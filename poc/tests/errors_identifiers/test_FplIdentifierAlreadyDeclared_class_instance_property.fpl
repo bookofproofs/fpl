@@ -1,4 +1,4 @@
-TestNamespace
+TestClassInstanceProperty
 {
     theory
     {
@@ -22,5 +22,4 @@ TestNamespace
 }
 
 ##############################
-
-FplIdentifierAlreadyDeclared:16:35: Identifier CarrierSet already defined at (11,36)
+FplIdentifierAlreadyDeclared:16:13: Identifier AlgebraicStructure.CarrierSet[] already defined at (11,13)

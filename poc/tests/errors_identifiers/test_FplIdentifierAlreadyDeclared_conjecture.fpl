@@ -1,8 +1,8 @@
-TestNamespace
+TestConjecture
 {
     theory
     {
-        lem AddIsUnique(op: Add)
+        conjecture AddIsUnique(op: Add)
         {
             n,m: Nat
             anotherAdd: Add
@@ -24,7 +24,7 @@ TestNamespace
                 )
         }
 
-        lemma AddIsUnique(op: Add)
+        conj AddIsUnique(op: Add)
         {
             n,m: Nat
             anotherAdd: Add
@@ -50,4 +50,4 @@ TestNamespace
 
 ##############################
 
-FplIdentifierAlreadyDeclared:27:25: Identifier AddIsUnique already defined at (5,23)
+FplIdentifierAlreadyDeclared:27:9: Identifier AddIsUnique[1:Add] already defined at (5,9)

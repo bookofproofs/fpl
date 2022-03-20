@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.4.10
+* Feature: 
+  * FplIdentifierAlreadyDeclared + test cases
 ## 1.4.9
 * Minor bugfixes: 
   * fplerror not found when importing poc.fplerror

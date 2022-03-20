@@ -1,4 +1,4 @@
-TestNamespace
+TestFunctionalTerm
 {
     theory
     {
@@ -17,5 +17,4 @@ TestNamespace
 }
 
 ##############################
-
-FplIdentifierAlreadyDeclared:13:17: Identifier Succ already defined at (5,17)
+FplIdentifierAlreadyDeclared:13:9: Identifier Succ[1:Nat] already defined at (5,9)

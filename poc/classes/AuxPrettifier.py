@@ -28,10 +28,6 @@ class AuxPrettifier:
         :param ast_info: info about the parsed item
         :return: None
         """
-        if self._prettified.find("ProceedingResults(p: +") > -1:
-            # print("")
-            pass
-        # print(self._context.get_context(), self._minified[-50:])
         if isinstance(ast_info.cst, str):
             if ast_info.rule == "Comment":
                 self._append_indented(ast_info.cst)

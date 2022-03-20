@@ -15,13 +15,28 @@ class FplVariableDuplicateInVariableList(FplInterpreterMessage):
 
 
 class FplIdentifierAlreadyDeclared(FplInterpreterMessage):
-    def __init__(self, identifier: str, info: AuxAstInfo, existing_info: AuxAstInfo):
-        FplInterpreterMessage.__init__(self, "Identifier " + str(identifier) +
-                                       " already defined at (" +
-                                       str(existing_info.line) + "," + str(existing_info.col) + ")",
-                                       info.line,
-                                       info.col,
-                                       info.file)
+    def __init__(self, identifier: str, zfrom: str, file: str, existing_zfrom: str, existing_file: str):
+        zfrom_split = zfrom.split(".")
+        existing_zfrom_split = existing_zfrom.split(".")
+        if existing_file == file:
+            FplInterpreterMessage.__init__(
+                self,
+                "Identifier {0} already defined at ({1},{2})".format(identifier,
+                                                                     existing_zfrom_split[0],
+                                                                     existing_zfrom_split[1]),
+                zfrom_split[0],
+                zfrom_split[1],
+                file)
+        else:
+            FplInterpreterMessage.__init__(
+                self,
+                "Identifier {0} already defined at {1}({2},{3})".format(identifier,
+                                                                        existing_file,
+                                                                        existing_zfrom_split[0],
+                                                                        existing_zfrom_split[1]),
+                zfrom_split[0],
+                zfrom_split[1],
+                file)
         self.diagnose_id = "SE0020"
 
 

@@ -1,4 +1,4 @@
-TestNamespace
+TestAxiom
 {
     theory
     {
@@ -22,4 +22,4 @@ TestNamespace
 
 ##############################
 
-FplIdentifierAlreadyDeclared:11:23: Identifier ZeroIsNat already defined at (5,23)
+FplIdentifierAlreadyDeclared:11:9: Identifier ZeroIsNat[] already defined at (5,9)
