@@ -3,6 +3,7 @@ from anytree import AnyNode, RenderTree
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTFplFile import AuxSTFplFile
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
+from poc import fplsemanticanalyzer
 from poc import fplerror
 from poc import fplmessage
 import os
@@ -13,7 +14,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str):
-        self.version = "1.4.9"
+        self.version = "1.4.10"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._errors = []
@@ -29,15 +30,15 @@ class FplInterpreter:
         self._gather_all_namespaces_from_root_dir()
         self.files_highlight_tags = dict()
         # Used for the recursive loading of namespaces into to symbol table while syntax analysis is running
-        # The syntax analysis stores in this dictionary for every namespace / FPL-combinatation
+        # The syntax analysis stores in this dictionary for every namespace / FPL-combination
         # whether this combination was already processed.
         self.processed_namespaces = set()
 
     def syntax_analysis(self, path_to_theory: str):
         """
-        Adds to the symbol table the namespace and its related contents from a single fpl file.
-        :param path_to_theory:
-        :return:
+        Adds to the symbol table the namespace and its related contents from (potentially multiple) fpl files.
+        :param path_to_theory: path to the fpl file with a theory
+        :return: None
         """
         theory_file_name = os.path.basename(path_to_theory)
         # look for the file library in the symbol table
@@ -82,7 +83,7 @@ class FplInterpreter:
                             # the FPL interpreter was constructed.
                             self._errors.append(
                                 fplerror.FplNamespaceNotFound(used_namespace.id, fpl_theory_node.file_name,
-                                                                  used_namespace.zfrom))
+                                                              used_namespace.zfrom))
                         else:
                             for file_node in files_related_to_namespace:
                                 self.syntax_analysis(os.path.join(self._theory_root_dir, file_node.file_name))
@@ -146,6 +147,10 @@ class FplInterpreter:
                     raise AssertionError("Namespace not found in " + file)
                 fpl_file.namespace = namespace_of_source
                 AuxSymbolTable.add_namespace(self._symbol_table_root, fpl_file)
+
+    def semantic_analysis(self):
+        analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._errors)
+        analyzer.semantic_analysis()
 
     def print_symbol_table(self):
         print(RenderTree(self._symbol_table_root))

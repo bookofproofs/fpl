@@ -1,4 +1,4 @@
-TestNamespace
+TestClassInstance
 {
     theory
     {
@@ -25,6 +25,4 @@ TestNamespace
 }
 
 ##############################
-
-
-FplIdentifierAlreadyDeclared:18:52: Identifier RightNeutralElement already defined at (13,51)
+FplIdentifierAlreadyDeclared:18:13: Identifier BinOp[2:tplSetElem].RightNeutralElement[] already defined at (13,13)

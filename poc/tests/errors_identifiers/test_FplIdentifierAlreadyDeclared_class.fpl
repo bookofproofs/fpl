@@ -1,4 +1,4 @@
-TestNamespace
+TestClass
 {
     theory
     {
@@ -18,5 +18,4 @@ TestNamespace
 }
 
 ##############################
-
-FplIdentifierAlreadyDeclared:13:18: Identifier Zero already defined at (5,18)
+FplIdentifierAlreadyDeclared:13:9: Identifier Zero already defined at (5,9)

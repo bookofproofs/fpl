@@ -1,4 +1,4 @@
-TestNamespace
+TestInferenceRule
 {
     inference
     {
@@ -38,4 +38,4 @@ TestNamespace
 }
 ##############################
 
-FplIdentifierAlreadyDeclared:25:19: Identifier ModusPonens already defined at (5,19)
+FplIdentifierAlreadyDeclared:25:9: Identifier ModusPonens[] already defined at (5,9)

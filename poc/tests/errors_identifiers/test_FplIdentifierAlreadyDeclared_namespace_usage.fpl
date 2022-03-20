@@ -1,0 +1,12 @@
+Fpl.Geometry.Euclidean
+{
+    uses TestNamespace, TestNamespace
+
+    theory
+    {
+
+    }
+}
+
+##############################
+FplIdentifierAlreadyDeclared:3:25: Identifier TestNamespace already defined at (3,10)

@@ -46,6 +46,7 @@ class FplIdentifierAlreadyDeclaredTests(unittest.TestCase):
         interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
+        interpreter.semantic_analysis()
         # exactly one error was found
         self.assertEqual(1, len(interpreter.get_errors()))
         # the error is the same as in the use case file

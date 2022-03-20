@@ -1,8 +1,8 @@
-TestNamespace
+TestLemma
 {
     theory
     {
-        proposition AddIsUnique(op: Add)
+        lem AddIsUnique(op: Add)
         {
             n,m: Nat
             anotherAdd: Add
@@ -24,7 +24,7 @@ TestNamespace
                 )
         }
 
-        prop AddIsUnique(op: Add)
+        lemma AddIsUnique(op: Add)
         {
             n,m: Nat
             anotherAdd: Add
@@ -50,4 +50,4 @@ TestNamespace
 
 ##############################
 
-FplIdentifierAlreadyDeclared:27:24: Identifier AddIsUnique already defined at (5,31)
+FplIdentifierAlreadyDeclared:27:9: Identifier AddIsUnique[1:Add] already defined at (5,9)

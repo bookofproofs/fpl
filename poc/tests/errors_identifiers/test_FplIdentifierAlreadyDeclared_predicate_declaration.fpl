@@ -1,4 +1,4 @@
-TestNamespace
+TestPredicate
 {
     theory
     {
@@ -43,5 +43,4 @@ TestNamespace
 }
 
 ##############################
-
-FplIdentifierAlreadyDeclared:34:22: Identifier NotEquals already defined at (26,22)
+FplIdentifierAlreadyDeclared:34:9: Identifier NotEquals[2:tpl] already defined at (26,9)
