@@ -1,0 +1,9 @@
+MalformedNamespace.Test1.Test2.MalformedNamespace
+{
+    theory
+    {
+    }
+}
+
+##############################
+FplMalformedNamespace:1:1: The namespace MalformedNamespace.Test1.Test2.MalformedNamespace should consist of different names.

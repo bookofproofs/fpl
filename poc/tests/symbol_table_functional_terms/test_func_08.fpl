@@ -22,9 +22,9 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal]', id='Exp[1:SetReal]', reference=AuxSTDefinitionFunctionalTerm())
-│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsContinuous[]', id='Exp[1:SetReal].IsContinuous[]', reference=AuxSTPredicateInstance())
-│   └── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsIntegrable[]', id='Exp[1:SetReal].IsIntegrable[]', reference=AuxSTPredicateInstance())
+│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal]', id='Exp[1:SetReal]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsContinuous[]', id='Exp[1:SetReal].IsContinuous[]', reference=AuxSTPredicateInstance(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsIntegrable[]', id='Exp[1:SetReal].IsIntegrable[]', reference=AuxSTPredicateInstance(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='8fa21e96d7b590db99343b56a4d11e2c', file_name='test_func_08.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

@@ -22,7 +22,7 @@ TestTheory
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestTheory.RiemannIntegral[2:Real,1:RealValuedFunction]', id='RiemannIntegral[2:Real,1:RealValuedFunction]', reference=AuxSTDefinitionFunctionalTerm())
+│   └── AuxSTGlobal(gid='TestTheory.RiemannIntegral[2:Real,1:RealValuedFunction]', id='RiemannIntegral[2:Real,1:RealValuedFunction]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='7637ee8becc6a948463b55b6f0b59f19', file_name='test_statement_range_03.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

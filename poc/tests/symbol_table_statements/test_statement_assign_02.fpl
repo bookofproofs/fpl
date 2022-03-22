@@ -20,7 +20,7 @@ TestTheory
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestTheory.Sum[1:*Nat]', id='Sum[1:*Nat]', reference=AuxSTDefinitionFunctionalTerm())
+│   └── AuxSTGlobal(gid='TestTheory.Sum[1:*Nat]', id='Sum[1:*Nat]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='664b7cc29e91aab5c21995a1297c754c', file_name='test_statement_assign_02.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

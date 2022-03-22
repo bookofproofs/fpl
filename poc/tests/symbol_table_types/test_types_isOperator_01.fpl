@@ -9,7 +9,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.Test1[]', id='Test1[]', reference=AuxSTDefinitionPredicate())
+│   └── AuxSTGlobal(gid='TestNamespace.Test1[]', id='Test1[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='a39011d8322bf5eeed2a6761fb332710', file_name='test_types_isOperator_01.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

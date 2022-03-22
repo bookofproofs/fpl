@@ -16,7 +16,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.YwW6ZE[]', id='YwW6ZE[]', reference=AuxSTAxiom())
+│   └── AuxSTGlobal(gid='TestNamespace.YwW6ZE[]', id='YwW6ZE[]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='2abfccb2022556c3dc058f927f0ce1c6', file_name='test_axiom_03.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

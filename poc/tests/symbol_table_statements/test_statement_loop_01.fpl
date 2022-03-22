@@ -23,7 +23,7 @@ TestTheory
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestTheory.ProceedingResults[1:+pred]', id='ProceedingResults[1:+pred]', reference=AuxSTRuleOfInference())
+│   └── AuxSTGlobal(gid='TestTheory.ProceedingResults[1:+pred]', id='ProceedingResults[1:+pred]', reference=AuxSTRuleOfInference(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='7bf5f7412fa260b03dd08ec5d256b424', file_name='test_statement_loop_01.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.4.11
+* Feature: 
+  * FplMalformedNamespace + test cases
+* Refactoring:
+  * Globals in the symbol table now contain references to the respective theory nodes in which they are defined, allowing referencing errors to respective FPL files in which they occur. 
+  * All affected test cases adjusted accordingly
 ## 1.4.10
 * Feature: 
   * FplIdentifierAlreadyDeclared + test cases

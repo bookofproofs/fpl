@@ -1,8 +1,8 @@
-TestNamespace
+TestMalformedGlobalId
 {
     theory
     {
-        class TestNamespace: obj
+        class TestMalformedGlobalId: obj
         {
         }
     }

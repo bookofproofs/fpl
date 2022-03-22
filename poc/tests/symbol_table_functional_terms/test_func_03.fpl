@@ -16,8 +16,8 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   ├── AuxSTGlobal(gid='TestNamespace.BinOp[2:tplSetElem]', id='BinOp[2:tplSetElem]', reference=AuxSTDefinitionFunctionalTerm())
-│   └── AuxSTGlobal(gid='TestNamespace.BinOp[2:tplSetElem].LeftNeutralElement[]', id='BinOp[2:tplSetElem].LeftNeutralElement[]', reference=AuxSTClassInstance())
+│   ├── AuxSTGlobal(gid='TestNamespace.BinOp[2:tplSetElem]', id='BinOp[2:tplSetElem]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.BinOp[2:tplSetElem].LeftNeutralElement[]', id='BinOp[2:tplSetElem].LeftNeutralElement[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='db968749d7119f7627c361425ac5ea8b', file_name='test_func_03.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

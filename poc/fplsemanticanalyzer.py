@@ -1,10 +1,7 @@
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplerror import FplIdentifierAlreadyDeclared
-from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
-from poc.classes.AuxSTInstance import AuxSTInstance
-from poc.classes.AuxSTClass import AuxSTClass
-from poc.classes.AuxSTConstructor import AuxSTConstructor
+from poc.fplerror import FplMalformedNamespace
 
 
 class SemanticAnalyser:
@@ -19,28 +16,49 @@ class SemanticAnalyser:
         Semantic analysis
         :return:
         """
-        self._check_namespace_identifiers()
+        self._check_theories()
         self._check_duplicate_identifiers()
 
-    def _check_namespace_identifiers(self):
+    def _check_theories(self):
+        loaded_theories = AuxSymbolTable.get_theories(self._symbol_table_root)
+        for theory in loaded_theories:
+            self.__check_namespace_identifiers(theory)
+            self.__check_malformed_namespace(theory)
+
+    def __check_namespace_identifiers(self, theory):
         """
         Check if all namespaces are listed only once in the the uses clause of each theory
         :return: None
         """
-        loaded_theories = AuxSymbolTable.get_theories(self._symbol_table_root)
-        for theory in loaded_theories:
-            duplicate_checker = dict()
-            uses_node = AuxSymbolTable.get_child_by_outline(theory, AuxSymbolTable.uses)
-            for child in uses_node.children:
-                if child.id not in duplicate_checker:
-                    duplicate_checker[child.id] = child
-                else:
-                    self._errors.append(
-                        FplIdentifierAlreadyDeclared(child.id, child.zfrom, theory.file_name,
-                                                     duplicate_checker[child.id].zfrom,
-                                                     theory.file_name))
+        duplicate_checker = dict()
+        uses_node = AuxSymbolTable.get_child_by_outline(theory, AuxSymbolTable.uses)
+        for child in uses_node.children:
+            if child.id not in duplicate_checker:
+                duplicate_checker[child.id] = child
+            else:
+                self._errors.append(
+                    FplIdentifierAlreadyDeclared(child.id, child.zfrom, theory.file_name,
+                                                 duplicate_checker[child.id].zfrom,
+                                                 theory.file_name))
+
+    def __check_malformed_namespace(self, theory):
+        """
+        Check if each loaded namespace consists of different names separated by a dot
+        :return: None
+        """
+        duplicate_checker = set()
+        namespace_split = theory.namespace.split(".")
+        for chunk in namespace_split:
+            if chunk not in duplicate_checker:
+                duplicate_checker.add(chunk)
+            else:
+                self._errors.append(FplMalformedNamespace(theory.namespace,theory.file_name))
 
     def _check_duplicate_identifiers(self):
+        """
+        Check if all global identifiers are unique
+        :return: None
+        """
         globals_node = AuxSymbolTable.get_child_by_outline(self._symbol_table_root, AuxSymbolTable.globals)
         duplicate_checker = dict()
         for child in globals_node.children:
@@ -48,24 +66,11 @@ class SemanticAnalyser:
                 duplicate_checker[child.gid] = child
             else:
                 node = child.reference
+                theory_node = child.theory
                 if node.outline != AuxSymbolTable.classDefaultConstructor:
                     existing_node = duplicate_checker[child.gid].reference
-                    theory_node = SemanticAnalyser.__get_theory(node)
-                    theory_existing = SemanticAnalyser.__get_theory(existing_node)
+                    existing_theory_node = duplicate_checker[child.gid].theory
                     self._errors.append(
                         FplIdentifierAlreadyDeclared(child.id, node.zfrom, theory_node.file_name, existing_node.zfrom,
-                                                     theory_existing.file_name))
+                                                     existing_theory_node.file_name))
 
-    @staticmethod
-    def __get_theory(node):
-        node_type = type(node)
-        if issubclass(node_type, AuxSTBlockWithSignature):
-            return node.parent.parent
-        elif issubclass(node_type, AuxSTInstance):
-            return node.parent.parent.parent.parent
-        elif node_type is AuxSTClass:
-            return node.parent.parent
-        elif node_type is AuxSTConstructor and node.outline != AuxSymbolTable.classDefaultConstructor:
-            return node.parent.parent.parent.parent
-        else:
-            return None

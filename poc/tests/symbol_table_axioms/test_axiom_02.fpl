@@ -22,8 +22,8 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   ├── AuxSTGlobal(gid='TestNamespace.ZeroIsNat[]', id='ZeroIsNat[]', reference=AuxSTAxiom())
-│   └── AuxSTGlobal(gid='TestNamespace.ZeroIsNotSuccessor[]', id='ZeroIsNotSuccessor[]', reference=AuxSTAxiom())
+│   ├── AuxSTGlobal(gid='TestNamespace.ZeroIsNat[]', id='ZeroIsNat[]', reference=AuxSTAxiom(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.ZeroIsNotSuccessor[]', id='ZeroIsNotSuccessor[]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='54ed38305139b195df3a1cce8a3c340b', file_name='test_axiom_02.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

@@ -14,7 +14,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.Test182[]', id='Test182[]', reference=AuxSTDefinitionPredicate())
+│   └── AuxSTGlobal(gid='TestNamespace.Test182[]', id='Test182[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='3d28d2404aef5277d346d8d3e693f0bf', file_name='test_predicate_21.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')
