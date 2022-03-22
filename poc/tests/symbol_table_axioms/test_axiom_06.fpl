@@ -39,7 +39,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.TyBR3[]', id='TyBR3[]', reference=AuxSTAxiom())
+│   └── AuxSTGlobal(gid='TestNamespace.TyBR3[]', id='TyBR3[]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='540d1d21138fac37be803932790d8bd3', file_name='test_axiom_06.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

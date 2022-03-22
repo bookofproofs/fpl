@@ -10,7 +10,7 @@ Fpl.Algebra.Structures
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='Fpl.Algebra.Structures.EqA0q[]', id='EqA0q[]', reference=AuxSTDefinitionFunctionalTerm())
+│   └── AuxSTGlobal(gid='Fpl.Algebra.Structures.EqA0q[]', id='EqA0q[]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='5257c71e0d62a29a96f660b486313d50', file_name='test_func_10.fpl', namespace='Fpl.Algebra.Structures', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

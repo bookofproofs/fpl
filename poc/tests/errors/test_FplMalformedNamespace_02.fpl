@@ -1,0 +1,9 @@
+MalformedNamespace.MalformedNamespace
+{
+    theory
+    {
+    }
+}
+
+##############################
+FplMalformedNamespace:1:1: The namespace MalformedNamespace.MalformedNamespace should consist of different names.

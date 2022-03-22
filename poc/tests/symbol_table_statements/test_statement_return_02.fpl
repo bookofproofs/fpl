@@ -31,9 +31,9 @@ TestTheory
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   ├── AuxSTGlobal(gid='TestTheory.CartesianProduct', id='CartesianProduct', reference=AuxSTClass())
-│   ├── AuxSTGlobal(gid='TestTheory.CartesianProduct[1:+Set]', id='CartesianProduct[1:+Set]', reference=AuxSTConstructor())
-│   └── AuxSTGlobal(gid='TestTheory.CartesianProduct.Length[]', id='CartesianProduct.Length[]', reference=AuxSTClassInstance())
+│   ├── AuxSTGlobal(gid='TestTheory.CartesianProduct', id='CartesianProduct', reference=AuxSTClass(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestTheory.CartesianProduct[1:+Set]', id='CartesianProduct[1:+Set]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestTheory.CartesianProduct.Length[]', id='CartesianProduct.Length[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='85785e89182daa009ee62baddfa2388c', file_name='test_statement_return_02.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

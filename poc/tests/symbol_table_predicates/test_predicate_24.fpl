@@ -46,7 +46,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.VQf4cqgQZ.HT1ZmuR[1:ind]', id='VQf4cqgQZ.HT1ZmuR[1:ind]', reference=AuxSTDefinitionPredicate())
+│   └── AuxSTGlobal(gid='TestNamespace.VQf4cqgQZ.HT1ZmuR[1:ind]', id='VQf4cqgQZ.HT1ZmuR[1:ind]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='ffe3a9b960cad4d950cd85583f6660f1', file_name='test_predicate_24.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

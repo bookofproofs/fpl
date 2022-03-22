@@ -1,10 +1,12 @@
-TestNamespace
+TestMalformedGlobalId
 {
     theory
     {
-        class TestDerived: TestParent
+        class TestDerived: obj
         {
-            mand TestParent TestNamespace()
+            myVar: obj
+
+            mand TestParent TestMalformedGlobalId()
             {
                 self:=myVar
             }

@@ -273,7 +273,7 @@ class AuxSymbolTable:
         # todo: special treatment of corollaries
         for block in all_globally_registered:
             gid = '.'.join([theory_node.namespace, block.get_relative_id()])  # noqa
-            AuxSTGlobal(global_references, gid, block)
+            AuxSTGlobal(global_references, gid, block, theory_node)
 
     @staticmethod
     def add_vars_to_node(i, parent: AuxSTOutline, named_var_declaration):

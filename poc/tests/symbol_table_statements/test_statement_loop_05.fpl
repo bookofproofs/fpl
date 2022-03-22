@@ -52,7 +52,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.Test78[]', id='Test78[]', reference=AuxSTDefinitionPredicate())
+│   └── AuxSTGlobal(gid='TestNamespace.Test78[]', id='Test78[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='4ccfc37d63ca13643e690eeaaf0591cd', file_name='test_statement_loop_05.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

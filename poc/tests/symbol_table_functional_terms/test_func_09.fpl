@@ -26,8 +26,8 @@ Fpl.Algebra.Structures
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   ├── AuxSTGlobal(gid='Fpl.Algebra.Structures.BinOp[2:tplSetElem]', id='BinOp[2:tplSetElem]', reference=AuxSTDefinitionFunctionalTerm())
-│   └── AuxSTGlobal(gid='Fpl.Algebra.Structures.BinOp[2:tplSetElem].IsAssociative[]', id='BinOp[2:tplSetElem].IsAssociative[]', reference=AuxSTPredicateInstance())
+│   ├── AuxSTGlobal(gid='Fpl.Algebra.Structures.BinOp[2:tplSetElem]', id='BinOp[2:tplSetElem]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='Fpl.Algebra.Structures.BinOp[2:tplSetElem].IsAssociative[]', id='BinOp[2:tplSetElem].IsAssociative[]', reference=AuxSTPredicateInstance(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='f72777357828c51d0f3666ca3fc3cdc0', file_name='test_func_09.fpl', namespace='Fpl.Algebra.Structures', outline='theory')
     ├── AuxSTOutline(outline='uses')
     │   └── AuxSTUsedTheory(id='Fpl.Commons', modifier=None, outline='used', zfrom='3.10', zto='3.20')

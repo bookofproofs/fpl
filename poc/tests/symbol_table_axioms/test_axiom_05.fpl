@@ -10,7 +10,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.E[2:index]', id='E[2:index]', reference=AuxSTAxiom())
+│   └── AuxSTGlobal(gid='TestNamespace.E[2:index]', id='E[2:index]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='cf9574148c2f3974d2906600b6783c06', file_name='test_axiom_05.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

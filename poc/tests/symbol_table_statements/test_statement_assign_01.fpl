@@ -26,8 +26,8 @@ TestTheory
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   ├── AuxSTGlobal(gid='TestTheory.Ring', id='Ring', reference=AuxSTClass())
-│   └── AuxSTGlobal(gid='TestTheory.Ring[1:tpl,1:BinOp[2:tplElem],1:BinOp[2:tplElem]]', id='Ring[1:tpl,1:BinOp[2:tplElem],1:BinOp[2:tplElem]]', reference=AuxSTConstructor())
+│   ├── AuxSTGlobal(gid='TestTheory.Ring', id='Ring', reference=AuxSTClass(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestTheory.Ring[1:tpl,1:BinOp[2:tplElem],1:BinOp[2:tplElem]]', id='Ring[1:tpl,1:BinOp[2:tplElem],1:BinOp[2:tplElem]]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='117a51ee5e6eae9a7520121d27e730f3', file_name='test_statement_assign_01.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

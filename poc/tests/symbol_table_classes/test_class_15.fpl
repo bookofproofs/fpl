@@ -26,9 +26,9 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   ├── AuxSTGlobal(gid='TestNamespace.Test', id='Test', reference=AuxSTClass())
-│   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTConstructor())
-│   └── AuxSTGlobal(gid='TestNamespace.Test.TestProperty130[]', id='Test.TestProperty130[]', reference=AuxSTClassInstance())
+│   ├── AuxSTGlobal(gid='TestNamespace.Test', id='Test', reference=AuxSTClass(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.Test.TestProperty130[]', id='Test.TestProperty130[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='7a79c7a9586054594c675030cb3f47d3', file_name='test_class_15.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

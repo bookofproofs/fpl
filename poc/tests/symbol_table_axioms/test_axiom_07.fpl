@@ -18,7 +18,7 @@ TestNamespace
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestNamespace.GIAcxG2tDdz9KFT[2:ind]', id='GIAcxG2tDdz9KFT[2:ind]', reference=AuxSTAxiom())
+│   └── AuxSTGlobal(gid='TestNamespace.GIAcxG2tDdz9KFT[2:ind]', id='GIAcxG2tDdz9KFT[2:ind]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='6803e7cb556e55d904b55a565e244a9f', file_name='test_axiom_07.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

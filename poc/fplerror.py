@@ -51,7 +51,7 @@ class FplMisspelledConstructor(FplInterpreterMessage):
 
 
 class FplMalformedGlobalId(FplInterpreterMessage):
-    def __init__(self, info: AuxAstInfo, global_id: str):
+    def __init__(self, global_id: str, file: str):
         FplInterpreterMessage.__init__(self, "The global id " + global_id +
                                        " should consist of different names.",
                                        info.line,
@@ -127,3 +127,12 @@ class FplNamespaceNotFound(FplInterpreterMessage):
         FplInterpreterMessage.__init__(self,
                                        "Namespace '{0}' not found".format(namespace), pos[0], pos[1], file)
         self.diagnose_id = "SE0110"
+
+
+class FplMalformedNamespace(FplInterpreterMessage):
+    def __init__(self, namespace: str, file: str):
+        FplInterpreterMessage.__init__(self, "The namespace {0} should consist of different names.".format(namespace),
+                                       1,
+                                       1,
+                                       file)
+        self.diagnose_id = "SE0120"

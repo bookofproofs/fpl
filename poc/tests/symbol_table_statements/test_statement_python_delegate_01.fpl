@@ -11,7 +11,7 @@ TestTheory
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
-│   └── AuxSTGlobal(gid='TestTheory.Add[2:@extDecimal]', id='Add[2:@extDecimal]', reference=AuxSTDefinitionFunctionalTerm())
+│   └── AuxSTGlobal(gid='TestTheory.Add[2:@extDecimal]', id='Add[2:@extDecimal]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='5e74631000455229d5411012cd779328', file_name='test_statement_python_delegate_01.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')
