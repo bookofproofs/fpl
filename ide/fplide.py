@@ -1,12 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
 from poc.util.fplutil import Utils
 from ide.idetheme import DefaultTheme
+from ide.fplidemenu import FPLIdeMenus
 from ide.CustomNotebook import CustomNotebook
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.StatusBar import StatusBar
-from ide.SettingsDialog import SettingsDialog
 from poc.fplinterpreter import FplInterpreter
 from poc.fplsourcetransformer import FPLSourceTransformer
 from ide.Settings import Settings
@@ -20,7 +19,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 class FplIde:
 
     def __init__(self):
-        self._version = '1.3.0'
+        self._version = '1.3.1'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -31,7 +30,6 @@ class FplIde:
         y_cordinate = int((screen_height / 2) - (768 / 2))
         self.window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
         self.window.title('Formal Proving Language IDE (' + self._version + ')')
-        self.window.protocol("WM_DELETE_WINDOW", self.exit)
         self.window.state('zoomed')
         self.images = dict()
         self._root_dir = os.path.dirname(__file__) + "/"
@@ -39,7 +37,7 @@ class FplIde:
         self.images["cancel"] = tk.PhotoImage("cancel", file=os.path.join(self._root_dir, "assets/cancel.png"))
         self.config_init()
         self.__add_paned_windows()
-        self.__add_menu()
+        FPLIdeMenus(self)
         self._all_editors = dict()
         self.current_file = ""
         self.window.config(cursor="wait")
@@ -55,36 +53,6 @@ class FplIde:
 
     def get_version(self):
         return self._version
-
-    def __add_menu(self):
-        self._menuBar = tk.Menu(self.window)
-
-        file_bar = tk.Menu(self._menuBar, tearoff=0)
-        file_bar.add_command(label='New', underline=0, command=self.new_file)
-        file_bar.add_command(label='Open', underline=0, command=self.open_file)
-        file_bar.add_command(label='Save', underline=0, command=self.save_file)
-        file_bar.add_command(label='Save As', underline=6, command=self.save_file_as)
-        file_bar.add_command(label='Exit', underline=1, command=self.exit)
-        self._menuBar.add_cascade(label='File', underline=0, menu=file_bar)
-
-        build_bar = tk.Menu(self._menuBar, tearoff=0)
-        build_bar.add_command(label='Build', command=self.build_fpl_code)
-        self._menuBar.add_cascade(label='Build', underline=0, menu=build_bar)
-
-        options_bar = tk.Menu(self._menuBar, tearoff=0)
-        options_bar.add_command(label='Settings', command=self.settings)
-        self._menuBar.add_cascade(label='Options', underline=0, menu=options_bar)
-
-        help_bar = tk.Menu(self._menuBar, tearoff=0)
-        help_bar.add_command(label='About', command=self.about)
-        self._menuBar.add_cascade(label='Help', underline=0, menu=help_bar)
-
-        self.window.bind_all('<Control-Key-n>', self.new_file)
-        self.window.bind_all('<Control-Key-o>', self.open_file)
-        self.window.bind_all('<Control-Key-S>', self.save_file)
-        self.window.bind_all('<Control-Key-s>', self.save_file_as)
-        self.window.bind_all('<Control-Key-x>', self.exit)
-        self.window.config(menu=self._menuBar)
 
     def __add_paned_windows(self):
         self._panedWindow = tk.PanedWindow(self.window)
@@ -113,58 +81,6 @@ class FplIde:
         self._object_browser_tree.heading("Name", text="Name", anchor=tk.W)
         self._object_browser_tree.heading("Status", text="Status", anchor=tk.W)
         self._object_browser_tree.heading("File", text="File", anchor=tk.W)
-        n = self._object_browser_tree.insert('', index='end', iid='n', text='TestNamespace', values=("", "ok", ""))
-        ir = self._object_browser_tree.insert(n, index='end', iid='i', text='Inference Rules', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=ir, index='end', iid='i.1', text='Inference',
-                                         values=("ExampleInferenceRule()", "ok", "Example.fpl"))
-        a = self._object_browser_tree.insert(parent=n, index='end', iid='a', text='Axioms', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=a, index='end', iid='a.1', text='Axiom',
-                                         values=("ExampleAxiom()", "ok", "Example.fpl"))
-        c = self._object_browser_tree.insert(parent=n, index='end', iid='c', text='Conjectures', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=c, index='end', iid='c.1', text='Conjecture',
-                                         values=("ExampleConjecture()", "ok", "Example.fpl"))
-        d = self._object_browser_tree.insert(parent=n, index='end', iid='d', text='Definitions', values=("", "ok", ""))
-        ob = self._object_browser_tree.insert(parent=d, index='end', iid='d.o', text='Mathematical Objects',
-                                              values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=ob, index='end', iid='d.o.r', text='Object',
-                                         values=("RealNumber()", "ok", "Example.fpl"))
-        fu = self._object_browser_tree.insert(parent=d, index='end', iid='d.f', text='Functions', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=fu, index='end', iid='d.f.i', text='Function',
-                                         values=("RealIntegral(RealNumber,RealNumber)", "ok", "Example.fpl"))
-        pr = self._object_browser_tree.insert(parent=d, index='end', iid='d.p', text='Predicates',
-                                              values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=pr, index='end', iid='d.p.g', text='Predicate',
-                                         values=("IsGreater(RealNumber,RealNumber)", "ok", "Example.fpl"))
-        t = self._object_browser_tree.insert(parent=n, index='end', iid='t', text='Theorems', values=("", "ok", ""))
-        t1 = self._object_browser_tree.insert(parent=t, index='end', iid='t.1', text="Theorem",
-                                              values=("ExampleTheorem()", "ok", "Example.fpl"))
-        self._object_browser_tree.insert(parent=t1, index='end', iid='t.1.1', text="Proof",
-                                         values=("Proof#1", "ok", "Example.fpl"))
-        self._object_browser_tree.insert(parent=t1, index='end', iid='t.1.2', text="Corollary",
-                                         values=("Corollary#1()", "ok", "Example.fpl"))
-        p = self._object_browser_tree.insert(parent=n, index='end', iid='p', text="Propositions", values=("", "ok", ""))
-        self._object_browser_tree.insert(p, index='end', iid='p.1', text="Proposition",
-                                         values=("ExampleProposition()", "ok", "Example.fpl"))
-        l = self._object_browser_tree.insert(parent=n, index='end', iid='l', text="Lemmas", values=("", "ok", ""))
-        self._object_browser_tree.insert(l, index='end', iid='l.1', text="Lemmas",
-                                         values=("ExampleLemma()", "ok", "Example.fpl"))
-        self._object_browser_tree.insert(parent=n, index='end', iid='u', text="Unassigned", values=("", "ok", ""))
-        n1 = self._object_browser_tree.insert('', index='end', iid='n1', text='SecondTestNamespace',
-                                              values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=n1, index='end', iid='i1', text='Inference Rules',
-                                         values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=n1, index='end', iid='a1', text='Axioms', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=n1, index='end', iid='c1', text='Conjectures', values=("", "ok", ""))
-        d1 = self._object_browser_tree.insert(parent=n1, index='end', iid='d1', text='Definitions',
-                                              values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=d1, index='end', iid='d.o1', text='Mathematical Objects',
-                                         values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=d1, index='end', iid='d.f1', text='Functions', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=d1, index='end', iid='d.p1', text='Predicates', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=n1, index='end', iid='t1', text='Theorems', values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=n1, index='end', iid='p1', text="Propositions", values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=n1, index='end', iid='l1', text="Lemmas", values=("", "ok", ""))
-        self._object_browser_tree.insert(parent=n1, index='end', iid='u1', text="Unassigned", values=("", "ok", ""))
         self._panedMain.add(self._object_browser_tree)
         self._statusBar = StatusBar(self._panedWindowMainVertical)
         self._panedWindowMainVertical.add(self._panedMain)
@@ -519,58 +435,6 @@ class FplIde:
                                                  text=sub_sub_node.id,
                                                  values=("", "ok", theory_node.file_name))
 
-    def build_fpl_code(self):
-        messagebox.showinfo("FPL", "Not implemented yet! (Build)")
-
-    def settings(self):
-        SettingsDialog(self)
-
-    def about(self):
-        messagebox.showinfo("FPL",
-                            "IDE for the Formal Proving Language (FPL), Version " + self._version +
-                            "\n\n" + u"\u00A9" + " All Rights Reserved")
-
-    def new_file(self, event=None):
-        self._tabEditor.new_file(event)
-
-    def open_file(self, event=None):
-        self._tabEditor.open_file(event)
-
-    def save_file(self, event=None):
-        self._tabEditor.save_file(event)
-
-    def save_file_as(self, event=None):
-        self._tabEditor.save_file_as(event)
-
-    def exit(self, event=None):
-        book = self._tabEditor.get_files()
-        at_least_one_open_file_changed = False
-        for file in book:
-            if book[file].text.is_dirty:
-                at_least_one_open_file_changed = True
-                self._tabEditor.select_file(file)
-                msg = messagebox.askyesnocancel("Quit FPLIDE",
-                                                "Do you want to save changes of the file " + file + " before quitting?",
-                                                icon='warning')
-                if msg:
-                    # the user does not want to reopen the file, just select the tab!
-                    self.save_file(None)
-                elif msg is None:
-                    # do nothing
-                    return
-        if not at_least_one_open_file_changed:
-            # if no message boxes were answered yet, ask if the user really want's to quit the application
-            msg = messagebox.askyesnocancel("Quit FPLIDE",
-                                            "Do you want quit the application?",
-                                            icon='warning')
-            if not msg or msg is None:
-                # do nothing
-                return
-            else:
-                self.window.destroy()
-        else:
-            self.window.destroy()
-
     def config_init(self):
         """
         Initialise the config (file) of this IDE. If the values in the ini-file are invalid, they will be overwritten
@@ -615,14 +479,6 @@ class FplIde:
         # make sure, the config file is now complete
         cfgfile = open(path_to_config, "w")
         self.config.write(cfgfile)
-
-    def _check_config_section(self, section: str):
-        """
-        Checks if the current config file has all necessary settings.
-        If not, they will be complemented
-        :param section: name of the config section
-        :return: None
-        """
 
     def get_status_bar(self):
         return self._statusBar

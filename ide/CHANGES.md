@@ -1,4 +1,7 @@
 # Changes in the FPL IDE
+## 1.3.1
+* Refactoring and re-design of the menu items (without implementation).
+* Help guide file markdown added.
 ## 1.3.0
 * Features: The object tree visualizes the structure of the mathematical theory opened in the IDE.
 ## 1.2.9
