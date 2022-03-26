@@ -9,35 +9,31 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.idetheme import DefaultTheme
 from ide.Settings import Settings
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 import io
 
 
 class CustomNotebook(ttk.Notebook):
     """A ttk Notebook with close buttons on each tab"""
-    images = None
-    _theme = None
-    __initialized = False
-    ide = None
-    _my_files = dict()
-    _current_file = ""
+
 
     def __init__(self, ide, *args, **kwargs):
         self.ide = ide
-        if not self.__initialized:
+        self.main_theory_file = ""
+        if not hasattr(self, "__initialized"):
             self.__initialize_custom_style()
             self.__inititialized = True
+            self.images = None
             self._my_files = dict()
             self._current_file = ""
             self._theme = DefaultTheme()
-
+            self._active = None
         kwargs["style"] = "CustomNotebook"
         ttk.Notebook.__init__(self, *args, **kwargs)
-
-        self._active = None
-
         self.bind("<ButtonPress-1>", self.on_close_press)
         self.bind("<ButtonRelease-1>", self.on_close_release)
         self.bind('<<NotebookTabChanged>>', self.tab_changed)
+        self.__initialized = False
 
     def on_close_press(self, event):
         """Called when the button is pressed over the close button"""
@@ -178,6 +174,16 @@ class CustomNotebook(ttk.Notebook):
                 self._add_new_editor(code)
 
     def _add_new_editor(self, code):
+        """
+        if self.main_theory_file == "":
+            self.main_theory_file = self._current_file
+        else:
+            # There is the main FPL theory loaded already. Therefore, check if the to-be-opened file
+            # is part of the symbol table.
+            fpl_file_node = AuxSymbolTable.get_library_by_filename(self._symbol_table_root, self._current_file)
+            if fpl_file_node is None:
+                # The to-be-opened file is not part of the theory.
+        """
         # this is a new file that is not already open yet. Create a new tab content
         editor_info = FrameWithLineNumbers(self, self._current_file)
         # set the text

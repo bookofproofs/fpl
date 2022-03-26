@@ -178,7 +178,7 @@ class FrameWithLineNumbers(tk.Frame):
 
     def parse_interpret_highlight(self, event=None):
         """
-        Parses the code in self.text and highlights it.
+        Parses and interprets the code in self.text and highlights it.
         :param event: Event for any key binding
         :return: FPL transformer
         """
@@ -188,6 +188,7 @@ class FrameWithLineNumbers(tk.Frame):
         path = os.path.abspath(self._parent_notebook.ide.config.get(Settings.section_paths,
                                                                     Settings.option_paths_fpl_theories))
         self._parent_notebook.ide.fpl_interpreter.syntax_analysis(path + '\\' + self.title)
+        self._parent_notebook.ide.fpl_interpreter.semantic_analysis()
         # reconfigure all tags
         self.reconfigure_all_tags()
         # add new tags
