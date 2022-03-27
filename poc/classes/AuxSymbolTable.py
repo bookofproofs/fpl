@@ -330,3 +330,4 @@ class AuxSymbolTable:
     def get_theories(root: AnyNode):
         result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
         return result
+

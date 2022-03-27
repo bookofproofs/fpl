@@ -13,6 +13,10 @@ class DefaultTheme:
         return '#DCDCDC'
 
     @staticmethod
+    def get_warning_color():
+        return '#ffc107'
+
+    @staticmethod
     def editor_font():
         return ('consolas', '11')
 

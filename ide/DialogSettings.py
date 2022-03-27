@@ -1,40 +1,19 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter.filedialog import askdirectory
-from ide.idetheme import DefaultTheme
 from ide.Settings import Settings
+from ide.Dialog import Dialog
 import os
 
 
-class SettingsDialog(tk.Toplevel):
-    ide = None
-    _root_window = None
-    _theme = None
-    _mainframe = None
-    _config_editor_pane = None
-    _notebook = None
-    _config_browser_pane = None
-    _config_browser_tree = None
+class DialogSettings(Dialog):
 
     def __init__(self, ide):
-        super().__init__(ide.window)
-        self.ide = ide
-        self._theme = DefaultTheme()
-        self.resizable()
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        x_coordinate = int((screen_width / 2) - (750 / 2))
-        y_coordinate = int((screen_height / 2) - (400 / 2))
-        self.geometry("{}x{}+{}+{}".format(750, 400, x_coordinate, y_coordinate))
-        self.title("FPL IDE Settings")
+        super().__init__(ide, "FPL IDE Settings", tk.HORIZONTAL)
+        left_pane = tk.PanedWindow(self.main_pane, width=300)
+        self._config_browser_pane = tk.PanedWindow(self.main_pane, bg=self._theme.get_bg_color(), orient=tk.VERTICAL)
 
-        main_pane = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
-        main_pane.pack(fill=tk.BOTH, expand=1)
-
-        left_pane = tk.PanedWindow(main_pane, width=300)
-        self._config_browser_pane = tk.PanedWindow(main_pane, bg=self._theme.get_bg_color(), orient=tk.VERTICAL)
-
-        self._config_browser_tree = ttk.Treeview(left_pane)
+        self._config_browser_tree = ttk.Treeview(left_pane, height=380)
         self._config_browser_tree.bind("<Double-1>", self._on_setting_doubleclick)
         for section in self.ide.config.sections():
             j = self._config_browser_tree.insert('', 'end', text=section.capitalize())
@@ -43,13 +22,13 @@ class SettingsDialog(tk.Toplevel):
 
         left_pane.add(self._config_browser_tree)
 
-        right = tk.Label(self._config_browser_pane, text="Editing Settings not implemented yet",
+        right = tk.Label(self._config_browser_pane, text="Double-click a settings to edit it.",
                          bg=self._theme.get_bg_color(),
                          fg=self._theme.get_fg_color())
         self._config_browser_pane.add(right)
 
-        main_pane.add(left_pane)
-        main_pane.add(self._config_browser_pane)
+        self.main_pane.add(left_pane)
+        self.main_pane.add(self._config_browser_pane)
 
     def _on_closing(self):
         self._apply_some_settings()
@@ -118,7 +97,7 @@ class SettingsDialog(tk.Toplevel):
 
     def _path_fpl_theories(self):
         label = tk.Label(self._config_browser_pane, text="Path to " + Settings.option_paths_fpl_theories.capitalize(),
-                         anchor=tk.W,
+                         anchor=tk.NW,
                          bg=self._theme.get_bg_color(), fg=self._theme.get_fg_color())
         self._config_browser_pane.add(label)
         one_line_frame = tk.Frame(self._config_browser_pane, height=20, bg=self._theme.get_bg_color())

@@ -9,7 +9,6 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.idetheme import DefaultTheme
 from ide.Settings import Settings
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 import io
 
 

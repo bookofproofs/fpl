@@ -1,4 +1,9 @@
 # Changes in the FPL IDE
+## 1.4.0
+* Feature: A user dialog for the menu command Fpl Theory->New.
+* Refactoring: 
+  * A class for common dialogs, 
+  * SettingsDialog renamed in DialogSettings
 ## 1.3.1
 * Refactoring and re-design of the menu items (without implementation).
 * Help guide file markdown added.

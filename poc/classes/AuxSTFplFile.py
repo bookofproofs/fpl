@@ -2,7 +2,6 @@ import hashlib
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplsyntaxanalyzer import FPLSyntaxAnalyzer
-from poc.fplsourcetransformer import FPLSourceTransformer
 
 
 class AuxSTFplFile(AuxSTOutline):
@@ -31,9 +30,3 @@ class AuxSTFplFile(AuxSTOutline):
 
     def get_analyser(self):
         return self._analyser
-
-    def set_source_transformer(self, root, errors: list):
-        self._analyser = FPLSourceTransformer(root, self.file_name, errors)
-
-    def set_source_transformer(self):
-        return self._transformer

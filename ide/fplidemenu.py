@@ -1,5 +1,6 @@
 from tkinter import messagebox
-from ide.SettingsDialog import SettingsDialog
+from ide.DialogSettings import DialogSettings
+from ide.DialogNewFplTheory import DialogNewFplTheory
 import tkinter as tk
 
 
@@ -10,7 +11,7 @@ class FPLIdeMenus:
         self._menuBar = tk.Menu(ide.window)
 
         fpl_theory_bar = tk.Menu(self._menuBar, tearoff=0)
-        fpl_theory_bar.add_command(label='New', underline=0, command=self.not_implemented)
+        fpl_theory_bar.add_command(label='New', underline=0, command=self.new_fpl_theory)
         fpl_theory_bar.add_command(label='Open', underline=0, command=self.not_implemented)
         fpl_theory_bar.add_command(label='Close', underline=0, command=self.not_implemented, state=tk.DISABLED)
         fpl_theory_bar.add_separator()
@@ -104,4 +105,7 @@ class FPLIdeMenus:
             self.ide.window.destroy()
 
     def settings(self):
-        SettingsDialog(self)
+        DialogSettings(self.ide)
+
+    def new_fpl_theory(self):
+        DialogNewFplTheory(self.ide)

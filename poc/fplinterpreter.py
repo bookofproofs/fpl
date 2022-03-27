@@ -1,7 +1,6 @@
 import tatsu
 from anytree import AnyNode, RenderTree
 from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.AuxSTFplFile import AuxSTFplFile
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc import fplsemanticanalyzer
 from poc import fplerror
@@ -13,8 +12,8 @@ from poc.util.fplutil import Utils
 
 class FplInterpreter:
 
-    def __init__(self, parser, root_dir: str):
-        self.version = "1.4.11"
+    def __init__(self, parser, root_dir: str, library_node=None):
+        self.version = "1.4.12"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._errors = []
@@ -25,14 +24,18 @@ class FplInterpreter:
             self._theory_root_dir = os.path.dirname(abs_path)
         self._symbol_table_root = AnyNode(outline=AuxSymbolTable.root)
         self._utils = Utils()
-        AnyNode(outline=AuxSymbolTable.library, parent=self._symbol_table_root)
         AnyNode(outline=AuxSymbolTable.globals, parent=self._symbol_table_root)
-        self._gather_all_namespaces_from_root_dir()
         self.files_highlight_tags = dict()
         # Used for the recursive loading of namespaces into to symbol table while syntax analysis is running
         # The syntax analysis stores in this dictionary for every namespace / FPL-combination
         # whether this combination was already processed.
         self.processed_namespaces = set()
+        if library_node is None:
+            self.library_node = AnyNode()
+            AnyNode(outline=AuxSymbolTable.library, parent=self.library_node)
+            self._utils.reload_library(self.library_node, self._theory_root_dir)
+        else:
+            self.library_node = library_node
 
     def syntax_analysis(self, path_to_theory: str):
         """
@@ -42,7 +45,7 @@ class FplInterpreter:
         """
         theory_file_name = os.path.basename(path_to_theory)
         # look for the file library in the symbol table
-        fpl_file_node = AuxSymbolTable.get_library_by_filename(self._symbol_table_root, theory_file_name)
+        fpl_file_node = AuxSymbolTable.get_library_by_filename(self.library_node, theory_file_name)
         if fpl_file_node is None:
             # the file was not found when the FplInterpreter was constructed
             raise FileNotFoundError(path_to_theory)
@@ -74,7 +77,7 @@ class FplInterpreter:
                     uses_node = AuxSymbolTable.get_child_by_outline(fpl_theory_node, AuxSymbolTable.uses)
                     for used_namespace in uses_node.children:
                         files_related_to_namespace = \
-                            AuxSymbolTable.get_library_by_namespace(self._symbol_table_root,
+                            AuxSymbolTable.get_library_by_namespace(self.library_node,
                                                                     used_namespace.id,
                                                                     used_namespace.modifier)
                         if len(files_related_to_namespace) == 0:
@@ -125,28 +128,6 @@ class FplInterpreter:
             except BaseException as ex:
                 self._errors.append(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 4)
-
-    def _gather_all_namespaces_from_root_dir(self):
-        """
-        When the FPL interpreter is constructed, this function reads all fpl files within the root directory, extracts
-        their namespace and adds it to the library node of the symbol table.
-        :return: None
-        """
-        for file in os.listdir(self._theory_root_dir):
-            if file.endswith(".fpl"):
-                fpl_file = AuxSTFplFile()
-                fpl_file.file_name = os.path.basename(file)
-                file_content = self._utils.get_file_content(os.path.join(self._theory_root_dir, file))
-                # strip any preprocessor from the file content
-                file_content = self._utils.strip_preprocessor(file_content)
-                fpl_file.set_file_content(file_content)
-                first_block = fpl_file.get_file_content().find("{")
-                if first_block > -1:
-                    namespace_of_source = fpl_file.get_file_content()[0:first_block].strip()
-                else:
-                    raise AssertionError("Namespace not found in " + file)
-                fpl_file.namespace = namespace_of_source
-                AuxSymbolTable.add_namespace(self._symbol_table_root, fpl_file)
 
     def semantic_analysis(self):
         analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._errors)
