@@ -19,7 +19,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 class FplIde:
 
     def __init__(self):
-        self._version = '1.3.1'
+        self._version = '1.4.0'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -32,6 +32,7 @@ class FplIde:
         self.window.title('Formal Proving Language IDE (' + self._version + ')')
         self.window.state('zoomed')
         self.images = dict()
+        self._utils = Utils()
         self._root_dir = os.path.dirname(__file__) + "/"
         self.images["warning"] = tk.PhotoImage("warning", file=os.path.join(self._root_dir, "assets/warning.png"))
         self.images["cancel"] = tk.PhotoImage("cancel", file=os.path.join(self._root_dir, "assets/cancel.png"))
@@ -42,11 +43,13 @@ class FplIde:
         self.current_file = ""
         self.window.config(cursor="wait")
         self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
-        u = Utils()
-        self.fpl_parser = u.get_parser("../grammar/fpl_tatsu_format.ebnf")
+        self.fpl_parser = self._utils.get_parser("../grammar/fpl_tatsu_format.ebnf")
         self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)
         path_to_fpl_root = os.path.abspath(self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
-        self.fpl_interpreter = FplInterpreter(self.fpl_parser, path_to_fpl_root)
+        self.library = AnyNode()
+        AnyNode(outline=AuxSymbolTable.library, parent=self.library)
+        self._utils.reload_library(self.library, path_to_fpl_root)
+        self.fpl_interpreter = FplInterpreter(self.fpl_parser, path_to_fpl_root, self.library)
         self._statusBar.set_status_text("FPL interpreter ready.")
         self.window.config(cursor="")
         self.window.mainloop()

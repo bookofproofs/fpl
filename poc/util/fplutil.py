@@ -1,8 +1,10 @@
 import time
 import tatsu
 import io
+import os
 import re
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTFplFile import AuxSTFplFile
 
 
 class Utils:
@@ -48,10 +50,9 @@ class Utils:
     def adjust_symbol_table_for_testing(interpreter):
         """
         Removes from the test output all dynamic object memory addresses because they are irrelevant for the test.
-        :param test_output: output of the test
+        :param interpreter: interpreter object reference
         :return: test_result replaced
         """
-        AuxSymbolTable.remove_library(interpreter.get_symbol_table_root())
         test_output = interpreter.symbol_table_to_str().strip()
         # remove "poc.classes." paths
         test_output = test_output.replace("poc.classes.", "")
@@ -71,3 +72,25 @@ class Utils:
     @staticmethod
     def strip_preprocessor(source: str):
         return source.split(Utils.preprocessor)[0].strip()
+
+    def reload_library(self, library_node, root_dir):
+        """
+        This function reads all fpl files within the root directory, extracts
+        their namespace and adds it to the library node of this ide.
+        :return: None
+        """
+        for file in os.listdir(root_dir):
+            if file.endswith(".fpl"):
+                fpl_file = AuxSTFplFile()
+                fpl_file.file_name = os.path.basename(file)
+                file_content = self.get_file_content(os.path.join(root_dir, file))
+                # strip any preprocessor from the file content
+                file_content = self.strip_preprocessor(file_content)
+                fpl_file.set_file_content(file_content)
+                first_block = fpl_file.get_file_content().find("{")
+                if first_block > -1:
+                    namespace_of_source = fpl_file.get_file_content()[0:first_block].strip()
+                else:
+                    raise AssertionError("Namespace not found in " + file)
+                fpl_file.namespace = namespace_of_source
+                AuxSymbolTable.add_namespace(library_node, fpl_file)

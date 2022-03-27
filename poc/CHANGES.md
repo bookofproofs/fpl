@@ -1,4 +1,6 @@
 # Changes in the FPL Parser and Interpreter
+## 1.4.12
+* Refactoring: Reading the library from the root theory is now part of the Utils class (and not part of the FPL interpreter).
 ## 1.4.11
 * Feature: 
   * FplMalformedNamespace + test cases
