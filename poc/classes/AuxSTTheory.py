@@ -7,6 +7,7 @@ class AuxSTTheory(AuxSTOutline):
     def __init__(self, parent: AuxSTOutline, file_name: str):
         super().__init__(parent, AuxSymbolTable.theory)
         self.file_name = file_name
+        self.namespace = "undefined"
         AuxSTOutline(parent=self, outline=AuxSymbolTable.uses)
         AuxSTOutline(parent=self, outline=AuxSymbolTable.block_axiom_root)
         AuxSTOutline(parent=self, outline=AuxSymbolTable.block_ir_root)

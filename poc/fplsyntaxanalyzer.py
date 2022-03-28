@@ -146,8 +146,8 @@ from anytree import AnyNode
 
 class FPLSyntaxAnalyzer:
 
-    def __init__(self, root: AnyNode, theory_name: str, errors: list):
-        self.i = AuxISourceAnalyser(errors, root, theory_name)
+    def __init__(self, root: AnyNode, theory_name: str, errors: list, namespace: str):
+        self.i = AuxISourceAnalyser(errors, root, theory_name, namespace)
         self.ast_list = []
 
         self.switcher = {

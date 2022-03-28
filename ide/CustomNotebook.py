@@ -124,7 +124,7 @@ class CustomNotebook(ttk.Notebook):
 
     def new_file(self, event=None):
         self._current_file = self._generate_new_file_name()
-        self._add_new_editor("")
+        self.add_new_editor("")
 
     def _generate_new_file_name(self) -> str:
         file_name = "NewTheory"
@@ -170,19 +170,9 @@ class CustomNotebook(ttk.Notebook):
             else:
                 # read the file
                 code = file.read()
-                self._add_new_editor(code)
+                self.add_new_editor(code)
 
-    def _add_new_editor(self, code):
-        """
-        if self.main_theory_file == "":
-            self.main_theory_file = self._current_file
-        else:
-            # There is the main FPL theory loaded already. Therefore, check if the to-be-opened file
-            # is part of the symbol table.
-            fpl_file_node = AuxSymbolTable.get_library_by_filename(self._symbol_table_root, self._current_file)
-            if fpl_file_node is None:
-                # The to-be-opened file is not part of the theory.
-        """
+    def add_new_editor(self, code):
         # this is a new file that is not already open yet. Create a new tab content
         editor_info = FrameWithLineNumbers(self, self._current_file)
         # set the text
@@ -220,6 +210,9 @@ class CustomNotebook(ttk.Notebook):
             return self._my_files[file]
         else:
             return None
+
+    def set_file(self, file):
+        self._current_file = file
 
     def get_line(self):
         return self.__line

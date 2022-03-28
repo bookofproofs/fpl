@@ -19,7 +19,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 class FplIde:
 
     def __init__(self):
-        self._version = '1.4.0'
+        self._version = '1.4.1'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -40,7 +40,6 @@ class FplIde:
         self.__add_paned_windows()
         FPLIdeMenus(self)
         self._all_editors = dict()
-        self.current_file = ""
         self.window.config(cursor="wait")
         self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
         self.fpl_parser = self._utils.get_parser("../grammar/fpl_tatsu_format.ebnf")

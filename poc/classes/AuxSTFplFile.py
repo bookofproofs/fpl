@@ -26,7 +26,7 @@ class AuxSTFplFile(AuxSTOutline):
         return self._fpl_source
 
     def set_analyser(self, root, errors: list):
-        self._analyser = FPLSyntaxAnalyzer(root, self.file_name, errors)
+        self._analyser = FPLSyntaxAnalyzer(root, self.file_name, errors, self.namespace)
 
     def get_analyser(self):
         return self._analyser

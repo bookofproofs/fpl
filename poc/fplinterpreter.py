@@ -118,16 +118,16 @@ class FplInterpreter:
                 self._parser.parse(fpl_file_node.get_file_content(), semantics=analyser, whitespace='')
             except tatsu.exceptions.FailedParse as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 1)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 1))
             except tatsu.exceptions.FailedToken as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 2)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 2))
             except tatsu.exceptions.FailedPattern as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 3)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 3))
             except BaseException as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex)), 4)
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 4))
 
     def semantic_analysis(self):
         analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._errors)
