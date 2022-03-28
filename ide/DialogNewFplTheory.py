@@ -1,3 +1,4 @@
+from poc.classes.AuxSTFplFile import AuxSTFplFile
 import tkinter as tk
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from tkinter import messagebox
@@ -67,10 +68,20 @@ class DialogNewFplTheory(Dialog):
         if self._sanitize_file_name(file_name) and self._sanitize_name_space(name_space):
             with io.open(self._actual_file_name.get(), 'w', encoding="UTF-8") as file:
                 # write initial code of the new empty FPL file
-                file.write(name_space + "\n{\n\tinference{}\n\ttheory{}\n}\n")
-                messagebox.showinfo("New FPL Theory", "A new theory {0} was successfully created.".format(name_space),
-                                    icon="info")
-                self._on_closing()
+                initial_code = name_space + "\n{\n\ttheory{}\n}\n"
+                file.write(initial_code)
+            messagebox.showinfo("New FPL Theory", "A new theory {0} was successfully created.".format(name_space),
+                                icon="info")
+
+            fpl_file = AuxSTFplFile()
+            fpl_file.file_name = os.path.basename(self._actual_file_name.get())
+            fpl_file.set_file_content(initial_code.strip())
+            fpl_file.namespace = name_space
+            AuxSymbolTable.add_namespace(self.ide.library, fpl_file)
+            notebook = self.ide.get_editor_notebook()
+            notebook.set_file(os.path.basename(self._actual_file_name.get()))
+            notebook.add_new_editor(initial_code)
+            self.destroy()
         else:
             pass
 

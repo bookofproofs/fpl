@@ -1,4 +1,6 @@
 # Changes in the FPL IDE
+## 1.4.1
+* Bugfix: Menu command Fpl Theory->New now opens the FPL file after creating it.
 ## 1.4.0
 * Feature: A user dialog for the menu command Fpl Theory->New.
 * Refactoring: 
