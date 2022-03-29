@@ -28,7 +28,7 @@ class FrameWithLineNumbers(tk.Frame):
         self.to_be_parsed_and_interpreted = False
         self.title = title
         self.configure_tab_width(
-            self._parent_notebook.ide.config.get(Settings.section_editor, Settings.option_editor_tab_length)
+            self._parent_notebook.ide.model.config.get(Settings.section_editor, Settings.option_editor_tab_length)
         )
         self.vsb.pack(side="right", fill="y")
         self.linenumbers.pack(side="left", fill="y")
@@ -185,18 +185,18 @@ class FrameWithLineNumbers(tk.Frame):
         self._parent_notebook.ide.window.config(cursor="wait")
         self._parent_notebook.ide.window.update_idletasks()
         # parse and interpret the code
-        path = os.path.abspath(self._parent_notebook.ide.config.get(Settings.section_paths,
+        path = os.path.abspath(self._parent_notebook.ide.model.config.get(Settings.section_paths,
                                                                     Settings.option_paths_fpl_theories))
-        self._parent_notebook.ide.fpl_interpreter.syntax_analysis(path + '\\' + self.title)
-        self._parent_notebook.ide.fpl_interpreter.semantic_analysis()
+        self._parent_notebook.ide.model.fpl_interpreter.syntax_analysis(path + '\\' + self.title)
+        self._parent_notebook.ide.model.fpl_interpreter.semantic_analysis()
         # reconfigure all tags
         self.reconfigure_all_tags()
         # add new tags
-        grammar_tags = self._parent_notebook.ide.fpl_interpreter.files_highlight_tags[self.title]
+        grammar_tags = self._parent_notebook.ide.model.fpl_interpreter.files_highlight_tags[self.title]
         for item in grammar_tags:
             self.add_tag(item.tag, item.zfrom, item.zto)
         self._parent_notebook.ide.window.config(cursor="")
-        return self._parent_notebook.ide.fpl_interpreter
+        return self._parent_notebook.ide.model.fpl_interpreter
 
     def parse_interpret_highlight_update_all(self, event=None):
         """

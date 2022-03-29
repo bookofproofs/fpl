@@ -77,10 +77,12 @@ class DialogNewFplTheory(Dialog):
             fpl_file.file_name = os.path.basename(self._actual_file_name.get())
             fpl_file.set_file_content(initial_code.strip())
             fpl_file.namespace = name_space
-            AuxSymbolTable.add_namespace(self.ide.library, fpl_file)
+            AuxSymbolTable.add_namespace(self.ide.model.library, fpl_file)
             notebook = self.ide.get_editor_notebook()
             notebook.set_file(os.path.basename(self._actual_file_name.get()))
             notebook.add_new_editor(initial_code)
+            self.ide.model.theory_is_open_flag = True
+            self.ide.menus.menu_configure()
             self.destroy()
         else:
             pass
@@ -89,7 +91,7 @@ class DialogNewFplTheory(Dialog):
         self.warning_text.config(state=tk.NORMAL)
         self.warning_text.delete("1.0", tk.END)
         no_error = True
-        path = self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
+        path = self.ide.model.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
         file_name = file_name.strip()
         if file_name == "":
             self.warning_text.insert(tk.END, "Please provide a name for the FPL file.")
@@ -112,7 +114,7 @@ class DialogNewFplTheory(Dialog):
         no_error = True
         pattern = re.compile("^[A-Z][a-z0-9A-Z_]*(\.[A-Z][a-z0-9A-Z_]*)*$")
         if pattern.match(name_space):
-            name_space_in_library = AuxSymbolTable.get_library_by_namespace(self.ide.library, name_space, "")
+            name_space_in_library = AuxSymbolTable.get_library_by_namespace(self.ide.model.library, name_space, "")
             if len(name_space_in_library) > 0:
                 file_list = []
                 for t in name_space_in_library:

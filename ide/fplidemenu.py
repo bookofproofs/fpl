@@ -10,17 +10,16 @@ class FPLIdeMenus:
         self.ide = ide
         self._menuBar = tk.Menu(ide.window)
 
-        fpl_theory_bar = tk.Menu(self._menuBar, tearoff=0)
-        fpl_theory_bar.add_command(label='New', underline=0, command=self.new_fpl_theory)
-        fpl_theory_bar.add_command(label='Open', underline=0, command=self.not_implemented)
-        fpl_theory_bar.add_command(label='Close', underline=0, command=self.not_implemented, state=tk.DISABLED)
-        fpl_theory_bar.add_separator()
-        fpl_theory_bar.add_command(label='Add FPL file', underline=0, command=self.not_implemented, state=tk.DISABLED)
-        fpl_theory_bar.add_command(label='Remove FPL file', underline=0, command=self.not_implemented,
-                                   state=tk.DISABLED)
-        fpl_theory_bar.add_separator()
-        fpl_theory_bar.add_command(label='Exit', underline=1, command=self.exit)
-        self._menuBar.add_cascade(label='FPL Theory', underline=0, menu=fpl_theory_bar)
+        self.fpl_theory_menu = tk.Menu(self._menuBar, tearoff=0)
+        self.fpl_theory_menu.add_command(label='New', underline=0, command=self.new_fpl_theory)
+        self.fpl_theory_menu.add_command(label='Open', underline=0, command=self.not_implemented)
+        self.fpl_theory_menu.add_command(label='Close', underline=0, command=self.not_implemented)
+        self.fpl_theory_menu.add_separator()
+        self.fpl_theory_menu.add_command(label='Add FPL file', underline=0, command=self.not_implemented)
+        self.fpl_theory_menu.add_command(label='Remove FPL file', underline=0, command=self.not_implemented)
+        self.fpl_theory_menu.add_separator()
+        self.fpl_theory_menu.add_command(label='Exit', underline=1, command=self.exit)
+        self._menuBar.add_cascade(label='FPL Theory', underline=0, menu=self.fpl_theory_menu)
 
         file_bar = tk.Menu(self._menuBar, tearoff=0)
         file_bar.add_command(label='New', underline=0, command=self.new_file)
@@ -30,8 +29,8 @@ class FPLIdeMenus:
         self._menuBar.add_cascade(label='File', underline=0, menu=file_bar)
 
         build_bar = tk.Menu(self._menuBar, tearoff=0)
-        build_bar.add_command(label='Current FPL File', command=self.not_implemented, state=tk.DISABLED)
-        build_bar.add_command(label='Whole Theory', command=self.not_implemented, state=tk.DISABLED)
+        build_bar.add_command(label='Current FPL File', command=self.not_implemented)
+        build_bar.add_command(label='Whole Theory', command=self.not_implemented)
         self._menuBar.add_cascade(label='Build', underline=0, menu=build_bar)
 
         options_bar = tk.Menu(self._menuBar, tearoff=0)
@@ -50,6 +49,7 @@ class FPLIdeMenus:
         self.ide.window.bind_all('<Control-Key-x>', self.exit)
         self.ide.window.config(menu=self._menuBar)
         self.ide.window.protocol("WM_DELETE_WINDOW", self.exit)
+        self.menu_configure()
 
     @staticmethod
     def not_implemented():
@@ -74,6 +74,20 @@ class FPLIdeMenus:
 
     def save_file_as(self, event=None):
         self.ide.get_editor_notebook().save_file_as(event)
+
+    def menu_configure(self):
+        if self.ide.model.theory_is_open_flag:
+            self.fpl_theory_menu.entryconfig("New", state=tk.DISABLED)
+            self.fpl_theory_menu.entryconfig("Open", state=tk.DISABLED)
+            self.fpl_theory_menu.entryconfig("Close", state=tk.NORMAL)
+            self.fpl_theory_menu.entryconfig("Add FPL file", state=tk.NORMAL)
+            self.fpl_theory_menu.entryconfig("Remove FPL file", state=tk.NORMAL)
+        else:
+            self.fpl_theory_menu.entryconfig("New", state=tk.NORMAL)
+            self.fpl_theory_menu.entryconfig("Open", state=tk.NORMAL)
+            self.fpl_theory_menu.entryconfig("Close", state=tk.DISABLED)
+            self.fpl_theory_menu.entryconfig("Add FPL file", state=tk.DISABLED)
+            self.fpl_theory_menu.entryconfig("Remove FPL file", state=tk.DISABLED)
 
     def exit(self, event=None):
         book = self.ide.get_editor_notebook().get_files()
