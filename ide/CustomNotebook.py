@@ -92,7 +92,7 @@ class CustomNotebook(ttk.Notebook):
 
     def save_file(self, event=None):
         editor_info = self.get_current_file_object()
-        path_to_fpl_theories = self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
+        path_to_fpl_theories = self.ide.model.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
         if path_to_fpl_theories == '':
             return self.save_file_as()
         elif editor_info.is_new:
@@ -134,7 +134,7 @@ class CustomNotebook(ttk.Notebook):
         return file_name + str(numb) + ".fpl"
 
     def open_file(self, event=None):
-        path_to_fpl_theories = self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
+        path_to_fpl_theories = self.ide.model.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
         path = askopenfilename(filetypes=[('FPL Files', '*.fpl'), ('Python Files', '*.py')],
                                initialdir=path_to_fpl_theories)
         if path == "":

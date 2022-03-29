@@ -15,9 +15,9 @@ class DialogSettings(Dialog):
 
         self._config_browser_tree = ttk.Treeview(left_pane, height=380)
         self._config_browser_tree.bind("<Double-1>", self._on_setting_doubleclick)
-        for section in self.ide.config.sections():
+        for section in self.ide.model.config.sections():
             j = self._config_browser_tree.insert('', 'end', text=section.capitalize())
-            for option in self.ide.config.options(section):
+            for option in self.ide.model.config.options(section):
                 self._config_browser_tree.insert(j, 'end', text=option.capitalize())
 
         left_pane.add(self._config_browser_tree)
@@ -47,7 +47,7 @@ class DialogSettings(Dialog):
         for file in notebook.get_files():
             editor_info = notebook.get_files()[file]
             editor_info.configure_tab_width(
-                self.ide.config.get(Settings.section_editor, Settings.option_editor_tab_length))
+                self.ide.model.config.get(Settings.section_editor, Settings.option_editor_tab_length))
 
     @staticmethod
     def __add_scrollbar(frame, widget):
@@ -102,7 +102,7 @@ class DialogSettings(Dialog):
         self._config_browser_pane.add(label)
         one_line_frame = tk.Frame(self._config_browser_pane, height=20, bg=self._theme.get_bg_color())
         self.entry_var = tk.StringVar()
-        self.entry_var.set(self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
+        self.entry_var.set(self.ide.model.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
         self.entry_var.trace("w", lambda name, index, mode, var=self.entry_var: self.option_paths_fpl_theories_trace(
             self.entry_var))
         entry = tk.Entry(one_line_frame, textvariable=self.entry_var, bg=self._theme.get_bg_color(),
@@ -118,7 +118,7 @@ class DialogSettings(Dialog):
 
     def _select_dir(self, event=None):
         directory_name = askdirectory(
-            initialdir=self.ide.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
+            initialdir=self.ide.model.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
         if directory_name == "":
             # the user cancelled
             return
@@ -127,16 +127,16 @@ class DialogSettings(Dialog):
 
     def option_paths_fpl_theories_trace(self, entry_value):
         if os.path.isdir(entry_value.get()):
-            self.ide.config.set(Settings.section_paths, Settings.option_paths_fpl_theories, entry_value.get())
+            self.ide.model.config.set(Settings.section_paths, Settings.option_paths_fpl_theories, entry_value.get())
         else:
-            self.ide.config.set(Settings.section_paths, Settings.option_paths_fpl_theories,
+            self.ide.model.config.set(Settings.section_paths, Settings.option_paths_fpl_theories,
                                 os.path.dirname(__file__) + "/")
         self._write_config()
 
     def _option_editor_tab_length(self):
         one_line_frame = tk.Frame(self._config_browser_pane, height=20, bg=self._theme.get_bg_color())
         tab_length = Settings.to_positive_integer(
-            self.ide.config.get(Settings.section_editor, Settings.option_editor_tab_length))
+            self.ide.model.config.get(Settings.section_editor, Settings.option_editor_tab_length))
         entry_var = tk.StringVar()
         entry_var.set(str(tab_length))
         entry_var.trace("w", lambda name, index, mode, var=entry_var: self._option_editor_tab_length_trace(entry_var))
@@ -167,12 +167,12 @@ class DialogSettings(Dialog):
         font = tk.font.Font(font=self._preview_text['font'])
         self._preview_text.config(tabs=font.measure(' ' * entry_val))
         self._preview_text.insert("1.0", Settings.preview_editor_tab_length)
-        self.ide.config.set(Settings.section_editor, Settings.option_editor_tab_length, entry_val)
+        self.ide.model.config.set(Settings.section_editor, Settings.option_editor_tab_length, entry_val)
         self._write_config()
 
     def _option_codereform_1linecomppred(self):
         self.check_var = tk.IntVar()
-        boolval = self.ide.config.get(Settings.section_codereform, Settings.option_codereform_1linecomppred)
+        boolval = self.ide.model.config.get(Settings.section_codereform, Settings.option_codereform_1linecomppred)
         if boolval == "True":
             self.check_var.set(1)
         else:
@@ -200,10 +200,10 @@ class DialogSettings(Dialog):
         self._preview_text.delete("1.0", tk.END)
         if self.check_var.get():
             self._preview_text.insert("1.0", Settings.preview_codereform_1linecomppred_true)
-            self.ide.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, True)
+            self.ide.model.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, True)
         else:
             self._preview_text.insert("1.0", Settings.preview_codereform_1linecomppred_false)
-            self.ide.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, False)
+            self.ide.model.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, False)
         self._write_config()
 
     def _config_not_implemented(self):
@@ -220,4 +220,4 @@ class DialogSettings(Dialog):
 
     def _write_config(self):
         cfgfile = open(os.path.dirname(__file__) + "/config.ini", "w")
-        self.ide.config.write(cfgfile)
+        self.ide.model.config.write(cfgfile)

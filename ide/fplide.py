@@ -1,16 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
-from poc.util.fplutil import Utils
 from ide.idetheme import DefaultTheme
 from ide.fplidemenu import FPLIdeMenus
 from ide.CustomNotebook import CustomNotebook
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.StatusBar import StatusBar
+from ide.IdeModel import IdeModel
 from poc.fplinterpreter import FplInterpreter
-from poc.fplsourcetransformer import FPLSourceTransformer
-from ide.Settings import Settings
-import configparser
-import os
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
@@ -19,7 +15,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 class FplIde:
 
     def __init__(self):
-        self._version = '1.4.1'
+        self._version = '1.4.2'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -31,24 +27,11 @@ class FplIde:
         self.window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
         self.window.title('Formal Proving Language IDE (' + self._version + ')')
         self.window.state('zoomed')
-        self.images = dict()
-        self._utils = Utils()
-        self._root_dir = os.path.dirname(__file__) + "/"
-        self.images["warning"] = tk.PhotoImage("warning", file=os.path.join(self._root_dir, "assets/warning.png"))
-        self.images["cancel"] = tk.PhotoImage("cancel", file=os.path.join(self._root_dir, "assets/cancel.png"))
-        self.config_init()
+        self.model = IdeModel()
         self.__add_paned_windows()
-        FPLIdeMenus(self)
-        self._all_editors = dict()
+        self.menus = FPLIdeMenus(self)
         self.window.config(cursor="wait")
         self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
-        self.fpl_parser = self._utils.get_parser("../grammar/fpl_tatsu_format.ebnf")
-        self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)
-        path_to_fpl_root = os.path.abspath(self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
-        self.library = AnyNode()
-        AnyNode(outline=AuxSymbolTable.library, parent=self.library)
-        self._utils.reload_library(self.library, path_to_fpl_root)
-        self.fpl_interpreter = FplInterpreter(self.fpl_parser, path_to_fpl_root, self.library)
         self._statusBar.set_status_text("FPL interpreter ready.")
         self.window.config(cursor="")
         self.window.mainloop()
@@ -130,7 +113,7 @@ class FplIde:
                                          relief=tk.GROOVE, bg=self._theme.get_bg_color(), fg=self._theme.get_fg_color())
         self._label_error_num.grid()
         self._label_error_num["compound"] = tk.LEFT
-        self._label_error_num["image"] = self.images["cancel"]
+        self._label_error_num["image"] = self.model.images["cancel"]
         self._label_error_num.grid(row=0, column=0, sticky=tk.W + tk.E, pady=2)
 
         # number of warnings label
@@ -139,7 +122,7 @@ class FplIde:
                                            fg=self._theme.get_fg_color())
         self._label_warning_num.grid()
         self._label_warning_num["compound"] = tk.LEFT
-        self._label_warning_num["image"] = self.images["warning"]
+        self._label_warning_num["image"] = self.model.images["warning"]
         self._label_warning_num.grid(row=0, column=1, sticky=tk.W + tk.E, pady=2)
 
         # option menue for filtering all or current file errors
@@ -291,9 +274,9 @@ class FplIde:
         # insert new items (if any) in tree_view
         for item in tuple_list:
             if item.mainType == "E":
-                im = self.images["cancel"]
+                im = self.model.images["cancel"]
             else:
-                im = self.images["warning"]
+                im = self.model.images["warning"]
             item_tuple = item.to_tuple() + (editor_info.title,)
             tree_view.insert("", tk.END, text="", image=im, values=item_tuple)
             editor_info.add_error_tag(item.get_tkinter_pos())
@@ -436,51 +419,6 @@ class FplIde:
                                                  iid=postfix + node.id + sub_sub_node.id,
                                                  text=sub_sub_node.id,
                                                  values=("", "ok", theory_node.file_name))
-
-    def config_init(self):
-        """
-        Initialise the config (file) of this IDE. If the values in the ini-file are invalid, they will be overwritten
-        with valid default values
-        :return: None
-        """
-        self.config = configparser.RawConfigParser()
-        # check if there is a config file
-        path_to_config = os.path.join(self._root_dir, "config.ini")
-        if os.path.exists(path_to_config):
-            # if so, read the config file
-            self.config.read(path_to_config)
-        # ensure all mandatory sections and options are set
-        if not self.config.has_section(Settings.section_paths):
-            self.config.add_section(Settings.section_paths)
-        if not self.config.has_option(Settings.section_paths, Settings.option_paths_fpl_theories):
-            self.config.set(Settings.section_paths, Settings.option_paths_fpl_theories, os.path.dirname(__file__) + "/")
-        else:
-            valid_value = self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories)
-            if not os.path.isdir(valid_value):
-                valid_value = os.path.dirname(__file__) + "/"
-                self.config.set(Settings.section_paths, Settings.option_paths_fpl_theories, valid_value)
-
-        if not self.config.has_section(Settings.section_editor):
-            self.config.add_section(Settings.section_editor)
-        if not self.config.has_option(Settings.section_editor, Settings.option_editor_tab_length):
-            self.config.set(Settings.section_editor, Settings.option_editor_tab_length, 3)
-        else:
-            valid_value = self.config.get(Settings.section_editor, Settings.option_editor_tab_length)
-            valid_value = Settings.to_positive_integer(valid_value)
-            self.config.set(Settings.section_editor, Settings.option_editor_tab_length, valid_value)
-
-        if not self.config.has_section(Settings.section_codereform):
-            self.config.add_section(Settings.section_codereform)
-        if not self.config.has_option(Settings.section_codereform, Settings.option_codereform_1linecomppred):
-            self.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, True)
-        else:
-            valid_value = self.config.get(Settings.section_codereform, Settings.option_codereform_1linecomppred)
-            if valid_value not in ["True", "False"]:
-                self.config.set(Settings.section_codereform, Settings.option_codereform_1linecomppred, True)
-
-        # make sure, the config file is now complete
-        cfgfile = open(path_to_config, "w")
-        self.config.write(cfgfile)
 
     def get_status_bar(self):
         return self._statusBar

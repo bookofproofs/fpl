@@ -1,4 +1,7 @@
 # Changes in the FPL IDE
+## 1.4.2
+* Bugfix: Menu command Fpl Theory->New now corrects the disabled status of the menu after creating new theory.
+* Refactoring: New class IdeModel to store the state of the ide and main data or handler pointers.
 ## 1.4.1
 * Bugfix: Menu command Fpl Theory->New now opens the FPL file after creating it.
 ## 1.4.0
