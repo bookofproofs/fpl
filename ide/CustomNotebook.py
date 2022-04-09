@@ -15,7 +15,6 @@ import io
 class CustomNotebook(ttk.Notebook):
     """A ttk Notebook with close buttons on each tab"""
 
-
     def __init__(self, ide, *args, **kwargs):
         self.ide = ide
         self.main_theory_file = ""
@@ -87,7 +86,7 @@ class CustomNotebook(ttk.Notebook):
             editor_info = self.get_current_file_object()
             editor_info.on_change(None)  # reset the status bar and other info according to to tab
         except tk.TclError:
-            self.ide.get_status_bar().set_status_text("")
+            self.ide.get_status_bar().set_text("")
             pass
 
     def save_file(self, event=None):
@@ -120,7 +119,6 @@ class CustomNotebook(ttk.Notebook):
             self.tab(editor_info, text=editor_info.title)
             # reset the initial value to the new value
             editor_info.text.init_value(editor_info.get_text())
-
 
     def new_file(self, event=None):
         self._current_file = self._generate_new_file_name()
@@ -178,7 +176,7 @@ class CustomNotebook(ttk.Notebook):
         # set the text
         editor_info.set_text(code)
         # pack the frame
-        editor_info.pack(expand=True, fill="both")
+        editor_info.pack(expand=True, fill=tk.BOTH)
         # remember the object
         self._my_files[self._current_file] = editor_info
         # add the object to the tab

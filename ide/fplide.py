@@ -15,7 +15,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 class FplIde:
 
     def __init__(self):
-        self._version = '1.4.2'
+        self._version = '1.4.3'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -31,8 +31,8 @@ class FplIde:
         self.__add_paned_windows()
         self.menus = FPLIdeMenus(self)
         self.window.config(cursor="wait")
-        self._statusBar.set_status_text('Initiating FPL parser... Please wait!')
-        self._statusBar.set_status_text("FPL interpreter ready.")
+        self._statusBar.set_text('Initiating FPL parser... Please wait!')
+        self._statusBar.set_text("FPL interpreter ready.")
         self.window.config(cursor="")
         self.window.mainloop()
 
@@ -41,10 +41,10 @@ class FplIde:
 
     def __add_paned_windows(self):
         self._panedWindow = tk.PanedWindow(self.window)
-        self._panedWindow.pack(expand=True, fill="both")
+        self._panedWindow.pack(expand=True, fill=tk.BOTH)
 
         self._panedWindowMainVertical = ttk.Frame(self._panedWindow)
-        self._panedWindowMainVertical.pack(expand=True, fill="both")
+        self._panedWindowMainVertical.pack(expand=True, fill=tk.BOTH)
 
         self._panedWindowMainVertical = tk.PanedWindow(self.window, orient=tk.VERTICAL)
         self._panedWindow.add(self._panedWindowMainVertical)
@@ -102,11 +102,11 @@ class FplIde:
         self._tabControl.add(self._gridErrors, text='Error List')
         self._tabControl.add(self._frameDebug, text='Debug')
 
-        self._tabControl.pack(expand=True, fill="both")
+        self._tabControl.pack(expand=True, fill=tk.BOTH)
 
     def __add_error_info_box(self):
         self._gridErrors = ttk.Frame(self._tabControl)
-        self._gridErrors.pack(expand=True, fill="both")
+        self._gridErrors.pack(expand=True, fill=tk.BOTH)
 
         # number of errors label
         self._label_error_num = tk.Label(self._gridErrors, text="Errors (0)",
@@ -157,38 +157,38 @@ class FplIde:
         tk.Grid.rowconfigure(self._gridErrors, 0, weight=1)
         tk.Grid.rowconfigure(self._gridErrors, 1, weight=100)
 
-        self._listBoxErrors = ttk.Treeview(self._frameErrors, selectmode='browse',
-                                           column=('Type', 'Message', 'Line', 'Column', 'File'))
-        # self._listBoxErrors["columns"] = ("#0", "#1", "#2", "#3", "#4", "#5")
-        self._listBoxErrors.heading("#0", text="", anchor=tk.W)
-        self._listBoxErrors.heading("#1", text="Code", anchor=tk.W)
-        self._listBoxErrors.heading("#2", text="Message", anchor=tk.W)
-        self._listBoxErrors.heading("#3", text="Line", anchor=tk.E)
-        self._listBoxErrors.heading("#4", text="Column", anchor=tk.E)
-        self._listBoxErrors.heading("#5", text="File", anchor=tk.CENTER)
-        self._listBoxErrors.column('#0', width=40, minwidth=40, stretch=tk.NO, anchor=tk.W)
-        self._listBoxErrors.column('Type', width=40, minwidth=40, stretch=tk.YES, anchor=tk.W)
-        self._listBoxErrors.column('Message', width=240, minwidth=240, stretch=tk.YES, anchor=tk.W)
-        self._listBoxErrors.column('Line', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
-        self._listBoxErrors.column('Column', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
-        self._listBoxErrors.column('File', width=100, minwidth=100, stretch=tk.YES, anchor=tk.CENTER)
-        self._listBoxErrors.bind('<Button-1>', self.__listbox_error_clicked)
-        self.__add_scrollbar(self._frameErrors, self._listBoxErrors)
-        self._listBoxErrors.pack(expand=True, fill=tk.BOTH)
+        self._tree_view_errors = ttk.Treeview(self._frameErrors, selectmode='browse',
+                                              column=('Type', 'Message', 'Line', 'Column', 'File'))
+        # self._tree_view_errors["columns"] = ("#0", "#1", "#2", "#3", "#4", "#5")
+        self._tree_view_errors.heading("#0", text="", anchor=tk.W)
+        self._tree_view_errors.heading("#1", text="Code", anchor=tk.W)
+        self._tree_view_errors.heading("#2", text="Message", anchor=tk.W)
+        self._tree_view_errors.heading("#3", text="Line", anchor=tk.E)
+        self._tree_view_errors.heading("#4", text="Column", anchor=tk.E)
+        self._tree_view_errors.heading("#5", text="File", anchor=tk.CENTER)
+        self._tree_view_errors.column('#0', width=40, minwidth=40, stretch=tk.NO, anchor=tk.W)
+        self._tree_view_errors.column('Type', width=40, minwidth=40, stretch=tk.YES, anchor=tk.W)
+        self._tree_view_errors.column('Message', width=240, minwidth=240, stretch=tk.YES, anchor=tk.W)
+        self._tree_view_errors.column('Line', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
+        self._tree_view_errors.column('Column', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
+        self._tree_view_errors.column('File', width=100, minwidth=100, stretch=tk.YES, anchor=tk.CENTER)
+        self._tree_view_errors.bind('<Button-1>', self.__tree_view_error_clicked)
+        self.__add_scrollbar(self._frameErrors, self._tree_view_errors)
+        self._tree_view_errors.pack(expand=True, fill=tk.BOTH)
 
     def __add_scrollbar(self, frame, widget):
         scrollbar = tk.Scrollbar(frame)
         scrollbar.pack(side=tk.RIGHT, fill=tk.BOTH)
         scrollbar.config(command=widget.yview)
 
-    def __listbox_error_clicked(self, event):
+    def __tree_view_error_clicked(self, event):
         """
         When the user clicks the error item, then the editor cursor will go to the position where the
         error is located.
         :param event:
         :return:
         """
-        record = self.__identify_clicked_treeview_item(self._listBoxErrors)
+        record = self.__identify_clicked_treeview_item(self._tree_view_errors)
         if record is not None:
             self.__set_position_in_editor(record[2], record[3], record[4])
 
@@ -297,7 +297,7 @@ class FplIde:
         for theory_node in theories:
             if theory_node.namespace not in tree_view_theories:
                 tree_view_theories[theory_node.namespace] = \
-                    self._object_browser_tree.insert('', index='end',
+                    self._object_browser_tree.insert('', index=tk.END,
                                                      iid=theory_node.namespace,
                                                      text=theory_node.namespace,
                                                      values=("", "ok", theory_node.file_name))
@@ -328,7 +328,7 @@ class FplIde:
                                          node_label: str):
         syntax_tree_node = AuxSymbolTable.get_child_by_outline(theory_node, outline)
         if len(syntax_tree_node.children):
-            tree_view_node = self._object_browser_tree.insert(treeview_theory_node, index='end',
+            tree_view_node = self._object_browser_tree.insert(treeview_theory_node, index=tk.END,
                                                               iid=theory_node.namespace + postfix,
                                                               text=node_title, values=("", "ok", theory_node.file_name))
             need_def_objects = True
@@ -345,12 +345,12 @@ class FplIde:
                 if outline == AuxSymbolTable.block_def_root:
                     if child.def_type == AuxSymbolTable.classDeclaration:
                         if need_def_objects:
-                            ob = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                            ob = self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                                   iid=theory_node.namespace + postfix + '_o',
                                                                   text='Objects',
                                                                   values=("", "ok", theory_node.file_name))
                             need_def_objects = False
-                        obj = self._object_browser_tree.insert(parent=ob, index='end',
+                        obj = self._object_browser_tree.insert(parent=ob, index=tk.END,
                                                                iid=theory_node.namespace + postfix + '_o' + child.id,
                                                                text=child.id,
                                                                values=("", "ok", theory_node.file_name))
@@ -364,12 +364,12 @@ class FplIde:
                                                                   need_def_objects_properties)
                     elif child.def_type == AuxSymbolTable.predicateDeclaration:
                         if need_def_predicates:
-                            pr = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                            pr = self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                                   iid=theory_node.namespace + postfix + '_p',
                                                                   text='Predicates',
                                                                   values=("", "ok", theory_node.file_name))
                             need_def_predicates = False
-                        prop = self._object_browser_tree.insert(parent=pr, index='end',
+                        prop = self._object_browser_tree.insert(parent=pr, index=tk.END,
                                                                 iid=theory_node.namespace + postfix + '_p' + child.id,
                                                                 text=child.id,
                                                                 values=("", "ok", theory_node.file_name))
@@ -379,12 +379,12 @@ class FplIde:
                                                                   need_def_predicate_properties)
                     elif child.def_type == AuxSymbolTable.functionalTerm:
                         if need_def_functions:
-                            fu = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                            fu = self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                                   iid=theory_node.namespace + postfix + '_f',
                                                                   text='Functions',
                                                                   values=("", "ok", theory_node.file_name))
                             need_def_functions = False
-                        func = self._object_browser_tree.insert(parent=fu, index='end',
+                        func = self._object_browser_tree.insert(parent=fu, index=tk.END,
                                                                 iid=theory_node.namespace + postfix + '_f' + child.id,
                                                                 text=child.id,
                                                                 values=("", "ok", theory_node.file_name))
@@ -395,7 +395,7 @@ class FplIde:
                     else:
                         raise NotImplementedError(outline)
                 else:
-                    self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                    self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                      iid=theory_node.namespace + postfix + child.id, text=node_label,
                                                      values=(child.id, "ok", theory_node.file_name))
 
@@ -410,12 +410,12 @@ class FplIde:
 
         if len(sub_node.children) > 0:
             if need_for_outline_node:
-                sub_node_tree_view = self._object_browser_tree.insert(parent=tree_view_node, index='end',
+                sub_node_tree_view = self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                                       iid=postfix + node.id,
                                                                       text=sub_node_title,
                                                                       values=("", "ok", theory_node.file_name))
             for sub_sub_node in sub_node.children:
-                self._object_browser_tree.insert(parent=sub_node_tree_view, index='end',
+                self._object_browser_tree.insert(parent=sub_node_tree_view, index=tk.END,
                                                  iid=postfix + node.id + sub_sub_node.id,
                                                  text=sub_sub_node.id,
                                                  values=("", "ok", theory_node.file_name))
@@ -424,7 +424,10 @@ class FplIde:
         return self._statusBar
 
     def get_error_list(self):
-        return self._listBoxErrors
+        return self._tree_view_errors
+
+    def get_object_browser_tree(self):
+        return self._object_browser_tree
 
     def get_editor_notebook(self):
         return self._tabEditor

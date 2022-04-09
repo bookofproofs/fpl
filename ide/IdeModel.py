@@ -21,8 +21,7 @@ class IdeModel:
         self._config_init()
         self.path_to_fpl_root = os.path.abspath(
             self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
-        self.library = AnyNode()
-        AnyNode(outline=AuxSymbolTable.library, parent=self.library)
+        self.library = AnyNode(outline=AuxSymbolTable.library)
         self._utils.reload_library(self.library, self.path_to_fpl_root)
         self.fpl_parser = self._utils.get_parser("../grammar/fpl_tatsu_format.ebnf")
         self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)

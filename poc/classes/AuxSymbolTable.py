@@ -132,11 +132,6 @@ class AuxSymbolTable:
         return r.get(parent, outline)
 
     @staticmethod
-    def add_namespace(root: AnyNode, fpl_file):
-        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
-        fpl_file.parent = library_node
-
-    @staticmethod
     def add_localization(locals_node: AuxSTOutline, localization):
         localization.parent = locals_node
 
@@ -284,7 +279,7 @@ class AuxSymbolTable:
                 if var.var.id in distinct_vars:
                     named_var_declaration.all_errors().append(
                         fplerror.FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var,
-                                                                        ast_info.file))
+                                                                    ast_info.file))
                 else:
                     distinct_vars[var.var.id] = var.var
                 var_dec = AuxSTVarDec(i)
@@ -296,13 +291,11 @@ class AuxSymbolTable:
                 cloned_type.parent = var_dec
 
     @staticmethod
-    def get_library_by_filename(root: AnyNode, theory_file_name: str):
-        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
+    def get_library_by_filename(library_node: AnyNode, theory_file_name: str):
         return search.find(library_node, lambda node: hasattr(node, "file_name") and node.file_name == theory_file_name)
 
     @staticmethod
-    def get_library_by_namespace(root: AnyNode, namespace: str, modifier: str):
-        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
+    def get_library_by_namespace(library_node: AnyNode, namespace: str, modifier: str):
         if modifier == "*":
             # for the '*' modifier return all nodes whose namespace starts with the searched namespace
             return search.findall(library_node,
@@ -330,4 +323,3 @@ class AuxSymbolTable:
     def get_theories(root: AnyNode):
         result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
         return result
-

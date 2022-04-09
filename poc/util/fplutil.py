@@ -93,4 +93,4 @@ class Utils:
                 else:
                     raise AssertionError("Namespace not found in " + file)
                 fpl_file.namespace = namespace_of_source
-                AuxSymbolTable.add_namespace(library_node, fpl_file)
+                fpl_file.parent = library_node

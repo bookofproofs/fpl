@@ -15,4 +15,4 @@ class Dialog(tk.Toplevel):
         self.geometry("{}x{}+{}+{}".format(750, 400, x_coordinate, y_coordinate))
         self.title(title)
         self.main_pane = tk.PanedWindow(self, orient=orient, bg=self._theme.get_bg_color())
-        self.main_pane.pack(fill=tk.BOTH, padx=10, pady=10)
+        self.main_pane.pack(fill=tk.BOTH, padx=10, pady=10, expand=True)
