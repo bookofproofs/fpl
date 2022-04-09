@@ -315,11 +315,35 @@ class AuxSymbolTable:
         return found_theory_node
 
     @staticmethod
-    def remove_library(root):
-        library_node = AuxSymbolTable.get_child_by_outline(root, AuxSymbolTable.library)
-        library_node.parent = None
-
-    @staticmethod
     def get_theories(root: AnyNode):
         result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
         return result
+
+    @staticmethod
+    def remove_file_from_symbol_table(symbol_table_root, file_name: str):
+        """
+        Implements a garbage collector, removing all contents from a file from the symbol table,
+        :param symbol_table_root: root of the symbol table
+        :param file_name: file name to be removed
+        :return:
+        """
+        globals_node = AuxSymbolTable.get_child_by_outline(symbol_table_root, AuxSymbolTable.globals)
+        theory_node = None
+        namespace = None
+        for child in globals_node.children:
+            if child.theory.file_name == file_name:
+                theory_node = child.theory
+                namespace = theory_node.namespace
+                child.parent = None
+                del child
+        if theory_node is not None:
+            AuxSymbolTable._remove_node_recursively(theory_node)
+        return namespace
+
+    @staticmethod
+    def _remove_node_recursively(node):
+        for child in node.children:
+            AuxSymbolTable._remove_node_recursively(child)
+        if len(node.children) == 0:
+            node.parent = None
+            del node

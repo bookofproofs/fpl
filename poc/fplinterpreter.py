@@ -163,3 +163,16 @@ class FplInterpreter:
     def get_ast_list(self, file_name):
         fpl_node = AuxSymbolTable.get_library_by_filename(self._symbol_table_root, file_name)
         return fpl_node.get_analyser().ast_list
+
+    def forget_file(self, file_name: str):
+        # remove the file from the symbol table
+        namespace = AuxSymbolTable.remove_file_from_symbol_table(self._symbol_table_root, file_name)
+        # remove the file from processed_namespaces
+        self.processed_namespaces.remove(namespace + ":" + file_name)
+        # remove the errors related to the file
+        new_errors = list()
+        for err in self._errors:
+            if err.file != file_name:
+                new_errors.append(err)
+        self._errors.clear()
+        self._errors = new_errors
