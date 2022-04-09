@@ -1,4 +1,10 @@
 # Changes in the FPL IDE
+## 1.6.0
+* Feature: 
+  * Command Build->Current FPL File - when there are FPL interpreter errors in an FPL file and the user corrects them in the editor, the menu command will re-interpret the file again and creates an amended error list.  
+* Refactoring
+  * Menu "File" deprecated (removed)
+* Minor bug-fixes
 ## 1.5.0
 * Feature: 
   * A user dialog for the menu command FPL Theory->Open

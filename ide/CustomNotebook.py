@@ -96,14 +96,16 @@ class CustomNotebook(ttk.Notebook):
             return self.save_file_as()
         elif editor_info.is_new:
             return self.save_file_as()
-        with io.open(path_to_fpl_theories, 'w', encoding="UTF-8") as file:
+        with io.open(os.path.join(path_to_fpl_theories,editor_info.title), 'w', encoding="UTF-8") as file:
             code = editor_info.get_text()
             file.write(code)
             # change the appearance of the tab to "unchanged"
             self.tab(editor_info, text=editor_info.title)
             # reset the initial value to the new value
-            editor_info.text.init_value(editor_info.get_text())
+            editor_info.text.init_value(code)
             editor_info.is_new = False
+            # replace the code in the library
+            self.ide.model.refresh_file_in_library(editor_info.title, code)
 
     def save_file_as(self, event=None):
         editor_info = self.get_current_file_object()

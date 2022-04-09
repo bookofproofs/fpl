@@ -271,10 +271,11 @@ class FrameWithLineNumbers(tk.Frame):
         that we can remember them to remove them again when the user changes the FPL code
         :return:
         """
-
-        self.text.tag_config('err', underline=True, underlinefg='red')
+        # remove all existing tags
         tags = self._theme.get_tag_formatting()
         self.text.tag_delete(list(tags)+["err"])
+        # add new tags
+        self.text.tag_config('err', underline=True, underlinefg='red')
         for tag in tags:
             self.text.tag_config(tag, foreground=tags[tag])
 

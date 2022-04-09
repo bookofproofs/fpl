@@ -87,9 +87,11 @@ class DialogNewOrAddFpl(Dialog):
             fpl_file.set_file_content(initial_code.strip())
             fpl_file.namespace = name_space
             fpl_file.parent = self.ide.model.library
-            notebook = self.ide.get_editor_notebook()
-            notebook.set_file(os.path.basename(self._actual_file_name.get()))
-            notebook.add_new_editor(initial_code)
+            book = self.ide.get_editor_notebook()
+            book.set_file(os.path.basename(self._actual_file_name.get()))
+            book.add_new_editor(initial_code)
+            editor_info = book.select_file(file_name)
+            editor_info.is_new = True
             self.ide.model.theory_is_open_flag = True
             self.ide.menus.menu_configure()
             self.destroy()
@@ -113,9 +115,12 @@ class DialogNewOrAddFpl(Dialog):
             fpl_file.set_file_content(initial_code.strip())
             fpl_file.namespace = name_space
             fpl_file.parent = self.ide.model.library
-            notebook = self.ide.get_editor_notebook()
-            notebook.set_file(os.path.basename(self._actual_file_name.get()))
-            notebook.add_new_editor(initial_code)
+            self.ide.model.set_main_file(file_name)
+            book = self.ide.get_editor_notebook()
+            book.set_file(os.path.basename(self._actual_file_name.get()))
+            book.add_new_editor(initial_code)
+            editor_info = book.select_file(file_name)
+            editor_info.is_new = True
             self.ide.model.theory_is_open_flag = True
             self.ide.menus.menu_configure()
             self.destroy()

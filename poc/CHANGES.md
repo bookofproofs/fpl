@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.5.0
+* Feature: Unloading an FPL file from the FPL interpreter's internal representation.
+* Refactoring: fplerror in terms of correctly calling super() in constructors
+* Minor bug-fixes
 ## 1.4.12
 * Refactoring: Reading the library from the root theory is now part of the Utils class (and not part of the FPL interpreter).
 ## 1.4.11

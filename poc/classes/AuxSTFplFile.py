@@ -18,8 +18,8 @@ class AuxSTFplFile(AuxSTOutline):
         self._transformer = None
 
     def set_file_content(self, fpl_source):
-        self._fpl_source = fpl_source
-        self._md5_hash.update(fpl_source.encode('utf-8'))
+        self._fpl_source = fpl_source.strip()
+        self._md5_hash.update(self._fpl_source.encode('utf-8'))
         self.checksum = self._md5_hash.hexdigest()
 
     def get_file_content(self):
@@ -30,3 +30,6 @@ class AuxSTFplFile(AuxSTOutline):
 
     def get_analyser(self):
         return self._analyser
+
+    def get_source(self):
+        return self._fpl_source

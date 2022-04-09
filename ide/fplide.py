@@ -15,7 +15,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 class FplIde:
 
     def __init__(self):
-        self._version = '1.4.3'
+        self.ide_version = '1.6.0'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -25,7 +25,7 @@ class FplIde:
         x_cordinate = int((screen_width / 2) - (1024 / 2))
         y_cordinate = int((screen_height / 2) - (768 / 2))
         self.window.geometry("{}x{}+{}+{}".format(1024, 768, x_cordinate, y_cordinate))
-        self.window.title('Formal Proving Language IDE (' + self._version + ')')
+        self.window.title('Formal Proving Language IDE (' + self.ide_version + ')')
         self.window.state('zoomed')
         self.model = IdeModel()
         self.__add_paned_windows()
@@ -37,7 +37,7 @@ class FplIde:
         self.window.mainloop()
 
     def get_version(self):
-        return self._version
+        return self.ide_version
 
     def __add_paned_windows(self):
         self._panedWindow = tk.PanedWindow(self.window)

@@ -1,5 +1,6 @@
-from anytree import AnyNode
+from anytree import AnyNode, RenderTree
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.util.fplutil import Utils
 import tkinter as tk
 import os
@@ -74,3 +75,24 @@ class IdeModel:
         # make sure, the config file is now complete
         cfgfile = open(path_to_config, "w")
         self.config.write(cfgfile)
+
+    def debug_print(self):
+        print(RenderTree(self.library))
+        self.fpl_interpreter.print_symbol_table()
+
+    def set_main_file(self, file_name: str):
+        for child in self.library.children:
+            child.is_main = False
+            if child.file_name == file_name:
+                child.is_main = True
+
+    def get_main_file(self):
+        for child in self.library.children:
+            if child.is_main:
+                return child
+        return None
+
+    def refresh_file_in_library(self, file_name: str, file_content: str):
+        for fpl_file in self.library.children:
+            if fpl_file.file_name == file_name:
+                fpl_file.set_file_content(file_content)
