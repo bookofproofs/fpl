@@ -32,7 +32,7 @@ class FrameWithLineNumbers(tk.Frame):
         )
         self.vsb.pack(side="right", fill="y")
         self.linenumbers.pack(side="left", fill="y")
-        self.text.pack(side="right", fill="both", expand=True)
+        self.text.pack(side="right", fill=tk.BOTH, expand=True)
 
         self.text.bind("<<Change>>", self.on_change)
         self.bind_all('<Alt-Control-j>', self.parse_interpret_highlight)
@@ -241,7 +241,7 @@ class FrameWithLineNumbers(tk.Frame):
         row = pos.split('.')[0]
         column = str(int(pos.split('.')[1]) + 1)
         ide = self._parent_notebook.get_parent()
-        ide.get_status_bar().set_status_text(self.title + " (R:" + row + " C:" + column + ")")
+        ide.get_status_bar().set_text(self.title + " (R:" + row + " C:" + column + ")")
         return pos
 
     def set_text(self, code, init=True):

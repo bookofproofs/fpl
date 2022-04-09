@@ -1,11 +1,15 @@
 # Changes in the FPL IDE
+## 1.5.0
+* Feature: 
+  * A user dialog for the menu command FPL Theory->Open
+  * Command FPL Theory->Close
 ## 1.4.2
-* Bugfix: Menu command Fpl Theory->New now corrects the disabled status of the menu after creating new theory.
+* Bugfix: Menu command Fpl Theory->New now corrects the disabled status of the menu after creating a new theory.
 * Refactoring: New class IdeModel to store the state of the ide and main data or handler pointers.
 ## 1.4.1
 * Bugfix: Menu command Fpl Theory->New now opens the FPL file after creating it.
 ## 1.4.0
-* Feature: A user dialog for the menu command Fpl Theory->New.
+* Feature: A user dialog for the menu command FPL Theory->New.
 * Refactoring: 
   * A class for common dialogs, 
   * SettingsDialog renamed in DialogSettings

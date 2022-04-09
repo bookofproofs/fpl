@@ -35,7 +35,7 @@ class DefaultTheme:
             'inbuilttype': "#A3D6A3",
             'keyword': "#4D9CD5",
             'type': "#39BCB0",
-            'variable': "#ffdb58"
+            '_variable': "#ffdb58"
         }
 
     def get_notebook_style(self):
