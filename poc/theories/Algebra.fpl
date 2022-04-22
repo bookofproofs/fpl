@@ -181,7 +181,7 @@ Fpl.Algebra.Structures
         {
             myOp: BinOp(a,b: tplSetElem)
 
-            Monoid(x: tplSet, op: BinOp(a,b: tplSetElem))
+            Monoid(x: tplSet, op: BinOp)
             {
                 self:=Semigroup(x,op)
                 myOp:=op
@@ -195,23 +195,24 @@ Fpl.Algebra.Structures
         }
 
         // Exponentiation in a monoid
-        // Note how we use "full-qualified" parameters to enforce x to be an element of the monoid m.
+        // Note how we use the Zermelo Fraenkel In predicate to ensure that y is the element of the monoid carrier set x.
         func Exp
             (
             m: Monoid(x: tplSet, op: BinOp(a,b: tplSetElem)),
-            x: tplSetElem,
+            y: tplSetElem,
             n: Nat
             ) -> tplSetElem
         {
-            cases
+            assert In(y,x)
+				cases
             (
                 case Equals(n,0):
                     return m.NeutralElem()
                 else:
                     return
                         op(
-                            x,
-                            Exp( m(x,op), x, Sub(n,1))
+                            y,
+                            Exp( m(y,op), y, Sub(n,1))
                           )
             )
 
@@ -222,7 +223,7 @@ Fpl.Algebra.Structures
         {
             myOp: BinOp(a,b: tplSetElem)
 
-            Group(x: tplSet, op: BinOp(a,b: tplSetElem))
+            Group(x: tplSet, op: BinOp)
             {
                 myOp:=op
                 self:=Monoid (x,op)
@@ -230,12 +231,12 @@ Fpl.Algebra.Structures
 
             mandatory pred InverseExistsForAllElements()
             {
-                a,b: tplSetElem
-                all a
+                x1,x2: tplSetElem
+                all x1
                 (
-                    ex b
+                    ex x2
                     (
-                        Equals( myOp(a,b), self.NeutralElem() )
+                        Equals( myOp(x1,x2), self.NeutralElem() )
                     )
                 )
             }
@@ -267,12 +268,12 @@ Fpl.Algebra.Structures
         class Ring: AlgebraicStructure
         {
             myX : tpl
-            myAdd,myMul : BinOp(a,b: tplElem)
+            myAdd,myMul : BinOp
 
             Ring (
                 x: tpl,
-                add: BinOp(a,b: tplElem),
-                mul: BinOp(a,b: tplElem)
+                add: BinOp,
+                mul: BinOp
             )
             {
                 myX:= x
@@ -283,12 +284,14 @@ Fpl.Algebra.Structures
 
             mandatory func Add(a,b:tplElem)->tplElem
             {
-                return myAdd
+               assert and(In(a, myX), In(a, myY))
+					return myAdd
             }
 
             mandatory func Mul(a,b:tplElem)->tplElem
             {
-                return myMul
+               assert and(In(a, myX), In(a, myY))
+               return myMul
             }
 
             mandatory CommutativeGroup AdditiveGroup()
@@ -408,11 +411,11 @@ Fpl.Algebra.Structures
         class VectorSpaceOverField : obj
         {
             mySpace: NonemptySet
-            myFieldAdd, myFieldMul: BinOp(a,b:tplFieldElement)
+            myFieldAdd, myFieldMul: BinOp
             myFieldSet: tplFieldSet
-            myScalarMul: ScalarMul (a: tplFieldElement, v: tplVector)
-            myVecAdd: AddVec (v,w: tplVector)
-            myField: Field(f: tplFieldSet,opAdd, opMul: BinOp(a,b: tplFieldElement))
+            myScalarMul: ScalarMul 
+            myVecAdd: AddVec 
+            myField: Field
 
             VectorSpaceOverField
                 (
@@ -420,11 +423,11 @@ Fpl.Algebra.Structures
                         field: Field
                         (
                             fieldSet: tplFieldSet,
-                            fieldAdd: BinOp(a,b: tplFieldElement),
-                            fieldMul: BinOp(a,b: tplFieldElement)
+                            fieldAdd: BinOp,
+                            fieldMul: BinOp
                         ),
                     vecAdd: AddVec (v,w: tplVector),
-                    scalarMul: ScalarMul (a: tplFieldElement,v: tplVector)
+                    scalarMul: ScalarMul (a: tplFieldElement,v1: tplVector)
                 )
             {
                 mySpace:= space
@@ -506,6 +509,24 @@ Fpl.Algebra.Structures
    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -30,20 +30,18 @@ class AuxSTClass(AuxSTBlock):
         var_spec_list_node = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.var_spec)
 
         declared_vars_tuple = search.findall_by_attr(var_spec_list_node, AuxSymbolTable.var_decl,
-                                                      AuxSymbolTable.outline)
+                                                     AuxSymbolTable.outline)
         for var_declaration in declared_vars_tuple:
+            unique_source_code_id_of_var = var_declaration.id + '|' + str(self.zfrom)
+
             if var_declaration.id not in self._declared_vars:
                 # set the scope of the variable
                 var_declaration.initialize_scope(self.zto)
                 # add the variable declaration into a dictionary for fast searching
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
-                # we have a duplicate variable declaration
-                errors.append(
-                    fplerror.FplVariableAlreadyDeclared(var_declaration.zfrom,
-                                                        self._declared_vars[var_declaration.id].zfrom,
-                                                        var_declaration.id,
-                                                        filename))
+                # we have a potential duplicate variable declaration
+                self.append_variable_already_declared(var_declaration, errors, filename)
 
         # The used variables might be spread across the scope of the class, including its constructors and properties.
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit
