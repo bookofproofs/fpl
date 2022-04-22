@@ -1,6 +1,6 @@
 Fpl.LinAlg
 {
-    uses Fpl.Commons, Fpl.Commons.Structures, Fpl.Set.ZermeloFraenkel, Fpl.Algebra
+    uses Fpl.Commons, Fpl.Commons.Structures, Fpl.Set.ZermeloFraenkel, Fpl.Algebra.Structures
 
     theory
     {
@@ -14,7 +14,7 @@ Fpl.LinAlg
                     (
                     tplFieldSet,
                     addInField: BinOp(a,b: tplFieldElem),
-                    mulInField: BinOp(a,b: tplFieldElem)
+                    mulInField: BinOp(a1,b1: tplFieldElem)
                     ),
                 n: Nat
             )
@@ -70,3 +70,5 @@ Fpl.LinAlg
 
     }
 }
+
+

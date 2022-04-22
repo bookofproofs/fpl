@@ -77,15 +77,28 @@ class AuxSTBlock(AuxST):
                 # add the variable declaration into a dictionary for fast searching
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
-                # we have a duplicate variable declaration
-                errors.append(
-                    fplerror.FplVariableAlreadyDeclared(var_declaration.zfrom,
-                                                        self._declared_vars[var_declaration.id].zfrom,
-                                                        var_declaration.id,
-                                                        filename))
+                # we have a potential duplicate variable declaration
+                self.append_variable_already_declared(var_declaration, errors, filename)
 
         # blocks's used variables
         self._used_vars = search.findall_by_attr(self, "var", "outline")
+
+    def append_variable_already_declared(self, var_declaration, errors, filename):
+        # In implicit declarations like a,b,c: BinOp(x,y: tpl)
+        # The names "x,y" would create false positives of FplVariableAlreadyDeclared errors if only checking the
+        # names x,y. Semantically, the above declaration means a.x, b.x, c.x, a.y, b.y, c.y, and there is no
+        # conflict. To prevent these false positives, we also check if the name of the variables correlates
+        # to its unique position in the source code.
+        if str(var_declaration.zfrom) == str(self._declared_vars[var_declaration.id].zfrom):
+            # ignore the false positive
+            pass
+        else:
+            # we have a duplicate variable declaration
+            errors.append(
+                fplerror.FplVariableAlreadyDeclared(var_declaration.zfrom,
+                                                    self._declared_vars[var_declaration.id].zfrom,
+                                                    var_declaration.id,
+                                                    filename))
 
     def get_declared_vars(self):
         """

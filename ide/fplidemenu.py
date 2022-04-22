@@ -2,7 +2,6 @@ from tkinter import messagebox
 from ide.DialogSettings import DialogSettings
 from ide.DialogNewOrAddFpl import DialogNewOrAddFpl
 from ide.DialogOpenFplTheory import DialogOpenFplTheory
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 import tkinter as tk
 
 
@@ -155,7 +154,10 @@ class FPLIdeMenus:
             book = self.ide.get_editor_notebook()
             for tab_name in book.tabs():
                 book.forget(tab_name)
+            # remove metadata from ide
             self._clear_theory_metadata_from_ide()
+            # clear the symbol table and all errors of the interpreter
+            self.ide.model.fpl_interpreter.clear()
             # flag that no theory is open
             self.ide.model.theory_is_open_flag = False
             self.ide.menus.menu_configure()
@@ -184,11 +186,11 @@ class FPLIdeMenus:
             return
         else:
             # before rebuilding file, first save it
-            book.select_file(editor_info.title)
+            # book.select_file(editor_info.title)
             book.save_file(None)
             # Now, remove the file from the symbol table, because we have to parse the file
             # again and rebuild the symbol table of the file
-
             self.ide.model.fpl_interpreter.forget_file(editor_info.title)
             # rebuild the symbol table and perform semantical analysis
             editor_info.parse_interpret_highlight_update_all()
+

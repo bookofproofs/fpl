@@ -30,12 +30,8 @@ class AuxSTDefinitionPredicate(AuxSTBlockWithSignature):
                 # add the variable declaration into a dictionary for fast searching
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
-                # we have a duplicate variable declaration
-                errors.append(
-                    fplerror.FplVariableAlreadyDeclared(var_declaration.zfrom,
-                                                        self._declared_vars[var_declaration.id].zfrom,
-                                                        var_declaration.id,
-                                                        filename))
+                # we have a potential duplicate variable declaration
+                self.append_variable_already_declared(var_declaration, errors, filename)
 
         # The used variables might be spread across the scope of the predicate definition, including its properties.
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit

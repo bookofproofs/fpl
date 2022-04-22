@@ -2,7 +2,6 @@ from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.classes.AuxSTClass import AuxSTClass
-from poc import fplerror
 
 
 class AuxSTInstance(AuxSTBlock):
@@ -24,12 +23,8 @@ class AuxSTInstance(AuxSTBlock):
                     # add the class variable declaration into a dictionary of the constructor for fast searching
                     self._declared_vars[class_var_declaration.id] = class_var_declaration
                 else:
-                    # we have a duplicate variable declaration
-                    errors.append(
-                        fplerror.FplVariableAlreadyDeclared(class_var_declaration.zfrom,
-                                                            self._declared_vars[class_var_declaration.id].zfrom,
-                                                            class_var_declaration.id,
-                                                            filename))
+                    # we have a potential duplicate variable declaration
+                    self.append_variable_already_declared(class_var_declaration, errors, filename)
         else:
             # Case#2: We have a property of a functional term definition or a predicate definition
             # collect parent's variable declarations (outer scope)
@@ -49,12 +44,8 @@ class AuxSTInstance(AuxSTBlock):
                     # add the class variable declaration into a dictionary of the constructor for fast searching
                     self._declared_vars[parent_var_declaration.id] = parent_var_declaration
                 else:
-                    # we have a duplicate variable declaration
-                    errors.append(
-                        fplerror.FplVariableAlreadyDeclared(parent_var_declaration.zfrom,
-                                                            self._declared_vars[parent_var_declaration.id].zfrom,
-                                                            parent_var_declaration.id,
-                                                            filename))
+                    # we have a potential duplicate variable declaration
+                    self.append_variable_already_declared(parent_var_declaration, errors, filename)
 
         # include own variable declarations (i.e. both, its signature and body)
         own_var_declarations = search.findall_by_attr(self, AuxSymbolTable.var_decl, AuxSymbolTable.outline)
@@ -65,12 +56,8 @@ class AuxSTInstance(AuxSTBlock):
                 # add the class variable declaration into a dictionary of the constructor for fast searching
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
-                # we have a duplicate variable declaration
-                errors.append(
-                    fplerror.FplVariableAlreadyDeclared(var_declaration.zfrom,
-                                                        self._declared_vars[var_declaration.id].zfrom,
-                                                        var_declaration.id,
-                                                        filename))
+                # we have a potential duplicate variable declaration
+                self.append_variable_already_declared(var_declaration, errors, filename)
 
         # the used variables are only in the body
         self._used_vars = search.findall_by_attr(self, AuxSymbolTable.var, AuxSymbolTable.outline)

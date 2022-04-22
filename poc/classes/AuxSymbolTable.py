@@ -322,7 +322,7 @@ class AuxSymbolTable:
     @staticmethod
     def remove_file_from_symbol_table(symbol_table_root, file_name: str):
         """
-        Implements a garbage collector, removing all contents from a file from the symbol table,
+        Implements a garbage collector, removing all contents of an FPL file from the symbol table.
         :param symbol_table_root: root of the symbol table
         :param file_name: file name to be removed
         :return:

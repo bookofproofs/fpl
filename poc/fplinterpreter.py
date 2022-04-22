@@ -13,7 +13,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.4.12"
+        self.version = "1.5.1"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._errors = []
@@ -118,16 +118,20 @@ class FplInterpreter:
                 self._parser.parse(fpl_file_node.get_file_content(), semantics=analyser, whitespace='')
             except tatsu.exceptions.FailedParse as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 1))
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 1,
+                                              fpl_file_node.file_name))
             except tatsu.exceptions.FailedToken as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 2))
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 2,
+                                              fpl_file_node.file_name))
             except tatsu.exceptions.FailedPattern as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 3))
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 3,
+                                              fpl_file_node.file_name))
             except BaseException as ex:
                 self._errors.append(
-                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 4))
+                    fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 4,
+                                              fpl_file_node.file_name))
 
     def semantic_analysis(self):
         analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._errors)
@@ -140,7 +144,17 @@ class FplInterpreter:
         return str(RenderTree(self._symbol_table_root))
 
     def clear(self):
-        self._symbol_table_root.children = tuple([])
+        """
+        Clears the whole symbol table using the garbage collector.
+        :return: None
+        """
+        file_names = set()
+        theories = AuxSymbolTable.get_theories(self._symbol_table_root)
+        for theory_node in theories:
+            if theory_node.file_name not in file_names:
+                file_names.add(theory_node.file_name)
+        for file_name in file_names:
+            self.forget_file(file_name)
         self._errors.clear()
 
     def get_symbol_table_root(self):

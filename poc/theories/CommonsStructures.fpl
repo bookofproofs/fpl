@@ -6,7 +6,7 @@ Fpl.Commons.Structures
     {
 
         // defines a fixed length tuple template using a generic type tplIndex for an index in a range
-        class Tuple : tpl
+        class Tuple : obj
         {
             myLength: Nat
 
@@ -37,7 +37,7 @@ Fpl.Commons.Structures
         }
 
         // defines a tuple template starting from a specific index with an arbitrary length
-        class UnlimitedTupleFrom: tpl
+        class UnlimitedTupleFrom: obj
         {
             UnlimitedTupleFrom(from:Nat, x: tpl[from~])
             {
@@ -285,3 +285,5 @@ Fpl.Commons.Structures
     }
 
 }
+
+

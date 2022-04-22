@@ -15,7 +15,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.0'
+        self.ide_version = '1.6.1'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -327,7 +327,7 @@ class FplIde:
                                          node_title: str,
                                          node_label: str):
         syntax_tree_node = AuxSymbolTable.get_child_by_outline(theory_node, outline)
-        if len(syntax_tree_node.children):
+        if len(syntax_tree_node.children)>0:
             tree_view_node = self._object_browser_tree.insert(treeview_theory_node, index=tk.END,
                                                               iid=theory_node.namespace + postfix,
                                                               text=node_title, values=("", "ok", theory_node.file_name))

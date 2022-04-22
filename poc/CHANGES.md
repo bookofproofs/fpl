@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.5.1
+* Bugfix: 
+  * Handling other errors except parsing and semantic errors in the error list
+  * File name added to the error list of parsing errors. 
 ## 1.5.0
 * Feature: Unloading an FPL file from the FPL interpreter's internal representation.
 * Refactoring: fplerror in terms of correctly calling super() in constructors

@@ -98,11 +98,19 @@ class CustomNotebook(ttk.Notebook):
             return self.save_file_as()
         with io.open(os.path.join(path_to_fpl_theories,editor_info.title), 'w', encoding="UTF-8") as file:
             code = editor_info.get_text()
+            # remember current cursor position
+            cursor_position = editor_info.get_pos().split('.')
             file.write(code)
             # change the appearance of the tab to "unchanged"
             self.tab(editor_info, text=editor_info.title)
             # reset the initial value to the new value
             editor_info.text.init_value(code)
+            # set the cursor to the previous one
+            line = int(cursor_position[0])
+            column = int(cursor_position[1])
+            editor_info.focus_set()
+            editor_info.set_pos(line, column)
+
             editor_info.is_new = False
             # replace the code in the library
             self.ide.model.refresh_file_in_library(editor_info.title, code)

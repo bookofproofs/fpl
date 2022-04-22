@@ -1,4 +1,10 @@
 # Changes in the FPL IDE
+## 1.6.1
+* Bugfixes:
+  * AttributeError: 'FplIde' object has no attribute 'fpl_source_transformer' when reformatting code corrected. 
+  * Higlighting and (any previous) positions of errors in the FPL code are now correctly calculated after reformatting the code. 
+  * When saving a file, the cursor stays at the last position in the editor end does not jump to its beginning. 
+  * When closing a theory, the symbol table gets cleared so that it does not mix up with a new theory to be opened.   
 ## 1.6.0
 * Feature: 
   * Command Build->Current FPL File - when there are FPL interpreter errors in an FPL file and the user corrects them in the editor, the menu command will re-interpret the file again and creates an amended error list.  

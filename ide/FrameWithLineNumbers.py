@@ -35,7 +35,6 @@ class FrameWithLineNumbers(tk.Frame):
         self.text.pack(side="right", fill=tk.BOTH, expand=True)
 
         self.text.bind("<<Change>>", self.on_change)
-        self.bind_all('<Alt-Control-j>', self.parse_interpret_highlight)
         self.bind_all('<Alt-Control-g>', self.parse_interpret_highlight_update_all)
         self.bind_all('<Alt-Control-l>', self.reformat_code)
         self.text.bind('<Return>', self._press_enter)
@@ -176,7 +175,7 @@ class FrameWithLineNumbers(tk.Frame):
         else:
             return ""
 
-    def parse_interpret_highlight(self, event=None):
+    def _parse_interpret_highlight(self, event=None):
         """
         Parses and interprets the code in self.text and highlights it.
         :param event: Event for any key binding
@@ -186,7 +185,7 @@ class FrameWithLineNumbers(tk.Frame):
         self._parent_notebook.ide.window.update_idletasks()
         # parse and interpret the code
         path = os.path.abspath(self._parent_notebook.ide.model.config.get(Settings.section_paths,
-                                                                    Settings.option_paths_fpl_theories))
+                                                                          Settings.option_paths_fpl_theories))
         self._parent_notebook.ide.model.fpl_interpreter.syntax_analysis(path + '\\' + self.title)
         self._parent_notebook.ide.model.fpl_interpreter.semantic_analysis()
         # reconfigure all tags
@@ -204,7 +203,7 @@ class FrameWithLineNumbers(tk.Frame):
         :param event: Event for any key binding
         :return: None
         """
-        interpreter = self.parse_interpret_highlight()
+        interpreter = self._parse_interpret_highlight()
         self._parent_notebook.ide.refresh_info(interpreter, self)
 
     def reformat_code(self, event=None):
@@ -214,9 +213,17 @@ class FrameWithLineNumbers(tk.Frame):
         :return: None
         """
         code = self.get_text()
-        self._parent_notebook.ide.fpl_source_transformer.syntax_transform_from_source(code)
-        self.set_text(self._parent_notebook.ide.fpl_source_transformer.get_prettified(), init=False)
-        self.parse_interpret_highlight()
+        ide_model = self._parent_notebook.ide.model
+        ide_model.fpl_source_transformer.syntax_transform_from_source(code)
+        self.set_text(ide_model.fpl_source_transformer.get_prettified(), init=False)
+
+        # make sure the highlighting is updated according to the re-formatted code
+        ide_model.fpl_interpreter.forget_file(self.title)
+        code = self.get_text()
+
+        # replace the code in the library
+        ide_model.refresh_file_in_library(self.title, code)
+        self.parse_interpret_highlight_update_all()
 
     def on_change(self, event):
         # rewrite all line numbers
@@ -273,7 +280,7 @@ class FrameWithLineNumbers(tk.Frame):
         """
         # remove all existing tags
         tags = self._theme.get_tag_formatting()
-        self.text.tag_delete(list(tags)+["err"])
+        self.text.tag_delete(list(tags) + ["err"])
         # add new tags
         self.text.tag_config('err', underline=True, underlinefg='red')
         for tag in tags:
