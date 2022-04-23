@@ -94,3 +94,24 @@ class Utils:
                     raise AssertionError("Namespace not found in " + file)
                 fpl_file.namespace = namespace_of_source
                 fpl_file.parent = library_node
+
+    @staticmethod
+    def identify_clicked_treeview_item(tree_view):
+        """
+        Try to identify the clicked tkinter treeview item.
+        :param tree_view: tree view object
+        :return: None if failure, or tuple of clicked values
+        """
+        currItem = tree_view.focus()
+        if currItem == "":
+            # for some reason, some clicks do not focus the item but ''. In this case try to select the first one
+            all_children = tree_view.get_children()
+            if len(all_children) > 0:
+                currItem = tree_view.get_children()[0]
+            else:
+                # return nothing
+                return None
+        tree_view.selection_set(currItem)
+        tree_view.focus(currItem)
+        item = tree_view.item(currItem)
+        return item['values']

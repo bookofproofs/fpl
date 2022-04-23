@@ -1,4 +1,15 @@
 # Changes in the FPL IDE
+## 1.6.2
+* Refactoring:
+  * A separate new class for the ObjectBrowser.py. Code separated from the main code in the fplide.py file.
+  * Name column removed from the ObjectBrowser
+* Bugfixes:
+  * Wait cursor added
+  * Namespaces sorted alphabetically
+  * File names removed from object browser for pure outline lines that do not refer to actual source code. 
+  * Event "double-click" instead of "click" bound to the Error List
+* Feature:
+  * Double-clicking the object browser will open a file of the theory and jump to the respective position in the source code.
 ## 1.6.1
 * Bugfixes:
   * AttributeError: 'FplIde' object has no attribute 'fpl_source_transformer' when reformatting code corrected. 

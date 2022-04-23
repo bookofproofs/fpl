@@ -96,7 +96,7 @@ class CustomNotebook(ttk.Notebook):
             return self.save_file_as()
         elif editor_info.is_new:
             return self.save_file_as()
-        with io.open(os.path.join(path_to_fpl_theories,editor_info.title), 'w', encoding="UTF-8") as file:
+        with io.open(os.path.join(path_to_fpl_theories, editor_info.title), 'w', encoding="UTF-8") as file:
             code = editor_info.get_text()
             # remember current cursor position
             cursor_position = editor_info.get_pos().split('.')
@@ -132,7 +132,7 @@ class CustomNotebook(ttk.Notebook):
 
     def new_file(self, event=None):
         self._current_file = self._generate_new_file_name()
-        self.add_new_editor("")
+        self.add_new_editor("", False)
 
     def _generate_new_file_name(self) -> str:
         file_name = "NewTheory"
@@ -178,9 +178,10 @@ class CustomNotebook(ttk.Notebook):
             else:
                 # read the file
                 code = file.read()
-                self.add_new_editor(code)
+                self.add_new_editor(code, True)
 
-    def add_new_editor(self, code):
+    def add_new_editor(self, code: str, with_new_symbol_table: bool):
+        self.ide.window.config(cursor="wait")
         # this is a new file that is not already open yet. Create a new tab content
         editor_info = FrameWithLineNumbers(self, self._current_file)
         # set the text
@@ -193,9 +194,12 @@ class CustomNotebook(ttk.Notebook):
         self.add(editor_info, text=self._current_file)
         # and select the tab
         self.select(editor_info)
-        # interpret the file
-        # get the transformer, highlight the code, refresh all info
-        editor_info.parse_interpret_highlight_update_all()
+        if with_new_symbol_table:
+            # interpret the file and refresh the symbol table
+            editor_info.parse_interpret_highlight_update_all()
+        else:
+            # open the file in the editor and only highlight it.
+            editor_info.parse_interpret_highlight()
         self.ide.window.config(cursor="")
 
     def get_current_file_object(self) -> FrameWithLineNumbers:

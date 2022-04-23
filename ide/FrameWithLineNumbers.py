@@ -19,7 +19,7 @@ class FrameWithLineNumbers(tk.Frame):
         self.text = EditorText(self, undo=True)
         self._last_pos = "1.0"
         self._number_spaces_per_tab = 3
-        self.is_new = True  # is True if this is a new file, or False, if it was loaded from disk
+        self.is_new = False  # is True if this is a new file, or False, if it was loaded from disk
         self.text.settings(self._theme.get_bg_color(), self._theme.get_fg_color())
         self.vsb = tk.Scrollbar(self, orient="vertical", command=self.text.yview)
         self.text.configure(yscrollcommand=self.vsb.set)
@@ -175,7 +175,7 @@ class FrameWithLineNumbers(tk.Frame):
         else:
             return ""
 
-    def _parse_interpret_highlight(self, event=None):
+    def parse_interpret_highlight(self, event=None):
         """
         Parses and interprets the code in self.text and highlights it.
         :param event: Event for any key binding
@@ -203,7 +203,7 @@ class FrameWithLineNumbers(tk.Frame):
         :param event: Event for any key binding
         :return: None
         """
-        interpreter = self._parse_interpret_highlight()
+        interpreter = self.parse_interpret_highlight()
         self._parent_notebook.ide.refresh_info(interpreter, self)
 
     def reformat_code(self, event=None):
@@ -212,6 +212,7 @@ class FrameWithLineNumbers(tk.Frame):
         :param event: Event for any key binding
         :return: None
         """
+        self._parent_notebook.ide.window.config(cursor="wait")
         code = self.get_text()
         ide_model = self._parent_notebook.ide.model
         ide_model.fpl_source_transformer.syntax_transform_from_source(code)
@@ -224,6 +225,7 @@ class FrameWithLineNumbers(tk.Frame):
         # replace the code in the library
         ide_model.refresh_file_in_library(self.title, code)
         self.parse_interpret_highlight_update_all()
+        self._parent_notebook.ide.window.config(cursor="")
 
     def on_change(self, event):
         # rewrite all line numbers

@@ -34,7 +34,7 @@ class IdeModel:
 
     def _config_init(self):
         """
-        Initialise the config (file) of this IDE. If the values in the ini-file are invalid, they will be overwritten
+        Initialize the config (file) of this IDE. If the values in the ini-file are invalid, they will be overwritten
         with valid default values
         :return: None
         """
@@ -91,6 +91,13 @@ class IdeModel:
             if child.is_main:
                 return child
         return None
+
+    def get_file_by_name(self, file_name):
+        for child in self.library.children:
+            if child.file_name == file_name:
+                return child
+        else:
+            return None
 
     def refresh_file_in_library(self, file_name: str, file_content: str):
         for fpl_file in self.library.children:
