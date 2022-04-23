@@ -144,10 +144,12 @@ class FPLIdeMenus:
         error_tree_view.delete(*error_tree_view.get_children())
         self.ide.update_error_warning_counts()
         # empty object tree
-        object_tree = self.ide.get_object_browser_tree()
-        object_tree.delete(*object_tree.get_children())
+        self.ide.object_browser.clear()
+        # clear the symbol table and all errors of the interpreter
+        self.ide.model.fpl_interpreter.clear()
 
     def close_fpl_theory(self):
+        self.ide.window.config(cursor="wait")
         closeable = self._ask_to_save_any_open_files()
         if closeable:
             # close all open tabs
@@ -156,17 +158,18 @@ class FPLIdeMenus:
                 book.forget(tab_name)
             # remove metadata from ide
             self._clear_theory_metadata_from_ide()
-            # clear the symbol table and all errors of the interpreter
-            self.ide.model.fpl_interpreter.clear()
             # flag that no theory is open
             self.ide.model.theory_is_open_flag = False
             self.ide.menus.menu_configure()
             # set the status bar
             status_bar = self.ide.get_status_bar()
             status_bar.set_text("Ready.")
+        self.ide.window.config(cursor="")
 
     def build_whole_theory(self):
+        self.ide.window.config(cursor="wait")
         self._save_any_unsaved_files()
+        # clear the symbol table and all errors of the interpreter
         self._clear_theory_metadata_from_ide()
         main_fpl_file = self.ide.model.get_main_file()
         book = self.ide.get_editor_notebook().get_files()
@@ -175,10 +178,11 @@ class FPLIdeMenus:
             editor_info = book[main_fpl_file.file_name]
             editor_info.parse_interpret_highlight_update_all()
         else:
-            book.add_new_editor(main_fpl_file.get_source())
-        self.ide.model.debug_print()
+            book.add_new_editor(main_fpl_file.get_source(), True)
+        self.ide.window.config(cursor="")
 
     def build_current_fpl_file(self):
+        self.ide.window.config(cursor="wait")
         book = self.ide.get_editor_notebook()
         editor_info = book.get_current_file_object()
         if editor_info is None:
@@ -193,4 +197,5 @@ class FPLIdeMenus:
             self.ide.model.fpl_interpreter.forget_file(editor_info.title)
             # rebuild the symbol table and perform semantical analysis
             editor_info.parse_interpret_highlight_update_all()
+        self.ide.window.config(cursor="")
 

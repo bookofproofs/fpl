@@ -317,6 +317,7 @@ class AuxSymbolTable:
     @staticmethod
     def get_theories(root: AnyNode):
         result = search.findall_by_attr(root, AuxSymbolTable.theory, AuxSymbolTable.outline)
+        result = sorted(result, key=lambda obj: obj.namespace)
         return result
 
     @staticmethod
