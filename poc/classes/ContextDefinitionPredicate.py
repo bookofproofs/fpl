@@ -8,6 +8,7 @@ class ContextDefinitionPredicate(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
+        self._i = i
         self.building_block = AuxSTDefinitionPredicate(i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["DefinitionPredicate"], self.rule_aggregator)
@@ -15,6 +16,8 @@ class ContextDefinitionPredicate(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateHeader":
             self.building_block.keyword = parsing_info.id  # noqa
+            parsing_info.zfrom.correct_offset(len(parsing_info.id))
+            self.building_block.zfrom = str(parsing_info.zfrom)
             self.stop_aggregation = True
         elif rule == "Signature":
             self.building_block.id = parsing_info.symbol_signature.to_string()

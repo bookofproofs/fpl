@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.5.2
+* Bugfix:
+  * The starting position of predicate definitions was shifted to the last parsed "predicate" keyword INSIDE the definition, not the position of the beginning of the definition.
+  * Upgrade to the newest TatSu Version 5.8.0.
 ## 1.5.1
 * Bugfix: 
   * Handling other errors except parsing and semantic errors in the error list
