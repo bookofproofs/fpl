@@ -1,0 +1,21 @@
+Test.Namespace
+{
+    theory
+    {
+        function Test() -> Nat
+        {
+            x: Nat
+            return x
+
+            mandatory func TestProperty() -> Nat
+            {
+                x: Nat
+                return x
+            }
+        }
+    }
+}
+
+##############################
+
+FplVariableAlreadyDeclared:12:17: The variable 'x' was already declared in the current context at (7,13)

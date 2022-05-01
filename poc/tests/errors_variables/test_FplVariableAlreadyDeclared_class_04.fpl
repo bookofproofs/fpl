@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        class Nat: obj
+        {
+            Nat(ab, cd: Int)
+            {
+                x: Nat
+                x: Nat
+                self := x
+            }
+        }
+    }
+}
+
+##############################
+
+FplVariableAlreadyDeclared:10:17: The variable 'x' was already declared in the current context at (9,17)

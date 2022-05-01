@@ -3,6 +3,7 @@ class AuxBits:
     objectBit = 1
     predicateBit = 2
     functionalTermBit = 4
+    typeBit = objectBit + predicateBit + functionalTermBit
     templateBit = 8
     inbuiltBit = 16
     extensionBit = 32
@@ -48,3 +49,7 @@ class AuxBits:
     @staticmethod
     def is_inbuilt(pattern_int: int):
         return (pattern_int & AuxBits.inbuiltBit) > 0
+
+    @staticmethod
+    def is_type(pattern_int: int):
+        return (pattern_int & AuxBits.typeBit) > 0

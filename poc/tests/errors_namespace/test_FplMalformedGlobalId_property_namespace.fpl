@@ -1,0 +1,19 @@
+TestMalformedGlobalId
+{
+    theory
+    {
+        class TestDerived: obj
+        {
+            myVar: obj
+
+            mand TestParent TestMalformedGlobalId()
+            {
+                self:=myVar
+            }
+        }
+    }
+}
+
+##############################
+
+FplMalformedGlobalId:9:13: The identifier 'TestMalformedGlobalId' should not conflict with the namespace 'TestMalformedGlobalId'

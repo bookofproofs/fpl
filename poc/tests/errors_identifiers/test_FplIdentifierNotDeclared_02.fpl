@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        axiom Test()
+        {
+            n: obj
+            all n
+            (
+                MyPredicate(n)
+            )
+        }
+    }
+
+}
+
+##############################
+
+FplIdentifierNotDeclared:10:17: Undeclared identifier 'MyPredicate'

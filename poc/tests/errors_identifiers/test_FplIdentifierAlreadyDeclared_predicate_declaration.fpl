@@ -43,4 +43,4 @@ TestPredicate
 }
 
 ##############################
-FplIdentifierAlreadyDeclared:34:9: Identifier NotEquals[2:tpl] already defined at (26,9)
+FplIdentifierAlreadyDeclared:34:9: Identifier 'NotEquals[2:tpl]' already defined at (26,9)

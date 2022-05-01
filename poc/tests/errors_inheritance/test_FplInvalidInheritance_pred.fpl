@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: pred
+        {
+        }
+    }
+}
+
+##############################
+
+FplInvalidInheritance:5:24: Inheritance from 'pred' not possible (not a defined class but a predicate type)

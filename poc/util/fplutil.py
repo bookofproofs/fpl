@@ -3,7 +3,6 @@ import tatsu
 import io
 import os
 import re
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTFplFile import AuxSTFplFile
 
 
@@ -115,3 +114,20 @@ class Utils:
         tree_view.focus(currItem)
         item = tree_view.item(currItem)
         return item['values']
+
+    @staticmethod
+    def check_if_error_occurs(error_msg: str, errors: list, expected_diagnose_id):
+        error_msg = error_msg.strip()
+        for error in errors:
+            if error_msg in str(error):
+                if expected_diagnose_id == error.diagnose_id:
+                    return True
+        return False
+
+    @staticmethod
+    def check_if_error_does_not_occur(errors:list, diagnose_id):
+        for error in errors:
+            if diagnose_id == error.diagnose_id:
+                return False
+        return True
+

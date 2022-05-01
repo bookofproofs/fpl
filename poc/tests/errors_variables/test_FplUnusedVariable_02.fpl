@@ -1,0 +1,15 @@
+TestNamespace
+{
+    theory
+    {
+        axiom Text()
+        {
+            n: obj
+            true
+        }
+    }
+}
+
+##############################
+
+FplUnusedVariable:7:12: The variable 'n' (declared at (7,13) was not used in the current context

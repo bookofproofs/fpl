@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: function
+        {
+        }
+    }
+}
+
+##############################
+
+FplInvalidInheritance:5:28: Inheritance from 'function' not possible (not a defined class but a functional term type)
