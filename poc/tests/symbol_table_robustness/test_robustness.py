@@ -4,7 +4,6 @@ from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
 import os
-from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 
 """
 Tests creating the symbol table for randomly derived FPL syntax

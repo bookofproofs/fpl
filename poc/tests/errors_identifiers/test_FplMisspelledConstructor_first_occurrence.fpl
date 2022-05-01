@@ -1,0 +1,22 @@
+Test.Namespace
+{
+    theory
+    {
+        class Nat: obj
+        {
+            Nat1(x: Int)
+            {
+                cases
+                (
+                    case IsGreaterOrEqual(x.RightMember(), x.LeftMember()):
+                        self:=x.RightMember()
+                    else:
+                        self:=undefined
+                )
+            }
+        }
+    }
+}
+
+##############################
+FplMisspelledConstructor:7:13: Misspelled constructor 'Nat1' of class 'Nat' (must be the same)

@@ -121,7 +121,7 @@ The project is still ongoing, and you are invited to collaborate. Please refer t
 * Install the following packages:
   * pytest (7.0.1 or higher) 
   * parameterized (0.8.1 or higher)
-  * tatsu (5.7.3 or higher) 
+  * tatsu (5.8.0 or higher) 
   * anytree (2.8.0 or higher)
 ## Testing
 * Run the [poc tests](https://github.com/bookofproofs/fpl/tree/master/poc/tests) using pytest. (Note: In many python IDEs, there is a shortcut for doing it. For instance, in PyCharm you can just right-click the fpl/poc/tests folder and select 'Run pytest in tests'). 

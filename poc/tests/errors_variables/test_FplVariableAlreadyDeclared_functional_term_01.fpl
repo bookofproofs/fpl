@@ -1,0 +1,15 @@
+Test.Namespace
+{
+    theory
+    {
+        function Test(x: Nat) -> Nat
+        {
+            x: Nat
+            return x
+        }
+    }
+}
+
+##############################
+
+FplVariableAlreadyDeclared:7:13: The variable 'x' was already declared in the current context at (5,23)

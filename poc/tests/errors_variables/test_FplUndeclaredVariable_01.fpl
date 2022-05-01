@@ -1,0 +1,14 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            x
+        }
+    }
+}
+
+##############################
+
+FplUndeclaredVariable:7:12: The variable 'x' was not declared in the current context

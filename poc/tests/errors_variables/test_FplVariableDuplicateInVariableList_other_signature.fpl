@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    inference
+    {
+        TestInferenceRule(x,y,x:pred)
+        {
+            premise:
+                x
+            conclusion:
+                q
+        }
+    }
+
+    theory {}
+}
+
+##############################
+
+FplVariableDuplicateInVariableList:5:31: Variable 'x' already listed at 5:27

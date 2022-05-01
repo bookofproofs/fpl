@@ -1,0 +1,21 @@
+TestNamespace
+{
+    inf
+    {
+        Test()
+        {
+            n,m,n: predicate
+
+            premise:
+                n
+            conclusion:
+                m
+        }
+    }
+
+    theory {}
+}
+
+##############################
+
+FplVariableDuplicateInVariableList:7:17: Variable 'n' already listed at 7:13

@@ -51,7 +51,7 @@ class AuxSTBlock(AuxST):
         self.id = ""
         self._relative_id = ""
         self._declared_vars = dict()
-        self._used_vars = ()
+        self._used_vars = tuple()
 
     def set_relative_id(self, name_of_parent: str):
         if name_of_parent == "":

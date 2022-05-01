@@ -1,4 +1,17 @@
 # Changes in the FPL Parser and Interpreter
+## 1.6.0
+* Feature:
+  * FplIdentifierNotDeclared errors added to the semantical analysis + related unit tests
+  * FplUnusedVariable errors added to the semantical analysis + related unit tests
+  * FplMisspelledConstructor errors added to the semantical analysis + related unit tests
+  * Test cases no more have to be specific when it comes to test a specific error. It suffices that the use case causes that error (among other possible errors). This simplifies the creation process of test cases as the FPL interpreter becomes more powerful in recognizing new error types.
+* Bugfixes:
+  * FplUndeclaredVariable was not at all working (undetected by unit tests). Now resolved + correct unit tests. 
+  * Wording of error messages more standardized
+  * FplMalformedGlobalId was not at all working (undetected by unit tests). Now resolved + correct unit tests.
+  * FplMisspelledConstructor was not at all working (undetected by unit tests). Now resolved + correct unit tests.
+* Refactoring:
+  * SemAnalyser class deprecated (everything is now encapsulated in the interpreter.semantical_analysis() method)
 ## 1.5.2
 * Bugfix:
   * The starting position of predicate definitions was shifted to the last parsed "predicate" keyword INSIDE the definition, not the position of the beginning of the definition.

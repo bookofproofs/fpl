@@ -1,0 +1,21 @@
+Test.Namespace
+{
+    theory
+    {
+        pred Test()
+        {
+            x: Nat
+            true
+
+            mandatory pred TestProperty()
+            {
+                x: Nat
+                true
+            }
+        }
+    }
+}
+
+##############################
+
+FplVariableAlreadyDeclared:12:17: The variable 'x' was already declared in the current context at (7,13)

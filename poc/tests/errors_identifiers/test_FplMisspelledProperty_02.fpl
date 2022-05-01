@@ -1,0 +1,25 @@
+Test.Namespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myCarrierSet: tplSet
+            myLength: Nat
+
+            mandatory Set CarrierSet()
+            {
+                self:=myCarrierSet
+            }
+
+            optional Set AlgebraicStructure()
+            {
+                self:=myLength
+            }
+        }
+    }
+}
+
+##############################
+FplMisspelledProperty:16:13: Misspelled property 'AlgebraicStructure' of class 'AlgebraicStructure' (must be different)

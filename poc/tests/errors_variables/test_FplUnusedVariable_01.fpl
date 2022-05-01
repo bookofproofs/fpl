@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+        }
+    }
+}
+
+##############################
+
+FplUnusedVariable:5:19: The variable 'x' (declared at (5,20) was not used in the current context

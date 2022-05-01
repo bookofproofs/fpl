@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: func
+        {
+        }
+    }
+}
+
+##############################
+
+FplInvalidInheritance:5:24: Inheritance from 'func' not possible (not a defined class but a functional term type)

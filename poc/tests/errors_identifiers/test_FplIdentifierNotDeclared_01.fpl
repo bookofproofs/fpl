@@ -1,0 +1,18 @@
+Test.Namespace
+{
+    inference
+    {
+        Test(x: Nat)
+        {
+            pre: True
+            con: True
+        }
+    }
+
+    theory {}
+
+}
+
+##############################
+
+FplIdentifierNotDeclared:5:16: Undeclared identifier 'Nat'

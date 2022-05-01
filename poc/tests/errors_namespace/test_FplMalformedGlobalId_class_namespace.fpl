@@ -1,0 +1,13 @@
+TestMalformedGlobalId
+{
+    theory
+    {
+        class TestMalformedGlobalId: obj
+        {
+        }
+    }
+}
+
+##############################
+
+FplMalformedGlobalId:5:9: The identifier 'TestMalformedGlobalId' should not conflict with the namespace 'TestMalformedGlobalId'
