@@ -1,5 +1,6 @@
 from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.classes.AuxPos import AuxPos
+from poc.fplerror import FplErrorManager
 
 """
 The class AuxInterpretation is the base class of all semantical interpretations that are possible in FPL
@@ -8,10 +9,10 @@ The class AuxInterpretation is the base class of all semantical interpretations 
 
 class AuxInterpretation:
 
-    def __init__(self, ast_info: AuxAstInfo, errors: list):
+    def __init__(self, ast_info: AuxAstInfo, error_mgr: FplErrorManager):
         self._ast_info = ast_info
         # any errors from the caller. Classes inheriting from AuxInterpretation can add to to this list own errors.
-        self._errors = errors  # a pointer to all the errors of the semantics, so we can add new errors to this list
+        self._error_mgr = error_mgr  # a pointer to all the error manager of the semantics
         # internal semantical representation of the rule
         self.id = ""
         self.zto = AuxPos()
@@ -56,14 +57,11 @@ class AuxInterpretation:
         """
         return self._ast_info.cst
 
-    def get_errors(self):
-        return self._errors
+    def get_error_mgr(self):
+        return self._error_mgr
 
     def get_ast_info(self):
         return self._ast_info
-
-    def all_errors(self):
-        return self._errors
 
     def __str__(self):
         return self._ast_info.rule + ":" + str(self._ast_info.pos) + ":(" + str(self._ast_info.line) + ":" + \

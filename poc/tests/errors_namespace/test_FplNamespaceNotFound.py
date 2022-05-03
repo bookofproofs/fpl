@@ -33,8 +33,6 @@ class FplVariableDuplicateInVariableListTests(unittest.TestCase):
         interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
-        # exactly one error was found
-        self.assertEqual(1, len(interpreter.get_errors()))
+        interpreter.semantic_analysis()
         # the error is the same as in the use case file
-        self.assertIn(result[1].strip(), str(interpreter.get_errors()[0]))
-        self.assertEqual(diagnose_id, interpreter.get_errors()[0].diagnose_id)
+        self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_error_mgr(), diagnose_id))

@@ -36,7 +36,7 @@ class FplMalformedGlobalIdTests(unittest.TestCase):
         interpreter.syntax_analysis(path_to_use_cases)
         interpreter.semantic_analysis()
         # the error is the same as in the use case file
-        self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_errors(), diagnose_id))
+        self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_error_mgr(), diagnose_id))
 
     @parameterized.expand([
         ("test_FplMalformedGlobalId_constructor_is_ok.fpl", "SE0040")
@@ -49,4 +49,4 @@ class FplMalformedGlobalIdTests(unittest.TestCase):
         interpreter.semantic_analysis()
         # since the name of the constructor is (in FPL always) the same as the name of the class,
         # it should never trigger the FplMalformedGlobalId error
-        self.assertTrue(Utils.check_if_error_does_not_occur(interpreter.get_errors(), diagnose_id))
+        self.assertTrue(Utils.check_if_error_does_not_occur(interpreter.get_error_mgr(), diagnose_id))

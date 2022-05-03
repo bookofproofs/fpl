@@ -3,7 +3,8 @@ from anytree import AnyNode, RenderTree
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc import fplsemanticanalyzer
-from poc import fplerror
+from poc.fplerror import FplErrorManager
+from poc.fplerror import FplNamespaceNotFound
 from poc import fplmessage
 import os
 import sys
@@ -13,10 +14,10 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.6.0"
+        self.version = "1.6.1"
         sys.setrecursionlimit(3500)
         self._parser = parser
-        self._errors = []
+        self._error_mgr = FplErrorManager()
         abs_path = os.path.abspath(root_dir)
         if os.path.isdir(abs_path):
             self._theory_root_dir = abs_path
@@ -84,9 +85,9 @@ class FplInterpreter:
                             # We have the case that a namespace referenced inside the theory loaded into
                             # the symbol table was not available in self._theory_root_dir when
                             # the FPL interpreter was constructed.
-                            self._errors.append(
-                                fplerror.FplNamespaceNotFound(used_namespace.id, fpl_theory_node.file_name,
-                                                              used_namespace.zfrom))
+                            self._error_mgr.add_error(
+                                FplNamespaceNotFound(used_namespace.id, fpl_theory_node.file_name,
+                                                     used_namespace.zfrom))
                         else:
                             for file_node in files_related_to_namespace:
                                 self.syntax_analysis(os.path.join(self._theory_root_dir, file_node.file_name))
@@ -109,7 +110,7 @@ class FplInterpreter:
                             pass
 
     def _load_theory_into_symbol_table(self, fpl_file_node):
-        fpl_file_node.set_analyser(self._symbol_table_root, self._errors)
+        fpl_file_node.set_analyser(self._symbol_table_root, self._error_mgr)
         analyser = fpl_file_node.get_analyser()
         if AuxISourceAnalyser.verbose:
             self._parser.parse(fpl_file_node.get_file_content(), semantics=analyser, whitespace='')
@@ -117,24 +118,24 @@ class FplInterpreter:
             try:
                 self._parser.parse(fpl_file_node.get_file_content(), semantics=analyser, whitespace='')
             except tatsu.exceptions.FailedParse as ex:
-                self._errors.append(
+                self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 1,
                                               fpl_file_node.file_name))
             except tatsu.exceptions.FailedToken as ex:
-                self._errors.append(
+                self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 2,
                                               fpl_file_node.file_name))
             except tatsu.exceptions.FailedPattern as ex:
-                self._errors.append(
+                self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 3,
                                               fpl_file_node.file_name))
             except BaseException as ex:
-                self._errors.append(
+                self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 4,
                                               fpl_file_node.file_name))
 
     def semantic_analysis(self):
-        analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._errors)
+        analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._error_mgr)
         analyzer.semantic_analysis()
 
     def print_symbol_table(self):
@@ -155,24 +156,13 @@ class FplInterpreter:
                 file_names.add(theory_node.file_name)
         for file_name in file_names:
             self.forget_file(file_name)
-        self._errors.clear()
+        self._error_mgr.clear_errors()
 
     def get_symbol_table_root(self):
         return self._symbol_table_root
 
-    def has_errors(self):
-        return len(self._errors) > 0
-
-    def print_errors(self):
-        if len(self._errors) > 0:
-            print(str(len(self._errors)), "errors found:")
-            for err in self._errors:
-                print(err)
-        else:
-            print("Congratulations! No errors found")
-
-    def get_errors(self):
-        return self._errors
+    def get_error_mgr(self):
+        return self._error_mgr
 
     def get_ast_list(self, file_name):
         fpl_node = AuxSymbolTable.get_library_by_filename(self._symbol_table_root, file_name)
@@ -184,9 +174,4 @@ class FplInterpreter:
         # remove the file from processed_namespaces
         self.processed_namespaces.remove(namespace + ":" + file_name)
         # remove the errors related to the file
-        new_errors = list()
-        for err in self._errors:
-            if err.file != file_name:
-                new_errors.append(err)
-        self._errors.clear()
-        self._errors = new_errors
+        self._errors.remove_file_errors(file_name)

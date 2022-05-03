@@ -1,3 +1,4 @@
+from poc.fplerror import FplErrorManager
 from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
@@ -146,8 +147,8 @@ from anytree import AnyNode
 
 class FPLSyntaxAnalyzer:
 
-    def __init__(self, root: AnyNode, theory_name: str, errors: list, namespace: str):
-        self.i = AuxISourceAnalyser(errors, root, theory_name, namespace)
+    def __init__(self, root: AnyNode, theory_name: str, error_mgr: FplErrorManager, namespace: str):
+        self.i = AuxISourceAnalyser(error_mgr, root, theory_name, namespace)
         self.ast_list = []
 
         self.switcher = {
@@ -446,7 +447,7 @@ class FPLSyntaxAnalyzer:
             try:
                 self.syntax_analysis_switcher(parsing_info)
             except AssertionError as err:
-                self.i.errors.append(
+                self.i.error_mgr.add_error(
                     FplInterpreterMessage(str(err), parsing_info.rule_line(), parsing_info.rule_col(),
                                           self.i.theory_node.theory_name))
         return ast

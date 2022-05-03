@@ -4,6 +4,7 @@ import io
 import os
 import re
 from poc.classes.AuxSTFplFile import AuxSTFplFile
+from poc.fplerror import FplErrorManager
 
 
 class Utils:
@@ -116,18 +117,17 @@ class Utils:
         return item['values']
 
     @staticmethod
-    def check_if_error_occurs(error_msg: str, errors: list, expected_diagnose_id):
+    def check_if_error_occurs(error_msg: str, error_mgr: FplErrorManager, expected_diagnose_id):
         error_msg = error_msg.strip()
-        for error in errors:
+        for error in error_mgr.get_errors():
             if error_msg in str(error):
                 if expected_diagnose_id == error.diagnose_id:
                     return True
         return False
 
     @staticmethod
-    def check_if_error_does_not_occur(errors:list, diagnose_id):
-        for error in errors:
+    def check_if_error_does_not_occur(error_mgr: FplErrorManager, diagnose_id):
+        for error in error_mgr.get_errors():
             if diagnose_id == error.diagnose_id:
                 return False
         return True
-

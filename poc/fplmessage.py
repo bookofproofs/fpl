@@ -15,6 +15,12 @@ class FplInterpreterMessage(Exception):
     def __str__(self):
         return self.__type + ":" + str(self.__line) + ":" + str(self.__col) + ": " + self.__msg
 
+    def __hash__(self):
+        return hash(self.__str__())
+
+    def __eq__(self, other):
+        return str(other) == self.__str__()
+
     def get_line(self):
         return self.__line
 
@@ -32,6 +38,9 @@ class FplInterpreterMessage(Exception):
 
     def to_tuple(self):
         return self.diagnose_id, self.__msg, self.__line, self.__col
+
+    def sort_key(self):
+        return self.mainType + self.file + str(self.__line).zfill(6)+ str(self.__col).zfill(6)
 
 
 class FplParserError(FplInterpreterMessage):
