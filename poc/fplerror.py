@@ -2,6 +2,37 @@ from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.fplmessage import FplInterpreterMessage
 
 
+class FplErrorManager:
+    def __init__(self):
+        self._errors = set()
+
+    def add_error(self, error: FplInterpreterMessage):
+        if error not in self._errors:
+            self._errors.add(error)
+
+    def get_errors(self):
+        return self._errors
+
+    def clear_errors(self):
+        self._errors.clear()
+
+    def print_errors(self):
+        if len(self._errors) > 0:
+            print(str(len(self._errors)), "errors found:")
+            for err in self._errors:
+                print(err)
+        else:
+            print("Congratulations! No errors found")
+
+    def has_errors(self):
+        return len(self._errors) > 0
+
+    def remove_file_errors(self, file_name: str):
+        new_set = set(filter(lambda x: x.file == file_name, self._errors))
+        self._errors.clear()
+        self._errors = new_set
+
+
 class FplVariableDuplicateInVariableList(FplInterpreterMessage):
     def __init__(self, var, other, file_name: str):
         v_s = var.zfrom.split(".")

@@ -1,5 +1,6 @@
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.fplerror import FplErrorManager
 from poc.fplerror import FplIdentifierAlreadyDeclared
 from poc.fplerror import FplMalformedNamespace
 from poc.fplerror import FplUndeclaredVariable
@@ -26,7 +27,7 @@ from anytree import search
 
 class SemanticAnalyser:
 
-    def __init__(self, symbol_table_root: AnyNode, errors: list):
+    def __init__(self, symbol_table_root: AnyNode, errors: FplErrorManager):
         self._symbol_table_root = symbol_table_root
         self._globals_node = None
         self._errors = errors
@@ -63,7 +64,7 @@ class SemanticAnalyser:
             if child.id not in duplicate_checker:
                 duplicate_checker[child.id] = child
             else:
-                self._errors.append(
+                self._errors.add_error(
                     FplIdentifierAlreadyDeclared(child.id, child.zfrom, theory.file_name,
                                                  duplicate_checker[child.id].zfrom,
                                                  theory.file_name))
@@ -79,7 +80,7 @@ class SemanticAnalyser:
             if chunk not in duplicate_checker:
                 duplicate_checker.add(chunk)
             else:
-                self._errors.append(FplMalformedNamespace(theory.namespace, theory.file_name))
+                self._errors.add_error(FplMalformedNamespace(theory.namespace, theory.file_name))
 
     def _check_identifiers(self):
         """
@@ -111,11 +112,11 @@ class SemanticAnalyser:
         for var_node in used_vars:
             if var_node.id not in declared_vars:
                 # the variable is undeclared if it was not found among the declared variables
-                self._errors.append(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
+                self._errors.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
             elif not declared_vars[var_node.id].has_in_scope(var_node.zfrom):
                 # the variable is also undeclared if it was found among the declared variables
                 # but is outside the scope of this variable declaration
-                self._errors.append(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
+                self._errors.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
 
     def __check_for_unused_vars(self, used_vars: tuple, declared_vars: dict, file_name: str):
         """
@@ -133,7 +134,7 @@ class SemanticAnalyser:
                     break
             if not was_used:
                 # the variable is not used
-                self._errors.append(FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
+                self._errors.add_error(FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
 
     def __check_for_malformed_gid(self, qualified_identifier, node, theory_node):
         """
@@ -150,19 +151,19 @@ class SemanticAnalyser:
                 # the property of a definition cannot be named the same as its main name
                 parent = node.reference.parent.parent
                 if isinstance(parent, AuxSTClass):
-                    self._errors.append(
+                    self._errors.add_error(
                         FplMisspelledProperty(split_q_id[0], split_q_id[1], 1, node.reference.zfrom,
                                               theory_node.file_name))
                 elif isinstance(parent, AuxSTDefinitionPredicate):
-                    self._errors.append(
+                    self._errors.add_error(
                         FplMisspelledProperty(split_q_id[0], split_q_id[1], 2, node.reference.zfrom,
                                               theory_node.file_name))
                 elif isinstance(parent, AuxSTDefinitionFunctionalTerm):
-                    self._errors.append(
+                    self._errors.add_error(
                         FplMisspelledProperty(split_q_id[0], split_q_id[1], 3, node.reference.zfrom,
                                               theory_node.file_name))
                 else:
-                    self._errors.append(
+                    self._errors.add_error(
                         FplMisspelledProperty(split_q_id[0], split_q_id[1], 4, node.reference.zfrom,
                                               theory_node.file_name))
         identifier = split_q_id[-1]
@@ -170,7 +171,7 @@ class SemanticAnalyser:
             class_name = node.reference.parent.parent.id
             if identifier != class_name:
                 # the constructor of a (class) definition has to be named the same as the class name
-                self._errors.append(
+                self._errors.add_error(
                     FplMisspelledConstructor(class_name, identifier, node.reference.zfrom, theory_node.file_name))
 
         if identifier in namespace:
@@ -180,7 +181,7 @@ class SemanticAnalyser:
                     # ignore constructors since the class's name already does conflict too and generates a similar error
                     pass
                 else:
-                    self._errors.append(
+                    self._errors.add_error(
                         FplMalformedGlobalId(identifier, theory_node.namespace, node.reference.zfrom,
                                              theory_node.file_name))
 
@@ -198,7 +199,7 @@ class SemanticAnalyser:
             if node.outline != AuxSymbolTable.classDefaultConstructor:
                 existing_node = self._gid_collection[global_node.gid].reference
                 existing_theory_node = self._gid_collection[global_node.gid].theory
-                self._errors.append(
+                self._errors.add_error(
                     FplIdentifierAlreadyDeclared(global_node.id, node.zfrom, theory_node.file_name, existing_node.zfrom,
                                                  existing_theory_node.file_name))
 
@@ -220,7 +221,7 @@ class SemanticAnalyser:
                 if node.outline != AuxSymbolTable.classDefaultConstructor:
                     existing_node = self._signature_collection[global_node.id].reference
                     existing_theory_node = self._signature_collection[global_node.id].theory
-                    self._errors.append(
+                    self._errors.add_error(
                         FplIdentifierAlreadyDeclared(global_node.id, node.zfrom, theory_node.file_name,
                                                      existing_node.zfrom,
                                                      existing_theory_node.file_name))
@@ -235,7 +236,7 @@ class SemanticAnalyser:
             for type_node in collect_type_references:
                 if type_node.id not in self._references:
                     # the type is never declared
-                    self._errors.append(
+                    self._errors.add_error(
                         FplIdentifierNotDeclared(type_node.id, theory_node.file_name, type_node.zfrom))
 
             # by convention of the FPL syntax, all pascal-case reference names are user-defined
@@ -246,7 +247,7 @@ class SemanticAnalyser:
             for reference_node in collect_other_references:
                 if reference_node.id not in self._references:
                     # the reference is never declared
-                    self._errors.append(
+                    self._errors.add_error(
                         FplIdentifierNotDeclared(reference_node.id, theory_node.file_name, reference_node.zfrom))
 
     @staticmethod

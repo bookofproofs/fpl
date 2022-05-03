@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.6.1
+* Refactoring
+  * New class FplErrorManager providing basic functionality for collecting FPL errors (replaces a list-based implementation)
 ## 1.6.0
 * Feature:
   * FplIdentifierNotDeclared errors added to the semantical analysis + related unit tests

@@ -2,7 +2,7 @@ from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTProperties import AuxSTProperties
 from anytree import search
-from poc import fplerror
+from poc.fplerror import FplErrorManager
 
 
 class AuxSTDefinitionPredicate(AuxSTBlockWithSignature):
@@ -14,7 +14,7 @@ class AuxSTDefinitionPredicate(AuxSTBlockWithSignature):
         self.zfrom = i.corrected_position('PredicateHeader')
         self.zto = i.last_positions_by_rule['DefinitionPredicate'].pos_to_str()
 
-    def initialize_vars(self, filename, errors):
+    def initialize_vars(self, filename, error_mgr: FplErrorManager):
         # The declared variables of a functional term definition are in its signature and its
         # variable specification list only.
         signature_node = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.signature)
@@ -31,7 +31,7 @@ class AuxSTDefinitionPredicate(AuxSTBlockWithSignature):
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
                 # we have a potential duplicate variable declaration
-                self.append_variable_already_declared(var_declaration, errors, filename)
+                self.append_variable_already_declared(var_declaration, error_mgr, filename)
 
         # The used variables might be spread across the scope of the predicate definition, including its properties.
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit

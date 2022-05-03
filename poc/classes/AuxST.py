@@ -1,5 +1,6 @@
 from anytree import AnyNode, search
-from poc import fplerror
+from poc.fplerror import FplErrorManager
+from poc.fplerror import FplVariableAlreadyDeclared
 
 
 class AuxSTOutline(AnyNode):
@@ -21,7 +22,7 @@ class AuxST(AuxSTOutline):
     def __init__(self, outline: str, i):
         super().__init__(parent=None, outline=outline)  # noqa
         self._i = i
-        self._errors = i.errors
+        self._error_mgr = i.errors
         self.zto = ""
         self.zfrom = ""
 
@@ -30,8 +31,8 @@ class AuxST(AuxSTOutline):
             raise TypeError("Argument type was {0}, must be derived from AuxSTOutline".format(str(type(node))))
         node.parent = self
 
-    def get_errors(self):
-        return self._errors
+    def get_error_mgr(self):
+        return self._error_mgr
 
     def to_string(self):
         return ""
@@ -62,7 +63,7 @@ class AuxSTBlock(AuxST):
     def get_relative_id(self):
         return self._relative_id
 
-    def initialize_vars(self, filename, errors):
+    def initialize_vars(self, filename, error_mgr: FplErrorManager):
         """
          Initializes the declared variables of a building block and its used variables.
          This method might be overridden in derived classes by specific implementations.
@@ -78,12 +79,12 @@ class AuxSTBlock(AuxST):
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
                 # we have a potential duplicate variable declaration
-                self.append_variable_already_declared(var_declaration, errors, filename)
+                self.append_variable_already_declared(var_declaration, error_mgr, filename)
 
         # blocks's used variables
         self._used_vars = search.findall_by_attr(self, "var", "outline")
 
-    def append_variable_already_declared(self, var_declaration, errors, filename):
+    def append_variable_already_declared(self, var_declaration, error_mgr: FplErrorManager, filename):
         # In implicit declarations like a,b,c: BinOp(x,y: tpl)
         # The names "x,y" would create false positives of FplVariableAlreadyDeclared errors if only checking the
         # names x,y. Semantically, the above declaration means a.x, b.x, c.x, a.y, b.y, c.y, and there is no
@@ -94,11 +95,11 @@ class AuxSTBlock(AuxST):
             pass
         else:
             # we have a duplicate variable declaration
-            errors.append(
-                fplerror.FplVariableAlreadyDeclared(var_declaration.zfrom,
-                                                    self._declared_vars[var_declaration.id].zfrom,
-                                                    var_declaration.id,
-                                                    filename))
+            error_mgr.add_error(
+                FplVariableAlreadyDeclared(var_declaration.zfrom,
+                                           self._declared_vars[var_declaration.id].zfrom,
+                                           var_declaration.id,
+                                           filename))
 
     def get_declared_vars(self):
         """

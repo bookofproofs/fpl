@@ -77,7 +77,7 @@ class FplVariableAlreadyDeclaredTests(unittest.TestCase):
         interpreter.syntax_analysis(path_to_use_cases)
         interpreter.semantic_analysis()
         # the error is the same as in the use case file
-        self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_errors(), diagnose_id))
+        self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_error_mgr(), diagnose_id))
 
     @parameterized.expand([
         ("test_FplVariableAlreadyDeclared_class_ok.fpl", "SE0080"),
@@ -91,4 +91,4 @@ class FplVariableAlreadyDeclaredTests(unittest.TestCase):
         interpreter.syntax_analysis(path_to_use_cases)
         interpreter.semantic_analysis()
         # the error is the same as in the use case file
-        self.assertTrue(Utils.check_if_error_does_not_occur(interpreter.get_errors(), diagnose_id))
+        self.assertTrue(Utils.check_if_error_does_not_occur(interpreter.get_error_mgr(), diagnose_id))

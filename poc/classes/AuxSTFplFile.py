@@ -1,4 +1,5 @@
 import hashlib
+from poc.fplerror import FplErrorManager
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplsyntaxanalyzer import FPLSyntaxAnalyzer
@@ -25,8 +26,8 @@ class AuxSTFplFile(AuxSTOutline):
     def get_file_content(self):
         return self._fpl_source
 
-    def set_analyser(self, root, errors: list):
-        self._analyser = FPLSyntaxAnalyzer(root, self.file_name, errors, self.namespace)
+    def set_analyser(self, root, error_mgr: FplErrorManager):
+        self._analyser = FPLSyntaxAnalyzer(root, self.file_name, error_mgr, self.namespace)
 
     def get_analyser(self):
         return self._analyser

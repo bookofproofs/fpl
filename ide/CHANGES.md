@@ -1,4 +1,9 @@
 # Changes in the FPL IDE
+## 1.6.3
+* Bugfixes:
+  * no more duplicates of variable-related errors and warnings
+* Feature:
+  * Errors and warnings are now sorted by severity and occurance (file / line / column)  
 ## 1.6.2
 * Refactoring:
   * A separate new class for the ObjectBrowser.py. Code separated from the main code in the fplide.py file.

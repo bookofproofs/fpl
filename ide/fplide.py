@@ -15,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.2'
+        self.ide_version = '1.6.3'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -231,17 +231,21 @@ class FplIde:
         :param editor_info: Current editor info
         :return: None
         """
-        self._refresh_items_tree_view(editor_info, interpreter.get_errors(), self.get_error_list(), column=4)
+        self._refresh_items_tree_view(editor_info, interpreter.get_error_mgr().get_errors(), self.get_error_list(),
+                                      column=4)
         if AuxISourceAnalyser.verbose:
             print(interpreter.symbol_table_to_str())
         self.object_browser.refresh(interpreter.get_symbol_table_root())
 
-    def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, tuple_list: list, tree_view: ttk.Treeview,
+    def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, set_of_errors: set, tree_view: ttk.Treeview,
                                  column: int):
         # delete all old items in tree_view that belong to the current transformer, i.e. have its name
         self.remove_items_from_tree_view(tree_view, column, editor_info.title)
+        # convert the set to list to make it sortable and sort it by the sortkey of the error
+        list_of_errors = list(set_of_errors)
+        list_of_errors.sort(reverse=False, key=lambda x: x.sort_key())
         # insert new items (if any) in tree_view
-        for item in tuple_list:
+        for item in list_of_errors:
             if item.mainType == "E":
                 im = self.model.images["cancel"]
             else:
