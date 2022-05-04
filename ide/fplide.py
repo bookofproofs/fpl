@@ -15,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.3'
+        self.ide_version = '1.6.4'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -182,13 +182,25 @@ class FplIde:
         if record is not None:
             self.set_position_in_editor(record[2], record[3], record[4])
 
-    def set_position_in_editor(self, line: int, column: int, file: str):
-        editor_info = self._tabEditor.select_file(file)
+    def set_position_in_editor(self, line: int, column: int, file_name: str):
+        editor_info = self._tabEditor.select_file(file_name)
+        if file_name not in self._tabEditor.get_files():
+            fpl_file = self.model.get_file_by_name(file_name)
+            self._tabEditor.set_file(file_name)
+            self._tabEditor.add_new_editor(fpl_file.get_file_content(), False)
+            editor_info = self._tabEditor.select_file(file_name)
+            self.set_error_tags(editor_info)
+
         self._panedWindowVertical.focus_set()
         self._panedWindowEditor.focus_set()
         self._tabEditor.focus_set()
         editor_info.focus_set()
-        editor_info.set_pos(line, column - 1)
+        editor_info.set_pos(line, column)
+
+    def set_error_tags(self, editor_info):
+        for error in self.model.fpl_interpreter.get_error_mgr().get_errors():
+            if editor_info.title == error.file:
+                editor_info.add_error_tag(error.get_tkinter_pos())
 
     def update_error_warning_counts(self):
         """
@@ -250,9 +262,8 @@ class FplIde:
                 im = self.model.images["cancel"]
             else:
                 im = self.model.images["warning"]
-            item_tuple = item.to_tuple() + (editor_info.title,)
+            item_tuple = item.to_tuple()
             tree_view.insert("", tk.END, text="", image=im, values=item_tuple)
-            editor_info.add_error_tag(item.get_tkinter_pos())
         self.update_error_warning_counts()
 
     def get_status_bar(self):

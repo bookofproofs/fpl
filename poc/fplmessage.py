@@ -34,10 +34,10 @@ class FplInterpreterMessage(Exception):
         return self.__msg
 
     def get_tkinter_pos(self):
-        return str(self.__line) + "." + str(int(self.__col) - 1)
+        return str(self.__line) + "." + str(int(self.__col))
 
     def to_tuple(self):
-        return self.diagnose_id, self.__msg, self.__line, self.__col
+        return self.diagnose_id, self.__msg, self.__line, self.__col, self.file
 
     def sort_key(self):
         return self.mainType + self.file + str(self.__line).zfill(6)+ str(self.__col).zfill(6)

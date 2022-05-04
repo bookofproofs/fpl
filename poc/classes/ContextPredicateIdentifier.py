@@ -21,7 +21,8 @@ class ContextPredicateIdentifier(AuxInterpretation):
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextPredicateIdentifier(i)
         new_info.id = ContextPredicateIdentifier._strip_dots(new_info.id)
-        new_info.zfrom.correct_offset(len(new_info.id))
+        new_info.zfrom.correct_offset(len(new_info.id)+1)
+        new_info.zto.correct_offset(1)
         i.parse_list.append(new_info)
 
     @staticmethod
