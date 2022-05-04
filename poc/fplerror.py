@@ -9,6 +9,8 @@ class FplErrorManager:
     def add_error(self, error: FplInterpreterMessage):
         if error not in self._errors:
             self._errors.add(error)
+            if error.get_line() == 12:
+                print(error)
 
     def get_errors(self):
         return self._errors

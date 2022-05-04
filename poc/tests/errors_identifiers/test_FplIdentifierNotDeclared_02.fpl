@@ -15,5 +15,4 @@ Test.Namespace
 }
 
 ##############################
-
-FplIdentifierNotDeclared:10:17: Undeclared identifier 'MyPredicate'
+FplIdentifierNotDeclared:10:16: Undeclared identifier 'MyPredicate'

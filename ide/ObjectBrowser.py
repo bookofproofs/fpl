@@ -162,11 +162,5 @@ class ObjectBrowser:
             file_name = record[1]
             file_pos = record[2].split('.')
             book = self.ide.get_editor_notebook()
-            if file_name in book.get_files():
-                self.ide.set_position_in_editor(int(file_pos[0]), int(file_pos[1]), file_name)
-            else:
-                fpl_file = self.ide.model.get_file_by_name(file_name)
-                book.set_file(file_name)
-                book.add_new_editor(fpl_file.get_file_content(), False)
-
+            self.ide.set_position_in_editor(int(file_pos[0]), int(file_pos[1]), file_name)
 

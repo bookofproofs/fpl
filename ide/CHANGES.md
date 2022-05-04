@@ -1,4 +1,11 @@
 # Changes in the FPL IDE
+## 1.6.4
+* Bugfixes:
+  * File names in error list are now error-location specific
+  * Error-positions from other files were highlighted also in the currently opened file
+  * Double-clicking the error of a file that was not opened did not work  
+  * Highlighting of variables was broken
+  * Affected symbol table test cases adjusted to the new positions
 ## 1.6.3
 * Bugfixes:
   * no more duplicates of variable-related errors and warnings
