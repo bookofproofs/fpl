@@ -1,6 +1,7 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxHighlightTag import AuxHighlightTag
 
 
 class ContextPredicateIdentifier(AuxInterpretation):
@@ -23,6 +24,7 @@ class ContextPredicateIdentifier(AuxInterpretation):
         new_info.id = ContextPredicateIdentifier._strip_dots(new_info.id)
         new_info.zfrom.correct_offset(len(new_info.id)+1)
         new_info.zto.correct_offset(1)
+        i.highlight_tags.append(AuxHighlightTag("identifier", new_info.zfrom, new_info.zto))
         i.parse_list.append(new_info)
 
     @staticmethod
