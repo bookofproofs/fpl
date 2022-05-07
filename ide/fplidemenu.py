@@ -135,16 +135,6 @@ class FPLIdeMenus:
         # the user decided if to save each file and saved it.
         return True
 
-    def _clear_theory_metadata_from_ide(self):
-        # empty error list
-        error_tree_view = self.ide.get_error_list()
-        error_tree_view.delete(*error_tree_view.get_children())
-        self.ide.update_error_warning_counts()
-        # empty object tree
-        self.ide.object_browser.clear()
-        # clear the symbol table and all errors of the interpreter
-        self.ide.model.fpl_interpreter.clear()
-
     def close_fpl_theory(self):
         self.ide.window.config(cursor="wait")
         closeable = self._ask_to_save_any_open_files()
@@ -154,7 +144,7 @@ class FPLIdeMenus:
             for tab_name in book.tabs():
                 book.forget(tab_name)
             # remove metadata from ide
-            self._clear_theory_metadata_from_ide()
+            self.ide.clear_theory_metadata()
             # flag that no theory is open
             self.ide.model.theory_is_open_flag = False
             self.ide.menus.menu_configure()
@@ -164,18 +154,7 @@ class FPLIdeMenus:
         self.ide.window.config(cursor="")
 
     def build_whole_theory(self):
-        self.ide.window.config(cursor="wait")
         self._save_any_unsaved_files()
-        # clear the symbol table and all errors of the interpreter
-        self._clear_theory_metadata_from_ide()
-        main_fpl_file = self.ide.model.get_main_file()
-        book = self.ide.get_editor_notebook()
-        if main_fpl_file.file_name in book.get_files():
-            # the main file is open, make sure it is selected
-            editor_info = book.get_files()[main_fpl_file.file_name]
-            editor_info.parse_interpret_highlight_update_all()
-        else:
-            book.add_new_editor(main_fpl_file.get_source(), True)
-        self.ide.window.config(cursor="")
+        self.ide.rebuild()
 
 

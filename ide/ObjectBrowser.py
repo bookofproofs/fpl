@@ -167,6 +167,5 @@ class ObjectBrowser:
         if record[2] != "0.0" and record[1] != "":
             file_name = record[1]
             file_pos = record[2].split('.')
-            book = self.ide.get_editor_notebook()
             self.ide.set_position_in_editor(int(file_pos[0]), int(file_pos[1]), file_name)
 

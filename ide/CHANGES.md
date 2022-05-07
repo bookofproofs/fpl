@@ -1,4 +1,10 @@
 # Changes in the FPL IDE
+## 1.6.6
+* Refactoring
+  * The syntax and semantical analysis and function was moved from FrameWithLineNumbers object to FplIde object, because it has to be done not for a single opened FPL file but for the whole FPL theory that might consist of many FPL files.
+  * Consequently, the bindings Alt-Control-g and Alt-Control-l were deprecated.
+* Bugfixes
+  * Syntax highlighting was not available for files of the theory that were opened by the user in addition to the main FPL theory file.
 ## 1.6.5
 * Bugfixes
   * Build current FPL discontinued since building a single file in the context of a whole theory is not feasible with respect to context-specific errors: we use build whole theory instead.

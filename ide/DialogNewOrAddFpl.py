@@ -88,7 +88,7 @@ class DialogNewOrAddFpl(Dialog):
             fpl_file.parent = self.ide.model.library
             book = self.ide.get_editor_notebook()
             book.set_file(os.path.basename(self._actual_file_name.get()))
-            book.add_new_editor(initial_code, True)
+            book.add_new_editor(initial_code)
             editor_info = book.select_file(file_name)
             editor_info.is_new = True
             self.ide.model.theory_is_open_flag = True
@@ -116,7 +116,7 @@ class DialogNewOrAddFpl(Dialog):
             self.ide.model.set_main_file(file_name)
             book = self.ide.get_editor_notebook()
             book.set_file(os.path.basename(self._actual_file_name.get()))
-            book.add_new_editor(initial_code, True)
+            book.add_new_editor(initial_code)
             editor_info = book.select_file(file_name)
             editor_info.is_new = True
             self.ide.model.theory_is_open_flag = True

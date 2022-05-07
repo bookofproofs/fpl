@@ -35,8 +35,6 @@ class FrameWithLineNumbers(tk.Frame):
         self.text.pack(side="right", fill=tk.BOTH, expand=True)
 
         self.text.bind("<<Change>>", self.on_change)
-        self.bind_all('<Alt-Control-g>', self.parse_interpret_highlight_update_all)
-        self.bind_all('<Alt-Control-l>', self.reformat_code)
         self.text.bind('<Return>', self._press_enter)
         self.text.bind('<Key>', self._key_pressed)
         self.text.bind('<Tab>', self._press_tab)
@@ -175,37 +173,6 @@ class FrameWithLineNumbers(tk.Frame):
         else:
             return ""
 
-    def parse_interpret_highlight(self, event=None):
-        """
-        Parses and interprets the code in self.text and highlights it.
-        :param event: Event for any key binding
-        :return: FPL transformer
-        """
-        self._parent_notebook.ide.window.config(cursor="wait")
-        self._parent_notebook.ide.window.update_idletasks()
-        # parse and interpret the code
-        path = os.path.abspath(self._parent_notebook.ide.model.config.get(Settings.section_paths,
-                                                                          Settings.option_paths_fpl_theories))
-        self._parent_notebook.ide.model.fpl_interpreter.syntax_analysis(path + '\\' + self.title)
-        self._parent_notebook.ide.model.fpl_interpreter.semantic_analysis()
-        # reconfigure all tags
-        self.reconfigure_all_tags()
-        # add new tags
-        grammar_tags = self._parent_notebook.ide.model.fpl_interpreter.files_highlight_tags[self.title]
-        for item in grammar_tags:
-            self.add_tag(item.tag, item.zfrom, item.zto)
-        self._parent_notebook.ide.window.config(cursor="")
-        return self._parent_notebook.ide.model.fpl_interpreter
-
-    def parse_interpret_highlight_update_all(self, event=None):
-        """
-        Parses the code in self.text, highlights it. Moreover, updates the info (errors list, syntax tree).
-        :param event: Event for any key binding
-        :return: None
-        """
-        interpreter = self.parse_interpret_highlight()
-        self._parent_notebook.ide.refresh_info(interpreter, self)
-
     def reformat_code(self, event=None):
         """
         Reformats the code inside self and highlights it again
@@ -213,6 +180,7 @@ class FrameWithLineNumbers(tk.Frame):
         :return: None
         """
         self._parent_notebook.ide.window.config(cursor="wait")
+        self._parent_notebook.ide.update_idletasks()
         code = self.get_text()
         ide_model = self._parent_notebook.ide.model
         ide_model.fpl_source_transformer.syntax_transform_from_source(code)
