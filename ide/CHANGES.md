@@ -1,4 +1,7 @@
 # Changes in the FPL IDE
+## 1.6.7
+* Bugfixes
+  * The wait cursor was not changing during the busy status build process
 ## 1.6.6
 * Refactoring
   * The syntax and semantical analysis and function was moved from FrameWithLineNumbers object to FplIde object, because it has to be done not for a single opened FPL file but for the whole FPL theory that might consist of many FPL files.
