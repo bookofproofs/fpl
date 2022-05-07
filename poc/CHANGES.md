@@ -1,4 +1,11 @@
 # Changes in the FPL Parser and Interpreter
+## 1.6.2
+* Bugfix
+  * The parsed position of PredicateIdentifiers was corrected in the symbol table + affected test cases were adjusted.
+  * The parsed position of DefinitionPredicate was corrected in the symbol table + affected test cases were adjusted.
+  * The parsed position of Signatures was corrected in the symbol table + affected test cases were adjusted.
+* Refactoring
+  * Printing during the parsing process in verbose mode is no more needed in general and was commented out to run tests faster.  
 ## 1.6.1
 * Refactoring
   * New class FplErrorManager providing basic functionality for collecting FPL errors (replaces a list-based implementation)

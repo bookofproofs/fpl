@@ -15,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.4'
+        self.ide_version = '1.6.5'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -223,7 +223,7 @@ class FplIde:
         warning_num_label.config(text="Warnings (" + str(warning_num) + ")")
 
     @staticmethod
-    def remove_items_from_tree_view(tree_view, column, file_name):
+    def remove_items_from_tree_view(tree_view, column, file_name=None):
         """
         Removes the items from tree view depending on the open file
         :param tree_view: Tree view object
@@ -231,10 +231,13 @@ class FplIde:
         :param file_name: Name of the file to search in the column
         :return: None
         """
-        for i in tree_view.get_children():
-            item = tree_view.item(i)
-            if item['values'][column] == file_name:
-                tree_view.delete(i)
+        if file_name is None:
+            tree_view.delete(*tree_view.get_children())
+        else:
+            for i in tree_view.get_children():
+                item = tree_view.item(i)
+                if item['values'][column] == file_name:
+                    tree_view.delete(i)
 
     def refresh_info(self, interpreter: FplInterpreter, editor_info: FrameWithLineNumbers):
         """
@@ -252,7 +255,7 @@ class FplIde:
     def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, set_of_errors: set, tree_view: ttk.Treeview,
                                  column: int):
         # delete all old items in tree_view that belong to the current transformer, i.e. have its name
-        self.remove_items_from_tree_view(tree_view, column, editor_info.title)
+        self.remove_items_from_tree_view(tree_view, column)
         # convert the set to list to make it sortable and sort it by the sortkey of the error
         list_of_errors = list(set_of_errors)
         list_of_errors.sort(reverse=False, key=lambda x: x.sort_key())

@@ -32,8 +32,8 @@ class AuxISourceAnalyser:
 
     def corrected_position(self, rule: str):
         ast_info = self.last_positions_by_rule[rule]
-        ast_info.pos = ast_info.pos - ast_info.length_cst + 1
-        ast_info.col = ast_info.col - ast_info.length_cst + 1
+        ast_info.pos = ast_info.pos - ast_info.length_cst
+        ast_info.col = ast_info.col - ast_info.length_cst
         return ast_info.pos_to_str()
 
     def corrected_position_by(self, rule: str, offset: int):

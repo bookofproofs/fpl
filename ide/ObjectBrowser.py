@@ -150,10 +150,16 @@ class ObjectBrowser:
                                                                       text=sub_node_title,
                                                                       values=("", "", "0.0"))
             for sub_sub_node in sub_node.children:
-                self._object_browser_tree.insert(parent=sub_node_tree_view, index=tk.END,
-                                                 iid=postfix + node.id + sub_sub_node.id,
-                                                 text=sub_sub_node.id,
-                                                 values=("ok", theory_node.file_name, sub_sub_node.zfrom))
+                if sub_sub_node.outline == AuxSymbolTable.classDefaultConstructor:
+                    self._object_browser_tree.insert(parent=sub_node_tree_view, index=tk.END,
+                                                     iid=postfix + node.id + sub_sub_node.id,
+                                                     text=sub_sub_node.id + " (intrinsic)",
+                                                     values=("", "", "0.0"))
+                else:
+                    self._object_browser_tree.insert(parent=sub_node_tree_view, index=tk.END,
+                                                     iid=postfix + node.id + sub_sub_node.id,
+                                                     text=sub_sub_node.id,
+                                                     values=("ok", theory_node.file_name, sub_sub_node.zfrom))
 
     def _select_node(self, event=None):
         record = Utils.identify_clicked_treeview_item(self._object_browser_tree)

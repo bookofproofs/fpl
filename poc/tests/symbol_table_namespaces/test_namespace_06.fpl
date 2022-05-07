@@ -7,13 +7,12 @@ TestTheory
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
 ├── AuxSTTheory(checksum='8c686e0a6c7b39f3fd5447294e2465fc', file_name='test_namespace_06.fpl', namespace='TestTheory', outline='theory')
 │   ├── AuxSTOutline(outline='uses')
-│   │   └── AuxSTUsedTheory(id='TestNamespace', modifier=None, outline='used', zfrom='3.10', zto='3.22')
+│   │   └── AuxSTUsedTheory(id='TestNamespace', modifier=None, outline='used', zfrom='3.9', zto='3.22')
 │   ├── AuxSTOutline(outline='axioms')
 │   ├── AuxSTOutline(outline='inferenceRules')
 │   ├── AuxSTOutline(outline='definitions')

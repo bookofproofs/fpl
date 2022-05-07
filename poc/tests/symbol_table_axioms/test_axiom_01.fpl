@@ -8,7 +8,6 @@ TestNamespace
         }
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -16,10 +15,10 @@ AnyNode(outline='root')
 └── AuxSTTheory(checksum='4fed718d2baa501c35aed2e2c53222fd', file_name='test_axiom_01.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')
-    │   └── AuxSTAxiom(id='ZeroIsNat[]', keyword='axiom', outline='axiom', zfrom='5.9', zto='8.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='5.15', zto='5.25')
+    │   └── AuxSTAxiom(id='ZeroIsNat[]', keyword='axiom', outline='axiom', zfrom='5.8', zto='8.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.25')
     │       ├── AuxSTVarSpecList(outline='specificationList')
-    │       └── AuxSTStatement(outline='statement', type='is', zfrom='7.13', zto='7.24')
+    │       └── AuxSTStatement(outline='statement', type='is', zfrom='7.12', zto='7.24')
     │           ├── AuxSTPredicate(id='Zero', outline='id', zfrom='7.15', zto='7.19')
     │           └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='7.20', zto='7.23')
     ├── AuxSTOutline(outline='inferenceRules')

@@ -13,7 +13,6 @@ TestNamespace
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -21,8 +20,8 @@ AnyNode(outline='root')
 └── AuxSTTheory(checksum='186b455d35ea646b96719c90c742d22b', file_name='test_axiom_04.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')
-    │   └── AuxSTAxiom(id='LH6fQw.AdoNagqiL4yV.KB[]', keyword='post', outline='axiom', zfrom='6.9', zto='12.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='6.14', zto='6.37')
+    │   └── AuxSTAxiom(id='LH6fQw.AdoNagqiL4yV.KB[]', keyword='post', outline='axiom', zfrom='6.8', zto='12.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='6.13', zto='6.37')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       │   ├── AuxSTVarDec(id='k', outline='var_decl', zfrom='8.12', zto='8.41')
     │       │   │   └── AuxSTType(id='pred', outline='type', type_mod='+', type_pattern=18, zfrom='8.37', zto='8.41')
@@ -36,7 +35,7 @@ AnyNode(outline='root')
     │       │   │   └── AuxSTType(id='func', outline='type', type_mod='*', type_pattern=20, zfrom='9.48', zto='9.52')
     │       │   └── AuxSTVarDec(id='cTol4', outline='var_decl', zfrom='9.12', zto='9.52')
     │       │       └── AuxSTType(id='func', outline='type', type_mod='*', type_pattern=20, zfrom='9.48', zto='9.52')
-    │       └── AuxSTPredicate(outline='false', zfrom='11.13', zto='11.17')
+    │       └── AuxSTPredicate(outline='false', zfrom='11.12', zto='11.17')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
     ├── AuxSTOutline(outline='theorems')

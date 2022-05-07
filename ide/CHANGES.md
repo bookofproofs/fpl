@@ -1,4 +1,11 @@
 # Changes in the FPL IDE
+## 1.6.5
+* Bugfixes
+  * Build current FPL discontinued since building a single file in the context of a whole theory is not feasible with respect to context-specific errors: we use build whole theory instead.
+  * AttributeError save_file when building theory fixed.
+  * Double-click on default constructors led to a run-time error since there was no position to jump to. Those default constructors are not in the source code and the objects are defined intrinsically.
+* Refactoring
+  * One central static method for writing files to disk in futils.py
 ## 1.6.4
 * Bugfixes:
   * File names in error list are now error-location specific

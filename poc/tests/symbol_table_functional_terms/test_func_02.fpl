@@ -12,7 +12,6 @@ TestNamespace
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -23,15 +22,15 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   ├── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Succ[1:Nat]', outline='definition', zfrom='5.9', zto='7.9')
-    │   │   ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.25')
+    │   ├── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Succ[1:Nat]', outline='definition', zfrom='5.8', zto='7.9')
+    │   │   ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.25')
     │   │   │   └── AuxSTVarDec(id='n', outline='var_decl', zfrom='5.18', zto='5.24')
     │   │   │       └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='5.21', zto='5.24')
     │   │   ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='5.29', zto='5.32')
     │   │   ├── AuxSTVarSpecList(outline='specificationList')
     │   │   └── AuxSTProperties(outline='properties')
-    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Addend[1:Nat]', outline='definition', zfrom='9.9', zto='11.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='9.14', zto='9.27')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='Addend[1:Nat]', outline='definition', zfrom='9.8', zto='11.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='9.13', zto='9.27')
     │       │   └── AuxSTVarDec(id='a', outline='var_decl', zfrom='9.20', zto='9.26')
     │       │       └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='9.23', zto='9.26')
     │       ├── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='9.29', zto='9.32')

@@ -6,7 +6,6 @@ Fpl.Algebra.Structures
         func EqA0q()->ind{}
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -16,8 +15,8 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='EqA0q[]', outline='definition', zfrom='6.9', zto='6.27')
-    │       ├── AuxSTSignature(outline='signature', zfrom='6.14', zto='6.20')
+    │   └── AuxSTDefinitionFunctionalTerm(def_type='functionalTerm', id='EqA0q[]', outline='definition', zfrom='6.8', zto='6.27')
+    │       ├── AuxSTSignature(outline='signature', zfrom='6.13', zto='6.20')
     │       ├── AuxSTType(id='ind', outline='type', type_mod=None, type_pattern=64, zfrom='6.22', zto='6.25')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       └── AuxSTProperties(outline='properties')

@@ -22,4 +22,4 @@ Test.Namespace
 }
 
 ##############################
-FplMisspelledProperty:16:13: Misspelled property 'AlgebraicStructure' of class 'AlgebraicStructure' (must be different)
+FplMisspelledProperty:16:12: Misspelled property 'AlgebraicStructure' of class 'AlgebraicStructure' (must be different)

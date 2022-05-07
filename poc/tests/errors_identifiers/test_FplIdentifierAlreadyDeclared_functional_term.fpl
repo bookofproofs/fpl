@@ -17,4 +17,4 @@ TestFunctionalTerm
 }
 
 ##############################
-FplIdentifierAlreadyDeclared:13:9: Identifier 'Succ[1:Nat]' already defined at (5,9)
+FplIdentifierAlreadyDeclared:13:8: Identifier 'Succ[1:Nat]' already defined at (5,8)

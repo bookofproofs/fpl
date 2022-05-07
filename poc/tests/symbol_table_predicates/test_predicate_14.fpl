@@ -13,7 +13,6 @@ TestNamespace
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -23,13 +22,13 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.9', zto='12.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.19')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='12.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       │   └── AuxSTVarDec(id='x', outline='var_decl', zfrom='7.12', zto='7.19')
     │       │       └── AuxSTType(id='pred', outline='type', type_mod=None, type_pattern=18, zfrom='7.15', zto='7.19')
-    │       ├── AuxSTPredicate(bound_vars=['x'], exists_number=0, outline='ex', zfrom='8.13', zto='11.13')
-    │       │   └── AuxSTPredicate(outline='true', zfrom='10.17', zto='10.20')
+    │       ├── AuxSTPredicate(bound_vars=['x'], exists_number=0, outline='ex', zfrom='8.12', zto='11.13')
+    │       │   └── AuxSTPredicate(outline='true', zfrom='10.16', zto='10.20')
     │       └── AuxSTProperties(outline='properties')
     ├── AuxSTOutline(outline='theorems')
     ├── AuxSTOutline(outline='lemmas')

@@ -18,8 +18,6 @@ TestTheory
     theory {}
 
 }
-
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -28,22 +26,22 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
-    │   └── AuxSTRuleOfInference(id='ProceedingResults[1:+pred]', outline='inferenceRule', zfrom='5.9', zto='15.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='5.9', zto='5.35')
+    │   └── AuxSTRuleOfInference(id='ProceedingResults[1:+pred]', outline='inferenceRule', zfrom='5.8', zto='15.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.8', zto='5.35')
     │       │   └── AuxSTVarDec(id='p', outline='var_decl', zfrom='5.26', zto='5.34')
     │       │       └── AuxSTType(id='pred', outline='type', type_mod='+', type_pattern=18, zfrom='5.30', zto='5.34')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       │   └── AuxSTVarDec(id='proceedingResult', outline='var_decl', zfrom='7.12', zto='7.34')
     │       │       └── AuxSTType(id='pred', outline='type', type_mod=None, type_pattern=18, zfrom='7.30', zto='7.34')
-    │       ├── AuxSTPredicate(outline='pre', zfrom='8.13', zto='13.12')
-    │       │   └── AuxSTStatement(outline='statement', type='range', zfrom='9.17', zto='12.17')
+    │       ├── AuxSTPredicate(outline='pre', zfrom='8.12', zto='13.12')
+    │       │   └── AuxSTStatement(outline='statement', type='range', zfrom='9.16', zto='12.17')
     │       │       ├── AuxSTVariable(id='proceedingResult', outline='var', zfrom='9.22', zto='9.38')
     │       │       ├── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='', zto='')
     │       │       │   └── AuxSTVariable(id='p', outline='var', zfrom='9.39', zto='9.40')
-    │       │       └── AuxSTStatement(outline='statement', type='assert', zfrom='11.21', zto='11.43')
+    │       │       └── AuxSTStatement(outline='statement', type='assert', zfrom='11.20', zto='11.43')
     │       │           └── AuxSTVariable(id='proceedingResult', outline='var', zfrom='11.27', zto='11.43')
-    │       └── AuxSTPredicate(outline='con', zfrom='13.13', zto='14.23')
-    │           └── AuxSTPredicate(outline='and', zfrom='14.17', zto='14.23')
+    │       └── AuxSTPredicate(outline='con', zfrom='13.12', zto='14.23')
+    │           └── AuxSTPredicate(outline='and', zfrom='14.16', zto='14.23')
     │               └── AuxSTVariable(id='p', outline='var', zfrom='14.21', zto='14.22')
     ├── AuxSTOutline(outline='definitions')
     ├── AuxSTOutline(outline='theorems')

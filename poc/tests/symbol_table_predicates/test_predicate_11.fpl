@@ -10,7 +10,6 @@ TestNamespace
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -20,16 +19,16 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.9', zto='9.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.19')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='9.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       │   ├── AuxSTVarDec(id='p', outline='var_decl', zfrom='7.12', zto='7.21')
     │       │   │   └── AuxSTType(id='pred', outline='type', type_mod=None, type_pattern=18, zfrom='7.17', zto='7.21')
     │       │   └── AuxSTVarDec(id='q', outline='var_decl', zfrom='7.12', zto='7.21')
     │       │       └── AuxSTType(id='pred', outline='type', type_mod=None, type_pattern=18, zfrom='7.17', zto='7.21')
-    │       ├── AuxSTPredicate(outline='and', zfrom='8.13', zto='8.32')
+    │       ├── AuxSTPredicate(outline='and', zfrom='8.12', zto='8.32')
     │       │   ├── AuxSTVariable(id='p', outline='var', zfrom='8.17', zto='8.18')
-    │       │   └── AuxSTPredicate(outline='=>', zfrom='8.21', zto='8.30')
+    │       │   └── AuxSTPredicate(outline='=>', zfrom='8.20', zto='8.30')
     │       │       ├── AuxSTVariable(id='p', outline='var', zfrom='8.26', zto='8.27')
     │       │       └── AuxSTVariable(id='q', outline='var', zfrom='8.28', zto='8.29')
     │       └── AuxSTProperties(outline='properties')

@@ -174,4 +174,4 @@ class FplInterpreter:
         # remove the file from processed_namespaces
         self.processed_namespaces.remove(namespace + ":" + file_name)
         # remove the errors related to the file
-        self._errors.remove_file_errors(file_name)
+        self._error_mgr.remove_file_errors(file_name)

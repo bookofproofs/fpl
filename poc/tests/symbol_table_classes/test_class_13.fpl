@@ -8,7 +8,6 @@ TestNamespace
         }
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -20,17 +19,17 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='Test', keyword='class', outline='definition', zfrom='5.9', zto='8.9')
+    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='Test', keyword='class', outline='definition', zfrom='5.8', zto='8.9')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       ├── AuxSTConstructors(outline='constructors')
     │       │   └── AuxSTConstructor(id='Test[]', outline='defaultConstructor', zfrom='', zto='')
-    │       │       ├── AuxSTSignature(outline='signature', zfrom='7.14', zto='7.44')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='7.12', zto='7.44')
     │       │       └── AuxSTVarSpecList(outline='specificationList')
     │       └── AuxSTProperties(outline='properties')
-    │           └── AuxSTPredicateInstance(def_type='predicateInstance', id='TestPropertyA10[]', keyword='predicate', mandatory=True, outline='property', zfrom='7.13', zto='7.57')
-    │               ├── AuxSTSignature(outline='signature', zfrom='7.28', zto='7.44')
+    │           └── AuxSTPredicateInstance(def_type='predicateInstance', id='TestPropertyA10[]', keyword='predicate', mandatory=True, outline='property', zfrom='7.12', zto='7.57')
+    │               ├── AuxSTSignature(outline='signature', zfrom='7.27', zto='7.44')
     │               ├── AuxSTVarSpecList(outline='specificationList')
-    │               │   └── AuxSTStatement(outline='statement', type='return', zfrom='7.48', zto='7.55')
+    │               │   └── AuxSTStatement(outline='statement', type='return', zfrom='7.47', zto='7.55')
     │               │       └── AuxSTVariable(id='n', outline='var', zfrom='7.54', zto='7.55')
     │               └── AuxSTPredicate(outline='intrinsic', zfrom='', zto='')
     ├── AuxSTOutline(outline='theorems')

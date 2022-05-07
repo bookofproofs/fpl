@@ -8,6 +8,7 @@ class AuxSTSignature(AuxST):
         super().__init__(AuxSymbolTable.signature, i)
         self._list_named_declarations = None
         self._id = None
+        self._i = i
         if 'Signature' in i.last_positions_by_rule:
             self.zfrom = i.corrected_position('PredicateIdentifier')
             self.zto = i.last_positions_by_rule['Signature'].pos_to_str()
