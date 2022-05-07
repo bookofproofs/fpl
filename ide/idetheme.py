@@ -35,7 +35,8 @@ class DefaultTheme:
             'inbuilttype': "#A3D6A3",
             'keyword': "#4D9CD5",
             'type': "#39BCB0",
-            'variable': "#ffdb58"
+            'variable': "#ffdb58",
+            'identifier': "#8bc34a"
         }
 
     def get_notebook_style(self):
@@ -117,7 +118,7 @@ class TomorrowTheme(DefaultTheme):
             'mstorage': "#e91e63",
             'mstoragetype': "#259b24",
             'mclass': "#8bc34a",
-            'mfunction': "#24bb6d5",
+            'mfunction': "#24bb6d",
             'marguments': "#fd971f",
             'mtagname': "#26a69a",
             'mtagattr': "#ff5722",

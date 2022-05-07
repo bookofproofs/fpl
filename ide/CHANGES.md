@@ -1,4 +1,9 @@
 # Changes in the FPL IDE
+## 1.6.8
+* Feature
+  * Highlighting of PredicateIdentifiers added
+* Bugfixes
+  * The keywords 'premise', 'undefined', and 'template' wer not highlighted properly
 ## 1.6.7
 * Bugfixes
   * The wait cursor was not changing during the busy status build process
