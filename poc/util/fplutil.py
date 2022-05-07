@@ -18,6 +18,11 @@ class Utils:
             file = file.read()
         return file
 
+    @staticmethod
+    def set_file_content(path_to_file, content):
+        with io.open(path_to_file, 'w', encoding="UTF-8") as file:
+            file.write(content)
+
     def get_elapsed_seconds(self):
         """
         read the stopwatch
@@ -68,6 +73,12 @@ class Utils:
     def get_code_and_expected(path_to_usecases, use_case_name):
         file_content = Utils.get_file_content(path_to_usecases + "/" + use_case_name)
         return file_content.split(Utils.preprocessor)
+
+    @staticmethod
+    def rewrite_expected_test_case(path_to_usecases, use_case_name, expected):
+        file_content_split = Utils.get_code_and_expected(path_to_usecases, use_case_name)
+        new_file_content = file_content_split[0].strip() + "\n" + Utils.preprocessor + "\n" + expected
+        Utils.set_file_content(path_to_usecases + "/" + use_case_name, new_file_content)
 
     @staticmethod
     def strip_preprocessor(source: str):

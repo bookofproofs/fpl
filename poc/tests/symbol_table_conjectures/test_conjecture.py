@@ -17,6 +17,7 @@ class ConjecturesTests(unittest.TestCase):
     path_to_usecases = None
     fpl_parser = None
     util = None
+    rewrite = False
 
     @classmethod
     def setUpClass(cls):
@@ -40,6 +41,12 @@ class ConjecturesTests(unittest.TestCase):
         actual = self.util.adjust_symbol_table_for_testing(interpreter)
         if AuxISourceAnalyser.verbose:
             print(actual)
+            if ConjecturesTests.rewrite and result[1].strip() != actual:
+                self.util.rewrite_expected_test_case(self.path_to_usecases, use_case, actual)
+        else:
+            if ConjecturesTests.rewrite:
+                self.assertEqual(ConjecturesTests.rewrite,
+                                 "Please set rewrite flag to false unless you really want override the expected values")
         self.assertEqual(result[1].strip(), actual)
 
 

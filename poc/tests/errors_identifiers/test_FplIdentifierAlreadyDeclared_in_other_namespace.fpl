@@ -30,4 +30,4 @@ TestTheorem.Other
 
 ##############################
 
-FplIdentifierAlreadyDeclared:7:9: Identifier 'SomeTheoremName[1:Add]' already defined at test_FplIdentifierAlreadyDeclared_in_other_namespace.fpl(5,9)
+FplIdentifierAlreadyDeclared:7:8: Identifier 'SomeTheoremName[1:Add]' already defined at test_FplIdentifierAlreadyDeclared_in_other_namespace.fpl(5,8)

@@ -50,4 +50,4 @@ TestProposition
 
 ##############################
 
-FplIdentifierAlreadyDeclared:27:9: Identifier 'AddIsUnique[1:Add]' already defined at (5,9)
+FplIdentifierAlreadyDeclared:27:8: Identifier 'AddIsUnique[1:Add]' already defined at (5,8)

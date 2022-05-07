@@ -7,15 +7,14 @@ Fpl.Geometry.Euclidean
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
 └── AuxSTTheory(checksum='2d30a6af25ae6f3918624a395b38d12a', file_name='test_namespace_04.fpl', namespace='Fpl.Geometry.Euclidean', outline='theory')
     ├── AuxSTOutline(outline='uses')
-    │   ├── AuxSTUsedTheory(id='Fpl.Commons.', modifier='*', outline='used', zfrom='3.11', zto='3.22')
-    │   ├── AuxSTUsedTheory(id='Fpl', modifier=None, outline='used', zfrom='3.25', zto='3.27')
-    │   └── AuxSTUsedTheory(id='Fpl.Test.Long.Namespace', modifier='Fpl1', outline='used', zfrom='3.30', zto='3.63')
+    │   ├── AuxSTUsedTheory(id='Fpl.Commons.', modifier='*', outline='used', zfrom='3.10', zto='3.22')
+    │   ├── AuxSTUsedTheory(id='Fpl', modifier=None, outline='used', zfrom='3.24', zto='3.27')
+    │   └── AuxSTUsedTheory(id='Fpl.Test.Long.Namespace', modifier='Fpl1', outline='used', zfrom='3.29', zto='3.63')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')

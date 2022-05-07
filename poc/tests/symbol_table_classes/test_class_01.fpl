@@ -7,7 +7,6 @@ TestNamespace
         }
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -18,7 +17,7 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='Zero', keyword='class', outline='definition', zfrom='5.9', zto='7.9')
+    │   └── AuxSTClass(class_types=['obj'], def_type='class', id='Zero', keyword='class', outline='definition', zfrom='5.8', zto='7.9')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       ├── AuxSTConstructors(outline='constructors')
     │       │   └── AuxSTConstructor(id='Zero[]', outline='defaultConstructor', zfrom='', zto='')

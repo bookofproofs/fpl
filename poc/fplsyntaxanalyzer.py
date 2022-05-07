@@ -455,8 +455,10 @@ class FPLSyntaxAnalyzer:
     def syntax_analysis_switcher(self, parsing_info: AuxInterpretation):
         rule = parsing_info.rule_name()
         func = self.switcher.get(rule, lambda: "Invalid rule")
+        """
         if self.i.verbose:
             print("switched " + (str(func)).split(" ")[1] + " for " + str(parsing_info))
+        """
         # call the function depending on the rule in the switcher and modify its interpretation and returns its value
         return func(self.i, parsing_info)
 

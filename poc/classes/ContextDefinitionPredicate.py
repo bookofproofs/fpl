@@ -16,7 +16,7 @@ class ContextDefinitionPredicate(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateHeader":
             self.building_block.keyword = parsing_info.id  # noqa
-            parsing_info.zfrom.correct_offset(len(parsing_info.id))
+            parsing_info.zfrom.correct_offset(len(parsing_info.id)+1)
             self.building_block.zfrom = str(parsing_info.zfrom)
             self.stop_aggregation = True
         elif rule == "Signature":

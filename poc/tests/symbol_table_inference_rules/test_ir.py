@@ -15,6 +15,7 @@ class InferenceRulesTests(unittest.TestCase):
     util = None
     path_to_grammar = None
     maxDiff = None
+    rewrite = False
 
     @classmethod
     def setUpClass(cls):
@@ -38,4 +39,10 @@ class InferenceRulesTests(unittest.TestCase):
         actual = self.util.adjust_symbol_table_for_testing(interpreter)
         if AuxISourceAnalyser.verbose:
             print(actual)
+            if InferenceRulesTests.rewrite and result[1].strip() != actual:
+                self.util.rewrite_expected_test_case(self.path_to_usecases, use_case, actual)
+        else:
+            if InferenceRulesTests.rewrite:
+                self.assertEqual(InferenceRulesTests.rewrite,
+                                 "Please set rewrite flag to false unless you really want override the expected values")
         self.assertEqual(result[1].strip(), actual)

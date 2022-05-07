@@ -16,6 +16,7 @@ class TypeTests(unittest.TestCase):
     path_to_grammar = None
     fpl_parser = None
     util = None
+    rewrite = False
 
     @classmethod
     def setUpClass(cls):
@@ -23,7 +24,7 @@ class TypeTests(unittest.TestCase):
         if os.path.isfile(cls.path):
             cls.path = os.path.dirname(cls.path)
         cls.path_to_grammar = os.path.join(cls.path, "../../../grammar")
-        cls.path_to_use_cases = os.path.join(cls.path)
+        cls.path_to_usecases = os.path.join(cls.path)
         cls.util = Utils()
         cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
 
@@ -37,11 +38,17 @@ class TypeTests(unittest.TestCase):
         "test_types_var_decl_03.fpl",
     ])
     def test_possibilities(self, use_case):
-        path_to_use_cases = os.path.join(self.path_to_use_cases, use_case)
+        path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
         interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
-        result = Utils.get_code_and_expected(self.path_to_use_cases, use_case)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
         actual = self.util.adjust_symbol_table_for_testing(interpreter)
         if AuxISourceAnalyser.verbose:
             print(actual)
+            if TypeTests.rewrite and result[1].strip() != actual:
+                self.util.rewrite_expected_test_case(self.path_to_usecases, use_case, actual)
+        else:
+            if TypeTests.rewrite:
+                self.assertEqual(TypeTests.rewrite,
+                                 "Please set rewrite flag to false unless you really want override the expected values")
         self.assertEqual(result[1].strip(), actual)

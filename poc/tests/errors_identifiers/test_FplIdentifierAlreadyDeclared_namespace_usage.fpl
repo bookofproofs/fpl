@@ -9,4 +9,4 @@ Fpl.Geometry.Euclidean
 }
 
 ##############################
-FplIdentifierAlreadyDeclared:3:25: Identifier 'TestNamespace' already defined at (3,10)
+FplIdentifierAlreadyDeclared:3:24: Identifier 'TestNamespace' already defined at (3,9)

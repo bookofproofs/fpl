@@ -14,7 +14,6 @@ TestNamespace
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -24,15 +23,15 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.9', zto='13.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.19')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='13.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
     │       ├── AuxSTVarSpecList(outline='specificationList')
-    │       ├── AuxSTPredicate(outline='and', zfrom='7.13', zto='12.13')
-    │       │   ├── AuxSTPredicate(outline='true', zfrom='9.18', zto='9.21')
-    │       │   ├── AuxSTPredicate(outline='not', zfrom='10.18', zto='10.26')
-    │       │   │   └── AuxSTPredicate(outline='true', zfrom='10.22', zto='10.25')
-    │       │   └── AuxSTPredicate(outline='not', zfrom='11.18', zto='11.27')
-    │       │       └── AuxSTPredicate(outline='false', zfrom='11.22', zto='11.26')
+    │       ├── AuxSTPredicate(outline='and', zfrom='7.12', zto='12.13')
+    │       │   ├── AuxSTPredicate(outline='true', zfrom='9.17', zto='9.21')
+    │       │   ├── AuxSTPredicate(outline='not', zfrom='10.17', zto='10.26')
+    │       │   │   └── AuxSTPredicate(outline='true', zfrom='10.21', zto='10.25')
+    │       │   └── AuxSTPredicate(outline='not', zfrom='11.17', zto='11.27')
+    │       │       └── AuxSTPredicate(outline='false', zfrom='11.21', zto='11.26')
     │       └── AuxSTProperties(outline='properties')
     ├── AuxSTOutline(outline='theorems')
     ├── AuxSTOutline(outline='lemmas')

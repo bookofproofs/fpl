@@ -5,7 +5,6 @@ TestNamespace
         pred Test1() { is(baKeJ3l_[true~],template[wkpCLto4TZv6dIg$exqL4ofdGAG5bo]) }
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -15,13 +14,13 @@ AnyNode(outline='root')
     ├── AuxSTOutline(outline='axioms')
     ├── AuxSTOutline(outline='inferenceRules')
     ├── AuxSTOutline(outline='definitions')
-    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test1[]', keyword='pred', outline='definition', zfrom='5.9', zto='5.85')
-    │       ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.20')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test1[]', keyword='pred', outline='definition', zfrom='5.8', zto='5.85')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.20')
     │       ├── AuxSTVarSpecList(outline='specificationList')
-    │       ├── AuxSTStatement(outline='statement', type='is', zfrom='5.24', zto='5.83')
-    │       │   ├── AuxSTVariable(id='baKeJ3l_', outline='var', zfrom='5.27', zto='5.41')
+    │       ├── AuxSTStatement(outline='statement', type='is', zfrom='5.23', zto='5.83')
+    │       │   ├── AuxSTVariable(id='baKeJ3l_', outline='var', zfrom='5.26', zto='5.41')
     │       │   │   └── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='', zto='')
-    │       │   │       └── AuxSTPredicate(outline='true', zfrom='5.36', zto='5.39')
+    │       │   │       └── AuxSTPredicate(outline='true', zfrom='5.35', zto='5.39')
     │       │   └── AuxSTType(id='template', outline='type', type_mod=None, type_pattern=9, zfrom='5.42', zto='5.82')
     │       │       └── AuxSTCoords(left_included=True, outline='coordinates', zfrom='5.51', zto='5.81')
     │       │           └── AuxSTPredicate(id='wkpCLto4TZv6dIg$exqL4ofdGAG5bo', outline='indexValue', zfrom='5.51', zto='5.81')

@@ -22,4 +22,4 @@ TestAxiom
 
 ##############################
 
-FplIdentifierAlreadyDeclared:11:9: Identifier 'ZeroIsNat[]' already defined at (5,9)
+FplIdentifierAlreadyDeclared:11:8: Identifier 'ZeroIsNat[]' already defined at (5,8)

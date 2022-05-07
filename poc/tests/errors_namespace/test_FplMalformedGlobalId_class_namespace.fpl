@@ -10,4 +10,4 @@ TestMalformedGlobalId
 
 ##############################
 
-FplMalformedGlobalId:5:9: The identifier 'TestMalformedGlobalId' should not conflict with the namespace 'TestMalformedGlobalId'
+FplMalformedGlobalId:5:8: The identifier 'TestMalformedGlobalId' should not conflict with the namespace 'TestMalformedGlobalId'

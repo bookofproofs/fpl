@@ -1,6 +1,5 @@
 from anytree import AnyNode, RenderTree
 from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.util.fplutil import Utils
 import tkinter as tk
 import os
@@ -16,15 +15,15 @@ This class stores the model of the FPL IDE, allowing the communication between d
 
 class IdeModel:
     def __init__(self):
-        self._utils = Utils()
+        self.utils = Utils()
         self.config = configparser.RawConfigParser()
         self._root_dir = os.path.dirname(__file__) + "/"
         self._config_init()
         self.path_to_fpl_root = os.path.abspath(
             self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
         self.library = AnyNode(outline=AuxSymbolTable.library)
-        self._utils.reload_library(self.library, self.path_to_fpl_root)
-        self.fpl_parser = self._utils.get_parser("../grammar/fpl_tatsu_format.ebnf")
+        self.utils.reload_library(self.library, self.path_to_fpl_root)
+        self.fpl_parser = self.utils.get_parser("../grammar/fpl_tatsu_format.ebnf")
         self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)
         self.fpl_interpreter = FplInterpreter(self.fpl_parser, self.path_to_fpl_root, self.library)
         self.images = dict()

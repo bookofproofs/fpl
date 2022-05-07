@@ -25,4 +25,4 @@ TestClassInstance
 }
 
 ##############################
-FplIdentifierAlreadyDeclared:18:13: Identifier 'BinOp[2:tplSetElem].RightNeutralElement[]' already defined at (13,13)
+FplIdentifierAlreadyDeclared:18:12: Identifier 'BinOp[2:tplSetElem].RightNeutralElement[]' already defined at (13,12)

@@ -18,7 +18,6 @@ TestNamespace
 
     }
 }
-
 ##############################
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
@@ -27,18 +26,18 @@ AnyNode(outline='root')
 └── AuxSTTheory(checksum='54ed38305139b195df3a1cce8a3c340b', file_name='test_axiom_02.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')
-    │   ├── AuxSTAxiom(id='ZeroIsNat[]', keyword='axiom', outline='axiom', zfrom='5.9', zto='8.9')
-    │   │   ├── AuxSTSignature(outline='signature', zfrom='5.15', zto='5.25')
+    │   ├── AuxSTAxiom(id='ZeroIsNat[]', keyword='axiom', outline='axiom', zfrom='5.8', zto='8.9')
+    │   │   ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.25')
     │   │   ├── AuxSTVarSpecList(outline='specificationList')
-    │   │   └── AuxSTStatement(outline='statement', type='is', zfrom='7.13', zto='7.24')
+    │   │   └── AuxSTStatement(outline='statement', type='is', zfrom='7.12', zto='7.24')
     │   │       ├── AuxSTPredicate(id='Zero', outline='id', zfrom='7.15', zto='7.19')
     │   │       └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='7.20', zto='7.23')
-    │   └── AuxSTAxiom(id='ZeroIsNotSuccessor[]', keyword='axiom', outline='axiom', zfrom='10.9', zto='17.9')
-    │       ├── AuxSTSignature(outline='signature', zfrom='10.15', zto='10.34')
+    │   └── AuxSTAxiom(id='ZeroIsNotSuccessor[]', keyword='axiom', outline='axiom', zfrom='10.8', zto='17.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='10.14', zto='10.34')
     │       ├── AuxSTVarSpecList(outline='specificationList')
     │       │   └── AuxSTVarDec(id='n', outline='var_decl', zfrom='12.12', zto='12.18')
     │       │       └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='12.15', zto='12.18')
-    │       └── AuxSTPredicate(bound_vars=['n'], outline='all', zfrom='13.13', zto='16.13')
+    │       └── AuxSTPredicate(bound_vars=['n'], outline='all', zfrom='13.12', zto='16.13')
     │           └── AuxSTPredicateWithArgs(id='NotEquals', outline='predicateWithArgs', reference=None, zfrom='15.16', zto='15.42')
     │               └── AuxSTArgs(outline='arguments', zfrom='15.26', zto='15.42')
     │                   ├── AuxSTPredicateWithArgs(id='Zero', outline='predicateWithArgs', reference=None, zfrom='15.26', zto='15.32')

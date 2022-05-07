@@ -35,4 +35,4 @@ Test.Namespace
 }
 
 ##############################
-FplMisspelledConstructor:23:13: Misspelled constructor 'Nat1' of class 'Nat' (must be the same)
+FplMisspelledConstructor:23:12: Misspelled constructor 'Nat1' of class 'Nat' (must be the same)

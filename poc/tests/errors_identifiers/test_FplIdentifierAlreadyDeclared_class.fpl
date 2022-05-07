@@ -18,4 +18,4 @@ TestClass
 }
 
 ##############################
-FplIdentifierAlreadyDeclared:13:9: Identifier 'Zero' already defined at (5,9)
+FplIdentifierAlreadyDeclared:13:8: Identifier 'Zero' already defined at (5,8)

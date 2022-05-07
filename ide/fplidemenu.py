@@ -23,8 +23,7 @@ class FPLIdeMenus:
         self._menuBar.add_cascade(label='FPL Theory', underline=0, menu=self.fpl_theory_menu)
 
         self.build_menu = tk.Menu(self._menuBar, tearoff=0)
-        self.build_menu.add_command(label='Current FPL File', command=self.build_current_fpl_file)
-        self.build_menu.add_command(label='Whole Theory', command=self.build_whole_theory)
+        self.build_menu.add_command(label='Build Theory', command=self.build_whole_theory)
         self._menuBar.add_cascade(label='Build', underline=0, menu=self.build_menu)
 
         options_bar = tk.Menu(self._menuBar, tearoff=0)
@@ -76,16 +75,14 @@ class FPLIdeMenus:
             self.fpl_theory_menu.entryconfig("Close", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Add FPL file", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Remove FPL file", state=tk.NORMAL)
-            self.build_menu.entryconfig("Current FPL File", state=tk.NORMAL)
-            self.build_menu.entryconfig("Whole Theory", state=tk.NORMAL)
+            self.build_menu.entryconfig("Build Theory", state=tk.NORMAL)
         else:
             self.fpl_theory_menu.entryconfig("New", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Open", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Close", state=tk.DISABLED)
             self.fpl_theory_menu.entryconfig("Add FPL file", state=tk.DISABLED)
             self.fpl_theory_menu.entryconfig("Remove FPL file", state=tk.DISABLED)
-            self.build_menu.entryconfig("Current FPL File", state=tk.DISABLED)
-            self.build_menu.entryconfig("Whole Theory", state=tk.DISABLED)
+            self.build_menu.entryconfig("Build Theory", state=tk.DISABLED)
 
     def exit(self, event=None):
         closeable = self._ask_to_save_any_open_files()
@@ -119,7 +116,7 @@ class FPLIdeMenus:
         for file in book:
             if book[file].text.is_dirty:
                 self.ide.get_editor_notebook().select_file(file)
-                book.save_file(None)
+                self.ide.get_editor_notebook().save_file(None)
 
     def _ask_to_save_any_open_files(self):
         book = self.ide.get_editor_notebook().get_files()
@@ -172,30 +169,13 @@ class FPLIdeMenus:
         # clear the symbol table and all errors of the interpreter
         self._clear_theory_metadata_from_ide()
         main_fpl_file = self.ide.model.get_main_file()
-        book = self.ide.get_editor_notebook().get_files()
-        if main_fpl_file.file_name in book:
+        book = self.ide.get_editor_notebook()
+        if main_fpl_file.file_name in book.get_files():
             # the main file is open, make sure it is selected
-            editor_info = book[main_fpl_file.file_name]
+            editor_info = book.get_files()[main_fpl_file.file_name]
             editor_info.parse_interpret_highlight_update_all()
         else:
             book.add_new_editor(main_fpl_file.get_source(), True)
         self.ide.window.config(cursor="")
 
-    def build_current_fpl_file(self):
-        self.ide.window.config(cursor="wait")
-        book = self.ide.get_editor_notebook()
-        editor_info = book.get_current_file_object()
-        if editor_info is None:
-            messagebox.showinfo("FPL", "Please select a file first by clicking on the respective editor tab.")
-            return
-        else:
-            # before rebuilding file, first save it
-            # book.select_file(editor_info.title)
-            book.save_file(None)
-            # Now, remove the file from the symbol table, because we have to parse the file
-            # again and rebuild the symbol table of the file
-            self.ide.model.fpl_interpreter.forget_file(editor_info.title)
-            # rebuild the symbol table and perform semantical analysis
-            editor_info.parse_interpret_highlight_update_all()
-        self.ide.window.config(cursor="")
 
