@@ -1,4 +1,5 @@
 import tkinter as tk
+import threading
 from tkinter import ttk
 from ide.idetheme import DefaultTheme
 from ide.fplidemenu import FPLIdeMenus
@@ -14,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.6'
+        self.ide_version = '1.6.7'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -284,18 +285,22 @@ class FplIde:
         return self._label_error_num
 
     def rebuild(self):
-        self.window.config(cursor="watch")
-        self.window.update()
-        # clear the symbol table and all errors of the interpreter
-        self.clear_theory_metadata()
         main_fpl_file = self.model.get_main_file()
         # make sure the main file is open
         book = self.get_editor_notebook()
         if main_fpl_file.file_name not in book.get_files():
             book.add_new_editor(main_fpl_file.get_source())
+        self.window.update_idletasks()
+        x = threading.Thread(target=self.rebuild_thread, args=(main_fpl_file.file_name,))
+        x.start()
+
+    def rebuild_thread(self, main_file_name):
+        self.window.config(cursor="watch")
+        # clear the symbol table and all errors of the interpreter
+        self.clear_theory_metadata()
         # perform the syntax and semantic analysis for the theory as a whole
         self.model.fpl_interpreter.syntax_analysis(
-            self.model.path_to_fpl_root + '\\' + main_fpl_file.file_name)
+            self.model.path_to_fpl_root + '\\' + main_file_name)
         self.model.fpl_interpreter.semantic_analysis()
         # refresh all open files of the theory, including the main file
         for file_name in self._tabEditor.get_files():
@@ -313,6 +318,7 @@ class FplIde:
         self.object_browser.clear()
         # clear the symbol table and all errors of the interpreter
         self.model.fpl_interpreter.clear()
+
 
 if __name__ == "__main__":
     ide = FplIde()
