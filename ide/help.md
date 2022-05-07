@@ -9,8 +9,7 @@
 ### File
 (will be probably deprecated)
 ### Build
-* **Current FPL File**: Builds the current FPL file. If no theory is open, disabled.
-* **Whole Theory**: Builds the opened FPL theory as a whole. If no theory is open, disabled.
+* **Build**: Builds the opened FPL theory as a whole. If no theory is open, disabled.
 ### Options
 * **Settings**: Opens the Settings dialog.
 ### Help

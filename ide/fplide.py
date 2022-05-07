@@ -6,7 +6,6 @@ from ide.CustomNotebook import CustomNotebook
 from ide.FrameWithLineNumbers import FrameWithLineNumbers
 from ide.StatusBar import StatusBar
 from ide.IdeModel import IdeModel
-from poc.fplinterpreter import FplInterpreter
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from ide.ObjectBrowser import ObjectBrowser
 from poc.util.fplutil import Utils
@@ -15,7 +14,7 @@ from poc.util.fplutil import Utils
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.5'
+        self.ide_version = '1.6.6'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -30,10 +29,6 @@ class FplIde:
         self.model = IdeModel()
         self.__add_paned_windows()
         self.menus = FPLIdeMenus(self)
-        self.window.config(cursor="wait")
-        self._statusBar.set_text('Initiating FPL parser... Please wait!')
-        self._statusBar.set_text("FPL interpreter ready.")
-        self.window.config(cursor="")
         self.window.mainloop()
 
     def get_version(self):
@@ -187,9 +182,9 @@ class FplIde:
         if file_name not in self._tabEditor.get_files():
             fpl_file = self.model.get_file_by_name(file_name)
             self._tabEditor.set_file(file_name)
-            self._tabEditor.add_new_editor(fpl_file.get_file_content(), False)
+            self._tabEditor.add_new_editor(fpl_file.get_file_content())
             editor_info = self._tabEditor.select_file(file_name)
-            self.set_error_tags(editor_info)
+            self.highlight_file(editor_info)
 
         self._panedWindowVertical.focus_set()
         self._panedWindowEditor.focus_set()
@@ -197,7 +192,11 @@ class FplIde:
         editor_info.focus_set()
         editor_info.set_pos(line, column)
 
-    def set_error_tags(self, editor_info):
+    def highlight_file(self, editor_info):
+        editor_info.reconfigure_all_tags()
+        list_of_file_specific_tags = self.model.fpl_interpreter.file_specific_tags[editor_info.title]
+        for item in list_of_file_specific_tags:
+            editor_info.add_tag(item.tag, item.zfrom, item.zto)
         for error in self.model.fpl_interpreter.get_error_mgr().get_errors():
             if editor_info.title == error.file:
                 editor_info.add_error_tag(error.get_tkinter_pos())
@@ -239,18 +238,18 @@ class FplIde:
                 if item['values'][column] == file_name:
                     tree_view.delete(i)
 
-    def refresh_info(self, interpreter: FplInterpreter, editor_info: FrameWithLineNumbers):
+    def refresh_info(self, editor_info: FrameWithLineNumbers):
         """
         Refreshes all information based on the current transformer like errors, warnings, and syntax tree
-        :param interpreter: Current transformer
         :param editor_info: Current editor info
         :return: None
         """
-        self._refresh_items_tree_view(editor_info, interpreter.get_error_mgr().get_errors(), self.get_error_list(),
+        self._refresh_items_tree_view(editor_info, self.model.fpl_interpreter.get_error_mgr().get_errors(),
+                                      self.get_error_list(),
                                       column=4)
         if AuxISourceAnalyser.verbose:
-            print(interpreter.symbol_table_to_str())
-        self.object_browser.refresh(interpreter.get_symbol_table_root())
+            print(self.model.fpl_interpreter.symbol_table_to_str())
+        self.object_browser.refresh(self.model.fpl_interpreter.get_symbol_table_root())
 
     def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, set_of_errors: set, tree_view: ttk.Treeview,
                                  column: int):
@@ -284,6 +283,36 @@ class FplIde:
     def get_error_number(self):
         return self._label_error_num
 
+    def rebuild(self):
+        self.window.config(cursor="watch")
+        self.window.update()
+        # clear the symbol table and all errors of the interpreter
+        self.clear_theory_metadata()
+        main_fpl_file = self.model.get_main_file()
+        # make sure the main file is open
+        book = self.get_editor_notebook()
+        if main_fpl_file.file_name not in book.get_files():
+            book.add_new_editor(main_fpl_file.get_source())
+        # perform the syntax and semantic analysis for the theory as a whole
+        self.model.fpl_interpreter.syntax_analysis(
+            self.model.path_to_fpl_root + '\\' + main_fpl_file.file_name)
+        self.model.fpl_interpreter.semantic_analysis()
+        # refresh all open files of the theory, including the main file
+        for file_name in self._tabEditor.get_files():
+            editor_info = self._tabEditor.get_files()[file_name]
+            self.highlight_file(editor_info)
+        self.refresh_info(editor_info)
+        self.window.config(cursor="")
+
+    def clear_theory_metadata(self):
+        # empty error list
+        error_tree_view = self.get_error_list()
+        error_tree_view.delete(*error_tree_view.get_children())
+        self.update_error_warning_counts()
+        # empty object tree
+        self.object_browser.clear()
+        # clear the symbol table and all errors of the interpreter
+        self.model.fpl_interpreter.clear()
 
 if __name__ == "__main__":
     ide = FplIde()

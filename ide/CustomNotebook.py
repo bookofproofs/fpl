@@ -130,7 +130,7 @@ class CustomNotebook(ttk.Notebook):
 
     def new_file(self, event=None):
         self._current_file = self._generate_new_file_name()
-        self.add_new_editor("", False)
+        self.add_new_editor("")
 
     def _generate_new_file_name(self) -> str:
         file_name = "NewTheory"
@@ -176,10 +176,9 @@ class CustomNotebook(ttk.Notebook):
             else:
                 # read the file
                 code = file.read()
-                self.add_new_editor(code, True)
+                self.add_new_editor(code)
 
-    def add_new_editor(self, code: str, with_new_symbol_table: bool):
-        self.ide.window.config(cursor="wait")
+    def add_new_editor(self, code: str):
         # this is a new file that is not already open yet. Create a new tab content
         editor_info = FrameWithLineNumbers(self, self._current_file)
         # set the text
@@ -192,13 +191,6 @@ class CustomNotebook(ttk.Notebook):
         self.add(editor_info, text=self._current_file)
         # and select the tab
         self.select(editor_info)
-        if with_new_symbol_table:
-            # interpret the file and refresh the symbol table
-            editor_info.parse_interpret_highlight_update_all()
-        else:
-            # open the file in the editor and only highlight it.
-            editor_info.parse_interpret_highlight()
-        self.ide.window.config(cursor="")
 
     def get_current_file_object(self) -> FrameWithLineNumbers:
         self._current_file = self.tab(self.select(), "text")

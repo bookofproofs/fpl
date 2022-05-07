@@ -62,15 +62,13 @@ class DialogOpenFplTheory(Dialog):
             code = file.read()
         messagebox.showinfo("Open FPL Theory", "The theory {0} was successfully opened.".format(name_space),
                             icon="info")
-        self.ide.window.config(cursor="wait")
         book = self.ide.get_editor_notebook()
         book.set_file(file_name)
-        book.add_new_editor(code, True)
+        book.add_new_editor(code)
         editor_info = book.select_file(file_name)
         editor_info.is_new = False
-        self.ide.set_error_tags(editor_info)
         self.ide.model.set_main_file(file_name)
         self.ide.model.theory_is_open_flag = True
         self.ide.menus.menu_configure()
-        self.ide.window.config(cursor="")
+        self.ide.rebuild()
         self.destroy()

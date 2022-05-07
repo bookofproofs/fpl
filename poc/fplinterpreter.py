@@ -14,7 +14,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.6.1"
+        self.version = "1.6.2"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -26,7 +26,7 @@ class FplInterpreter:
         self._symbol_table_root = AnyNode(outline=AuxSymbolTable.root)
         self._utils = Utils()
         AnyNode(outline=AuxSymbolTable.globals, parent=self._symbol_table_root)
-        self.files_highlight_tags = dict()
+        self.file_specific_tags = dict()
         # Used for the recursive loading of namespaces into to symbol table while syntax analysis is running
         # The syntax analysis stores in this dictionary for every namespace / FPL-combination
         # whether this combination was already processed.
@@ -72,7 +72,7 @@ class FplInterpreter:
                     # For each file loaded into the symbol table,
                     # remember the FPL code syntax highlight tags identified during the syntax analysis for the file.
                     # as a dictionary by file name and a list of highlighting tags.
-                    self.files_highlight_tags[fpl_theory_node.file_name] = fpl_file_node.get_analyser().i.highlight_tags
+                    self.file_specific_tags[fpl_theory_node.file_name] = fpl_file_node.get_analyser().i.highlight_tags
 
                     # load namespaces used by the loaded theory into the symbol table recursively
                     uses_node = AuxSymbolTable.get_child_by_outline(fpl_theory_node, AuxSymbolTable.uses)
