@@ -1,0 +1,14 @@
+TestNamespace
+{
+    theory
+    {
+        predicate In(x,y: Set)
+        {
+        }
+    }
+}
+
+##############################
+This should not cause FplUnusedVariable, since the variables x,y are declared:
+a) inside a signature and
+b) of an intrinsically declared predicate

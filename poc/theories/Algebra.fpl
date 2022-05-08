@@ -1,6 +1,6 @@
 Fpl.Algebra.Structures
 {
-    uses Fpl.Commons, Fpl.Set.ZermeloFraenkel
+    uses Fpl.Commons, Fpl.SetTheory.ZermeloFraenkel
 
     theory
     {
@@ -138,7 +138,7 @@ Fpl.Algebra.Structures
                     )
             }
 
-            mandatory func NthOp(n: index) -> Composition(elem: *tplSetElem)
+            mandatory func NthOp(n: index) -> Composition
             {
                 return myOps$n
             }
@@ -157,7 +157,7 @@ Fpl.Algebra.Structures
         class Magma: AlgebraicStructure
         {
 
-            Magma(x: tplSet, op: BinOp(a,b: tplSetElem))
+            Magma(x: tplSet, op: BinOp)
             {
                 self:=AlgebraicStructure(x,op)
             }
@@ -364,7 +364,7 @@ Fpl.Algebra.Structures
         class Field: CommutativeUnitRing
         {
 
-            Field(x: tpl, add,mul: BinOp(a,b:tplElem))
+            Field(x: tpl, add,mul: BinOp)
             {
                 self:=CommutativeUnitRing(x,add,mul)
             }
@@ -504,11 +504,17 @@ Fpl.Algebra.Structures
                 )
             }
         }
-
-
    }
-
 }
+
+
+
+
+
+
+
+
+
 
 
 

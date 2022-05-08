@@ -15,5 +15,4 @@ TestNamespcase
     }
 }
 ##############################
-
-FplVariableAlreadyDeclared:9:13: The variable 'x' was already declared in the current context at (7,13)
+FplVariableAlreadyDeclared:9:12: The variable 'x' was already declared in the current context at (7,13)

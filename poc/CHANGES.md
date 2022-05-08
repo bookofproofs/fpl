@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.6.3
+* Bugfixes:
+  * The parsed position of more variables listed in one declaration is now more specific to the variable (instead of the whole list)  
+  * Unused variables do not lead to the FplUnusedVariable error anymore if they were declared in the signature of an intrinsic definition. 
 ## 1.6.2
 * Bugfix
   * The parsed position of PredicateIdentifiers was corrected in the symbol table + affected test cases were adjusted.

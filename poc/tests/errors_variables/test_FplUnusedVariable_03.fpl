@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        predicate In(x,y: Set)
+        {
+            true
+        }
+    }
+}
+
+##############################
+FplUnusedVariable:5:21: The variable 'x' was not used in the current context

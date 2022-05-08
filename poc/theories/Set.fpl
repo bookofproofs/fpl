@@ -1,4 +1,4 @@
-Fpl.Set.ZermeloFraenkel
+Fpl.SetTheory.ZermeloFraenkel
 {
     uses Fpl.Commons
 
@@ -16,6 +16,7 @@ Fpl.Set.ZermeloFraenkel
         pred IsEmpty(x: Set)
         {
             y: Set
+			
             all y
             (
                 not ( In(y, x) )
@@ -128,9 +129,6 @@ Fpl.Set.ZermeloFraenkel
             }
         }
 
-        // calling example
-        class N100:Set{N100(){n:Nat self:=SetBuilder(SetNat(),IsGreater(n,Nat(100))) }}
-
         // For any two sets $x,y$ there exists a set $z$ containing them as elements.
         axiom Pairing()
         {
@@ -146,7 +144,7 @@ Fpl.Set.ZermeloFraenkel
                             In(w,z),
                             or
                             (
-                                Equals(w,z),
+                                Equals(w,x),
                                 Equals(w,y)
                             )
                         )
@@ -180,7 +178,7 @@ Fpl.Set.ZermeloFraenkel
             z: Set
             all z
             (
-                impl (SubSet(z,ofSet), In(z, potentialPowerSet))
+                impl (Subset(z,ofSet), In(z, potentialPowerSet))
             )
         }
 
@@ -195,7 +193,7 @@ Fpl.Set.ZermeloFraenkel
         // for every set x there is a set y containing all subsets of x as its elements
         axiom PowerSetExistsForAllSets()
         {
-            x,y,z: Set
+            x,y: Set
             all x
             (
                 ex y
@@ -228,7 +226,7 @@ Fpl.Set.ZermeloFraenkel
         }
 
         // alternative 2: adds SetUnion notation capability to this theory (as predicate)
-        pred Union(x,y: Set)
+        pred Union(x,superSet: Set)
         {
             u: Set
             all u
@@ -243,3 +241,11 @@ Fpl.Set.ZermeloFraenkel
 
 
 }
+
+
+
+
+
+
+
+

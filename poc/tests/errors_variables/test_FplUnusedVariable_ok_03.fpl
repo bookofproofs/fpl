@@ -1,0 +1,27 @@
+TestNamespace
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+            optional pred IsAssociative()
+            {
+                a,b,c: tplSetElem
+                all a,b,c
+                (
+                    Equals
+                    (
+                        @self(a,@self(b,c)),
+                        @self(@self(a,b),c)
+                    )
+                )
+            }
+        }
+    }
+}
+
+##############################
+This should not cause FplUnusedVariable, since the variables x,y are declared:
+a) inside a signature and
+b) of an intrinsically declared predicate but
+c) the signature does not belong to the property in which the variables could be used.

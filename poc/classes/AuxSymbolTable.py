@@ -4,7 +4,7 @@ It separates the scopes of the corresponding FPL language elements like theorems
 By design of the FPL transformer, there is only one FPL SymbolTable for all theories that are imported
 via the 'uses' keyword.
 """
-
+import anytree
 from anytree import Resolver
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTGlobal import AuxSTGlobal
@@ -130,7 +130,11 @@ class AuxSymbolTable:
     @staticmethod
     def get_child_by_outline(parent: AuxSTOutline, outline: str):
         r = Resolver(AuxSymbolTable.outline)
-        return r.get(parent, outline)
+        try:
+            found_node = r.get(parent, outline)
+            return found_node
+        except anytree.resolver.ChildResolverError:
+            return None
 
     @staticmethod
     def add_localization(locals_node: AuxSTOutline, localization):
@@ -280,12 +284,12 @@ class AuxSymbolTable:
                 if var.var.id in distinct_vars:
                     named_var_declaration.get_error_mgr().add_error(
                         FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var,
-                                                                    ast_info.file))
+                                                           ast_info.file))
                 else:
                     distinct_vars[var.var.id] = var.var
                 var_dec = AuxSTVarDec(i)
                 var_dec.zto = named_var_declaration.zto
-                var_dec.zfrom = named_var_declaration.zfrom
+                var_dec.zfrom = var.var.zfrom
                 var_dec.id = var.var.id
                 var_dec.parent = parent
                 cloned_type = named_var_declaration.var_type.generalType.clone()

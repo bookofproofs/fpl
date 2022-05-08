@@ -41,7 +41,7 @@ class FplVariableDuplicateInVariableList(FplInterpreterMessage):
         other_s = other.zfrom.split(".")
         super().__init__(
             "Variable '{0}' already listed at {1}:{2}".format(var.id, other_s[0], str(int(other_s[1]) + 1)),
-            v_s[0], str(int(v_s[1]) + 1), file_name)
+            v_s[0], v_s[1], file_name)
         self.mainType = "W"  # Warning
         self.diagnose_id = "SE0010"
 
@@ -154,8 +154,7 @@ class FplUnusedVariable(FplInterpreterMessage):
     def __init__(self, zfrom: str, var_name: str, file_name: str):
         s = zfrom.split(".")
         super().__init__(
-            "The variable '{0}' (declared at ({1},{2}) was not used in the current context".format(var_name, s[0],
-                                                                                                   str(int(s[1]) + 1)),
+            "The variable '{0}' was not used in the current context".format(var_name),
             s[0], s[1], file_name)
         self.mainType = "W"  # Warning
         self.diagnose_id = "SE0075"
@@ -166,8 +165,7 @@ class FplVariableAlreadyDeclared(FplInterpreterMessage):
         s = zfrom.split(".")
         s_other = other_zfrom.split(".")
         super().__init__("The variable '{0}' was already declared in the current context at ({1},{2})".format(
-            var_name, s_other[0], int(s_other[1]) + 1), s[0], str(int(s[1]) + 1),
-            file_name)
+            var_name, s_other[0], int(s_other[1]) + 1), s[0], s[1], file_name)
         self.diagnose_id = "SE0080"
 
 

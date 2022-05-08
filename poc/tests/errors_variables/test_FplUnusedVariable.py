@@ -28,6 +28,8 @@ class FplUndeclaredVariable(unittest.TestCase):
     @parameterized.expand([
         ("test_FplUnusedVariable_01.fpl", "SE0075"),
         ("test_FplUnusedVariable_02.fpl", "SE0075"),
+        ("test_FplUnusedVariable_03.fpl", "SE0075"),
+        ("test_FplUnusedVariable_04.fpl", "SE0075"),
     ])
     def test_errors(self, use_case, diagnose_id):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
@@ -37,3 +39,18 @@ class FplUndeclaredVariable(unittest.TestCase):
         interpreter.semantic_analysis()
         # the error is the same as in the use case file
         self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_error_mgr(), diagnose_id))
+
+    @parameterized.expand([
+        ("test_FplUnusedVariable_ok_01.fpl", "SE0075"),
+        ("test_FplUnusedVariable_ok_02.fpl", "SE0075"),
+        ("test_FplUnusedVariable_ok_03.fpl", "SE0075"),
+        ("test_FplUnusedVariable_ok_04.fpl", "SE0075"),
+    ])
+    def test_ok(self, use_case, diagnose_id):
+        path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
+        interpreter.syntax_analysis(path_to_use_cases)
+        interpreter.semantic_analysis()
+        # the error is the same as in the use case file
+        self.assertTrue(Utils.check_if_error_does_not_occur(interpreter.get_error_mgr(), diagnose_id))

@@ -96,11 +96,10 @@ class CustomNotebook(ttk.Notebook):
             return self.save_file_as()
         elif editor_info.is_new:
             return self.save_file_as()
-        self.ide.model.utils.set_file_content()
         code = editor_info.get_text()
         # remember current cursor position
         cursor_position = editor_info.get_pos().split('.')
-        self.ide.model.utils.set_file_content(code)
+        self.ide.model.utils.save_file_content(path_to_fpl_theories + "/" + editor_info.title, code)
         # change the appearance of the tab to "unchanged"
         self.tab(editor_info, text=editor_info.title)
         # reset the initial value to the new value
@@ -122,7 +121,21 @@ class CustomNotebook(ttk.Notebook):
         if path == "":
             # cancel clicked
             return
-        self.ide.model.utils.set_file_content(editor_info.get_text())
+        path_to_fpl_theories = os.path.abspath(
+            self.ide.model.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
+        if not os.path.abspath(path).startswith(path_to_fpl_theories):
+            msg = tk.messagebox.askquestion("FPL?",
+                                            "Saving FPL files in directories other than the root directory will "
+                                            "disconnect them from the theory\n" +
+                                            "Do you really want to save the file outside the root directory?\n" +
+                                            os.path.dirname(path),
+                                            icon='warning')
+            if msg == 'no':
+                # the user does not want to save the file outside the root directory
+                return
+        # save the file with the selected name
+        self.ide.model.utils.save_file_content(path, editor_info.get_text())
+        editor_info.title = os.path.basename(path)
         # change the appearance of the tab to "unchanged"
         self.tab(editor_info, text=editor_info.title)
         # reset the initial value to the new value

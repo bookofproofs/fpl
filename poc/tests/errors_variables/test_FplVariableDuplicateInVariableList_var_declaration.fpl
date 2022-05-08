@@ -17,5 +17,4 @@ TestNamespace
 }
 
 ##############################
-
-FplVariableDuplicateInVariableList:7:17: Variable 'n' already listed at 7:13
+FplVariableDuplicateInVariableList:7:16: Variable 'n' already listed at 7:13

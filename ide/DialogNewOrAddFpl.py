@@ -76,7 +76,7 @@ class DialogNewOrAddFpl(Dialog):
         if self._sanitize_file_name(file_name) and self._sanitize_name_space_syntax(name_space):
             initial_code = name_space + "\n{\n\ttheory{}\n}\n"
             # write initial code of the new empty FPL file
-            self.ide.model.utils.set_file_content(initial_code)
+            self.ide.model.utils.save_file_content(initial_code)
             messagebox.showinfo("Adding FPL File",
                                 "A new fpl file {0} was successfully added to the namespace {1}.".format(file_name,
                                                                                                          name_space),
@@ -104,7 +104,7 @@ class DialogNewOrAddFpl(Dialog):
         if self._sanitize_file_name(file_name) and self._sanitize_name_space(name_space):
             initial_code = name_space + "\n{\n\ttheory{}\n}\n"
             # write initial code of the new empty FPL file
-            self.ide.model.utils.set_file_content(initial_code)
+            self.ide.model.utils.save_file_content(initial_code)
             messagebox.showinfo("New FPL Theory", "A new theory {0} was successfully created.".format(name_space),
                                 icon="info")
 

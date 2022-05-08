@@ -1,4 +1,9 @@
 # Changes in the FPL IDE
+## 1.6.9
+* Bugfixes
+  * The key shortcuts Ctrl + x changed to Ctrl + q and Ctrl + S to Ctr + s to be more intuitive 
+  * Wrong relative target path when saving files
+  * Attribute error when saving an opened file
 ## 1.6.8
 * Feature
   * Highlighting of PredicateIdentifiers added

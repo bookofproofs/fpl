@@ -1,0 +1,24 @@
+TestNamespace
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+            optional pred IsAssociative(x1,y1: tplSetElem)
+            {
+                a,b,c: tplSetElem
+                all a,b,c
+                (
+                    Equals
+                    (
+                        @self(a,@self(b,c)),
+                        @self(@self(a,b),c)
+                    )
+                )
+            }
+        }
+    }
+}
+
+##############################
+FplUnusedVariable:7:40: The variable 'x1' was not used in the current context
