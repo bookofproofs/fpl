@@ -19,7 +19,7 @@ class Utils:
         return file
 
     @staticmethod
-    def set_file_content(path_to_file, content):
+    def save_file_content(path_to_file: str, content):
         with io.open(path_to_file, 'w', encoding="UTF-8") as file:
             file.write(content)
 
@@ -78,7 +78,7 @@ class Utils:
     def rewrite_expected_test_case(path_to_usecases, use_case_name, expected):
         file_content_split = Utils.get_code_and_expected(path_to_usecases, use_case_name)
         new_file_content = file_content_split[0].strip() + "\n" + Utils.preprocessor + "\n" + expected
-        Utils.set_file_content(path_to_usecases + "/" + use_case_name, new_file_content)
+        Utils.save_file_content(path_to_usecases + "/" + use_case_name, new_file_content)
 
     @staticmethod
     def strip_preprocessor(source: str):

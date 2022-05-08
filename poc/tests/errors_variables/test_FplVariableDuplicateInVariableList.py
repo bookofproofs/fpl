@@ -2,6 +2,7 @@ import unittest
 from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
+from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 import os
 
 """
@@ -37,4 +38,6 @@ class FplVariableDuplicateInVariableListTests(unittest.TestCase):
         interpreter.syntax_analysis(path_to_use_cases)
         interpreter.semantic_analysis()
         # the error is the same as in the use case file
+        if AuxISourceAnalyser.verbose:
+            interpreter.get_error_mgr().print_errors()
         self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_error_mgr(), diagnose_id))

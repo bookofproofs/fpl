@@ -9,9 +9,13 @@ from poc.fplerror import FplIdentifierNotDeclared
 from poc.fplerror import FplMalformedGlobalId
 from poc.fplerror import FplMisspelledConstructor
 from poc.fplerror import FplMisspelledProperty
+from poc.classes.AuxSTSignature import AuxSTSignature
+from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTClass import AuxSTClass
 from poc.classes.AuxSTDefinitionFunctionalTerm import AuxSTDefinitionFunctionalTerm
+from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
 from poc.classes.AuxSTDefinitionPredicate import AuxSTDefinitionPredicate
+from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
 from poc.classes.AuxSTLemma import AuxSTLemma
 from poc.classes.AuxSTTheorem import AuxSTTheorem
 from poc.classes.AuxSTProposition import AuxSTProposition
@@ -95,8 +99,7 @@ class SemanticAnalyser:
                 self._references[identifier].append(child)
             self.__check_undeclared_var_usages(child.reference.get_used_vars(), child.reference.get_declared_vars(),
                                                child.theory.file_name)
-            self.__check_for_unused_vars(child.reference.get_used_vars(), child.reference.get_declared_vars(),
-                                         child.theory.file_name)
+            self.__check_for_unused_vars(child.reference, child.theory.file_name)
             self.__check_for_malformed_gid(identifier, child, child.theory)
             self.__check_uniqueness_gid(child)
             self.__check_uniqueness_signature(child)
@@ -118,14 +121,17 @@ class SemanticAnalyser:
                 # but is outside the scope of this variable declaration
                 self._errors.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
 
-    def __check_for_unused_vars(self, used_vars: tuple, declared_vars: dict, file_name: str):
+    def __check_for_unused_vars(self, node: AnyNode, file_name: str):
         """
         Checks if all declared variables are used in each building block, depending on their scope.
-        :param used_vars: tuple of used vars of the building block
-        :param declared_vars: dictionary of declared vars of the building block
+        :param node: node declared in the FPL code (object instance of the symbol table node)
         :param file_name: FPL file name in which the building block is declared.
         :return: None
         """
+        # tuple of used vars of the building block
+        used_vars = node.get_used_vars()
+        # dictionary of declared vars of the building block
+        declared_vars = node.get_declared_vars()
         for identifier in declared_vars:
             was_used = False
             for var_node in used_vars:
@@ -133,8 +139,33 @@ class SemanticAnalyser:
                     was_used = True
                     break
             if not was_used:
-                # the variable is not used
-                self._errors.add_error(FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
+                # Even if the variable was not used, this might make sense semantically,
+                # If the variable was declared in the signature and there is an intrinsic definition.
+                # So we check for this additional condition
+                if not SemanticAnalyser.__check_for_unused_variable_declared_in_signature_of_intrinsic(node,
+                                                                                                       declared_vars[
+                                                                                                           identifier]):
+                    self._errors.add_error(FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
+
+    @staticmethod
+    def __check_for_unused_variable_declared_in_signature_of_intrinsic(node: AnyNode, var_decl):
+        if isinstance(var_decl.parent, AuxSTSignature):
+            if var_decl.parent.parent == node:
+                if isinstance(node, AuxSTDefinitionFunctionalTerm) or isinstance(node, AuxSTFunctionalTermInstance):
+                    definition = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.var_spec)
+                    # The functional term's definition was intrinsic if its var specification subnode is empty
+                    return len(definition.children) == 0
+                elif isinstance(node, AuxSTDefinitionPredicate) or isinstance(node, AuxSTPredicateInstance):
+                    # The predicate's definition was intrinsic if it has an
+                    found_intrinsic_definition = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.intrinsic)
+                    return found_intrinsic_definition is not None and \
+                           isinstance(found_intrinsic_definition, AuxSTPredicate) and \
+                           found_intrinsic_definition.parent == node
+            elif var_decl.parent.parent == node.parent.parent:
+                # if the variable was declared in the signature of the parent definition of a property node
+                # ignore that the variable not used in the body of the property since it is not semantically required.
+                return True
+        return False
 
     def __check_for_malformed_gid(self, qualified_identifier, node, theory_node):
         """

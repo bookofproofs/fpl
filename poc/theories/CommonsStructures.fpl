@@ -1,6 +1,6 @@
 Fpl.Commons.Structures
 {
-    uses Fpl.Commons, Fpl.Set.ZermeloFraenkel, Fpl.Arithmetics.Nat.Peano
+    uses Fpl.Commons, Fpl.SetTheory.ZermeloFraenkel, Fpl.Arithmetics.Nat.Peano
 
     theory
     {
@@ -285,5 +285,6 @@ Fpl.Commons.Structures
     }
 
 }
+
 
 

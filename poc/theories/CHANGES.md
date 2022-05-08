@@ -1,4 +1,8 @@
 # Changes in the Proof of Concept Theories
+## 1.0.5
+* Bugfixes:
+  * Corrected some additional semantical errors detected by the FPL interpreter version 1.6.3. 
+  * The remaining detected errors are likely to be false positives (still in evaluation)
 ## 1.0.4
 * Bugfixes:
   * Corrected first semantical errors detected by the FPL interpreter version 1.5.1  

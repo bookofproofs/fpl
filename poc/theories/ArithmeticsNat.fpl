@@ -323,6 +323,9 @@ Fpl.Arithmetics.Nat.Peano
             return Add( cf, Div(1 , ContinuedFraction(i, arr[i~])))
         }
 
+        // Example of defining a constant for the natural number 100 using the
+        class N100:Set{N100(){n:Nat self:=SetBuilder(SetNat(),IsGreater(n,Nat(100))) }}
+
     }
 
 

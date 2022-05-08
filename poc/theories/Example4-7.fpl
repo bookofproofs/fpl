@@ -23,13 +23,13 @@ T
                 and (p)
         }
 
-        ExistsByExample()
+        ExistsByExample(p: pred(c: obj, other: *obj))
         {
-            p: pred(c: obj)
+            x: obj
             premise:
-                p(c)
+                p(c, other)
             conclusion:
-                ex x(p(x))
+                ex x(p(x, other))
         }
 
     }
@@ -103,8 +103,19 @@ T
             4. /3, /GreaterTransitive |- impl ( and (Greater(a,b), Greater(b,c)), Greater(a,c) )
             5. /4, /ModusPonens |- Greater(a,c)
             6. /ProceedingResults(/5,/1) |- and (Greater(a,c), Greater(a,b))
-            7. /6, /ExistsByExample |- qed
+            7. /6, /ExistsByExample(and(Greater(a,c), Greater(a,b))) |- ex x ( and (Greater(x,y), Greater(x,z)) )
+			8. |- qed
         }
    }
 
 }
+
+
+
+
+
+
+
+
+
+

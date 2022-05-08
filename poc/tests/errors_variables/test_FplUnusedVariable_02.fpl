@@ -12,4 +12,4 @@ TestNamespace
 
 ##############################
 
-FplUnusedVariable:7:12: The variable 'n' (declared at (7,13) was not used in the current context
+FplUnusedVariable:7:12: The variable 'n' was not used in the current context

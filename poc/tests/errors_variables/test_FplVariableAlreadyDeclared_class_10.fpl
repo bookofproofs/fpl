@@ -16,4 +16,4 @@ Test.Namespace
 
 ##############################
 
-FplVariableAlreadyDeclared:9:40: The variable 'x' was already declared in the current context at (7,13)
+FplVariableAlreadyDeclared:9:39: The variable 'x' was already declared in the current context at (7,13)

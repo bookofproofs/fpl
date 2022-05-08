@@ -65,25 +65,22 @@ Fpl.Commons
 
     theory
     {
-        pred Equals(x,y: tpl)
+        pred Equals(a,b: tpl)
         {
-            p: pred a,b: tpl
+            p: pred 
 
-            all a, b
-            (
-                iif
-                (
-                    Equals(a,b),
-                    all p
-                    (
-                        iif
-                        (
-                            p(a),
-                            p(b)
-                        )
-                    )
-                )
-            )
+				iif
+				(
+					Equals(a,b),
+					all p
+					(
+						iif
+						(
+							p(a),
+							p(b)
+						)
+					)
+				)
         }
 
         pred NotEquals(x,y: tpl)
@@ -134,6 +131,8 @@ Fpl.Commons
     }
 
 }
+
+
 
 
 
