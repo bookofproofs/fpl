@@ -2,7 +2,7 @@ from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTProperties import AuxSTProperties
 from anytree import search
-from poc import fplerror
+from poc.fplerror import FplErrorManager
 
 
 class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
@@ -13,7 +13,7 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
         self.zfrom = i.corrected_position('FunctionalTermHeader')
         self.zto = i.last_positions_by_rule['DefinitionFunctionalTerm'].pos_to_str()
 
-    def initialize_vars(self, filename, errors):
+    def initialize_vars(self, filename, error_mgr: FplErrorManager):
         # The declared variables of a functional term definition are in its signature, its image, and its
         # variable specification list only.
         signature_node = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.signature)
@@ -33,7 +33,7 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
                 # we have a potential duplicate variable declaration
-                self.append_variable_already_declared(var_declaration, errors, filename)
+                self.append_variable_already_declared(var_declaration, error_mgr, filename)
 
         # The used variables might be spread across the scope of the predicate definition, including its properties.
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit
@@ -43,3 +43,4 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
         for child in self.children:
             if type(child) is not AuxSTProperties:
                 self._used_vars += search.findall_by_attr(child, AuxSymbolTable.var, AuxSymbolTable.outline)
+        self.filter_misused_templates(error_mgr, filename)

@@ -1,7 +1,7 @@
 from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
-from poc import fplerror
+from poc.fplerror import FplErrorManager
 
 
 class AuxSTConstructor(AuxSTBlock):
@@ -10,7 +10,7 @@ class AuxSTConstructor(AuxSTBlock):
         super().__init__(AuxSymbolTable.classConstructor, i)
         self.id = ""
 
-    def initialize_vars(self, filename, errors):
+    def initialize_vars(self, filename, error_mgr: FplErrorManager):
         # Note: Default constructors are omitted since they do not declare any variables
         # but still are called in the loop (otherwise we would cause double-listing of the same errors).
         if self.outline != AuxSymbolTable.classDefaultConstructor:
@@ -26,7 +26,7 @@ class AuxSTConstructor(AuxSTBlock):
                     self._declared_vars[class_var_declaration.id] = class_var_declaration
                 else:
                     # we have a potential duplicate variable declaration
-                    self.append_variable_already_declared(class_var_declaration, errors, filename)
+                    self.append_variable_already_declared(class_var_declaration, error_mgr, filename)
 
             # include constructor's own variables (i.e. both, its signature and body)
             own_var_declarations = search.findall_by_attr(self, AuxSymbolTable.var_decl, AuxSymbolTable.outline)
@@ -38,7 +38,8 @@ class AuxSTConstructor(AuxSTBlock):
                     self._declared_vars[var_declaration.id] = var_declaration
                 else:
                     # we have a potential duplicate variable declaration
-                    self.append_variable_already_declared(var_declaration, errors, filename)
+                    self.append_variable_already_declared(var_declaration, error_mgr, filename)
 
             # the used variables are only in the body
             self._used_vars += search.findall_by_attr(self, AuxSymbolTable.var, AuxSymbolTable.outline)
+            self.filter_misused_templates(error_mgr, filename)

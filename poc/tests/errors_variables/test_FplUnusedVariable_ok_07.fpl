@@ -1,0 +1,24 @@
+TestNamespace
+{
+    theory
+    {
+        class TestStructure: obj
+        {
+            myCarrierSet: tplSet
+
+            optional pred NonZero()
+            {
+                assert NotEqual(x, myCarrierSet)
+            }
+
+            mandatory func IdentityIndex(n: index) -> index
+            {
+                return n
+            }
+        }
+    }
+}
+
+##############################
+This should not cause FplUnusedVariable, since the variable myCarrierSet is used in the property NonZero.
+The lack of usage in IdentityIndex should not interfere with this fact.

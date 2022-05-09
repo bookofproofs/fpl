@@ -1,0 +1,19 @@
+TestNamespace
+{
+    theory
+    {
+        class TestStructure: obj
+        {
+            myCarrierSet: tplSet
+
+            TestStructure(x: tplSet)
+            {
+                myCarrierSet := x
+                assert Greater(x, Zero)
+            }
+        }
+    }
+}
+
+##############################
+This should not cause FplUnusedVariable, since the variable myCarrierSet is used in the constructor

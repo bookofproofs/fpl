@@ -1,0 +1,18 @@
+TestNamespace
+{
+    theory
+    {
+        class TestStructure: obj
+        {
+            myCarrierSet: tplSet
+
+            optional pred NonZero()
+            {
+                assert NotEqual(x, myCarrierSet)
+            }
+        }
+    }
+}
+
+##############################
+This should not cause FplUnusedVariable, since the variable myCarrierSet is used in the property

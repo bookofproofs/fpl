@@ -1,0 +1,18 @@
+TestAxiom
+{
+    theory
+    {
+        axiom ZeroIsNat()
+        {
+            tplNat: Nat
+            all tplNat
+            (
+                NotEquals(Zero(), Succ(tplNat))
+            )
+        }
+
+    }
+}
+
+##############################
+FplTemplateMisused:7:12: The generic type 'tplNat' cannot be used in this context

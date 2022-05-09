@@ -1,0 +1,18 @@
+TestNamespace
+{
+    theory
+    {
+        class TestStructure: obj
+        {
+            myCarrierSet: tplSet
+
+            TestStructure(x: tplSet)
+            {
+                assert Greater(x, Zero)
+            }
+        }
+    }
+}
+
+##############################
+FplUnusedVariable:7:12: The variable 'myCarrierSet' was not used in the current context

@@ -202,3 +202,11 @@ class FplMalformedNamespace(FplInterpreterMessage):
                          1,
                          file)
         self.diagnose_id = "SE0120"
+
+
+class FplTemplateMisused(FplInterpreterMessage):
+    def __init__(self, template: str, zfrom: str, file_name: str):
+        s = zfrom.split(".")
+        super().__init__("The generic type '{0}' cannot be used in this context".format(template),
+                         s[0], s[1], file_name)
+        self.diagnose_id = "SE0130"

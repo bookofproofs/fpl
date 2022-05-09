@@ -2,7 +2,7 @@ from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
-from poc import fplerror
+from poc.fplerror import FplErrorManager
 
 
 class AuxSTClass(AuxSTBlock):
@@ -24,7 +24,7 @@ class AuxSTClass(AuxSTBlock):
         else:
             self.class_types.append(class_type)
 
-    def initialize_vars(self, filename, errors):
+    def initialize_vars(self, filename, error_mgr: FplErrorManager):
         # The declared variables of a class are in its variable specification list only.
         # (i.e. do not consider the sub-scopes of constructors and properties)
         var_spec_list_node = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.var_spec)
@@ -41,10 +41,12 @@ class AuxSTClass(AuxSTBlock):
                 self._declared_vars[var_declaration.id] = var_declaration
             else:
                 # we have a potential duplicate variable declaration
-                self.append_variable_already_declared(var_declaration, errors, filename)
+                self.append_variable_already_declared(var_declaration, error_mgr, filename)
 
         # The used variables might be spread across the scope of the class, including its constructors and properties.
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit
         # The used variables of a class are, therefore, limited to the scope of the class without the scopes of
         # of its sub nodes.
         self._used_vars = search.findall_by_attr(var_spec_list_node, AuxSymbolTable.var, AuxSymbolTable.outline)
+        self.filter_misused_templates(error_mgr, filename)
+
