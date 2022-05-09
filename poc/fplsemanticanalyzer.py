@@ -129,16 +129,17 @@ class SemanticAnalyser:
         :return: None
         """
         # tuple of used vars of the building block
-        used_vars = node.get_used_vars()
+        used_vars = SemanticAnalyser.__get_all_used_vars(node)
         # dictionary of declared vars of the building block
         declared_vars = node.get_declared_vars()
+        # remove for this check all 'outer' declared variables
+        only_inner_declared = dict()
         for identifier in declared_vars:
-            was_used = False
-            for var_node in used_vars:
-                if var_node.id == identifier:
-                    was_used = True
-                    break
-            if not was_used:
+            if declared_vars[identifier].parent.parent == node:
+                only_inner_declared[identifier] = declared_vars[identifier]
+
+        for identifier in only_inner_declared:
+            if identifier not in used_vars:
                 # Even if the variable was not used, this might make sense semantically,
                 # If the variable was declared in the signature and there is an intrinsic definition.
                 # So we check for this additional condition
@@ -146,6 +147,34 @@ class SemanticAnalyser:
                                                                                                        declared_vars[
                                                                                                            identifier]):
                     self._errors.add_error(FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
+
+    @staticmethod
+    def __gather_used_vars(gather_used_set: set, node: AnyNode):
+        # tuple of used vars of the building block
+        used_vars = node.get_used_vars()
+        for var_node in used_vars:
+            if var_node.id not in gather_used_set:
+                gather_used_set.add(var_node.id)
+
+    @staticmethod
+    def __get_all_used_vars(node: AnyNode):
+        gather_used_set = set()
+        SemanticAnalyser.__gather_used_vars(gather_used_set, node)
+        if isinstance(node, AuxSTClass):
+            # for classes, enrich also all variables used in constructors
+            constructors = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.classConstructors)
+            for child in constructors.children:
+                SemanticAnalyser.__gather_used_vars(gather_used_set, child)
+            # ... and properties
+            properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
+            for child in properties.children:
+                SemanticAnalyser.__gather_used_vars(gather_used_set, child)
+        elif isinstance(node, (AuxSTDefinitionPredicate, AuxSTDefinitionFunctionalTerm)):
+            # for functional term definitions or predicate definitions, enrich also all variables used in properties
+            properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
+            for child in properties.children:
+                SemanticAnalyser.__gather_used_vars(gather_used_set, child)
+        return gather_used_set
 
     @staticmethod
     def __check_for_unused_variable_declared_in_signature_of_intrinsic(node: AnyNode, var_decl):

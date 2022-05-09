@@ -1,6 +1,7 @@
 from anytree import AnyNode, search
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplVariableAlreadyDeclared
+from poc.fplerror import FplTemplateMisused
 
 
 class AuxSTOutline(AnyNode):
@@ -83,6 +84,16 @@ class AuxSTBlock(AuxST):
 
         # blocks's used variables
         self._used_vars = search.findall_by_attr(self, "var", "outline")
+        self.filter_misused_templates(error_mgr, filename)
+
+    def filter_misused_templates(self, error_mgr, filename):
+        result = filter(lambda x: not x.id.startswith("tpl"), self._used_vars)
+        ok_vars = tuple(result)
+        if len(ok_vars) < len(self._used_vars):
+            for node in self._used_vars:
+                if node.id.startswith("tpl"):
+                    error_mgr.add_error(FplTemplateMisused(node.id, node.zfrom, filename))
+        self._used_vars = ok_vars
 
     def append_variable_already_declared(self, var_declaration, error_mgr: FplErrorManager, filename):
         # In implicit declarations like a,b,c: BinOp(x,y: tpl)

@@ -11,6 +11,7 @@ from poc.classes.AuxSTGlobal import AuxSTGlobal
 from poc.classes.AuxSTVarDec import AuxSTVarDec
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplVariableDuplicateInVariableList
+from poc.fplerror import FplTemplateMisused
 from anytree import AnyNode, search
 
 """
@@ -281,6 +282,10 @@ class AuxSymbolTable:
         ast_info = named_var_declaration.get_ast_info()
         if named_var_declaration.var_list is not None:
             for var in reversed(named_var_declaration.var_list):
+                if var.var.id.startswith("tpl"):
+                    named_var_declaration.get_error_mgr().add_error(
+                        FplTemplateMisused(var.var.id, var.var.zfrom, ast_info.file)
+                    )
                 if var.var.id in distinct_vars:
                     named_var_declaration.get_error_mgr().add_error(
                         FplVariableDuplicateInVariableList(distinct_vars[var.var.id], var.var,

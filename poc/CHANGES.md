@@ -1,4 +1,13 @@
 # Changes in the FPL Parser and Interpreter
+## 1.6.4
+* Feature:
+  * New semantical error FplTemplateMisused recognizing the (syntactically possible) misuse of variables named like templates (except the keyword "tpl") + related test cases.   
+* Bugfixes:
+  * False positives of FplUnusedVariable errors corrected when variables are declared in outer scopes but used in sub-nodes like constructors or properties.
+  * Corrected highlighting of variables named like templates (now highlighted like types, not like variables).
+* Refactoring:
+  * Corrected naming for error_manager variables in different positions of code (instead of just "errors")
+  * Error test cases can now print all errors found with verbose mode == True   
 ## 1.6.3
 * Bugfixes:
   * The parsed position of more variables listed in one declaration is now more specific to the variable (instead of the whole list)  

@@ -28,6 +28,9 @@ class ContextVariable(AuxInterpretation):
         new_info.var.id = parsing_info.get_cst()
         new_info.var.zto = i.last_positions_by_rule["Variable"].pos_to_str()
         new_info.var.zfrom = i.corrected_zpos_by(new_info.var.zto, len(new_info.var.id))
-        i.highlight_tags.append(AuxHighlightTag("variable", new_info.var.zfrom, new_info.var.zto))
+        if new_info.var.id.startswith("tpl"):
+            i.highlight_tags.append(AuxHighlightTag("type", new_info.var.zfrom, new_info.var.zto))
+        else:
+            i.highlight_tags.append(AuxHighlightTag("variable", new_info.var.zfrom, new_info.var.zto))
         i.parse_list.append(new_info)
 
