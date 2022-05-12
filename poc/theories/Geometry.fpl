@@ -1,10 +1,13 @@
 Fpl.Geometry.Euclidean
 {
-    uses Fpl.Commons.*
+    uses Fpl.Commons
 
     theory
     {
 
     }
 }
+
+
+
 

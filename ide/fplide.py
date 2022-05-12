@@ -1,6 +1,7 @@
 import tkinter as tk
 import threading
 from tkinter import ttk
+import tkinter.font as tkfont
 from ide.idetheme import DefaultTheme
 from ide.fplidemenu import FPLIdeMenus
 from ide.CustomNotebook import CustomNotebook
@@ -15,7 +16,7 @@ from poc.util.fplutil import Utils
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.8'
+        self.ide_version = '1.6.10'
         self._theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -159,8 +160,45 @@ class FplIde:
         self._tree_view_errors.column('Column', width=30, minwidth=30, stretch=tk.YES, anchor=tk.E)
         self._tree_view_errors.column('File', width=100, minwidth=100, stretch=tk.YES, anchor=tk.CENTER)
         self._tree_view_errors.bind('<Double-Button-1>', self.__tree_view_error_clicked)
+        self._tree_view_errors.bind('<B1-Motion>', self.__motion_handler)
         self.__add_scrollbar(self._frameErrors, self._tree_view_errors)
         self._tree_view_errors.pack(expand=True, fill=tk.BOTH)
+
+    def __motion_handler(self, event):
+        # by jedwards @https://stackoverflow.com/questions/51131812/wrap-text-inside-row-in-tkinter-treeview
+        f = tkfont.Font(font=self._theme.editor_font()[0])
+
+        # A helper function that will wrap a given value based on column width
+        def adjust_newlines(val, width, pad=10):
+            if not isinstance(val, str):
+                return val
+            else:
+                words = val.split()
+                lines = [[], ]
+                for word in words:
+                    line = lines[-1] + [word, ]
+                    if f.measure(' '.join(line)) < (width - pad):
+                        lines[-1].append(word)
+                    else:
+                        lines[-1] = ' '.join(lines[-1])
+                        lines.append([word, ])
+
+                if isinstance(lines[-1], list):
+                    lines[-1] = ' '.join(lines[-1])
+
+                return '\n'.join(lines)
+
+        if (event is None) or (self._tree_view_errors.identify_region(event.x, event.y) == "separator"):
+            # You may be able to use this to only adjust the two columns that you care about
+            # print(tree.identify_column(event.x))
+
+            col_widths = [self._tree_view_errors.column(cid)['width'] for cid in self._tree_view_errors['columns']]
+
+            for iid in self._tree_view_errors.get_children():
+                new_vals = []
+                for (v, w) in zip(self._tree_view_errors.item(iid)['values'], col_widths):
+                    new_vals.append(adjust_newlines(v, w))
+                self._tree_view_errors.item(iid, values=new_vals)
 
     def __add_scrollbar(self, frame, widget):
         scrollbar = tk.Scrollbar(frame)
@@ -248,8 +286,6 @@ class FplIde:
         self._refresh_items_tree_view(editor_info, self.model.fpl_interpreter.get_error_mgr().get_errors(),
                                       self.get_error_list(),
                                       column=4)
-        if AuxISourceAnalyser.verbose:
-            print(self.model.fpl_interpreter.symbol_table_to_str())
         self.object_browser.refresh(self.model.fpl_interpreter.get_symbol_table_root())
 
     def _refresh_items_tree_view(self, editor_info: FrameWithLineNumbers, set_of_errors: set, tree_view: ttk.Treeview,
@@ -268,6 +304,7 @@ class FplIde:
             item_tuple = item.to_tuple()
             tree_view.insert("", tk.END, text="", image=im, values=item_tuple)
         self.update_error_warning_counts()
+        self.__motion_handler(None)
 
     def get_status_bar(self):
         return self._statusBar
@@ -284,7 +321,7 @@ class FplIde:
     def get_error_number(self):
         return self._label_error_num
 
-    def rebuild(self):
+    def verify_all(self):
         main_fpl_file = self.model.get_main_file()
         # make sure the main file is open
         book = self.get_editor_notebook()
@@ -298,10 +335,13 @@ class FplIde:
         self.window.config(cursor="watch")
         # clear the symbol table and all errors of the interpreter
         self.clear_theory_metadata()
+        # refresh the library (because the user might have added new Fpl files)
+        self.model.utils.reload_library(self.model.library, self.model.path_to_fpl_root)
         # perform the syntax and semantic analysis for the theory as a whole
-        self.model.fpl_interpreter.syntax_analysis(
-            self.model.path_to_fpl_root + '\\' + main_file_name)
+        self.model.fpl_interpreter.syntax_analysis(self.model.path_to_fpl_root + '\\' + main_file_name)
         self.model.fpl_interpreter.semantic_analysis()
+        if AuxISourceAnalyser.verbose:
+            self.model.debug_print()
         # refresh all open files of the theory, including the main file
         for file_name in self._tabEditor.get_files():
             editor_info = self._tabEditor.get_files()[file_name]
@@ -318,6 +358,7 @@ class FplIde:
         self.object_browser.clear()
         # clear the symbol table and all errors of the interpreter
         self.model.fpl_interpreter.clear()
+
 
 
 if __name__ == "__main__":

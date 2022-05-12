@@ -90,6 +90,10 @@ class Utils:
         their namespace and adds it to the library node of this ide.
         :return: None
         """
+        for child in library_node.children:
+            child.parent = None
+            del child
+
         for file in os.listdir(root_dir):
             if file.endswith(".fpl"):
                 fpl_file = AuxSTFplFile()

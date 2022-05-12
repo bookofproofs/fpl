@@ -14,7 +14,6 @@ class AuxSTFplFile(AuxSTOutline):
         self._md5_hash = hashlib.md5()
         self.checksum = ""
         self.namespace = ""
-        self.is_main = False
         self._analyser = None
         self._transformer = None
 

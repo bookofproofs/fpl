@@ -113,7 +113,7 @@ class DialogNewOrAddFpl(Dialog):
             fpl_file.set_file_content(initial_code.strip())
             fpl_file.namespace = name_space
             fpl_file.parent = self.ide.model.library
-            self.ide.model.set_main_file(file_name)
+            self.ide.model.main_file = file_name
             book = self.ide.get_editor_notebook()
             book.set_file(os.path.basename(self._actual_file_name.get()))
             book.add_new_editor(initial_code)

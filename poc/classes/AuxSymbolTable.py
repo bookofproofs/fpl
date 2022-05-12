@@ -349,6 +349,14 @@ class AuxSymbolTable:
                 del child
         if theory_node is not None:
             AuxSymbolTable._remove_node_recursively(theory_node)
+        else:
+            # in case there was a syntax error last time, there was no global node.
+            # therefore, try to find the corresponding theory_node of the file directly in the symbol table
+            theories = AuxSymbolTable.get_theories(symbol_table_root)
+            for theory_node in theories:
+                if theory_node.file_name == file_name:
+                    namespace = theory_node.namespace
+                    AuxSymbolTable._remove_node_recursively(theory_node)
         return namespace
 
     @staticmethod
