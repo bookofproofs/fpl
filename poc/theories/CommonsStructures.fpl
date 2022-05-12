@@ -1,6 +1,6 @@
 Fpl.Commons.Structures
 {
-    uses Fpl.Commons, Fpl.SetTheory.ZermeloFraenkel, Fpl.Arithmetics.Nat.Peano
+    uses Fpl.Commons, Fpl.SetTheory.ZermeloFraenkel, Fpl.Arithmetics.Peano
 
     theory
     {
@@ -112,7 +112,7 @@ Fpl.Commons.Structures
         {
             myArity: Nat
 
-            Relation(arity: Nat, setList: +Set)
+            Relation(setList: +Set)
             {
                 cartProd : CartesianProduct
                 cartProd := CartesianProduct(setList)
@@ -285,6 +285,8 @@ Fpl.Commons.Structures
     }
 
 }
+
+
 
 
 

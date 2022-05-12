@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.6.5
+* Refactoring:
+  * Printing the symbol table moved from the interpreter class to the IdeModel class where it is printed together with the library.
+  * Which is the main fpl file is now stored as an attribute in the IdeModel instead of being an attribute of some file in the loaded library.
+* Bugfixes:
+  * "Forgetting" which was the main fpl file when re-verifying the theory corrected. 
 ## 1.6.4
 * Feature:
   * New semantical error FplTemplateMisused recognizing the (syntactically possible) misuse of variables named like templates (except the keyword "tpl") + related test cases.   

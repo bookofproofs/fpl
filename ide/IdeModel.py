@@ -27,6 +27,7 @@ class IdeModel:
         self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)
         self.fpl_interpreter = FplInterpreter(self.fpl_parser, self.path_to_fpl_root, self.library)
         self.images = dict()
+        self.main_file = ""
         self.images["warning"] = tk.PhotoImage("warning", file=os.path.join(self._root_dir, "assets/warning.png"))
         self.images["cancel"] = tk.PhotoImage("cancel", file=os.path.join(self._root_dir, "assets/cancel.png"))
         self.theory_is_open_flag = False
@@ -76,18 +77,13 @@ class IdeModel:
         self.config.write(cfgfile)
 
     def debug_print(self):
+        print("-------------------------------------------------------------")
         print(RenderTree(self.library))
-        self.fpl_interpreter.print_symbol_table()
-
-    def set_main_file(self, file_name: str):
-        for child in self.library.children:
-            child.is_main = False
-            if child.file_name == file_name:
-                child.is_main = True
+        print(RenderTree(self.fpl_interpreter.get_symbol_table_root()))
 
     def get_main_file(self):
         for child in self.library.children:
-            if child.is_main:
+            if child.file_name == self.main_file:
                 return child
         return None
 

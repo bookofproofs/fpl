@@ -67,8 +67,8 @@ class DialogOpenFplTheory(Dialog):
         book.add_new_editor(code)
         editor_info = book.select_file(file_name)
         editor_info.is_new = False
-        self.ide.model.set_main_file(file_name)
+        self.ide.model.main_file = file_name
         self.ide.model.theory_is_open_flag = True
         self.ide.menus.menu_configure()
-        self.ide.rebuild()
+        self.ide.verify_all()
         self.destroy()

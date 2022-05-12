@@ -1,4 +1,13 @@
 # Changes in the FPL IDE
+## 1.6.10
+* Redesign:
+  * "Rebuild" menu item renamed to "Verify"
+* Feature:
+  * Word-wrap for long error messages 
+  * More meaningful syntax errors
+* Bugfixes:
+  * Missing message and position for syntax errors do appear now in the error list and can be double-clicked to jump to the position in the code.
+  * Runtime error when re-verifying a file with a yet another syntax error is corrected  
 ## 1.6.9
 * Bugfixes
   * The key shortcuts Ctrl + x changed to Ctrl + q and Ctrl + S to Ctr + s to be more intuitive 

@@ -138,9 +138,6 @@ class FplInterpreter:
         analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._error_mgr)
         analyzer.semantic_analysis()
 
-    def print_symbol_table(self):
-        print(RenderTree(self._symbol_table_root))
-
     def symbol_table_to_str(self):
         return str(RenderTree(self._symbol_table_root))
 

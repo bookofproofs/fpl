@@ -1,10 +1,10 @@
-Fpl.Arithmetics.Nat.Peano
+Fpl.Arithmetics.Peano
 {
     :ext
         extDecimal = /\d+/;
     :end
 
-    uses Fpl.Commons, Fpl.Set.ZermeloFraenkel
+    uses Fpl.Commons, Fpl.SetTheory.ZermeloFraenkel
 
     theory
     {
@@ -31,8 +31,8 @@ Fpl.Arithmetics.Nat.Peano
                 (
                     and
                     (
-                        NotEquals(successor,n),
-                        Equals(successor,Succ(n))
+                        NotEqual(successor,n),
+                        Equal(successor,Succ(n))
                     )
                 )
             )
@@ -43,7 +43,7 @@ Fpl.Arithmetics.Nat.Peano
             n: Nat
             all n
             (
-                NotEquals(Zero(), Succ(n))
+                NotEqual(Zero(), Succ(n))
             )
         }
 
@@ -54,8 +54,8 @@ Fpl.Arithmetics.Nat.Peano
             (
                 impl
                 (
-                    Equals(Succ(n),Succ(m)),
-                    Equals(n,m)
+                    Equal(Succ(n),Succ(m)),
+                    Equal(n,m)
                 )
             )
         }
@@ -82,11 +82,11 @@ Fpl.Arithmetics.Nat.Peano
             {
                 cases
                 (
-                    case Equals(x,0) :
+                    case Equal(x,0) :
                         self := Zero()
-                    case Equals(x,1) :
+                    case Equal(x,1) :
                         self := Succ(Zero())
-                    case Equals(x,2) :
+                    case Equal(x,2) :
                         self := Succ(Succ(Zero()))
                     else:
                         // else case addressed using a python delegate
@@ -109,7 +109,7 @@ Fpl.Arithmetics.Nat.Peano
         pred IsGreaterOrEqual(n,m: Nat)
         {
             k: Nat
-            ex k ( Equals(n,Add(m,k)) )
+            ex k ( Equal(n,Add(m,k)) )
         }
 
         // besides the class "Nat", we can formulate definition of the set of all natural numbers
@@ -141,9 +141,9 @@ Fpl.Arithmetics.Nat.Peano
             k: Nat
             cases
             (
-                case Equals(m,0):
+                case Equal(m,0):
                     return n
-                case Equals(Succ(m), k):
+                case Equal(Succ(m), k):
                     return Succ(Add(n,k))
                 else:
                     return undef
@@ -163,17 +163,17 @@ Fpl.Arithmetics.Nat.Peano
             pre:
                 and
                     (
-                        Equals(Add(n,0),n),
-                        Equals(anotherAdd(n,0),n),
-                        Equals(Add(n,Succ(m)), Succ(Add(n,m))),
-                        Equals(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
+                        Equal(op(n,0),n),
+                        Equal(anotherAdd(n,0),n),
+                        Equal(op(n,Succ(m)), Succ(op(n,m))),
+                        Equal(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
                     )
             con:
                 all n
                 (
                     all m
                     (
-                        Equals(Add(n,m), anotherAdd(n,m))
+                        Equal(op(n,m), anotherAdd(n,m))
                     )
                 )
         }
@@ -184,17 +184,17 @@ Fpl.Arithmetics.Nat.Peano
             2. |- trivial
             3. |- and
                     (
-                        Equals(Add(n,0),n),
-                        Equals(anotherAdd(n,0),n),
-                        Equals(Add(n,Succ(m)), Succ(Add(n,m))),
-                        Equals(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
+                        Equal(Add(n,0),n),
+                        Equal(anotherAdd(n,0),n),
+                        Equal(Add(n,Succ(m)), Succ(Add(n,m))),
+                        Equal(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
                     )
         }
 
 
         func Sum(list: *Nat)->Nat
         {
-            result: Nat
+            result, addend: Nat
             result:=Zero()
             loop addend list
             (
@@ -257,12 +257,12 @@ Fpl.Arithmetics.Nat.Peano
             premise:
                 loop n [Nat(1)~limit]
                 (
-                    assert Equals(f(n),n)
+                    assert Equal(f(n),n)
                 )
             conclusion:
                 all n
                 (
-                    Equals(Sum(1,n,f),Div(Mul(n,Succ(n)),2))
+                    Equal(Sum(1,n,f),Div(Mul(n,Succ(n)),2))
                 )
 
         }
@@ -295,7 +295,7 @@ Fpl.Arithmetics.Nat.Peano
             x, result: Real
             assert IsBounded(f)
             result:=ZeroReal()
-            range x [a~b]
+            range x [from~to]
             (
                 result:=Add(result, Mult(f(x), D(x)))
             )
@@ -330,3 +330,9 @@ Fpl.Arithmetics.Nat.Peano
 
 
 }
+
+
+
+
+
+

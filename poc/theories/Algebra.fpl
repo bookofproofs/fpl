@@ -17,7 +17,7 @@ Fpl.Algebra.Structures
                 a,b,c: tplSetElem
                 all a,b,c
                 (
-                    Equals
+                    Equal
                     (
                         @self(a,@self(b,c)),
                         @self(@self(a,b),c)
@@ -30,7 +30,7 @@ Fpl.Algebra.Structures
                 a,b: tplSetElem
                 all a,b
                 (
-                    Equals
+                    Equal
                     (
                         @self(a,b),
                         @self(b,a)
@@ -40,12 +40,12 @@ Fpl.Algebra.Structures
 
             optional pred IsLeftNeutralElement(e: tplSetElem)
             {
-                Equals(@self(e,x), x)
+                Equal(@self(e,x), x)
             }
 
             optional pred IsRightNeutralElement(e: tplSetElem)
             {
-                Equals(@self(x,e), x)
+                Equal(@self(x,e), x)
             }
 
             optional pred IsNeutralElement(e: tplSetElem)
@@ -112,11 +112,12 @@ Fpl.Algebra.Structures
             myCarrierSet: tplSet
             myOps: +Composition(myElem: *tplSetElem)
 
-            AlgebraicStructure(x: tplSet, ops: +Composition(elem: *tplSetElem))
+            AlgebraicStructure(x: tplSet, ops: +Composition(args: *tplSetElem))
             {
 
                 a: obj
-                myOps := ops
+                arg: index
+				myOps := ops
                 myCarrierSet := x
 
                 // Assert that all types used in the declaration of AlgebraicStructure
@@ -124,12 +125,12 @@ Fpl.Algebra.Structures
                 // definition! This, means that the In predicate has a non-transitive model
                 // this is comparable to implementing an interface (or comparable to multiple inheritance).
                 // The interpreter only asserts the types tplSet, and tplSetElement to be sets
-                assert
-                    and
-                    (
-                        is(tplSet,Set),
-                        is(tplSetElem,Set)
-                    )
+				assert is (x,Set)
+				loop arg args 
+				(
+					assert is(arg,Set)
+				)
+
 
                 assert
                     all a
@@ -206,7 +207,7 @@ Fpl.Algebra.Structures
             assert In(y,x)
 				cases
             (
-                case Equals(n,0):
+                case Equal(n,0):
                     return m.NeutralElem()
                 else:
                     return
@@ -236,21 +237,21 @@ Fpl.Algebra.Structures
                 (
                     ex x2
                     (
-                        Equals( myOp(x1,x2), self.NeutralElem() )
+                        Equal( myOp(x1,x2), self.NeutralElem() )
                     )
                 )
             }
 
             // provides a standard functionality inside a group that "returns" the inverse element to a given element
-            // we can refer to th this functionality as group.InverseOf(x)
+            // we can refer to this functionality as group.InverseOf(x)
             mandatory func InverseOf(x: tplSetElem) -> tplSetElem
             {
                 val: tplSetElem
                 assert
                     and
                     (
-                        Equals( myOp(x,val), myOp(ketVal,x) ),
-                        Equals( myOp(val,x), self.NeutralElem())
+                        Equal( myOp(x,val), self.NeutralElem()),
+                        Equal( myOp(val,x), self.NeutralElem())
                     )
                 ret val
             }
@@ -260,7 +261,7 @@ Fpl.Algebra.Structures
         {
             CommutativeGroup(x: tpl, op: BinOp)
             {
-                self:=Group(x,op)
+                self := Group(x,op)
                 assert op.IsCommutative()
             }
         }
@@ -282,16 +283,17 @@ Fpl.Algebra.Structures
                 self:=AlgebraicStructure(x, add, mul)
             }
 
-            mandatory func Add(a,b:tplElem)->tplElem
-            {
-               assert and(In(a, myX), In(a, myY))
-					return myAdd
-            }
+			mandatory func Add(a,b:tplElem)->tplElem
+			{
+				assert and(In(a, myX), In(b, myX))
+				return myAdd(a,b)
+			}
+
 
             mandatory func Mul(a,b:tplElem)->tplElem
             {
-               assert and(In(a, myX), In(a, myY))
-               return myMul
+               assert and(In(a, myX), In(b, myX))
+               return myMul(a,b)
             }
 
             mandatory CommutativeGroup AdditiveGroup()
@@ -309,7 +311,7 @@ Fpl.Algebra.Structures
                 a,b,c: tplElem
                 all a,b,c
                 (
-                    Equals(
+                    Equal(
                         myMul(myAdd(a,b),c),
                         myAdd(myMul(a,c),myMul(b,c))
                     )
@@ -321,7 +323,7 @@ Fpl.Algebra.Structures
                 a,b,c: tplElem
                 all a,b,c
                 (
-                    Equals(
+                    Equal(
                         myMul(a,myAdd(b,c)),
                         myAdd(myMul(a,b),myMul(a,c))
                     )
@@ -458,7 +460,7 @@ Fpl.Algebra.Structures
                 a: tplFieldElement
                 all u,w,a
                 (
-                    Equals(
+                    Equal(
                         myScalarMul(myVecAdd(u,w),a),
                         myVecAdd(myScalarMul(u,a),myScalarMul(w,a))
                     )
@@ -471,7 +473,7 @@ Fpl.Algebra.Structures
                 a: tplFieldElement
                 all a,u,w
                 (
-                    Equals
+                    Equal
                     (
                         myScalarMul(a,myVecAdd(u,w)),
                         myVecAdd(myScalarMul(a,u),myScalarMul(a,w))
@@ -485,7 +487,7 @@ Fpl.Algebra.Structures
                 a, b: tplFieldElement
                 all a,b,u
                 (
-                    Equals
+                    Equal
                     (
                         myScalarMul(myFieldMul(a,b),u),
                         myScalarMul(a,myScalarMul(b,u))
@@ -500,12 +502,23 @@ Fpl.Algebra.Structures
                 one := myField.MultiplicativeGroup().NeutralElement()
                 all u
                 (
-                    Equals( myScalarMul(one,u), u)
+                    Equal( myScalarMul(one,u), u)
                 )
             }
         }
    }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

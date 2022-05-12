@@ -6,7 +6,6 @@ from ide.idetheme import DefaultTheme
 from ide.TextLineNumbers import TextLineNumbers
 from ide.EditorText import EditorText
 import tkinter.font as tkfont
-import os
 from ide.Settings import Settings
 
 
@@ -117,7 +116,7 @@ class FrameWithLineNumbers(tk.Frame):
 
     def _press_enter(self, event):
         text_to_the_left = self.text.get("0.0", self.get_pos())
-        indent = self.__determine_current_indent(text_to_the_left, "{")
+        indent = self.__determine_current_indent(text_to_the_left, "{") + 1
         split_pos = self.get_pos().split('.')
         last_row = int(split_pos[0])
         last_col = int(split_pos[1])

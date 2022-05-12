@@ -22,9 +22,9 @@ class FPLIdeMenus:
         self.fpl_theory_menu.add_command(label='Exit', underline=1, command=self.exit)
         self._menuBar.add_cascade(label='FPL Theory', underline=0, menu=self.fpl_theory_menu)
 
-        self.build_menu = tk.Menu(self._menuBar, tearoff=0)
-        self.build_menu.add_command(label='Build Theory', command=self.build_whole_theory)
-        self._menuBar.add_cascade(label='Build', underline=0, menu=self.build_menu)
+        self.verify_menu = tk.Menu(self._menuBar, tearoff=0)
+        self.verify_menu.add_command(label='Verify All', command=self.verify_all_theory)
+        self._menuBar.add_cascade(label='Verify', underline=0, menu=self.verify_menu)
 
         options_bar = tk.Menu(self._menuBar, tearoff=0)
         options_bar.add_command(label='Settings', command=self.settings)
@@ -75,14 +75,14 @@ class FPLIdeMenus:
             self.fpl_theory_menu.entryconfig("Close", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Add FPL file", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Remove FPL file", state=tk.NORMAL)
-            self.build_menu.entryconfig("Build Theory", state=tk.NORMAL)
+            self.verify_menu.entryconfig("Verify All", state=tk.NORMAL)
         else:
             self.fpl_theory_menu.entryconfig("New", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Open", state=tk.NORMAL)
             self.fpl_theory_menu.entryconfig("Close", state=tk.DISABLED)
             self.fpl_theory_menu.entryconfig("Add FPL file", state=tk.DISABLED)
             self.fpl_theory_menu.entryconfig("Remove FPL file", state=tk.DISABLED)
-            self.build_menu.entryconfig("Build Theory", state=tk.DISABLED)
+            self.verify_menu.entryconfig("Verify All", state=tk.DISABLED)
 
     def exit(self, event=None):
         closeable = self._ask_to_save_any_open_files()
@@ -153,8 +153,8 @@ class FPLIdeMenus:
             status_bar.set_text("Ready.")
         self.ide.window.config(cursor="")
 
-    def build_whole_theory(self):
+    def verify_all_theory(self):
         self._save_any_unsaved_files()
-        self.ide.rebuild()
+        self.ide.verify_all()
 
 
