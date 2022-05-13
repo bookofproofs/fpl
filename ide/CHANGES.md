@@ -1,4 +1,10 @@
 # Changes in the FPL IDE
+## 1.6.11
+* Bugfixes:
+  * Number of auto-tabs in the new line after pressing <Return> corrected.
+  * Word-wrap for long error messages introduced in 1.6.10 removed since it did not reliable enough.
+* Refactoring:
+  * A separate new class for handling the InfoBoxes.py. Code separated from the main code in the fplide.py file.
 ## 1.6.10
 * Redesign:
   * "Rebuild" menu item renamed to "Verify"

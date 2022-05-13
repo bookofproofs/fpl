@@ -23,8 +23,8 @@ class ContextProof(AuxInterpretation):
         elif rule == "ReferencingIdentifier":
             self.building_block.id = parsing_info.id  # noqa
         elif rule == "ProofBlock":
-            self.building_block.register_child(parsing_info.proof_arguments)  # noqa
             self.building_block.register_child(parsing_info.variable_spec)  # noqa
+            self.building_block.register_child(parsing_info.proof_arguments)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
