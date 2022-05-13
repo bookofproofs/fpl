@@ -2,6 +2,7 @@ import unittest
 from parameterized import parameterized
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
+from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 import os
 
 """
@@ -35,5 +36,21 @@ class FplUndeclaredVariable(unittest.TestCase):
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
         interpreter.semantic_analysis()
+        if AuxISourceAnalyser.verbose:
+            interpreter.get_error_mgr().print_errors()
         # the error is the same as in the use case file
         self.assertTrue(Utils.check_if_error_occurs(result[1], interpreter.get_error_mgr(), diagnose_id))
+
+    @parameterized.expand([
+        ("test_FplUndeclaredVariable_ok_01.fpl", "SE0070"),
+    ])
+    def test_ok(self, use_case, diagnose_id):
+        path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
+        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
+        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
+        interpreter.syntax_analysis(path_to_use_cases)
+        interpreter.semantic_analysis()
+        if AuxISourceAnalyser.verbose:
+            interpreter.get_error_mgr().print_errors()
+        # the error is the same as in the use case file
+        self.assertTrue(Utils.check_if_error_does_not_occur(interpreter.get_error_mgr(), diagnose_id))

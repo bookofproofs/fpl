@@ -116,7 +116,7 @@ class FrameWithLineNumbers(tk.Frame):
 
     def _press_enter(self, event):
         text_to_the_left = self.text.get("0.0", self.get_pos())
-        indent = self.__determine_current_indent(text_to_the_left, "{") + 1
+        indent = self.__determine_current_indent(text_to_the_left, "{")
         split_pos = self.get_pos().split('.')
         last_row = int(split_pos[0])
         last_col = int(split_pos[1])

@@ -1,5 +1,6 @@
 from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.fplerror import FplErrorManager
 
 
 class AuxSTProof(AuxSTBlock):

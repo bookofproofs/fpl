@@ -40,7 +40,11 @@ class FplInterpreterMessage(Exception):
         return self.diagnose_id, self._msg, self._line, self._col, self.file
 
     def sort_key(self):
-        return self.mainType + self.file + str(self._line).zfill(6) + str(self._col).zfill(6)
+        if self.diagnose_id.startswith("SY"):
+            sort_diagnose_id = "A"
+        else:
+            sort_diagnose_id = "B"
+        return self.mainType + sort_diagnose_id + self.file + str(self._line).zfill(6) + str(self._col).zfill(6)
 
 
 class FplParserError(FplInterpreterMessage):

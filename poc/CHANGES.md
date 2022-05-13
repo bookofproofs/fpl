@@ -1,4 +1,9 @@
 # Changes in the FPL Parser and Interpreter
+## 1.6.6
+* Bugfixes:
+  * The symbol table of proofs follows now the overall convention to list variable specifications before the block definition.
+  * The variables declared in the theorem-like statement of the proof are now automatically part of the variable declarations of the corresponding proof. 
+  * Sortkey of errors corrected to show syntax errors prior to semantic errors
 ## 1.6.5
 * Refactoring:
   * Printing the symbol table moved from the interpreter class to the IdeModel class where it is printed together with the library.
