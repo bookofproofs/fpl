@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        predicate Test()
+        {
+            True
+        }
+
+        prop Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:5:8: Ambiguous blocks Proposition and DefinitionPredicate with the same signature 'Test[]' (previous at 10,11)

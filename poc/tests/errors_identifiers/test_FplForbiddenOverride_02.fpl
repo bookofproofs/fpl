@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        lemma Test(op: obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        axiom Test()
+        {
+            True
+        }
+    }
+}
+
+##############################
+FplForbiddenOverride:5:8: 'Test[1:obj]' (Lemma) and 'Test[]' (Axiom) cannot coexist in theory (found at 11,12)

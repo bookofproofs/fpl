@@ -1,0 +1,14 @@
+Test.Namespace
+{
+    theory
+    {
+        corollary Test$1()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplMissingProof:5:8: The theorem_like statement 'Test$1' lacks a proof

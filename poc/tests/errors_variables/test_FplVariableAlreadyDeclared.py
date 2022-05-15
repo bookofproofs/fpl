@@ -53,6 +53,8 @@ class FplVariableAlreadyDeclaredTests(unittest.TestCase):
         ("test_FplVariableAlreadyDeclared_lemma_02.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_proof_01.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_proof_02.fpl", "SE0080"),
+        ("test_FplVariableAlreadyDeclared_proof_03.fpl", "SE0080"),
+        ("test_FplVariableAlreadyDeclared_proof_04.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_proposition_01.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_proposition_02.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_conjecture_01.fpl", "SE0080"),

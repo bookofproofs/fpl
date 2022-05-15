@@ -1,0 +1,13 @@
+Test.Namespace
+{
+    theory
+    {
+        proof Test$1
+        {
+            1. |- qed
+        }
+    }
+}
+
+##############################
+FplProofMissingTheoremLikeStatement:5:8: Theorem-like statement 'Test' not found for proof 'Test$1'

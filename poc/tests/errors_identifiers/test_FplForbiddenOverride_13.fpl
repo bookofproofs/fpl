@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        theorem Test(op: obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        func Test()->obj
+        {
+            return undefined
+        }
+
+    }
+}
+
+##############################
+FplForbiddenOverride:5:8: 'Test[1:obj]' (Theorem) and 'Test[]' (DefinitionFunctionalTerm) cannot coexist in theory (found at 11,12)

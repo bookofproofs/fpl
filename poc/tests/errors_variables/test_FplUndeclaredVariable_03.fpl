@@ -1,0 +1,19 @@
+TestNamespace
+{
+    theory
+    {
+        prop TestProposition(op: Add)
+        {
+            pre: undef
+            con: undef
+        }
+
+        proof TestProposition$1
+        {
+            1. assume Equal(n,m)
+        }
+    }
+}
+
+##############################
+FplUndeclaredVariable:13:28: The variable 'n' was not declared in the current context

@@ -2,39 +2,17 @@ TestNamespace
 {
     theory
     {
-        prop AddIsUnique(op: Add)
+        prop TestProposition(op: Add)
         {
             n,m: Nat
             anotherAdd: Add
-            pre:
-                and
-                    (
-                        Equal(op(n,0),n),
-                        Equal(anotherAdd(n,0),n),
-                        Equal(op(n,Succ(m)), Succ(op(n,m))),
-                        Equal(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
-                    )
-            con:
-                all n
-                (
-                    all m
-                    (
-                        Equal(op(n,m), anotherAdd(n,m))
-                    )
-                )
+            pre: undef
+            con: undef
         }
 
-        proof AddIsUnique$1
+        proof TestProposition$1
         {
-            1. assume pre
-            2. |- trivial
-            3. |- and
-                    (
-                        Equal(Add(n,0),n),
-                        Equal(anotherAdd(n,0),n),
-                        Equal(Add(n,Succ(m)), Succ(Add(n,m))),
-                        Equal(anotherAdd(n,Succ(m)), Succ(anotherAdd(n,m)))
-                    )
+            1. assume Equal(n,m)
         }
     }
 }

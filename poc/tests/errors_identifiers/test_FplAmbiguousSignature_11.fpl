@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        theorem Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        conj Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:5:8: Ambiguous blocks Conjecture and Theorem with the same signature 'Test[]' (previous at 11,12)

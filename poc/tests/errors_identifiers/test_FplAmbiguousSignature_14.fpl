@@ -1,0 +1,18 @@
+Test.Namespace
+{
+    theory
+    {
+        axiom Test()
+        {
+            True
+        }
+
+        pred Test()
+        {
+            True
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:10:8: Ambiguous blocks Axiom and DefinitionPredicate with the same signature 'Test[]' (previous at 5,6)

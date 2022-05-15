@@ -128,3 +128,7 @@ class AuxSTBlock(AuxST):
         :return: tuple of used variables
         """
         return self._used_vars
+
+    def get_node_type_str(self):
+        d = str(type(self)).split(".")
+        return d[-1][5:-2]

@@ -1,0 +1,105 @@
+TestNamespace
+{
+    theory
+    {
+        thm TestTheorem()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        // first proof
+        proof TestTheorem$1
+        {
+            1. |- qed
+        }
+
+        // second proof
+        proof TestTheorem$2
+        {
+            1. |- qed
+        }
+
+        // corollary
+        cor TestTheorem$1()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        // first proof of corollary
+        proof TestTheorem$1$1
+        {
+            1. |- qed
+        }
+
+        // second proof of corollary
+        proof TestTheorem$1$2
+        {
+            1. |- qed
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem[]', id='TestTheorem[]', reference=AuxSTTheorem(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem$1[]', id='TestTheorem$1[]', reference=AuxSTCorollary(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem$1', id='TestTheorem$1', reference=AuxSTProof(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem$2', id='TestTheorem$2', reference=AuxSTProof(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem$1$1', id='TestTheorem$1$1', reference=AuxSTProof(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.TestTheorem$1$2', id='TestTheorem$1$2', reference=AuxSTProof(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='3932682ce5be2fa26c22ea3250f97c21', file_name='test_proof_03.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    ├── AuxSTOutline(outline='theorems')
+    │   └── AuxSTTheorem(id='TestTheorem[]', keyword='thm', outline='theorem', zfrom='5.8', zto='9.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.12', zto='5.25')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicate(outline='pre', zfrom='7.12', zto='8.12')
+    │       │   └── AuxSTPredicate(outline='undefined', zfrom='7.17', zto='7.26')
+    │       ├── AuxSTPredicate(outline='con', zfrom='8.12', zto='8.26')
+    │       │   └── AuxSTPredicate(outline='undefined', zfrom='8.17', zto='8.26')
+    │       ├── AuxSTOutline(outline='corollaries')
+    │       └── AuxSTOutline(outline='proofs')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    │   └── AuxSTCorollary(id='TestTheorem$1[]', keyword='cor', outline='corollary', zfrom='24.8', zto='28.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='24.12', zto='5.25')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicate(outline='pre', zfrom='26.12', zto='27.12')
+    │       │   └── AuxSTPredicate(outline='undefined', zfrom='26.17', zto='26.26')
+    │       ├── AuxSTPredicate(outline='con', zfrom='27.12', zto='27.26')
+    │       │   └── AuxSTPredicate(outline='undefined', zfrom='27.17', zto='27.26')
+    │       ├── AuxSTOutline(outline='corollaries')
+    │       └── AuxSTOutline(outline='proofs')
+    ├── AuxSTOutline(outline='proofs')
+    │   ├── AuxSTProof(id='TestTheorem$1', outline='proofArgument', zfrom='12.8', zto='15.9')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   └── AuxSTProofArguments(outline='arguments')
+    │   │       └── AuxSTProofArgument(id='1', outline='argument', type='', zfrom='', zto='')
+    │   │           └── AuxSTProofArgument(outline='argument', type='', zfrom='', zto='')
+    │   │               └── AuxSTProofStop(outline='argument', type='qed')
+    │   ├── AuxSTProof(id='TestTheorem$2', outline='proofArgument', zfrom='18.8', zto='21.9')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   └── AuxSTProofArguments(outline='arguments')
+    │   │       └── AuxSTProofArgument(id='1', outline='argument', type='', zfrom='', zto='')
+    │   │           └── AuxSTProofArgument(outline='argument', type='', zfrom='', zto='')
+    │   │               └── AuxSTProofStop(outline='argument', type='qed')
+    │   ├── AuxSTProof(id='TestTheorem$1$1', outline='proofArgument', zfrom='31.8', zto='34.9')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   └── AuxSTProofArguments(outline='arguments')
+    │   │       └── AuxSTProofArgument(id='1', outline='argument', type='', zfrom='', zto='')
+    │   │           └── AuxSTProofArgument(outline='argument', type='', zfrom='', zto='')
+    │   │               └── AuxSTProofStop(outline='argument', type='qed')
+    │   └── AuxSTProof(id='TestTheorem$1$2', outline='proofArgument', zfrom='37.8', zto='40.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProofArguments(outline='arguments')
+    │           └── AuxSTProofArgument(id='1', outline='argument', type='', zfrom='', zto='')
+    │               └── AuxSTProofArgument(outline='argument', type='', zfrom='', zto='')
+    │                   └── AuxSTProofStop(outline='argument', type='qed')
+    └── AuxSTLocalizations(outline='localizations')

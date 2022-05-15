@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        lemma Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        func Test()->obj
+        {
+            return undefined
+        }
+
+    }
+}
+
+##############################
+FplAmbiguousSignature:11:8: Ambiguous blocks Lemma and DefinitionFunctionalTerm with the same signature 'Test[]' (previous at 5,6)

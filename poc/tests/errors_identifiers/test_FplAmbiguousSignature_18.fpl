@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        axiom Test()
+        {
+            True
+        }
+
+        func Test()->obj
+        {
+            return undefined
+        }
+
+    }
+}
+
+##############################
+FplAmbiguousSignature:10:8: Ambiguous blocks Axiom and DefinitionFunctionalTerm with the same signature 'Test[]' (previous at 5,6)

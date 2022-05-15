@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        predicate Test()
+        {
+            True
+        }
+
+        func Test()->obj
+        {
+            return undefined
+        }
+
+    }
+}
+
+##############################
+FplAmbiguousSignature:5:8: Ambiguous blocks DefinitionFunctionalTerm and DefinitionPredicate with the same signature 'Test[]' (previous at 10,11)

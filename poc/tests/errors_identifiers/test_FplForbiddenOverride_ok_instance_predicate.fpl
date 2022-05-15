@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            mandatory pred TestProperty()
+            {
+                true
+            }
+            mandatory pred TestProperty(op:obj)
+            {
+                false
+            }
+        }
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for predicate instance properties

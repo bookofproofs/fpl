@@ -1,0 +1,22 @@
+Test.Namespace
+{
+    inference
+    {
+        Test(op: obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+
+    theory
+    {
+        axiom Test()
+        {
+            True
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:14:8: Ambiguous blocks RuleOfInference and Axiom with the same signature 'Test[]' (previous at 5,6)

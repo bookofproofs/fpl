@@ -1,0 +1,18 @@
+Test.Namespace
+{
+    theory
+    {
+        axiom Test()
+        {
+            True
+        }
+
+        pred Test(op: obj)
+        {
+            True
+        }
+    }
+}
+
+##############################
+FplForbiddenOverride:5:8: 'Test[]' (Axiom) and 'Test[1:obj]' (DefinitionPredicate) cannot coexist in theory (found at 10,11)

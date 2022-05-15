@@ -1,0 +1,18 @@
+Test.Namespace
+{
+    theory
+    {
+        func Test()->obj
+        {
+            return undefined
+        }
+
+        func Test(op:obj)->obj
+        {
+            return undefined
+        }
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for functional terms

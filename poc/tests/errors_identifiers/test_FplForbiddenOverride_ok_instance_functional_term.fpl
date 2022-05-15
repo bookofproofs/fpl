@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            mandatory func TestFunction()->index
+            {
+                return undefined
+            }
+            mandatory func TestFunction(op: index)->index
+            {
+                return op
+            }
+        }
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for functional term instance properties

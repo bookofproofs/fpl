@@ -43,6 +43,7 @@ from poc.classes.ContextDefinitionPredicate import ContextDefinitionPredicate
 from poc.classes.ContextDefinitionProperty import ContextDefinitionProperty
 from poc.classes.ContextDerivedPredicate import ContextDerivedPredicate
 from poc.classes.ContextDisjunction import ContextDisjunction
+from poc.classes.ContextDollarDigitList import ContextDollarDigitList
 from poc.classes.ContextEBNFFactor import ContextEBNFFactor
 from poc.classes.ContextEBNFString import ContextEBNFString
 from poc.classes.ContextEBNFTerm import ContextEBNFTerm
@@ -223,6 +224,7 @@ class FPLSyntaxAnalyzer:
             "Digit": self.default_interpretation,
             "DigitIdSmallCase": self.default_interpretation,
             "Disjunction": ContextDisjunction.dispatch,
+            "DollarDigitList": ContextDollarDigitList.dispatch,
             "Dollar": self.default_interpretation,
             "Dot": self.default_interpretation,
             "EBNFBar": self.default_interpretation,

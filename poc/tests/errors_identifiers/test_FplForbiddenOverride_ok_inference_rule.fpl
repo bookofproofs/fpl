@@ -1,0 +1,22 @@
+Test.Namespace
+{
+    inference
+    {
+        Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+        Test(op:obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+    theory
+    {
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for inference rules

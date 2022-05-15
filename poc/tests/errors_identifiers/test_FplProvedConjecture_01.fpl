@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        conjecture Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        proof Test$1
+        {
+            1. |- qed
+        }
+    }
+}
+
+##############################
+FplProvedConjecture:11:8: Proof 'Test$1' of conjecture 'Test' detected (change to a new possible theorem)

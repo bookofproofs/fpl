@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        proposition Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        conj Test(op: obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplForbiddenOverride:11:8: 'Test[1:obj]' (Conjecture) and 'Test[]' (Proposition) cannot coexist in theory (found at 5,6)
