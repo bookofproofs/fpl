@@ -1,0 +1,14 @@
+Test.Namespace
+{
+    theory
+    {
+        corollary Test$1()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplCorollaryMissingTheoremLikeStatement:5:8: Theorem-like statement 'Test' not found for corollary 'Test$1'

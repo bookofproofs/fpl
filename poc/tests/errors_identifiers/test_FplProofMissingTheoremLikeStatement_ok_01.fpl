@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        lemma Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        proof Test$1
+        {
+            1. |- qed
+        }
+    }
+}
+
+##############################
+Should not cause FplProofMissingTheoremLikeStatement

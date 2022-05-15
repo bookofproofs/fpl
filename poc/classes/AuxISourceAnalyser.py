@@ -14,7 +14,7 @@ class AuxISourceAnalyser:
     def __init__(self, error_mgr: FplErrorManager, root: AnyNode, theory_name: str, namespace=""):
         """
         Creates a new interface between the classes named Context<Something> and the class FPLSyntaxAnalyzer
-        :param errors: a pointer to the errors of the FPL transformer
+        :param error_mgr: a pointer to the errors of the FPL transformer
         :param root: a pointer to the root (cross-theory) node of the symbol table of the FPL transformer
         :param theory_name: the name of the current theory being interpreted
         :param namespace: the name of the theory's namespace

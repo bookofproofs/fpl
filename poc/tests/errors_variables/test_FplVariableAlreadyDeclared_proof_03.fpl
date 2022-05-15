@@ -1,0 +1,21 @@
+TestNamespcase
+{
+    theory
+    {
+        prop TestProposition(op: object)
+        {
+            n,m: Nat
+            anotherAdd: Add
+            pre: undefined
+            con: undefined
+        }
+
+        proof TestProposition$1
+        {
+            n: Nat
+            1. |- qed
+        }
+    }
+}
+##############################
+FplVariableAlreadyDeclared:15:12: The variable 'n' was already declared in the current context at (7,13)

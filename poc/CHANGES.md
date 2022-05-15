@@ -1,4 +1,18 @@
 # Changes in the FPL Parser and Interpreter
+## 1.7.0
+* Features:
+  * New semantical warning FplMissingProof (indicates that there is theorem-like statement, i.e. theorem, proposition, lemma or corollary without a corresponding proof)
+  * New semantical error FplProvedConjecture (indicates a proof referencing to a conjecture)
+  * New semantical error FplProofMissingTheoremLikeStatement (indicates a proof of a non-existing theorem-like statement)
+  * New semantical error FplCorollaryMissingTheoremLikeStatement (indicates a corollary of a non-existing theorem-like statement)
+  * New semantical error FplAmbiguousSignatures (indicates the use the same signatures with different building block types)
+  * New semantical error FplForbiddenOverride (indicates a forbidden override of special types of building blocks like axioms, conjectures, theorem-like statements, and conjectures)
+  * Respective tests added
+* Bugfixes
+  * Undo last ReferencingIdentifier simplifications since we need proofs of corollaries.
+  * The global nodes of proofs and corollaries in test cases were wrong (test utilities updated)
+* Refactoring
+  * Checks related to identifiers moved to from fplsementicanalyzer.py to a separate new class SemCheckIdentifiers.py  
 ## 1.6.6
 * Bugfixes:
   * The symbol table of proofs follows now the overall convention to list variable specifications before the block definition.

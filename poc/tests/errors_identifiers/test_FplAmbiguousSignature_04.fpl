@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        lemma Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        prop Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:5:8: Ambiguous blocks Proposition and Lemma with the same signature 'Test[]' (previous at 11,12)

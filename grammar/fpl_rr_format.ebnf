@@ -472,7 +472,9 @@ regular_expression '/((?!:end).)*/'
     Proof ::=
         ProofHeader SW ReferencingIdentifier (IW)? ProofBlock
     ReferencingIdentifier ::=
-        PredicateIdentifier Dollar Digit
+        PredicateIdentifier DollarDigitList
+    DollarDigitList ::=
+        Dollar Digit ( Dollar Digit )*
     ProofHeader ::=
         (
         proof

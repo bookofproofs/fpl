@@ -1,4 +1,6 @@
 # Changes in the FPL grammar
+## 1.1.8
+* Undo last ReferencingIdentifier simplifications since we need proofs of corollaries.
 ## 1.1.7
 * Enforce a premise predicate (later semantical convention should be: if omitted then use the undefined keyword).
 * A premise and a conclusion must be terminated by a significant whitespace.

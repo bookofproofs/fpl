@@ -29,6 +29,7 @@ class FplUndeclaredVariable(unittest.TestCase):
     @parameterized.expand([
         ("test_FplUndeclaredVariable_01.fpl", "SE0070"),
         ("test_FplUndeclaredVariable_02.fpl", "SE0070"),
+        ("test_FplUndeclaredVariable_03.fpl", "SE0070"),
     ])
     def test_errors(self, use_case, diagnose_id):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
@@ -43,6 +44,7 @@ class FplUndeclaredVariable(unittest.TestCase):
 
     @parameterized.expand([
         ("test_FplUndeclaredVariable_ok_01.fpl", "SE0070"),
+        ("test_FplUndeclaredVariable_ok_02.fpl", "SE0070"),
     ])
     def test_ok(self, use_case, diagnose_id):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

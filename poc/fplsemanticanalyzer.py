@@ -1,47 +1,21 @@
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.SemCheckerIdentifiers import SemCheckerIdentifiers
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplIdentifierAlreadyDeclared
 from poc.fplerror import FplMalformedNamespace
-from poc.fplerror import FplUndeclaredVariable
-from poc.fplerror import FplUnusedVariable
-from poc.fplerror import FplIdentifierNotDeclared
-from poc.fplerror import FplMalformedGlobalId
-from poc.fplerror import FplMisspelledConstructor
-from poc.fplerror import FplMisspelledProperty
-from poc.classes.AuxSTSignature import AuxSTSignature
-from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSTClass import AuxSTClass
-from poc.classes.AuxSTDefinitionFunctionalTerm import AuxSTDefinitionFunctionalTerm
-from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
-from poc.classes.AuxSTDefinitionPredicate import AuxSTDefinitionPredicate
-from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
-from poc.classes.AuxSTLemma import AuxSTLemma
-from poc.classes.AuxSTTheorem import AuxSTTheorem
-from poc.classes.AuxSTProposition import AuxSTProposition
-from poc.classes.AuxSTCorollary import AuxSTCorollary
-from poc.classes.AuxSTRuleOfInference import AuxSTRuleOfInference
-from poc.classes.AuxSTAxiom import AuxSTAxiom
-from poc.classes.AuxSTConjecture import AuxSTConjecture
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
-from poc.classes.AuxSTType import AuxSTType
-from poc.classes.AuxSTConstructor import AuxSTConstructor
-from anytree import search
 
 
 class SemanticAnalyser:
 
-    def __init__(self, symbol_table_root: AnyNode, errors: FplErrorManager):
+    def __init__(self, symbol_table_root: AnyNode, error_mgr: FplErrorManager):
         self._symbol_table_root = symbol_table_root
-        self._globals_node = None
-        self._errors = errors
-        self._loaded_theories = tuple()
-        self._gid_collection = dict()
-        self._signature_collection = dict()
-        # in this dictionary we collect lists of nodes by the same referencee (identifier)
-        self._references = dict()
-        self._loaded_theories = AuxSymbolTable.get_theories(self._symbol_table_root)
-        self._globals_node = AuxSymbolTable.get_child_by_outline(self._symbol_table_root, AuxSymbolTable.globals)
+        self.error_mgr = error_mgr
+        # a dictionary of all nodes by gid (global identifier)
+        self.gid_collection = dict()
+        self.loaded_theories = AuxSymbolTable.get_theories(self._symbol_table_root)
+        self.globals_node = AuxSymbolTable.get_child_by_outline(self._symbol_table_root, AuxSymbolTable.globals)
+        self.sem_checker_identifiers = SemCheckerIdentifiers(self)
 
     def semantic_analysis(self):
         """
@@ -49,11 +23,10 @@ class SemanticAnalyser:
         :return:
         """
         self._check_theories()
-        self._check_identifiers()
-        self._check_misspelled_references()
+        self.sem_checker_identifiers.analyse()
 
     def _check_theories(self):
-        for theory in self._loaded_theories:
+        for theory in self.loaded_theories:
             self.__check_namespace_identifiers(theory)
             self.__check_malformed_namespace(theory)
 
@@ -68,7 +41,7 @@ class SemanticAnalyser:
             if child.id not in duplicate_checker:
                 duplicate_checker[child.id] = child
             else:
-                self._errors.add_error(
+                self.error_mgr.add_error(
                     FplIdentifierAlreadyDeclared(child.id, child.zfrom, theory.file_name,
                                                  duplicate_checker[child.id].zfrom,
                                                  theory.file_name))
@@ -84,244 +57,4 @@ class SemanticAnalyser:
             if chunk not in duplicate_checker:
                 duplicate_checker.add(chunk)
             else:
-                self._errors.add_error(FplMalformedNamespace(theory.namespace, theory.file_name))
-
-    def _check_identifiers(self):
-        """
-        Check different semantics about FPL user-defined identifiers.
-        Implementation Note: We use one loop for different checks per building blocks for performance reasons.
-        :return: None
-        """
-        for child in self._globals_node.children:
-            identifier = child.id.split("[")[0]
-            if identifier not in self._references:
-                self._references[identifier] = list()
-                self._references[identifier].append(child)
-            self.__check_undeclared_var_usages(child.reference.get_used_vars(), child.reference.get_declared_vars(),
-                                               child.theory.file_name)
-            self.__check_for_unused_vars(child.reference, child.theory.file_name)
-            self.__check_for_malformed_gid(identifier, child, child.theory)
-            self.__check_uniqueness_gid(child)
-            self.__check_uniqueness_signature(child)
-
-    def __check_undeclared_var_usages(self, used_vars: tuple, declared_vars: dict, file_name: str):
-        """
-        Checks if all used variables are declared in each building block, depending on their scope.
-        :param used_vars: tuple of used vars of the building block
-        :param declared_vars: dictionary of declared vars of the building block
-        :param file_name: FPL file name in which the building block is declared.
-        :return: None
-        """
-        for var_node in used_vars:
-            if var_node.id not in declared_vars:
-                # the variable is undeclared if it was not found among the declared variables
-                self._errors.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
-            elif not declared_vars[var_node.id].has_in_scope(var_node.zfrom):
-                # the variable is also undeclared if it was found among the declared variables
-                # but is outside the scope of this variable declaration
-                self._errors.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
-
-    def __check_for_unused_vars(self, node: AnyNode, file_name: str):
-        """
-        Checks if all declared variables are used in each building block, depending on their scope.
-        :param node: node declared in the FPL code (object instance of the symbol table node)
-        :param file_name: FPL file name in which the building block is declared.
-        :return: None
-        """
-        # tuple of used vars of the building block
-        used_vars = SemanticAnalyser.__get_all_used_vars(node)
-        # dictionary of declared vars of the building block
-        declared_vars = node.get_declared_vars()
-        # remove for this check all 'outer' declared variables
-        only_inner_declared = dict()
-        for identifier in declared_vars:
-            if declared_vars[identifier].parent.parent == node:
-                only_inner_declared[identifier] = declared_vars[identifier]
-
-        for identifier in only_inner_declared:
-            if identifier not in used_vars:
-                # Even if the variable was not used, this might make sense semantically,
-                # If the variable was declared in the signature and there is an intrinsic definition.
-                # So we check for this additional condition
-                if not SemanticAnalyser.__check_for_unused_variable_declared_in_signature_of_intrinsic(node,
-                                                                                                       declared_vars[
-                                                                                                           identifier]):
-                    self._errors.add_error(FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
-
-    @staticmethod
-    def __gather_used_vars(gather_used_set: set, node: AnyNode):
-        # tuple of used vars of the building block
-        used_vars = node.get_used_vars()
-        for var_node in used_vars:
-            if var_node.id not in gather_used_set:
-                gather_used_set.add(var_node.id)
-
-    @staticmethod
-    def __get_all_used_vars(node: AnyNode):
-        gather_used_set = set()
-        SemanticAnalyser.__gather_used_vars(gather_used_set, node)
-        if isinstance(node, AuxSTClass):
-            # for classes, enrich also all variables used in constructors
-            constructors = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.classConstructors)
-            for child in constructors.children:
-                SemanticAnalyser.__gather_used_vars(gather_used_set, child)
-            # ... and properties
-            properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
-            for child in properties.children:
-                SemanticAnalyser.__gather_used_vars(gather_used_set, child)
-        elif isinstance(node, (AuxSTDefinitionPredicate, AuxSTDefinitionFunctionalTerm)):
-            # for functional term definitions or predicate definitions, enrich also all variables used in properties
-            properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
-            for child in properties.children:
-                SemanticAnalyser.__gather_used_vars(gather_used_set, child)
-        return gather_used_set
-
-    @staticmethod
-    def __check_for_unused_variable_declared_in_signature_of_intrinsic(node: AnyNode, var_decl):
-        if isinstance(var_decl.parent, AuxSTSignature):
-            if var_decl.parent.parent == node:
-                if isinstance(node, AuxSTDefinitionFunctionalTerm) or isinstance(node, AuxSTFunctionalTermInstance):
-                    definition = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.var_spec)
-                    # The functional term's definition was intrinsic if its var specification subnode is empty
-                    return len(definition.children) == 0
-                elif isinstance(node, AuxSTDefinitionPredicate) or isinstance(node, AuxSTPredicateInstance):
-                    # The predicate's definition was intrinsic if it has an
-                    found_intrinsic_definition = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.intrinsic)
-                    return found_intrinsic_definition is not None and \
-                           isinstance(found_intrinsic_definition, AuxSTPredicate) and \
-                           found_intrinsic_definition.parent == node
-            elif var_decl.parent.parent == node.parent.parent:
-                # if the variable was declared in the signature of the parent definition of a property node
-                # ignore that the variable not used in the body of the property since it is not semantically required.
-                return True
-        return False
-
-    def __check_for_malformed_gid(self, qualified_identifier, node, theory_node):
-        """
-        Checks if referenced identifiers do not conflict with chunks of names of the namespace.
-        :param qualified_identifier: reference identifier (might be qualified like in 'ClassName.PropertyName')
-        :param node: the global node with this identifier
-        :param theory_node: theory node in which the identifier is declared
-        :return: None
-        """
-        namespace = theory_node.namespace
-        split_q_id = qualified_identifier.split(".")
-        if len(split_q_id) == 2:
-            if split_q_id[0] == split_q_id[1] and not isinstance(node.reference, AuxSTConstructor):
-                # the property of a definition cannot be named the same as its main name
-                parent = node.reference.parent.parent
-                if isinstance(parent, AuxSTClass):
-                    self._errors.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 1, node.reference.zfrom,
-                                              theory_node.file_name))
-                elif isinstance(parent, AuxSTDefinitionPredicate):
-                    self._errors.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 2, node.reference.zfrom,
-                                              theory_node.file_name))
-                elif isinstance(parent, AuxSTDefinitionFunctionalTerm):
-                    self._errors.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 3, node.reference.zfrom,
-                                              theory_node.file_name))
-                else:
-                    self._errors.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 4, node.reference.zfrom,
-                                              theory_node.file_name))
-        identifier = split_q_id[-1]
-        if isinstance(node.reference, AuxSTConstructor):
-            class_name = node.reference.parent.parent.id
-            if identifier != class_name:
-                # the constructor of a (class) definition has to be named the same as the class name
-                self._errors.add_error(
-                    FplMisspelledConstructor(class_name, identifier, node.reference.zfrom, theory_node.file_name))
-
-        if identifier in namespace:
-            namespace = namespace.replace(identifier, "")
-            if namespace == "" or namespace.startswith(".") or namespace.endswith(".") or ".." in namespace:
-                if isinstance(node.reference, AuxSTConstructor):
-                    # ignore constructors since the class's name already does conflict too and generates a similar error
-                    pass
-                else:
-                    self._errors.add_error(
-                        FplMalformedGlobalId(identifier, theory_node.namespace, node.reference.zfrom,
-                                             theory_node.file_name))
-
-    def __check_uniqueness_gid(self, global_node):
-        """
-        Checks the uniqueness of fully qualified global identifiers. (If not, the user has used the same name of a
-        building block across different namespaces.)
-        :return: None
-        """
-        if global_node.gid not in self._gid_collection:
-            self._gid_collection[global_node.gid] = global_node
-        else:
-            node = global_node.reference
-            theory_node = global_node.theory
-            if node.outline != AuxSymbolTable.classDefaultConstructor:
-                existing_node = self._gid_collection[global_node.gid].reference
-                existing_theory_node = self._gid_collection[global_node.gid].theory
-                self._errors.add_error(
-                    FplIdentifierAlreadyDeclared(global_node.id, node.zfrom, theory_node.file_name, existing_node.zfrom,
-                                                 existing_theory_node.file_name))
-
-    def __check_uniqueness_signature(self, global_node):
-        """
-        Checks the uniqueness of signatures (If not, the user has duplicated a building block
-        in the source code of the same namespace.) For instance, there a two theorems that can be referred
-        by the name "FundamentalTheorem", one in an Algebra namespace, another in an Arithmetics namespace.
-        :param global_node: Some child node from the globals node of the symbol table.
-        :return: None
-        """
-        if global_node.id not in self._signature_collection:
-            self._signature_collection[global_node.id] = global_node
-        else:
-            if global_node.theory.namespace != self._signature_collection[global_node.id].theory.namespace:
-                # The id of the node should be also unique across different namespaces.
-                node = global_node.reference
-                theory_node = global_node.theory
-                if node.outline != AuxSymbolTable.classDefaultConstructor:
-                    existing_node = self._signature_collection[global_node.id].reference
-                    existing_theory_node = self._signature_collection[global_node.id].theory
-                    self._errors.add_error(
-                        FplIdentifierAlreadyDeclared(global_node.id, node.zfrom, theory_node.file_name,
-                                                     existing_node.zfrom,
-                                                     existing_theory_node.file_name))
-
-    def _check_misspelled_references(self):
-        for theory_node in self._loaded_theories:
-            # by convention of the FPL syntax, all pascal-case type names are user-defined
-            # collect them
-            collect_type_references = search.findall(theory_node,
-                                                     filter_=lambda node: isinstance(node, AuxSTType)
-                                                                          and node.id[0].isupper())
-            for type_node in collect_type_references:
-                if type_node.id not in self._references:
-                    # the type is never declared
-                    self._errors.add_error(
-                        FplIdentifierNotDeclared(type_node.id, theory_node.file_name, type_node.zfrom))
-
-            # by convention of the FPL syntax, all pascal-case reference names are user-defined
-            # collect them
-            collect_other_references = search.findall(theory_node,
-                                                      filter_=lambda node: isinstance(node, AuxSTPredicateWithArgs)
-                                                                           and node.id[0].isupper())
-            for reference_node in collect_other_references:
-                if reference_node.id not in self._references:
-                    # the reference is never declared
-                    self._errors.add_error(
-                        FplIdentifierNotDeclared(reference_node.id, theory_node.file_name, reference_node.zfrom))
-
-    @staticmethod
-    def is_type(reference):
-        return isinstance(reference, (AuxSTClass, AuxSTDefinitionPredicate, AuxSTDefinitionFunctionalTerm))
-
-    @staticmethod
-    def is_theorem_like_statement(reference):
-        return isinstance(reference, (AuxSTCorollary, AuxSTLemma, AuxSTProposition, AuxSTTheorem))
-
-    @staticmethod
-    def is_asserted(reference):
-        return isinstance(reference, (AuxSTAxiom, AuxSTRuleOfInference))
-
-    @staticmethod
-    def is_conjecture(reference):
-        return isinstance(reference, AuxSTConjecture)
+                self.error_mgr.add_error(FplMalformedNamespace(theory.namespace, theory.file_name))

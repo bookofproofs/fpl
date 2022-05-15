@@ -1,0 +1,22 @@
+Test.Namespace
+{
+    inference
+    {
+        Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+
+    theory
+    {
+        function Test(op: obj)->object
+        {
+            return undefined
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:14:8: Ambiguous blocks RuleOfInference and DefinitionFunctionalTerm with the same signature 'Test[]' (previous at 5,6)

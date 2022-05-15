@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        predicate Test()
+        {
+            True
+        }
+
+        conj Test(op: obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplForbiddenOverride:10:8: 'Test[1:obj]' (Conjecture) and 'Test[]' (DefinitionPredicate) cannot coexist in theory (found at 5,6)

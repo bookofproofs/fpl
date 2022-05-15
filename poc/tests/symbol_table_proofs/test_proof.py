@@ -30,6 +30,8 @@ class ProofsTests(unittest.TestCase):
     @parameterized.expand([
         "test_proof_01.fpl",
         "test_proof_02.fpl",
+        "test_proof_03.fpl",
+        "test_proof_04.fpl",
     ])
     def test_correct(self, use_case):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)

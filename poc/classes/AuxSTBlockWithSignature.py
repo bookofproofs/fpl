@@ -1,7 +1,4 @@
 from poc.classes.AuxST import AuxSTBlock
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-from anytree import search
-from poc.classes.AuxSTClass import AuxSTClass
 
 
 class AuxSTBlockWithSignature(AuxSTBlock):

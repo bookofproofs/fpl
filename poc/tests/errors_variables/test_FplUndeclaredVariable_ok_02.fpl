@@ -1,0 +1,21 @@
+TestNamespace
+{
+    theory
+    {
+        prop TestProposition(op: Add)
+        {
+            n,m: Nat
+            anotherAdd: Add
+            pre: undef
+            con: undef
+        }
+
+        proof TestProposition$1
+        {
+            1. assume is(op, func)
+        }
+    }
+}
+
+##############################
+Variables declared in the theorem used in the proof should not cause FplUndeclaredVariable error

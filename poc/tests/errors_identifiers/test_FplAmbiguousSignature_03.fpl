@@ -1,0 +1,19 @@
+Test.Namespace
+{
+    theory
+    {
+        lemma Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        pred Test()
+        {
+            True
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:11:8: Ambiguous blocks Lemma and DefinitionPredicate with the same signature 'Test[]' (previous at 5,6)

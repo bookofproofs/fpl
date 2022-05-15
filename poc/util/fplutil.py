@@ -3,6 +3,7 @@ import tatsu
 import io
 import os
 import re
+import unittest
 from poc.classes.AuxSTFplFile import AuxSTFplFile
 from poc.fplerror import FplErrorManager
 
@@ -61,12 +62,12 @@ class Utils:
         test_output = interpreter.symbol_table_to_str().strip()
         # remove "poc.classes." paths
         test_output = test_output.replace("poc.classes.", "")
-        # remove dynamic object memory references
+        # remove dynamic object memory overridden_signatures
         test_output = re.sub(' object at 0x[0-9A-F]+', '', test_output)
         # remove AnyNode string representations that are the "node" attribute of AnyNode
-        test_output = re.sub(r'(=AnyNode\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
+        test_output = re.sub(r'(=AnyNode\()([\$a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
         # remove Aux* string representations
-        test_output = re.sub(r'(=Aux[a-zA-Z]+\()([a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
+        test_output = re.sub(r'(=Aux[a-zA-Z]+\()([\$a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)
         return test_output
 
     @staticmethod
@@ -146,3 +147,4 @@ class Utils:
             if diagnose_id == error.diagnose_id:
                 return False
         return True
+

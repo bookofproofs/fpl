@@ -1,0 +1,18 @@
+Test.Namespace
+{
+    theory
+    {
+        pred Test()
+        {
+            true
+        }
+
+        pred Test(op:obj)
+        {
+            false
+        }
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for predicates

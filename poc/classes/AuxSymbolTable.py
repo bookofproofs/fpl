@@ -267,7 +267,11 @@ class AuxSymbolTable:
                                                             AuxSymbolTable.block_proof_root).children
         for block in other_blocks:
             block.set_relative_id("")
-            block.initialize_vars(theory_node.file_name, error_mgr)
+            if block.outline != AuxSymbolTable.block_proof:
+                # Postpone initialize vars of proofs since we have to identify its reference theorem-like statement
+                # first to be able to run this method properly.
+                # In all other cases, calling initialize_vars at this stage is fine.
+                block.initialize_vars(theory_node.file_name, error_mgr)
             all_globally_registered += (block,)
 
         global_references = AuxSymbolTable.get_child_by_outline(theory_node.parent, AuxSymbolTable.globals)

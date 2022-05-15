@@ -772,7 +772,11 @@
         ;
 
     ReferencingIdentifier =
-        PredicateIdentifier Dollar Digit
+        PredicateIdentifier DollarDigitList
+        ;
+
+    DollarDigitList =
+        Dollar Digit { Dollar Digit }*
         ;
 
     ProofHeader =

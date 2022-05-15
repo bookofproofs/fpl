@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        corollary Test$1()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        corollary Test$1(op:obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplForbiddenOverride:11:8: 'Test$1[1:obj]' (Corollary) and 'Test$1[]' (Corollary) cannot coexist in theory (found at 5,6)

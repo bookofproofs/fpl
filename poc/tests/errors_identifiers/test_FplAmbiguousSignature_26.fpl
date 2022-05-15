@@ -1,0 +1,23 @@
+Test.Namespace
+{
+    inference
+    {
+        Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+
+    theory
+    {
+        conjecture Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplAmbiguousSignature:5:8: Ambiguous blocks Conjecture and RuleOfInference with the same signature 'Test[]' (previous at 14,15)

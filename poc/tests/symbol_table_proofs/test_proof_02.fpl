@@ -42,7 +42,7 @@ TestNamespace
 AnyNode(outline='root')
 ├── AnyNode(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.AddIsUnique[1:Add]', id='AddIsUnique[1:Add]', reference=AuxSTProposition(), theory=AuxSTTheory())
-│   └── AuxSTGlobal(gid='TestNamespace.AddIsUnique$1', id='AddIsUnique$1', reference=AuxSTProof(id='AddIsUnique$1', outline='proofArgument', zfrom='27.8', zto='38.9'), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.AddIsUnique$1', id='AddIsUnique$1', reference=AuxSTProof(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='37278bfa90d7a849bf3d3065656cd71c', file_name='test_proof_02.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
     ├── AuxSTOutline(outline='axioms')

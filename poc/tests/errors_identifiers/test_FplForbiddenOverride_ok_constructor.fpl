@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            Test()
+            {
+                self := undefined
+            }
+            Test(op:obj)
+            {
+                self := op
+            }
+        }
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for constructors

@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        thm Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        thm Test(op:obj)
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+FplForbiddenOverride:11:8: 'Test[1:obj]' (Theorem) and 'Test[]' (Theorem) cannot coexist in theory (found at 5,6)

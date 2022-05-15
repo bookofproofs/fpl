@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        class Test: obj
+        {
+            mandatory obj TestProperty()
+            {
+                self := undefined
+            }
+            mandatory obj TestProperty(op:obj)
+            {
+                self := op
+            }
+        }
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for class instance properties

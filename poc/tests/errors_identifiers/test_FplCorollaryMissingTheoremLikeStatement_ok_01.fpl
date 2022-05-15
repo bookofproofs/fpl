@@ -1,0 +1,20 @@
+Test.Namespace
+{
+    theory
+    {
+        lemma Test()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        corollary Test$1()
+        {
+            pre: undefined
+            con: undefined
+        }
+    }
+}
+
+##############################
+Should not cause FplCorollaryMissingTheoremLikeStatement
