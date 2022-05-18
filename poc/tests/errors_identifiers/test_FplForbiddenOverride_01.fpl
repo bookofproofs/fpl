@@ -17,4 +17,4 @@ Test.Namespace
 }
 
 ##############################
-FplForbiddenOverride:5:8: 'Test[]' (Lemma) and 'Test[1:obj]' (Theorem) cannot coexist in theory (found at 11,12)
+FplForbiddenOverride:11:8: 'Test[]' (Lemma) and 'Test[1:obj]' (Theorem) cannot coexist in theory (other at 5,9)

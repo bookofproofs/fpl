@@ -15,4 +15,4 @@ Test.Namespace
 }
 
 ##############################
-FplMisspelledProperty:9:13: Misspelled property 'Nat' of class 'Nat' (must be different)
+FplMisspelledProperty:9:12: Misspelled property 'Nat' of class 'Nat' (must be different)

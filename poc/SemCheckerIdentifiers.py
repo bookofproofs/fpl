@@ -60,7 +60,7 @@ class OverrideHandler:
             else:
                 # an error detected
                 if node.reference.id == self._dict[identifier].reference.id:
-                    # the case == of the same signatures would be a false pasitive
+                    # the case == of the same signatures would be a false positive
                     # for FplForbiddenOverride, because this kind of
                     # error is already detected by the FplAmbiguousSignature error
                     pass
@@ -309,48 +309,56 @@ class SemCheckerIdentifiers:
                 if last_block is None:
                     last_block = block
                 else:
-                    if last_block.reference.get_node_type_str() != block.reference.get_node_type_str() and \
-                            last_block.reference.id == block.reference.id:
-                        # in all other case with the same signature we have the FplAmbiguousSignature error
-                        self.analyzer.error_mgr.add_error(FplAmbiguousSignature(block, last_block))
+                    if last_block.reference.get_node_type_str() != block.reference.get_node_type_str():
+                        if last_block.reference.id == block.reference.id:
+                            # Since we have unequal building block types with the same signature,
+                            # we trigger the FplAmbiguousSignature error
+                            self.analyzer.error_mgr.add_error(FplAmbiguousSignature(block, last_block))
+                        elif not (isinstance(last_block.reference, AuxSTClass) and
+                                  isinstance(block.reference, AuxSTConstructor) or
+                                  isinstance(last_block.reference, AuxSTConstructor) and
+                                  isinstance(block.reference, AuxSTClass)):
+                            # Since we have unequal building block types the same identifier,
+                            # we trigger the FplForbiddenOverride error, unless in case of constructors of classes
+                            # which by default have a different signature but the same identifier as the class.
+                            self.analyzer.error_mgr.add_error(FplForbiddenOverride(block, last_block))
 
-            # In the next loop, we dispatch the nodes and detect FplForbiddenOverride errors (if any)
-            for global_node in self.overridden_signatures.get(identifier):
+                # we now dispatch the collected nodes
                 reference = block.reference
                 if isinstance(reference, AuxSTClass):
-                    self.types.add(identifier, global_node)
+                    self.types.add(identifier, block)
                 elif isinstance(reference, AuxSTConstructor):
-                    self.constructors.add(identifier, global_node)
+                    self.constructors.add(identifier, block)
                 elif isinstance(reference, AuxSTDefinitionFunctionalTerm):
-                    self.functional_terms.add(identifier, global_node)
+                    self.functional_terms.add(identifier, block)
                 elif isinstance(reference, AuxSTDefinitionPredicate):
-                    self.predicates.add(identifier, global_node)
+                    self.predicates.add(identifier, block)
                 elif isinstance(reference, AuxSTClassInstance):
-                    self.instance_classes.add(identifier, global_node)
+                    self.instance_classes.add(identifier, block)
                 elif isinstance(reference, AuxSTPredicateInstance):
-                    self.instance_predicates.add(identifier, global_node)
+                    self.instance_predicates.add(identifier, block)
                 elif isinstance(reference, AuxSTFunctionalTermInstance):
-                    self.instance_functional_terms.add(identifier, global_node)
+                    self.instance_functional_terms.add(identifier, block)
                 elif isinstance(reference, AuxSTProof):
-                    self.proofs.add(identifier, global_node)
+                    self.proofs.add(identifier, block)
                 elif isinstance(reference, AuxSTTheorem):
-                    self.theorems.add(identifier, global_node)
-                    self.theorem_like_statements[identifier] = global_node
+                    self.theorems.add(identifier, block)
+                    self.theorem_like_statements[identifier] = block
                 elif isinstance(reference, AuxSTProposition):
-                    self.propositions.add(identifier, global_node)
-                    self.theorem_like_statements[identifier] = global_node
+                    self.propositions.add(identifier, block)
+                    self.theorem_like_statements[identifier] = block
                 elif isinstance(reference, AuxSTLemma):
-                    self.lemmas.add(identifier, global_node)
-                    self.theorem_like_statements[identifier] = global_node
+                    self.lemmas.add(identifier, block)
+                    self.theorem_like_statements[identifier] = block
                 elif isinstance(reference, AuxSTCorollary):
-                    self.corollaries.add(identifier, global_node)
-                    self.theorem_like_statements[identifier] = global_node
+                    self.corollaries.add(identifier, block)
+                    self.theorem_like_statements[identifier] = block
                 elif isinstance(reference, AuxSTAxiom):
-                    self.axioms.add(identifier, global_node)
+                    self.axioms.add(identifier, block)
                 elif isinstance(reference, AuxSTRuleOfInference):
-                    self.inference_rules.add(identifier, global_node)
+                    self.inference_rules.add(identifier, block)
                 elif isinstance(reference, AuxSTConjecture):
-                    self.conjectures.add(identifier, global_node)
+                    self.conjectures.add(identifier, block)
                 else:
                     raise NotImplementedError(type(reference))
 

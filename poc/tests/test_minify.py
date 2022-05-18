@@ -35,6 +35,7 @@ class MinifyTestCase(unittest.TestCase):
         "../theories/Linalg.fpl",
         "../theories/Example4-7.fpl",
     ])
+    @unittest.skip("Skipping tests for performance reasons, comment this line out to include this test.")
     def test_cases(self, use_case):
         self.minify(use_case)
         self.assertEqual(self.transformer.get_minified(), self.transformer_after_minify.get_minified())

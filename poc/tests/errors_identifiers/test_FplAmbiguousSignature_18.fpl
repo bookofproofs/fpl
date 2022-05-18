@@ -16,4 +16,4 @@ Test.Namespace
 }
 
 ##############################
-FplAmbiguousSignature:10:8: Ambiguous blocks Axiom and DefinitionFunctionalTerm with the same signature 'Test[]' (previous at 5,6)
+FplAmbiguousSignature:10:8: Ambiguous blocks Axiom and DefinitionFunctionalTerm with the same signature 'Test[]' (other at 5,9)
