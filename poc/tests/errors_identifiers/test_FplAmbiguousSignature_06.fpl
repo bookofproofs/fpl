@@ -20,4 +20,4 @@ Test.Namespace
 }
 
 ##############################
-FplAmbiguousSignature:5:8: Ambiguous blocks Lemma and RuleOfInference with the same signature 'Test[]' (previous at 14,15)
+FplAmbiguousSignature:5:8: Ambiguous blocks Lemma and RuleOfInference with the same signature 'Test[]' (other at 14,9)

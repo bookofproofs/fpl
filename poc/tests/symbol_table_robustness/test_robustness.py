@@ -1,62 +1,40 @@
-import unittest
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-from parameterized import parameterized
-from poc.util.fplutil import Utils
-from poc.fplinterpreter import FplInterpreter
-import os
-
+from poc.tests.UtilTestCase import UtilTestCase, parameterized, unittest
 """
 Tests creating the symbol table for randomly derived FPL syntax
 """
 
 
-class RobustnessTests(unittest.TestCase):
-    path = None
-    util = None
-    path_to_grammar = None
-    maxDiff = None
-
-    @classmethod
-    def setUpClass(cls):
-        cls.path = os.path.normpath(os.path.abspath(__file__))
-        if os.path.isfile(cls.path):
-            cls.path = os.path.dirname(cls.path)
-        cls.path_to_grammar = os.path.join(cls.path, "../../../grammar")
-        cls.path_to_usecases = os.path.join(cls.path)
-        cls.util = Utils()
-        cls.fpl_parser = cls.util.get_parser(cls.path_to_grammar + "/fpl_tatsu_format.ebnf")
+class RobustnessTests(UtilTestCase):
+    folder = "symbol_table_robustness"
 
     @parameterized.expand([
-        ("test_robustness_uses_clause.fpl", 0),
         ("test_robustness_axiom.fpl", 300),
-        ("test_robustness_theoremlike.fpl", 300),
+        ("test_robustness_class.fpl", 600),
+        ("test_robustness_constructor.fpl", 600),
+        ("test_robustness_functional_term.fpl", 300),
+        ("test_robustness_inference_rules.fpl", 129),
+        ("test_robustness_isOperator.fpl", 299),
+        ("test_robustness_predicate.fpl", 556),
         ("test_robustness_proof.fpl", 300),
         ("test_robustness_property_class_instance.fpl", 900),
         ("test_robustness_property_functional_term.fpl", 900),
         ("test_robustness_property_predicate.fpl", 900),
-        ("test_robustness_constructor.fpl", 600),
-        ("test_robustness_class.fpl", 600),
-        ("test_robustness_functional_term.fpl", 300),
-        ("test_robustness_statement_return.fpl", 300),
-        ("test_robustness_statement_range.fpl", 100),
-        ("test_robustness_statement_loop.fpl", 100),
-        ("test_robustness_statement_assignment.fpl", 300),
         ("test_robustness_statement_assertion.fpl", 300),
-        ("test_robustness_statement_python_delegate.fpl", 300),
+        ("test_robustness_statement_assignment.fpl", 300),
         ("test_robustness_statement_cases.fpl", 100),
-        ("test_robustness_isOperator.fpl", 299),
-        ("test_robustness_predicate.fpl", 556),
-        ("test_robustness_types_image.fpl", 309),
+        ("test_robustness_statement_loop.fpl", 100),
+        ("test_robustness_statement_python_delegate.fpl", 300),
+        ("test_robustness_statement_range.fpl", 100),
+        ("test_robustness_statement_return.fpl", 300),
+        ("test_robustness_theoremlike.fpl", 300),
         ("test_robustness_types_class.fpl", 192),
-        ("test_robustness_types_var_decl.fpl", 1),
-        ("test_robustness_types_var_in_signature.fpl", 309),
+        ("test_robustness_types_image.fpl", 309),
         ("test_robustness_types_properties.fpl", 315),
+        ("test_robustness_types_var_decl.fpl", 1104),
+        ("test_robustness_types_var_in_signature.fpl", 309),
+        ("test_robustness_uses_clause.fpl", 0),
     ])
+    @unittest.skip("Skipping tests for performance reasons, comment this line out to include this test.")
     def test_correct(self, use_case, number_of_nodes):
-        path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
-        interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
-        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
-        interpreter.syntax_analysis(path_to_use_cases)
-        r = interpreter.get_symbol_table_root()
-        globals_node = AuxSymbolTable.get_child_by_outline(r, AuxSymbolTable.globals)
-        self.assertEqual(number_of_nodes, len(globals_node.children))
+        super().syntax_analysis_correct_node_number(self.folder + "/" + use_case, number_of_nodes)
+

@@ -17,4 +17,4 @@ Test.Namespace
 }
 
 ##############################
-FplAmbiguousSignature:5:8: Ambiguous blocks Conjecture and Theorem with the same signature 'Test[]' (previous at 11,12)
+FplAmbiguousSignature:5:8: Ambiguous blocks Conjecture and Theorem with the same signature 'Test[]' (other at 11,9)

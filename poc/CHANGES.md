@@ -1,4 +1,11 @@
 # Changes in the FPL Parser and Interpreter
+## 1.7.1
+* Bugfixes:
+  * The FplForbiddenOverride error was not recognized in all cases correctly.
+  * The column position in the message of the FplForbiddenOverride and FplAmbiguousSignatures errors were not correct.
+  * Messages of FplForbiddenOverride and FplAmbiguousSignatures adjusted, including test cases.
+* Refactoring:
+  * Common code of unit tests was centralized in UtilTestCase.py
 ## 1.7.0
 * Features:
   * New semantical warning FplMissingProof (indicates that there is theorem-like statement, i.e. theorem, proposition, lemma or corollary without a corresponding proof)

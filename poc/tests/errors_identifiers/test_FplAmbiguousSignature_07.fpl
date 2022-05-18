@@ -17,4 +17,4 @@ Test.Namespace
 }
 
 ##############################
-FplAmbiguousSignature:11:8: Ambiguous blocks Lemma and DefinitionFunctionalTerm with the same signature 'Test[]' (previous at 5,6)
+FplAmbiguousSignature:11:8: Ambiguous blocks Lemma and DefinitionFunctionalTerm with the same signature 'Test[]' (other at 5,9)

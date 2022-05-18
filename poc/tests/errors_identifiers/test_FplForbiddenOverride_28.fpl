@@ -19,4 +19,4 @@ Test.Namespace
 }
 
 ##############################
-FplAmbiguousSignature:14:8: Ambiguous blocks RuleOfInference and DefinitionFunctionalTerm with the same signature 'Test[]' (previous at 5,6)
+FplForbiddenOverride:14:8: 'Test[]' (RuleOfInference) and 'Test[1:obj]' (DefinitionFunctionalTerm) cannot coexist in theory (other at 5,9)

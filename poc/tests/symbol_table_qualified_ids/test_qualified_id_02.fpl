@@ -1,0 +1,56 @@
+ TestNamespace
+{
+    theory
+    {
+        class Semigroup: Magma
+        {
+            Semigroup(x: tplSet, op: BinOp)
+            {
+                self:= Magma (x,op)
+                assert self.Op().IsAssociative()
+            }
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Semigroup', id='Semigroup', reference=AuxSTClass(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.Semigroup[1:tplSet,1:BinOp]', id='Semigroup[1:tplSet,1:BinOp]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='2c74cc8c0597c1c339daa909b36406a5', file_name='test_qualified_id_02.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['Magma'], def_type='class', id='Semigroup', keyword='class', outline='definition', zfrom='5.8', zto='12.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='Semigroup[1:tplSet,1:BinOp]', outline='constructor', zfrom='7.12', zto='11.13')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='7.12', zto='7.43')
+    │       │       │   ├── AuxSTVarDec(id='x', outline='var_decl', zfrom='7.22', zto='7.31')
+    │       │       │   │   └── AuxSTType(id='tplSet', outline='type', type_mod=None, type_pattern=9, zfrom='7.25', zto='7.31')
+    │       │       │   └── AuxSTVarDec(id='op', outline='var_decl', zfrom='7.33', zto='7.42')
+    │       │       │       └── AuxSTType(id='BinOp', outline='type', type_mod=None, type_pattern=1, zfrom='7.37', zto='7.42')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='9.32', zto='9.35')
+    │       │           │   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='9.16', zto='9.20')
+    │       │           │   └── AuxSTPredicateWithArgs(id='Magma', outline='predicateWithArgs', reference=None, zfrom='9.23', zto='9.35')
+    │       │           │       └── AuxSTArgs(outline='arguments', zfrom='9.30', zto='9.35')
+    │       │           │           ├── AuxSTVariable(id='x', outline='var', zfrom='9.30', zto='9.31')
+    │       │           │           └── AuxSTVariable(id='op', outline='var', zfrom='9.32', zto='9.34')
+    │       │           └── AuxSTStatement(outline='statement', type='assert', zfrom='10.16', zto='10.48')
+    │       │               └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='10.23', zto='10.27')
+    │       │                   └── AuxSTQualified(outline='qualified', zfrom='10.27', zto='10.27')
+    │       │                       └── AuxSTPredicateWithArgs(id='Op', outline='predicateWithArgs', reference=None, zfrom='10.28', zto='10.32')
+    │       │                           ├── AuxSTArgs(outline='arguments', zfrom='10.31', zto='10.32')
+    │       │                           └── AuxSTQualified(outline='qualified', zfrom='10.32', zto='10.32')
+    │       │                               └── AuxSTPredicateWithArgs(id='IsAssociative', outline='predicateWithArgs', reference=None, zfrom='10.33', zto='10.48')
+    │       │                                   └── AuxSTArgs(outline='arguments', zfrom='10.47', zto='10.48')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

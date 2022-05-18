@@ -19,4 +19,4 @@ Test.Namespace
 }
 
 ##############################
-FplAmbiguousSignature:14:8: Ambiguous blocks RuleOfInference and DefinitionPredicate with the same signature 'Test[]' (previous at 5,6)
+FplAmbiguousSignature:14:8: Ambiguous blocks RuleOfInference and DefinitionPredicate with the same signature 'Test[]' (other at 5,9)

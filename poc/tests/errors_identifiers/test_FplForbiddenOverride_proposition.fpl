@@ -17,4 +17,4 @@ Test.Namespace
 }
 
 ##############################
-FplForbiddenOverride:11:8: 'Test[1:obj]' (Proposition) and 'Test[]' (Proposition) cannot coexist in theory (found at 5,6)
+FplForbiddenOverride:5:8: 'Test[1:obj]' (Proposition) and 'Test[]' (Proposition) cannot coexist in theory (other at 11,9)

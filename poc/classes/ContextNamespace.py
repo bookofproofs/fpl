@@ -43,6 +43,4 @@ class ContextNamespace(AuxInterpretation):
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextNamespace(i)
         i.theory_node.namespace = new_info.id
-        # populate global nodes
-        AuxSymbolTable.populate_global_nodes(i.theory_node, i.errors)
         i.parse_list.append(new_info)

@@ -275,7 +275,6 @@ class AuxSymbolTable:
             all_globally_registered += (block,)
 
         global_references = AuxSymbolTable.get_child_by_outline(theory_node.parent, AuxSymbolTable.globals)
-        # todo: special treatment of corollaries
         for block in all_globally_registered:
             gid = '.'.join([theory_node.namespace, block.get_relative_id()])  # noqa
             AuxSTGlobal(global_references, gid, block, theory_node)
@@ -313,7 +312,8 @@ class AuxSymbolTable:
         if modifier == "*":
             # for the '*' modifier return all nodes whose namespace starts with the searched namespace
             return search.findall(library_node,
-                                  lambda node: hasattr(node, "namespace") and node.namespace.startswith(namespace))
+                                  lambda node: hasattr(node, "namespace") and node.namespace.startswith(
+                                      namespace + "."))
         else:
             # for no (or other modifier) return all nodes whose namespace equals the searched namespace
             return search.findall(library_node, lambda node: hasattr(node, "namespace") and node.namespace == namespace)

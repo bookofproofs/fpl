@@ -1,0 +1,72 @@
+ TestNamespace
+{
+    theory
+    {
+        class ZeroVectorN: Tuple
+        {
+            ZeroVectorN(n: Nat, field: Field)
+            {
+                from: Nat
+                from := Nat(1)
+                i: Nat
+                range i [1~n]
+                (
+                    self[i]:=field.AdditiveGroup().NeutralElement()
+                )
+            }
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.ZeroVectorN', id='ZeroVectorN', reference=AuxSTClass(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.ZeroVectorN[1:Nat,1:Field]', id='ZeroVectorN[1:Nat,1:Field]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='631c6750d933d9d029ab7fb4eee60b77', file_name='test_qualified_id_07.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['Tuple'], def_type='class', id='ZeroVectorN', keyword='class', outline='definition', zfrom='5.8', zto='17.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='ZeroVectorN[1:Nat,1:Field]', outline='constructor', zfrom='7.12', zto='16.13')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='7.12', zto='7.45')
+    │       │       │   ├── AuxSTVarDec(id='n', outline='var_decl', zfrom='7.24', zto='7.30')
+    │       │       │   │   └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='7.27', zto='7.30')
+    │       │       │   └── AuxSTVarDec(id='field', outline='var_decl', zfrom='7.32', zto='7.44')
+    │       │       │       └── AuxSTType(id='Field', outline='type', type_mod=None, type_pattern=1, zfrom='7.39', zto='7.44')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       │           ├── AuxSTVarDec(id='from', outline='var_decl', zfrom='9.16', zto='9.25')
+    │       │           │   └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='9.22', zto='9.25')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='10.16', zto='10.30')
+    │       │           │   ├── AuxSTVariable(id='from', outline='var', zfrom='10.16', zto='10.20')
+    │       │           │   └── AuxSTPredicateWithArgs(id='Nat', outline='predicateWithArgs', reference=None, zfrom='10.24', zto='10.30')
+    │       │           │       └── AuxSTArgs(outline='arguments', zfrom='10.28', zto='10.30')
+    │       │           │           └── AuxSTPredicate(id='1', outline='extDigit', zfrom='10.28', zto='10.29')
+    │       │           ├── AuxSTVarDec(id='i', outline='var_decl', zfrom='11.16', zto='11.22')
+    │       │           │   └── AuxSTType(id='Nat', outline='type', type_mod=None, type_pattern=1, zfrom='11.19', zto='11.22')
+    │       │           └── AuxSTStatement(outline='statement', type='range', zfrom='12.16', zto='15.17')
+    │       │               ├── AuxSTVariable(id='i', outline='var', zfrom='12.22', zto='12.23')
+    │       │               ├── AuxSTRange(left_included=True, outline='range', right_included=True, zfrom='12.24', zto='12.29')
+    │       │               │   ├── AuxSTPredicate(id='1', outline='extDigit', zfrom='12.25', zto='12.26')
+    │       │               │   └── AuxSTVariable(id='n', outline='var', zfrom='12.27', zto='12.28')
+    │       │               └── AuxSTStatement(outline='statement', type=':=', zfrom='14.29', zto='14.67')
+    │       │                   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='14.25', zto='14.27')
+    │       │                   │   └── AuxSTCoords(outline='coordinates', zfrom='14.25', zto='14.26')
+    │       │                   │       └── AuxSTVariable(id='i', outline='var', zfrom='14.25', zto='14.26')
+    │       │                   └── AuxSTVariable(id='field', outline='var', zfrom='14.29', zto='14.34')
+    │       │                       └── AuxSTQualified(outline='qualified', zfrom='14.34', zto='14.34')
+    │       │                           └── AuxSTPredicateWithArgs(id='AdditiveGroup', outline='predicateWithArgs', reference=None, zfrom='14.35', zto='14.50')
+    │       │                               ├── AuxSTArgs(outline='arguments', zfrom='14.49', zto='14.50')
+    │       │                               └── AuxSTQualified(outline='qualified', zfrom='14.50', zto='14.50')
+    │       │                                   └── AuxSTPredicateWithArgs(id='NeutralElement', outline='predicateWithArgs', reference=None, zfrom='14.51', zto='14.67')
+    │       │                                       └── AuxSTArgs(outline='arguments', zfrom='14.66', zto='14.67')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

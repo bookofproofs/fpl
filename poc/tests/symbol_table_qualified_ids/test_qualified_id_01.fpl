@@ -1,0 +1,59 @@
+ TestNamespace
+{
+    theory
+    {
+        class Function: BinaryRelation
+        {
+            Function(x,y: Set)
+            {
+                self:=BinaryRelation(x,y)
+                assert self.LeftTotal()
+                assert self.RightUnique()
+            }
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Function', id='Function', reference=AuxSTClass(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.Function[2:Set]', id='Function[2:Set]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='ec1d7c387d4b0881e622aec93f00a2c8', file_name='test_qualified_id_01.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['BinaryRelation'], def_type='class', id='Function', keyword='class', outline='definition', zfrom='5.8', zto='13.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='Function[2:Set]', outline='constructor', zfrom='7.12', zto='12.13')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='7.12', zto='7.30')
+    │       │       │   ├── AuxSTVarDec(id='y', outline='var_decl', zfrom='7.23', zto='7.29')
+    │       │       │   │   └── AuxSTType(id='Set', outline='type', type_mod=None, type_pattern=1, zfrom='7.26', zto='7.29')
+    │       │       │   └── AuxSTVarDec(id='x', outline='var_decl', zfrom='7.21', zto='7.29')
+    │       │       │       └── AuxSTType(id='Set', outline='type', type_mod=None, type_pattern=1, zfrom='7.26', zto='7.29')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       │           ├── AuxSTStatement(outline='statement', type=':=', zfrom='9.39', zto='9.41')
+    │       │           │   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='9.16', zto='9.20')
+    │       │           │   └── AuxSTPredicateWithArgs(id='BinaryRelation', outline='predicateWithArgs', reference=None, zfrom='9.22', zto='9.41')
+    │       │           │       └── AuxSTArgs(outline='arguments', zfrom='9.37', zto='9.41')
+    │       │           │           ├── AuxSTVariable(id='x', outline='var', zfrom='9.37', zto='9.38')
+    │       │           │           └── AuxSTVariable(id='y', outline='var', zfrom='9.39', zto='9.40')
+    │       │           ├── AuxSTStatement(outline='statement', type='assert', zfrom='10.16', zto='10.39')
+    │       │           │   └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='10.23', zto='10.27')
+    │       │           │       └── AuxSTQualified(outline='qualified', zfrom='10.27', zto='10.27')
+    │       │           │           └── AuxSTPredicateWithArgs(id='LeftTotal', outline='predicateWithArgs', reference=None, zfrom='10.28', zto='10.39')
+    │       │           │               └── AuxSTArgs(outline='arguments', zfrom='10.38', zto='10.39')
+    │       │           └── AuxSTStatement(outline='statement', type='assert', zfrom='11.16', zto='11.41')
+    │       │               └── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='11.23', zto='11.27')
+    │       │                   └── AuxSTQualified(outline='qualified', zfrom='11.27', zto='11.27')
+    │       │                       └── AuxSTPredicateWithArgs(id='RightUnique', outline='predicateWithArgs', reference=None, zfrom='11.28', zto='11.41')
+    │       │                           └── AuxSTArgs(outline='arguments', zfrom='11.40', zto='11.41')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

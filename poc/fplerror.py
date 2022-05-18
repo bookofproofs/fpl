@@ -258,17 +258,16 @@ class FplAmbiguousSignature(FplInterpreterMessage):
             super().__init__(
                 "Ambiguous blocks {0} and {1} with the ".format(first.reference.get_node_type_str(),
                                                                 second.reference.get_node_type_str()) +
-                "same signature '{0}' (previous at {1}:{2})".format(second.reference.id, second.theory.file_name,
-                                                                    first_s[0] + "," + str(
-                                                                        int(first_s[0]) + 1)),
-                second_s[0], second_s[1],
-                first.theory.file_name)
+                "same signature '{0}' (other at {1}:{2})".format(second.reference.id, second.theory.file_name,
+                                                                 first_s[0] + "," + str(
+                                                                     int(first_s[1]) + 1)),
+                second_s[0], second_s[1], first.theory.file_name)
         else:
             super().__init__("Ambiguous blocks {0} and {1} with the ".format(first.reference.get_node_type_str(),
                                                                              second.reference.get_node_type_str()) +
-                             "same signature '{0}' (previous at {1})".format(second.reference.id,
-                                                                             first_s[0] + "," + str(
-                                                                                 int(first_s[0]) + 1)),
+                             "same signature '{0}' (other at {1})".format(second.reference.id,
+                                                                          first_s[0] + "," + str(
+                                                                              int(first_s[1]) + 1)),
                              second_s[0], second_s[1], first.theory.file_name)
 
         self.diagnose_id = "SE0170"
@@ -281,19 +280,19 @@ class FplForbiddenOverride(FplInterpreterMessage):
         if first.theory.file_name != second.theory.file_name:
             super().__init__(
                 "'{0}' ({1}) and ".format(first.reference.id, first.reference.get_node_type_str()) +
-                "'{0}' ({1}) cannot coexist in theory (found at {2}:{3})".format(second.reference.id,
+                "'{0}' ({1}) cannot coexist in theory (other at {2}:{3})".format(second.reference.id,
                                                                                  second.reference.get_node_type_str(),
                                                                                  second.theory.file_name,
-                                                                                 second_s[0] + "," + str(
-                                                                                     int(second_s[0]) + 1)),
-                first_s[0], first_s[1], first.theory.file_name)
+                                                                                 first_s[0] + "," + str(
+                                                                                     int(first_s[1]) + 1)),
+                second_s[0], second_s[1], first.theory.file_name)
         else:
             super().__init__(
                 "'{0}' ({1}) and ".format(first.reference.id, first.reference.get_node_type_str()) +
-                "'{0}' ({1}) cannot coexist in theory (found at {2})".format(second.reference.id,
+                "'{0}' ({1}) cannot coexist in theory (other at {2})".format(second.reference.id,
                                                                              second.reference.get_node_type_str(),
-                                                                             second_s[0] + "," + str(
-                                                                                 int(second_s[0]) + 1)),
-                first_s[0], first_s[1], first.theory.file_name)
+                                                                             first_s[0] + "," + str(
+                                                                                 int(first_s[1]) + 1)),
+                second_s[0], second_s[1], first.theory.file_name)
 
         self.diagnose_id = "SE0180"

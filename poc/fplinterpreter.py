@@ -108,6 +108,9 @@ class FplInterpreter:
                             # The file was already loaded into the symbol table and was not changed by the user in the
                             # root directory, so the symbol table is up-to-date.
                             pass
+        # populate global nodes
+        for theory_node in AuxSymbolTable.get_theories(self._symbol_table_root):
+            AuxSymbolTable.populate_global_nodes(theory_node, self._error_mgr)
 
     def _load_theory_into_symbol_table(self, fpl_file_node):
         fpl_file_node.set_analyser(self._symbol_table_root, self._error_mgr)
