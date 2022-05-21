@@ -1,0 +1,42 @@
+TestNamespace
+{
+    uses Other.Namespace alias Other
+
+    theory
+    {
+        // injection of a definition into other theory
+        pred Other.Test(n,m: Other.Nat)
+        {
+            Other.Equal(n,m)
+        }
+    }
+}
+##############################
+nyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Other.Test[2:Other.Nat]', id='Other.Test[2:Other.Nat]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='a3b4213b989e50cd6870013d28a7d231', file_name='test_qualified_id_aliased_03.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    │   └── AuxSTUsedTheory(id='Other.Namespace', modifier='Other', outline='used', zfrom='3.9', zto='3.36')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Other.Test[2:Other.Nat]', keyword='pred', outline='definition', zfrom='8.8', zto='11.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='8.13', zto='8.39')
+    │       │   ├── AuxSTVarDec(id='n', outline='var_decl', zfrom='8.24', zto='8.38')
+    │       │   │   └── AuxSTType(id='Other.Nat', outline='type', type_mod=None, type_pattern=1, zfrom='8.29', zto='8.38')
+    │       │   └── AuxSTVarDec(id='m', outline='var_decl', zfrom='8.26', zto='8.38')
+    │       │       └── AuxSTType(id='Other.Nat', outline='type', type_mod=None, type_pattern=1, zfrom='8.29', zto='8.38')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicateWithArgs(id='Other.Equal', outline='predicateWithArgs', reference=None, zfrom='10.12', zto='10.28')
+    │       │   └── AuxSTArgs(outline='arguments', zfrom='10.24', zto='10.28')
+    │       │       ├── AuxSTVariable(id='n', outline='var', zfrom='10.24', zto='10.25')
+    │       │       └── AuxSTVariable(id='m', outline='var', zfrom='10.26', zto='10.27')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

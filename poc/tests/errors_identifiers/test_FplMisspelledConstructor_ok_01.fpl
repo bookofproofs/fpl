@@ -1,0 +1,17 @@
+Test.Namespace
+{
+    theory
+    {
+        class CommutativeUnitRing: UnitRing
+        {
+            CommutativeUnitRing(x: tpl, add, mul: BinOp)
+            {
+                self:=UnitRing(x,add,mul)
+                assert mul.IsCommutative()
+            }
+        }
+    }
+}
+
+##############################
+should not trigger FplMisspelledConstructor

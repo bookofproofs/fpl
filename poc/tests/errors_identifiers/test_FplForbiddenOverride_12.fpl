@@ -20,4 +20,4 @@ Test.Namespace
 }
 
 ##############################
-FplForbiddenOverride:5:8: 'Test[1:obj]' (Theorem) and 'Test[]' (RuleOfInference) cannot coexist in theory (other at 14,9)
+FplForbiddenOverride:14:8: 'Test[1:obj]' (Theorem) and 'Test[]' (RuleOfInference) cannot coexist in theory (other at 5,9)

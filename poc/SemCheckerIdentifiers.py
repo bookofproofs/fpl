@@ -49,23 +49,23 @@ class OverrideHandler:
         self._error_mgr = error_mgr
         self._dict = dict()
 
-    def add(self, identifier, node):
-        if self._mode == OverrideHandler.ALLOWED:
-            if identifier not in self._dict:
-                self._dict[identifier] = list()
-            self._dict[identifier].append(node)
-        else:
-            if identifier not in self._dict:
-                self._dict[identifier] = node
-            else:
-                # an error detected
-                if node.reference.id == self._dict[identifier].reference.id:
-                    # the case == of the same signatures would be a false positive
-                    # for FplForbiddenOverride, because this kind of
-                    # error is already detected by the FplAmbiguousSignature error
-                    pass
+    def add(self, identifier, node, possible_duplicate):
+        if identifier not in self._dict:
+            self._dict[identifier] = list()
+        self._dict[identifier].append(node)
+        if possible_duplicate is not None:
+            if self._mode == OverrideHandler.ALLOWED:
+                if possible_duplicate.reference.get_node_type_str() != node.reference.get_node_type_str():
+                    # if the type of the possible_duplicate does not correspond to the type of the node,
+                    # and the collection allows overrides, trigger an FplAmbiguousSignature error
+                    self._error_mgr.add_error(
+                        FplAmbiguousSignature(node, possible_duplicate)
+                    )
                 else:
-                    self._error_mgr.add_error(FplForbiddenOverride(node, self._dict[identifier]))
+                    # if the type of the possible_duplicate equals the type of the node,
+                    # and the collection allows overrides, trigger an FplAmbiguousSignature error
+                    if possible_duplicate != node and node.reference.outline != AuxSymbolTable.classDefaultConstructor:
+                        self._error_mgr.add_error(FplForbiddenOverride(node, possible_duplicate))
 
     def get(self, identifier):
         return self._dict[identifier]
@@ -81,7 +81,6 @@ class SemCheckerIdentifiers:
     def __init__(self, analyzer):
         self.analyzer = analyzer
         # a dictionary of all nodes by id (non-global identifier)
-        self._signature_collection = dict()  # all nodes by signature
         self.theorem_like_statements = dict()  # all theorem like statements by id (non-global identifier)
 
         # In the following, we specify, which building blocks are allowed to have overrides
@@ -111,12 +110,10 @@ class SemCheckerIdentifiers:
         :return: None
         """
         for child in self.analyzer.globals_node.children:
-            identifier = child.id.split("[")[0]
-
-            self.overridden_signatures.add(identifier, child)
-            self._check_for_malformed_gid(identifier, child, child.theory)
-            self._check_uniqueness_gid(child)
-            self._check_uniqueness_signature(child)
+            qualified_identifier = child.get_qualified_id()
+            self.overridden_signatures.add(qualified_identifier, child, None)
+            self._check_for_malformed_gid(qualified_identifier, child)
+            self._check_uniqueness_identifiers(qualified_identifier, child)
         self._check_misspelled_references()
         self._check_override_consistency()
         self._check_referencing_identifiers()
@@ -179,7 +176,7 @@ class SemCheckerIdentifiers:
                     self.analyzer.error_mgr.add_error(
                         FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
 
-    def _check_for_malformed_gid(self, qualified_identifier, node, theory_node):
+    def _check_for_malformed_gid(self, qualified_identifier, node):
         """
         Checks if referenced identifiers do not conflict with chunks of names of the namespace.
         :param qualified_identifier: reference identifier (might be qualified like in 'ClassName.PropertyName')
@@ -187,7 +184,7 @@ class SemCheckerIdentifiers:
         :param theory_node: theory node in which the identifier is declared
         :return: None
         """
-        namespace = theory_node.namespace
+        namespace = node.theory.namespace
         split_q_id = qualified_identifier.split(".")
         if len(split_q_id) == 2:
             if split_q_id[0] == split_q_id[1] and not isinstance(node.reference, AuxSTConstructor):
@@ -195,27 +192,22 @@ class SemCheckerIdentifiers:
                 parent = node.reference.parent.parent
                 if isinstance(parent, AuxSTClass):
                     self.analyzer.error_mgr.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 1, node.reference.zfrom,
-                                              theory_node.file_name))
+                        FplMisspelledProperty(split_q_id[0], split_q_id[1], node))
                 elif isinstance(parent, AuxSTDefinitionPredicate):
                     self.analyzer.error_mgr.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 2, node.reference.zfrom,
-                                              theory_node.file_name))
+                        FplMisspelledProperty(split_q_id[0], split_q_id[1], node))
                 elif isinstance(parent, AuxSTDefinitionFunctionalTerm):
                     self.analyzer.error_mgr.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 3, node.reference.zfrom,
-                                              theory_node.file_name))
+                        FplMisspelledProperty(split_q_id[0], split_q_id[1], node))
                 else:
                     self.analyzer.error_mgr.add_error(
-                        FplMisspelledProperty(split_q_id[0], split_q_id[1], 4, node.reference.zfrom,
-                                              theory_node.file_name))
+                        FplMisspelledProperty(split_q_id[0], split_q_id[1], node))
         identifier = split_q_id[-1]
         if isinstance(node.reference, AuxSTConstructor):
             class_name = node.reference.parent.parent.id
             if identifier != class_name:
                 # the constructor of a (class) definition has to be named the same as the class name
-                self.analyzer.error_mgr.add_error(
-                    FplMisspelledConstructor(class_name, identifier, node.reference.zfrom, theory_node.file_name))
+                self.analyzer.error_mgr.add_error(FplMisspelledConstructor(class_name, identifier, node))
 
         if identifier in namespace:
             namespace = namespace.replace(identifier, "")
@@ -224,50 +216,51 @@ class SemCheckerIdentifiers:
                     # ignore constructors since the class's name already does conflict too and generates a similar error
                     pass
                 else:
-                    self.analyzer.error_mgr.add_error(
-                        FplMalformedGlobalId(identifier, theory_node.namespace, node.reference.zfrom,
-                                             theory_node.file_name))
+                    self.analyzer.error_mgr.add_error(FplMalformedGlobalId(identifier, node))
 
-    def _check_uniqueness_gid(self, global_node):
+    def _check_uniqueness_identifiers(self, qualified_identifier: str, global_node):
         """
-        Checks the uniqueness of fully qualified global identifiers. (If not, the user has used the same name of a
-        building block across different namespaces.)
+        Checks for different identifier-related errors of building blocks have the same qualified identifiers.
+        :param global_node: Some child node from the globals node of the symbol table.
+        :param global_node: Some child node from the globals node of the symbol table.
         :return: None, but after this method, gid_collection is complete and ready to be used for other analysis steps
         """
-        if global_node.gid not in self.analyzer.gid_collection:
-            self.analyzer.gid_collection[global_node.gid] = global_node
+        block_list = self.overridden_signatures.get(qualified_identifier)
+        if len(block_list) > 1:
+            # only if there is more than one building block with the same qualified identifier, errors might occur
+            unique_gids = dict()
+            for block in block_list:
+                if block.gid not in unique_gids:
+                    unique_gids[block.gid] = block
+                    self._dispatch(qualified_identifier, block, None)
+                else:
+                    # We have detected two blocks with same qualified_identifier in the same namespace.
+                    # In this case, we have to check if this an allowed override.
+                    if unique_gids[block.gid].reference.get_node_type_str() != block.reference.get_node_type_str():
+                        # In case we have two blocks with different types, we trigger an FplAmbiguousSignature error
+                        # unless in case of a allowed class/constructor pair
+                        if not (isinstance(unique_gids[block.gid].reference, AuxSTConstructor) and \
+                                isinstance(block.reference, AuxSTClass) or \
+                                isinstance(unique_gids[block.gid].reference, AuxSTClass) and \
+                                isinstance(block.reference, AuxSTConstructor)):
+                            self.analyzer.error_mgr.add_error(
+                                FplAmbiguousSignature(block, unique_gids[block.gid])
+                            )
+                    elif unique_gids[block.gid].reference.id == block.reference.id and \
+                            not (isinstance(block.reference, AuxSTConstructor) and \
+                                 isinstance(unique_gids[block.gid].reference, AuxSTConstructor)):
+                        # If the types are the same and even the signature is the same, we have a duplicate declaration
+                        if block.reference.outline != AuxSymbolTable.classDefaultConstructor:
+                            self.analyzer.error_mgr.add_error(
+                                FplIdentifierAlreadyDeclared(block.reference.id,
+                                                             block.reference.zfrom,
+                                                             block.theory.file_name,
+                                                             unique_gids[block.gid].reference.zfrom,
+                                                             unique_gids[block.gid].theory.file_name))
+                    else:
+                        self._dispatch(qualified_identifier, block, unique_gids[block.gid])
         else:
-            node = global_node.reference
-            theory_node = global_node.theory
-            if node.outline != AuxSymbolTable.classDefaultConstructor:
-                existing_node = self.analyzer.gid_collection[global_node.gid].reference
-                existing_theory_node = self.analyzer.gid_collection[global_node.gid].theory
-                self.analyzer.error_mgr.add_error(
-                    FplIdentifierAlreadyDeclared(global_node.id, node.zfrom, theory_node.file_name, existing_node.zfrom,
-                                                 existing_theory_node.file_name))
-
-    def _check_uniqueness_signature(self, global_node):
-        """
-        Checks the uniqueness of signatures (If not, the user has duplicated a building block
-        in the source code of different namespaces.) For instance, there are two theorems that can be referred to
-        as "FundamentalTheorem", one located in the "Algebra", another located in the "Arithmetics" namespace.
-        :param global_node: Some child node from the globals node of the symbol table.
-        :return: None, but after this method, signature_collection is complete and ready to be used for other analysis steps
-        """
-        if global_node.id not in self._signature_collection:
-            self._signature_collection[global_node.id] = global_node
-        else:
-            if global_node.theory.namespace != self._signature_collection[global_node.id].theory.namespace:
-                # The id of the node should be also unique across different namespaces.
-                node = global_node.reference
-                theory_node = global_node.theory
-                if node.outline != AuxSymbolTable.classDefaultConstructor:
-                    existing_node = self._signature_collection[global_node.id].reference
-                    existing_theory_node = self._signature_collection[global_node.id].theory
-                    self.analyzer.error_mgr.add_error(
-                        FplIdentifierAlreadyDeclared(global_node.id, node.zfrom, theory_node.file_name,
-                                                     existing_node.zfrom,
-                                                     existing_theory_node.file_name))
+            self._dispatch(qualified_identifier, block_list[0], None)
 
     def _check_misspelled_references(self):
         for theory_node in self.analyzer.loaded_theories:
@@ -322,45 +315,56 @@ class SemCheckerIdentifiers:
                             # we trigger the FplForbiddenOverride error, unless in case of constructors of classes
                             # which by default have a different signature but the same identifier as the class.
                             self.analyzer.error_mgr.add_error(FplForbiddenOverride(block, last_block))
+                    else:
+                        if last_block.reference.id != block.reference.id and \
+                                isinstance(block.reference,
+                                           (AuxSTConjecture, AuxSTClass, AuxSTProof, AuxSTTheorem, AuxSTProposition,
+                                            AuxSTLemma,
+                                            AuxSTCorollary, AuxSTAxiom)):
+                            # Since we have equal building block types with different signatures,
+                            # we trigger the FplForbiddenOverride error,
+                            # if the type is one of the unallowed override types
+                            self.analyzer.error_mgr.add_error(FplForbiddenOverride(block, last_block))
 
-                # we now dispatch the collected nodes
-                reference = block.reference
-                if isinstance(reference, AuxSTClass):
-                    self.types.add(identifier, block)
-                elif isinstance(reference, AuxSTConstructor):
-                    self.constructors.add(identifier, block)
-                elif isinstance(reference, AuxSTDefinitionFunctionalTerm):
-                    self.functional_terms.add(identifier, block)
-                elif isinstance(reference, AuxSTDefinitionPredicate):
-                    self.predicates.add(identifier, block)
-                elif isinstance(reference, AuxSTClassInstance):
-                    self.instance_classes.add(identifier, block)
-                elif isinstance(reference, AuxSTPredicateInstance):
-                    self.instance_predicates.add(identifier, block)
-                elif isinstance(reference, AuxSTFunctionalTermInstance):
-                    self.instance_functional_terms.add(identifier, block)
-                elif isinstance(reference, AuxSTProof):
-                    self.proofs.add(identifier, block)
-                elif isinstance(reference, AuxSTTheorem):
-                    self.theorems.add(identifier, block)
-                    self.theorem_like_statements[identifier] = block
-                elif isinstance(reference, AuxSTProposition):
-                    self.propositions.add(identifier, block)
-                    self.theorem_like_statements[identifier] = block
-                elif isinstance(reference, AuxSTLemma):
-                    self.lemmas.add(identifier, block)
-                    self.theorem_like_statements[identifier] = block
-                elif isinstance(reference, AuxSTCorollary):
-                    self.corollaries.add(identifier, block)
-                    self.theorem_like_statements[identifier] = block
-                elif isinstance(reference, AuxSTAxiom):
-                    self.axioms.add(identifier, block)
-                elif isinstance(reference, AuxSTRuleOfInference):
-                    self.inference_rules.add(identifier, block)
-                elif isinstance(reference, AuxSTConjecture):
-                    self.conjectures.add(identifier, block)
-                else:
-                    raise NotImplementedError(type(reference))
+    def _dispatch(self, qualified_identifier: str, block, possible_duplicate):
+        # we now dispatch the collected nodes
+        reference = block.reference
+        if isinstance(reference, AuxSTClass):
+            self.types.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTConstructor):
+            self.constructors.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTDefinitionFunctionalTerm):
+            self.functional_terms.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTDefinitionPredicate):
+            self.predicates.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTClassInstance):
+            self.instance_classes.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTPredicateInstance):
+            self.instance_predicates.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTFunctionalTermInstance):
+            self.instance_functional_terms.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTProof):
+            self.proofs.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTTheorem):
+            self.theorems.add(qualified_identifier, block, possible_duplicate)
+            self.theorem_like_statements[qualified_identifier] = block
+        elif isinstance(reference, AuxSTProposition):
+            self.propositions.add(qualified_identifier, block, possible_duplicate)
+            self.theorem_like_statements[qualified_identifier] = block
+        elif isinstance(reference, AuxSTLemma):
+            self.lemmas.add(qualified_identifier, block, possible_duplicate)
+            self.theorem_like_statements[qualified_identifier] = block
+        elif isinstance(reference, AuxSTCorollary):
+            self.corollaries.add(qualified_identifier, block, possible_duplicate)
+            self.theorem_like_statements[qualified_identifier] = block
+        elif isinstance(reference, AuxSTAxiom):
+            self.axioms.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTRuleOfInference):
+            self.inference_rules.add(qualified_identifier, block, possible_duplicate)
+        elif isinstance(reference, AuxSTConjecture):
+            self.conjectures.add(qualified_identifier, block, possible_duplicate)
+        else:
+            raise NotImplementedError(type(reference))
 
     def _check_referencing_identifiers(self):
         """
@@ -373,38 +377,35 @@ class SemCheckerIdentifiers:
         d) proof for a statement formulated as a conjecture -> FplProvedConjecture
         :return: None, updates the error list
         """
-        for identifier in self.theorem_like_statements:
-            s = identifier.split("$")
+        for qualified_identifier in self.theorem_like_statements:
+            s = qualified_identifier.split("$")
             referenced_identifier = "".join(s[0:-1])
-            global_node = self.theorem_like_statements[identifier]
+            global_node = self.theorem_like_statements[qualified_identifier]
             reference = global_node.reference
             # check for FplCorollaryMissingTheoremLikeStatement error
             if isinstance(reference, AuxSTCorollary):
                 if referenced_identifier not in self.theorem_like_statements:
                     self.analyzer.error_mgr.add_error(
-                        FplCorollaryMissingTheoremLikeStatement(referenced_identifier, identifier, reference.zfrom,
-                                                                self.theorem_like_statements[
-                                                                    identifier].theory.file_name))
+                        FplCorollaryMissingTheoremLikeStatement(referenced_identifier,
+                                                                self.theorem_like_statements[qualified_identifier]))
             # check for the FplMissingProof warning
             proof_found = False
             for proof_id in self.proofs.keys():
-                if proof_id.startswith(identifier + "$"):
+                if proof_id.startswith(qualified_identifier + "$"):
                     proof_found = True
             if not proof_found:
-                self.analyzer.error_mgr.add_error(
-                    FplMissingProof(identifier, reference.zfrom,
-                                    self.theorem_like_statements[identifier].theory.file_name))
+                self.analyzer.error_mgr.add_error(FplMissingProof(global_node))
 
-        for identifier in self.proofs.keys():
+        for qualified_identifier in self.proofs.keys():
             # check for the FplProofMissingTheoremLikeStatement error
-            s = identifier.split("$")
+            s = qualified_identifier.split("$")
             referenced_identifier = "".join(s[0:-1])
             # syntactically, proofs cannot be overridden, thus there is only one per identifier
-            proof_node = self.proofs.get(identifier).reference  # so we take this only one [0]
+            global_proof_node = self.proofs.get(qualified_identifier)[0]  # so we take this only one [0]
+            proof_node = global_proof_node.reference
             if referenced_identifier not in self.theorem_like_statements:
                 self.analyzer.error_mgr.add_error(
-                    FplProofMissingTheoremLikeStatement(referenced_identifier, identifier, proof_node.zfrom,
-                                                        self._signature_collection[identifier].theory.file_name))
+                    FplProofMissingTheoremLikeStatement(referenced_identifier, global_proof_node))
             else:
                 # Remember the proof's theorem-like statement once and for ever so we do not need to look for it anymore
                 proof_node.set_referenced_theorem_like_stmt(
@@ -413,13 +414,14 @@ class SemCheckerIdentifiers:
             # Now, it is possible to initialize the declared and used variables in the proof properly, since we
             # (hopefully) know its theorem-like statement.
             # Hereby we check for unused variables and already declared variables
-            proof_node.initialize_vars(self.proofs.get(identifier).theory.file_name, self.analyzer.error_mgr)
+            proof_node.initialize_vars(self.proofs.get(qualified_identifier)[0].theory.file_name,
+                                       self.analyzer.error_mgr)
 
             # check for the FplProvedConjecture error
             if referenced_identifier in self.conjectures.keys():
                 self.analyzer.error_mgr.add_error(
-                    FplProvedConjecture(referenced_identifier, identifier, proof_node.zfrom,
-                                        self.conjectures.get(referenced_identifier).theory.file_name))
+                    FplProvedConjecture(global_proof_node, self.conjectures.get(referenced_identifier)[0])
+                )
 
     @staticmethod
     def __gather_used_vars(gather_used_set: set, node: AnyNode):

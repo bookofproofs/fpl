@@ -9,8 +9,6 @@ class FplErrorManager:
     def add_error(self, error: FplInterpreterMessage):
         if error not in self._errors:
             self._errors.add(error)
-            if error.get_line() == 12:
-                print(error)
 
     def get_errors(self):
         return self._errors
@@ -80,44 +78,37 @@ class FplIdentifierAlreadyDeclared(FplInterpreterMessage):
 
 
 class FplMisspelledConstructor(FplInterpreterMessage):
-    def __init__(self, class_name: str, constr_name: str, zfrom: str, file_name: str):
-        s = zfrom.split(".")
+    def __init__(self, class_name: str, constr_name: str, node):
+        s = node.reference.zfrom.split(".")
         super().__init__(
             "Misspelled constructor '{0}' of class '{1}' (must be the same)".format(constr_name, class_name),
             s[0],
             s[1],
-            file_name)
+            node.theory.file_name)
         self.diagnose_id = "SE0030"
 
 
 class FplMisspelledProperty(FplInterpreterMessage):
-    def __init__(self, prop_name: str, main_name: str, main_type: int, zfrom: str, file_name: str):
-        s = zfrom.split(".")
-        if main_type == 1:
-            main_type_name = "class"
-        elif main_type == 2:
-            main_type_name = "predicate"
-        elif main_type == 3:
-            main_type_name = "functional term"
-        else:
-            main_type_name = "definition"
-
+    def __init__(self, prop_name: str, main_name: str, node):
+        s = node.reference.zfrom.split(".")
+        main_type_name = node.reference.get_node_type_str()
         super().__init__(
             "Misspelled property '{0}' of {1} '{2}' (must be different)".format(main_name, main_type_name, prop_name),
             s[0],
             s[1],
-            file_name)
+            node.theory.file_name)
         self.diagnose_id = "SE0035"
 
 
 class FplMalformedGlobalId(FplInterpreterMessage):
-    def __init__(self, identifier: str, namespace: str, zfrom: str, file_name: str):
-        s = zfrom.split(".")
+    def __init__(self, identifier: str, node):
+        s = node.reference.zfrom.split(".")
         super().__init__(
-            "The identifier '{0}' should not conflict with the namespace '{1}'".format(identifier, namespace),
+            "The identifier '{0}' should not conflict with the namespace '{1}'".format(identifier,
+                                                                                       node.theory.namespace),
             s[0],
             s[1],
-            file_name)
+            node.theory.file_name)
         self.mainType = "W"  # Warning
         self.diagnose_id = "SE0040"
 
@@ -213,40 +204,50 @@ class FplTemplateMisused(FplInterpreterMessage):
 
 
 class FplMissingProof(FplInterpreterMessage):
-    def __init__(self, identifier: str, zfrom: str, file_name: str):
-        s = zfrom.split(".")
-        super().__init__("The theorem_like statement '{0}' lacks a proof".format(identifier),
-                         s[0], s[1], file_name)
+    def __init__(self, block):
+        s = block.reference.zfrom.split(".")
+        super().__init__("The theorem_like statement '{0}' lacks a proof".format(block.reference.id),
+                         s[0], s[1], block.theory.file_name)
         self.mainType = "W"  # Warning
         self.diagnose_id = "SE0140"
 
 
 class FplProvedConjecture(FplInterpreterMessage):
-    def __init__(self, reference_identifier: str, proof_identifier: str, zfrom: str, file_name: str):
-        s = zfrom.split(".")
-        super().__init__(
-            "Proof '{0}' of conjecture '{1}' detected (change to a new possible theorem)".format(proof_identifier,
-                                                                                                 reference_identifier),
-            s[0], s[1], file_name)
+    def __init__(self, proof, conjecture):
+        s = conjecture.reference.zfrom.split(".")
+        if proof.theory.file_name != conjecture.theory.file_name:
+            super().__init__(
+                "Proof '{0}' (in {1}) of conjecture '{2}' detected".format(proof.reference.id,
+                                                                           proof.theory.file_name,
+                                                                           conjecture.reference.id) +
+                " (change to a new possible theorem)",
+                s[0], s[1], conjecture.theory.file_name)
+        else:
+            super().__init__(
+                "Proof '{0}' of conjecture '{1}' detected".format(proof.reference.id,
+                                                                  conjecture.reference.id) +
+                " (change to a new possible theorem)",
+                s[0], s[1], conjecture.theory.file_name)
         self.diagnose_id = "SE0150"
 
 
 class FplProofMissingTheoremLikeStatement(FplInterpreterMessage):
-    def __init__(self, reference_identifier: str, proof_identifier: str, zfrom: str, file_name: str):
-        s = zfrom.split(".")
+    def __init__(self, referenced_theorem_like_statement: str, block):
+        s = block.reference.zfrom.split(".")
         super().__init__(
-            "Theorem-like statement '{0}' not found for proof '{1}'".format(reference_identifier, proof_identifier),
-            s[0], s[1], file_name)
+            "Theorem-like statement '{0}' not found for proof '{1}'".format(referenced_theorem_like_statement,
+                                                                            block.reference.id),
+            s[0], s[1], block.theory.file_name)
         self.diagnose_id = "SE0160"
 
 
 class FplCorollaryMissingTheoremLikeStatement(FplInterpreterMessage):
-    def __init__(self, reference_identifier: str, corollary_identifier: str, zfrom: str, file_name: str):
-        s = zfrom.split(".")
+    def __init__(self, referenced_theorem_like_statement: str, block):
+        s = block.reference.zfrom.split(".")
         super().__init__(
-            "Theorem-like statement '{0}' not found for corollary '{1}'".format(reference_identifier,
-                                                                                corollary_identifier),
-            s[0], s[1], file_name)
+            "Theorem-like statement '{0}' not found for corollary '{1}'".format(referenced_theorem_like_statement,
+                                                                                block.reference.id),
+            s[0], s[1], block.theory.file_name)
         self.diagnose_id = "SE0165"
 
 
@@ -259,15 +260,15 @@ class FplAmbiguousSignature(FplInterpreterMessage):
                 "Ambiguous blocks {0} and {1} with the ".format(first.reference.get_node_type_str(),
                                                                 second.reference.get_node_type_str()) +
                 "same signature '{0}' (other at {1}:{2})".format(second.reference.id, second.theory.file_name,
-                                                                 first_s[0] + "," + str(
-                                                                     int(first_s[1]) + 1)),
+                                                                 first_s[0] + "," +
+                                                                 str(int(first_s[1]) + 1)),
                 second_s[0], second_s[1], first.theory.file_name)
         else:
             super().__init__("Ambiguous blocks {0} and {1} with the ".format(first.reference.get_node_type_str(),
                                                                              second.reference.get_node_type_str()) +
                              "same signature '{0}' (other at {1})".format(second.reference.id,
-                                                                          first_s[0] + "," + str(
-                                                                              int(first_s[1]) + 1)),
+                                                                          first_s[0] + "," +
+                                                                          str(int(first_s[1]) + 1)),
                              second_s[0], second_s[1], first.theory.file_name)
 
         self.diagnose_id = "SE0170"
@@ -283,16 +284,31 @@ class FplForbiddenOverride(FplInterpreterMessage):
                 "'{0}' ({1}) cannot coexist in theory (other at {2}:{3})".format(second.reference.id,
                                                                                  second.reference.get_node_type_str(),
                                                                                  second.theory.file_name,
-                                                                                 first_s[0] + "," + str(
-                                                                                     int(first_s[1]) + 1)),
-                second_s[0], second_s[1], first.theory.file_name)
+                                                                                 second_s[0] + "," + str(
+                                                                                     int(second_s[1]) + 1)),
+                first_s[0], first_s[1], first.theory.file_name)
         else:
             super().__init__(
                 "'{0}' ({1}) and ".format(first.reference.id, first.reference.get_node_type_str()) +
                 "'{0}' ({1}) cannot coexist in theory (other at {2})".format(second.reference.id,
                                                                              second.reference.get_node_type_str(),
-                                                                             first_s[0] + "," + str(
-                                                                                 int(first_s[1]) + 1)),
-                second_s[0], second_s[1], first.theory.file_name)
+                                                                             second_s[0] + "," + str(
+                                                                                 int(second_s[1]) + 1)),
+                first_s[0], first_s[1], first.theory.file_name)
 
         self.diagnose_id = "SE0180"
+
+
+class FplCrossNamespaceAmbiguity(FplInterpreterMessage):
+    def __init__(self, first, second):
+        first_s = first.reference.zfrom.split(".")
+        second_s = second.reference.zfrom.split(".")
+        super().__init__(
+            "'{0}' ({1}) and '{2}' ({3}, ".format(first.reference.id, first.reference.get_node_type_str(),
+                                                  second.reference.id, second.reference.get_node_type_str()) +
+            "{0} at {1}({2},{3})) conflict, consider using an alias".format(second.theory.namespace,
+                                                                            second.theory.file_name,
+                                                                            second_s[0],
+                                                                            str(int(second_s[1]) + 1)),
+            first_s[0], first_s[1], first.theory.file_name)
+        self.diagnose_id = "SE0190"

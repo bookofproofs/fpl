@@ -11,4 +11,4 @@ Test.Namespace
 }
 
 ##############################
-FplMissingProof:5:8: The theorem_like statement 'Test$1' lacks a proof
+FplMissingProof:5:8: The theorem_like statement 'Test$1[]' lacks a proof

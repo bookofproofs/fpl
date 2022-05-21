@@ -17,6 +17,10 @@ class QualifiedIdsTests(UtilTestCase):
         "test_qualified_id_05.fpl",
         "test_qualified_id_06.fpl",
         "test_qualified_id_07.fpl",
+        "test_qualified_id_aliased_01.fpl",
+        "test_qualified_id_aliased_02.fpl",
+        "test_qualified_id_aliased_03.fpl",
+        "test_qualified_id_aliased_04.fpl",
     ])
     def test_correct(self, use_case):
         super().syntax_analysis_correct(self.folder + "/" + use_case, self.rewrite)

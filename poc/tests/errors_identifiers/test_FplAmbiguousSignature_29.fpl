@@ -49,5 +49,4 @@ TestLemma
 }
 
 ##############################
-
-FplIdentifierAlreadyDeclared:27:8: Identifier 'AddIsUnique[1:Add]' already defined at (5,8)
+FplAmbiguousSignature:27:8: Ambiguous blocks Conjecture and Lemma with the same signature 'AddIsUnique[1:Add]' (other at 5,9)

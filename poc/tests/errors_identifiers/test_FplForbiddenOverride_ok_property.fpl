@@ -1,0 +1,24 @@
+Test.Namespace
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+            optional pred IsAssociative()
+            {
+                a,b,c: tplSetElem
+                all a,b,c
+                (
+                    Equal
+                    (
+                        @self(a,@self(b,c)),
+                        @self(@self(a,b),c)
+                    )
+                )
+            }
+        }
+    }
+}
+
+##############################
+Should not cause forbidden FplForbiddenOverride for properties

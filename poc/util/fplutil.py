@@ -62,7 +62,7 @@ class Utils:
         test_output = interpreter.symbol_table_to_str().strip()
         # remove "poc.classes." paths
         test_output = test_output.replace("poc.classes.", "")
-        # remove dynamic object memory overridden_signatures
+        # remove dynamic object memory overridden_qualified_identifiers
         test_output = re.sub(' object at 0x[0-9A-F]+', '', test_output)
         # remove AnyNode string representations that are the "node" attribute of AnyNode
         test_output = re.sub(r'(=AnyNode\()([\$a-zA-Z0-9_=\', <.>*+\[\]\:@]+)(\)[.]*)', r"\1\3", test_output)

@@ -1,0 +1,42 @@
+TestNamespace
+{
+    uses Other.Namespace
+
+    theory
+    {
+        // injection of a definition into other theory
+        pred Other.Namespace.Test(n,m: Other.Namespace.Nat)
+        {
+            Other.Namespace.Equal(n,m)
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Other.Namespace.Test[2:Other.Namespace.Nat]', id='Other.Namespace.Test[2:Other.Namespace.Nat]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='6e080bebdd10acc5cc961a4245320690', file_name='test_qualified_id_aliased_04.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    │   └── AuxSTUsedTheory(id='Other.Namespace', modifier=None, outline='used', zfrom='3.9', zto='3.24')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Other.Namespace.Test[2:Other.Namespace.Nat]', keyword='pred', outline='definition', zfrom='8.8', zto='11.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='8.13', zto='8.59')
+    │       │   ├── AuxSTVarDec(id='n', outline='var_decl', zfrom='8.34', zto='8.58')
+    │       │   │   └── AuxSTType(id='Other.Namespace.Nat', outline='type', type_mod=None, type_pattern=1, zfrom='8.39', zto='8.58')
+    │       │   └── AuxSTVarDec(id='m', outline='var_decl', zfrom='8.36', zto='8.58')
+    │       │       └── AuxSTType(id='Other.Namespace.Nat', outline='type', type_mod=None, type_pattern=1, zfrom='8.39', zto='8.58')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicateWithArgs(id='Other.Namespace.Equal', outline='predicateWithArgs', reference=None, zfrom='10.12', zto='10.38')
+    │       │   └── AuxSTArgs(outline='arguments', zfrom='10.34', zto='10.38')
+    │       │       ├── AuxSTVariable(id='n', outline='var', zfrom='10.34', zto='10.35')
+    │       │       └── AuxSTVariable(id='m', outline='var', zfrom='10.36', zto='10.37')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

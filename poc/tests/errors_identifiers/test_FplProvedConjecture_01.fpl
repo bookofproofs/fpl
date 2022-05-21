@@ -16,4 +16,4 @@ Test.Namespace
 }
 
 ##############################
-FplProvedConjecture:11:8: Proof 'Test$1' of conjecture 'Test' detected (change to a new possible theorem)
+FplProvedConjecture:5:8: Proof 'Test$1' of conjecture 'Test[]' detected (change to a new possible theorem)

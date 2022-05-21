@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.7.2
+* Refactoring
+  * Semantical analysis simplified
+* Bugfixes: 
+  * Populate global nodes after (and not during) the recursive syntax_analysis
+  * Qualified identifiers were not correctly established for signatures containing one of the characters '[,*+]', causing false positives of some errors.
 ## 1.7.1
 * Bugfixes:
   * The FplForbiddenOverride error was not recognized in all cases correctly.
