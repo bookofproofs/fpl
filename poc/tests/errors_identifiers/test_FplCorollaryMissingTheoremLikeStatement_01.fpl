@@ -11,4 +11,4 @@ Test.Namespace
 }
 
 ##############################
-FplCorollaryMissingTheoremLikeStatement:5:8: Theorem-like statement 'Test' not found for corollary 'Test$1'
+FplCorollaryMissingTheoremLikeStatement:5:8: Theorem-like statement 'Test' not found for corollary 'Test$1[]'

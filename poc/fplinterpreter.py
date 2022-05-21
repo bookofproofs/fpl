@@ -14,7 +14,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.6.6"
+        self.version = "1.7.2"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -39,6 +39,12 @@ class FplInterpreter:
             self.library_node = library_node
 
     def syntax_analysis(self, path_to_theory: str):
+        self._syntax_analysis_rek(path_to_theory)
+        # populate global nodes
+        for theory_node in AuxSymbolTable.get_theories(self._symbol_table_root):
+            AuxSymbolTable.populate_global_nodes(theory_node, self._error_mgr)
+
+    def _syntax_analysis_rek(self, path_to_theory: str):
         """
         Adds to the symbol table the namespace and its related contents from (potentially multiple) fpl files.
         :param path_to_theory: path to the fpl file with a theory
@@ -90,7 +96,7 @@ class FplInterpreter:
                                                      used_namespace.zfrom))
                         else:
                             for file_node in files_related_to_namespace:
-                                self.syntax_analysis(os.path.join(self._theory_root_dir, file_node.file_name))
+                                self._syntax_analysis_rek(os.path.join(self._theory_root_dir, file_node.file_name))
                 else:
                     if fpl_theory_node.file_name != fpl_file_node.file_name:
                         # We have the case that there is another FPL file in the same root directory
@@ -108,9 +114,6 @@ class FplInterpreter:
                             # The file was already loaded into the symbol table and was not changed by the user in the
                             # root directory, so the symbol table is up-to-date.
                             pass
-        # populate global nodes
-        for theory_node in AuxSymbolTable.get_theories(self._symbol_table_root):
-            AuxSymbolTable.populate_global_nodes(theory_node, self._error_mgr)
 
     def _load_theory_into_symbol_table(self, fpl_file_node):
         fpl_file_node.set_analyser(self._symbol_table_root, self._error_mgr)

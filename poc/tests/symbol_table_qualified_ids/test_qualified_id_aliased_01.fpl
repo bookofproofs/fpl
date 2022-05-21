@@ -1,0 +1,45 @@
+TestNamespace
+{
+    uses Test.Other alias Other
+
+    theory
+    {
+        class Test: Other.Tuple
+        {
+            Test(n: Other.Nat)
+            {
+                self := n
+            }
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Test', id='Test', reference=AuxSTClass(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.Test[1:Other.Nat]', id='Test[1:Other.Nat]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='e052ef2b8f7e2566150f6361552878ac', file_name='test_qualified_id_aliased_01.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    │   └── AuxSTUsedTheory(id='Test.Other', modifier='Other', outline='used', zfrom='3.9', zto='3.31')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTClass(class_types=['Other.Tuple'], def_type='class', id='Test', keyword='class', outline='definition', zfrom='7.8', zto='13.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='Test[1:Other.Nat]', outline='constructor', zfrom='9.12', zto='12.13')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='9.12', zto='9.30')
+    │       │       │   └── AuxSTVarDec(id='n', outline='var_decl', zfrom='9.17', zto='9.29')
+    │       │       │       └── AuxSTType(id='Other.Nat', outline='type', type_mod=None, type_pattern=1, zfrom='9.20', zto='9.29')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       │           └── AuxSTStatement(outline='statement', type=':=', zfrom='11.24', zto='11.25')
+    │       │               ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='11.16', zto='11.20')
+    │       │               └── AuxSTVariable(id='n', outline='var', zfrom='11.24', zto='11.25')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

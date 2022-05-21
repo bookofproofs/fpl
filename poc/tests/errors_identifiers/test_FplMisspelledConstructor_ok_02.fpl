@@ -1,0 +1,17 @@
+Test.Namespace
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+            AlgebraicStructure(x: tplSet, ops: +Composition(args: *tplSetElem))
+            {
+                self:=UnitRing(x,add,mul)
+                assert mul.IsCommutative()
+            }
+        }
+    }
+}
+
+##############################
+should not trigger FplMisspelledConstructor

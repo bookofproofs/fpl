@@ -22,4 +22,4 @@ TestFunctionalTermProperty
 }
 
 ##############################
-FplIdentifierAlreadyDeclared:15:12: Identifier 'AlgebraicStructure.NthOp[1:index]' already defined at (10,12)
+FplIdentifierAlreadyDeclared:15:12: Identifier 'NthOp[1:index]' already defined at (10,12)

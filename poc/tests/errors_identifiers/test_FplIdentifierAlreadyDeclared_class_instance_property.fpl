@@ -22,4 +22,4 @@ TestClassInstanceProperty
 }
 
 ##############################
-FplIdentifierAlreadyDeclared:16:12: Identifier 'AlgebraicStructure.CarrierSet[]' already defined at (11,12)
+FplIdentifierAlreadyDeclared:16:12: Identifier 'CarrierSet[]' already defined at (11,12)

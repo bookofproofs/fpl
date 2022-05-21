@@ -15,4 +15,4 @@ Test.Namespace
 }
 
 ##############################
-FplForbiddenOverride:5:8: 'Test[1:obj]' (Axiom) and 'Test[]' (Axiom) cannot coexist in theory (other at 10,9)
+FplForbiddenOverride:10:8: 'Test[1:obj]' (Axiom) and 'Test[]' (Axiom) cannot coexist in theory (other at 5,9)

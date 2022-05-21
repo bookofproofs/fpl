@@ -1,0 +1,37 @@
+TestTheorem
+{
+    theory
+    {
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+            optional pred IsAssociative()
+            {
+                a,b,c: tplSetElem
+                all a,b,c
+                (
+                    Equal
+                    (
+                        @self(a,@self(b,c)),
+                        @self(@self(a,b),c)
+                    )
+                )
+            }
+
+            optional pred IsCommutative()
+            {
+                a,b: tplSetElem
+                all a,b
+                (
+                    Equal
+                    (
+                        @self(a,b),
+                        @self(b,a)
+                    )
+                )
+            }
+        }
+    }
+}
+
+##############################
+Should not trigger FplIdentifierAlreadyDeclared!

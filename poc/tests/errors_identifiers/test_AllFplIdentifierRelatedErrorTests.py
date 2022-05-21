@@ -24,8 +24,6 @@ class AllFplIdentifierRelatedErrorTests(UtilTestCase):
         ("test_FplIdentifierAlreadyDeclared_proposition.fpl", "SE0020"),
         ("test_FplIdentifierAlreadyDeclared_lemma.fpl", "SE0020"),
         ("test_FplIdentifierAlreadyDeclared_conjecture.fpl", "SE0020"),
-        ("test_FplIdentifierAlreadyDeclared_in_other_namespace.fpl", "SE0020"),
-        ("test_FplIdentifierAlreadyDeclared_other.fpl", "SE0020"),
         ("test_FplMisspelledConstructor_first_occurrence.fpl", "SE0030"),
         ("test_FplMisspelledConstructor_second_occurrence.fpl", "SE0030"),
         ("test_FplMisspelledProperty_01.fpl", "SE0035"),
@@ -67,6 +65,7 @@ class AllFplIdentifierRelatedErrorTests(UtilTestCase):
         ("test_FplAmbiguousSignature_26.fpl", "SE0170"),
         ("test_FplAmbiguousSignature_27.fpl", "SE0170"),
         ("test_FplAmbiguousSignature_28.fpl", "SE0170"),
+        ("test_FplAmbiguousSignature_29.fpl", "SE0170"),
         ("test_FplForbiddenOverride_01.fpl", "SE0180"),
         ("test_FplForbiddenOverride_02.fpl", "SE0180"),
         ("test_FplForbiddenOverride_03.fpl", "SE0180"),
@@ -106,6 +105,9 @@ class AllFplIdentifierRelatedErrorTests(UtilTestCase):
         super().semantical_analysis_detects_fpl_error(self.folder + "/" + use_case, diagnose_id)
 
     @parameterized.expand([
+        ("test_FplIdentifierAlreadyDeclared_ok_01.fpl", "SE0020"),
+        ("test_FplMisspelledConstructor_ok_01.fpl", "SE0030"),
+        ("test_FplMisspelledConstructor_ok_02.fpl", "SE0030"),
         ("test_FplMissingProof_ok_01.fpl", "SE0140"),
         ("test_FplProvedConjecture_ok_01.fpl", "SE0150"),
         ("test_FplProofMissingTheoremLikeStatement_ok_01.fpl", "SE0160"),
@@ -117,6 +119,7 @@ class AllFplIdentifierRelatedErrorTests(UtilTestCase):
         ("test_FplForbiddenOverride_ok_instance_functional_term.fpl", "SE0180"),
         ("test_FplForbiddenOverride_ok_instance_predicate.fpl", "SE0180"),
         ("test_FplForbiddenOverride_ok_predicate.fpl", "SE0180"),
+        ("test_FplForbiddenOverride_ok_property.fpl", "SE0180"),
     ])
     def test_no_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_no_fpl_error(self.folder + "/" + use_case, diagnose_id)
