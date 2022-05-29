@@ -74,6 +74,7 @@ class AllFplVariableRelatedErrors(UtilTestCase):
     @parameterized.expand([
         ("test_FplUndeclaredVariable_ok_01.fpl", "SE0070"),
         ("test_FplUndeclaredVariable_ok_02.fpl", "SE0070"),
+        ("test_FplUndeclaredVariable_ok_03.fpl", "SE0070"),
         ("test_FplUnusedVariable_ok_01.fpl", "SE0075"),
         ("test_FplUnusedVariable_ok_02.fpl", "SE0075"),
         ("test_FplUnusedVariable_ok_03.fpl", "SE0075"),

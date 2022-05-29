@@ -1,0 +1,20 @@
+TestTypes
+{
+    theory
+    {
+        theorem TestTheorem()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+        class AlgebraicStructure: obj
+        {
+            myVar: TestTheorem
+        }
+
+    }
+}
+
+##############################
+FplTypeNotAllowed:13:19: 'TestTheorem[]' (Theorem, found at 5,9) not allowed as a type

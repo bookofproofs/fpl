@@ -1,7 +1,8 @@
 import tatsu
-from anytree import AnyNode, RenderTree
+from anytree import AnyNode, RenderTree, search
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
+from poc.classes.AuxSTClass import AuxSTClass
 from poc import fplsemanticanalyzer
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplNamespaceNotFound
@@ -14,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.7.2"
+        self.version = "1.8.0"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -40,6 +41,7 @@ class FplInterpreter:
 
     def syntax_analysis(self, path_to_theory: str):
         self._syntax_analysis_rek(path_to_theory)
+        self._complement_class_inheritance()
         # populate global nodes
         for theory_node in AuxSymbolTable.get_theories(self._symbol_table_root):
             AuxSymbolTable.populate_global_nodes(theory_node, self._error_mgr)
@@ -178,3 +180,45 @@ class FplInterpreter:
         self.processed_namespaces.remove(namespace + ":" + file_name)
         # remove the errors related to the file
         self._error_mgr.remove_file_errors(file_name)
+
+    def _complement_class_inheritance(self):
+        """
+        This method is used to complement the symbol table of all class nodes
+        with the properties declared in their inheritance predecessors
+        :return: None
+        """
+        all_classes = search.findall(self._symbol_table_root, lambda node: isinstance(node, AuxSTClass))
+        # put the classes into a dictionary for faster searching
+        all_classes_dict = dict()
+        for class_node in all_classes:
+            if class_node.id not in all_classes_dict:
+                all_classes_dict[class_node.id] = class_node
+
+        for class_node_id in all_classes_dict:
+            self._complement_class_rek(class_node_id, all_classes_dict)
+
+    def _complement_class_rek(self, class_node_id: str, all_classes_dict: dict):
+        if class_node_id in all_classes_dict:
+            class_node = all_classes_dict[class_node_id]
+            current_inheritance_set = class_node.class_types
+            if not class_node.has_inherited_properties() and len(current_inheritance_set) > 0:
+                # we have to handle this class because len(current_inheritance_set) > 0 and
+                # the class is not yet marked as having inherited properties
+                parent_class_id = current_inheritance_set[0]
+                # we have to complement the parent class first
+                if self._complement_class_rek(parent_class_id, all_classes_dict):
+                    # now, since we have complemented the parent class, we can also complement the current one
+                    parents_inheritance_set = all_classes_dict[parent_class_id].class_types
+                    if parent_class_id in parents_inheritance_set:
+                        # we detected a circular inheritance todo
+                        raise NotImplementedError()
+                    else:
+                        # we clone all properties of the parent classes in the current class
+                        class_node.create_callers_parent_properties(all_classes_dict[parent_class_id])
+                        # as a last step, complement the inheritance_set of the current class
+                        current_inheritance_set += parents_inheritance_set
+            return True
+        else:
+            # ignore this error since it will be detected at the latest in the semantical analysis
+            # at this stage, we are still building up the symbol table.
+            return False

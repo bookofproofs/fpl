@@ -1,7 +1,9 @@
 from anytree import AnyNode, search
+import re
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplVariableAlreadyDeclared
 from poc.fplerror import FplTemplateMisused
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTOutline(AnyNode):
@@ -54,6 +56,8 @@ class AuxSTBlock(AuxST):
         self._relative_id = ""
         self._declared_vars = dict()
         self._used_vars = tuple()
+        self._qualified_id = None
+        self._base_id = None
 
     def set_relative_id(self, name_of_parent: str):
         if name_of_parent == "":
@@ -132,3 +136,14 @@ class AuxSTBlock(AuxST):
     def get_node_type_str(self):
         d = str(type(self)).split(".")
         return d[-1][5:-2]
+
+    def get_qualified_id(self):
+        if self._qualified_id is None:
+            self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
+        return self._qualified_id
+
+    def base_id(self):
+        if self._base_id is None:
+            irrelevant_prefix = ".".join(self.get_qualified_id().split(".")[0:-1])
+            self._base_id = self.id[len(irrelevant_prefix):]
+        return self._base_id

@@ -1,0 +1,40 @@
+TestNamespace
+{
+    theory
+    {
+        class Group: Monoid
+        {
+            myOp: BinOp(a,b: tplSetElem)
+
+            Group(x: tplSet, op: BinOp)
+            {
+                myOp:=op
+                self:=Monoid (x,op)
+            }
+
+            mandatory pred InverseExistsForAllElements()
+            {
+                x1,x2: tplSetElem
+                all x1
+                (
+                    ex x2
+                    (
+                        Equal( myOp(x1,x2), @self.NeutralElem() )
+                    )
+                )
+            }
+        }
+
+        class CommutativeGroup: Group
+        {
+            CommutativeGroup(x: tpl, op: BinOp)
+            {
+                self := Group(x,op)
+                assert op.IsCommutative()
+            }
+        }
+    }
+}
+
+##############################
+Variables declared in the class should not cause FplUndeclaredVariable error in a property

@@ -1,6 +1,5 @@
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.fplerror import FplErrorManager
 from poc.fplerror import FplIdentifierAlreadyDeclared
 from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
@@ -13,12 +12,14 @@ from poc.fplerror import FplCorollaryMissingTheoremLikeStatement
 from poc.fplerror import FplProvedConjecture
 from poc.fplerror import FplAmbiguousSignature
 from poc.fplerror import FplForbiddenOverride
+from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSTConstructor import AuxSTConstructor
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
 from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
 from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxSTType import AuxSTType
 from poc.classes.AuxSTClass import AuxSTClass
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance
@@ -35,47 +36,6 @@ from poc.classes.AuxSTProof import AuxSTProof
 from anytree import search
 from poc.fplerror import FplMissingProof
 
-"""
-The OverrideHandler class provides
-"""
-
-
-class OverrideHandler:
-    ALLOWED = True
-    NOT_ALLOWED = False
-
-    def __init__(self, mode: bool, error_mgr: FplErrorManager):
-        self._mode = mode
-        self._error_mgr = error_mgr
-        self._dict = dict()
-
-    def add(self, identifier, node, possible_duplicate):
-        if identifier not in self._dict:
-            self._dict[identifier] = list()
-        self._dict[identifier].append(node)
-        if possible_duplicate is not None:
-            if self._mode == OverrideHandler.ALLOWED:
-                if possible_duplicate.reference.get_node_type_str() != node.reference.get_node_type_str():
-                    # if the type of the possible_duplicate does not correspond to the type of the node,
-                    # and the collection allows overrides, trigger an FplAmbiguousSignature error
-                    self._error_mgr.add_error(
-                        FplAmbiguousSignature(node, possible_duplicate)
-                    )
-                else:
-                    # if the type of the possible_duplicate equals the type of the node,
-                    # and the collection allows overrides, trigger an FplAmbiguousSignature error
-                    if possible_duplicate != node and node.reference.outline != AuxSymbolTable.classDefaultConstructor:
-                        self._error_mgr.add_error(FplForbiddenOverride(node, possible_duplicate))
-
-    def get(self, identifier):
-        return self._dict[identifier]
-
-    def keys(self):
-        return self._dict.keys()
-
-    def dictionary(self):
-        return self._dict
-
 
 class SemCheckerIdentifiers:
     def __init__(self, analyzer):
@@ -85,23 +45,23 @@ class SemCheckerIdentifiers:
 
         # In the following, we specify, which building blocks are allowed to have overrides
         # (i.e. the same identifiers, but different signatures).
-        self.theorems = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.lemmas = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.propositions = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.corollaries = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.axioms = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.conjectures = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.types = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.proofs = OverrideHandler(OverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.theorems = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.lemmas = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.propositions = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.corollaries = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.axioms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.conjectures = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.classes = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.proofs = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.instance_classes = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.instance_functional_terms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.instance_predicates = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.functional_terms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
+        self.predicates = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
         # allowed ones:
-        self.overridden_signatures = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.inference_rules = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.instance_classes = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.instance_functional_terms = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.instance_predicates = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.constructors = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.predicates = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.functional_terms = OverrideHandler(OverrideHandler.ALLOWED, self.analyzer.error_mgr)
+        self.overridden_qualified_ids = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.analyzer.error_mgr)
+        self.inference_rules = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.analyzer.error_mgr)
+        self.constructors = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.analyzer.error_mgr)
 
     def analyse(self):
         """
@@ -111,13 +71,13 @@ class SemCheckerIdentifiers:
         """
         for child in self.analyzer.globals_node.children:
             qualified_identifier = child.get_qualified_id()
-            self.overridden_signatures.add(qualified_identifier, child, None)
+            self.overridden_qualified_ids.add(qualified_identifier, child, None)
             self._check_for_malformed_gid(qualified_identifier, child)
             self._check_uniqueness_identifiers(qualified_identifier, child)
-        self._check_misspelled_references()
         self._check_override_consistency()
         self._check_referencing_identifiers()
         self._check_vars()
+        self._check_misspelled_references()
 
     def _check_vars(self):
         for child in self.analyzer.globals_node.children:
@@ -131,7 +91,7 @@ class SemCheckerIdentifiers:
         :param used_vars: tuple of used vars of the building block
         :param declared_vars: dictionary of declared vars of the building block
         :param file_name: FPL file name in which the building block is declared.
-        :return: None
+        :return: None, but each used variable stores internally a pointer to the symbol table node containing its type
         """
         for var_node in used_vars:
             if var_node.id not in declared_vars:
@@ -144,9 +104,12 @@ class SemCheckerIdentifiers:
                     # unless it is a variable of a proof because in this case we have to
                     # extend the 'scope' of variables declared in the corresponding theorem-like statement
                     # to all proofs, in particular to this one
-                    pass
+                    # set the declared type to the type node in the symbol table
+                    var_node.set_declared_type(declared_vars[var_node.id].children[0])
                 else:
                     self.analyzer.error_mgr.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
+            else:
+                var_node.set_declared_type(declared_vars[var_node.id].children[0])
 
     def _check_for_unused_vars(self, node: AnyNode, file_name: str):
         """
@@ -159,7 +122,9 @@ class SemCheckerIdentifiers:
         used_vars = SemCheckerIdentifiers.__get_all_used_vars(node)
         # dictionary of declared vars of the building block
         declared_vars = node.get_declared_vars()
-        # remove for this check all 'outer' declared variables
+        # To avoid false positives, we have to remove for this check all 'outer' declared variables
+        # We have to do it, because e.g. those variables declared in the class do not necessarily have to be used
+        # in the scope of each property or each constructor of the class.
         only_inner_declared = dict()
         for identifier in declared_vars:
             if declared_vars[identifier].parent.parent == node:
@@ -225,7 +190,7 @@ class SemCheckerIdentifiers:
         :param global_node: Some child node from the globals node of the symbol table.
         :return: None, but after this method, gid_collection is complete and ready to be used for other analysis steps
         """
-        block_list = self.overridden_signatures.get(qualified_identifier)
+        block_list = self.overridden_qualified_ids.get(qualified_identifier)
         if len(block_list) > 1:
             # only if there is more than one building block with the same qualified identifier, errors might occur
             unique_gids = dict()
@@ -239,15 +204,15 @@ class SemCheckerIdentifiers:
                     if unique_gids[block.gid].reference.get_node_type_str() != block.reference.get_node_type_str():
                         # In case we have two blocks with different types, we trigger an FplAmbiguousSignature error
                         # unless in case of a allowed class/constructor pair
-                        if not (isinstance(unique_gids[block.gid].reference, AuxSTConstructor) and \
-                                isinstance(block.reference, AuxSTClass) or \
-                                isinstance(unique_gids[block.gid].reference, AuxSTClass) and \
+                        if not (isinstance(unique_gids[block.gid].reference, AuxSTConstructor) and
+                                isinstance(block.reference, AuxSTClass) or
+                                isinstance(unique_gids[block.gid].reference, AuxSTClass) and
                                 isinstance(block.reference, AuxSTConstructor)):
                             self.analyzer.error_mgr.add_error(
                                 FplAmbiguousSignature(block, unique_gids[block.gid])
                             )
                     elif unique_gids[block.gid].reference.id == block.reference.id and \
-                            not (isinstance(block.reference, AuxSTConstructor) and \
+                            not (isinstance(block.reference, AuxSTConstructor) and
                                  isinstance(unique_gids[block.gid].reference, AuxSTConstructor)):
                         # If the types are the same and even the signature is the same, we have a duplicate declaration
                         if block.reference.outline != AuxSymbolTable.classDefaultConstructor:
@@ -270,10 +235,7 @@ class SemCheckerIdentifiers:
                                                      filter_=lambda node: isinstance(node, AuxSTType)
                                                                           and node.id[0].isupper())
             for type_node in collect_type_references:
-                if type_node.id not in self.overridden_signatures.dictionary():
-                    # the type is never declared
-                    self.analyzer.error_mgr.add_error(
-                        FplIdentifierNotDeclared(type_node.id, theory_node.file_name, type_node.zfrom))
+                type_node.set_type_node(self, theory_node.file_name)
 
             # by convention of the FPL syntax, all pascal-case reference names are user-defined
             # collect them
@@ -281,10 +243,23 @@ class SemCheckerIdentifiers:
                                                       filter_=lambda node: isinstance(node, AuxSTPredicateWithArgs)
                                                                            and node.id[0].isupper())
             for reference_node in collect_other_references:
-                if reference_node.id not in self.overridden_signatures.dictionary():
-                    # the reference is never declared
-                    self.analyzer.error_mgr.add_error(
-                        FplIdentifierNotDeclared(reference_node.id, theory_node.file_name, reference_node.zfrom))
+                qualified_identifier = reference_node.get_qualified_id()
+                if isinstance(reference_node.parent, AuxSTQualified):
+                    # qualified identifiers need special treatment
+                    resolved_parent = reference_node.parent.resolve_parent()
+                    if resolved_parent is not None:
+                        # none if the resolve did not work due to other identifier-related errors caused by the user
+                        qualified_identifier = ".".join((resolved_parent.get_qualified_id(), qualified_identifier))
+                        if qualified_identifier not in self.overridden_qualified_ids.dictionary():
+                            # the reference is never declared
+                            self.analyzer.error_mgr.add_error(
+                                FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name,
+                                                         reference_node.zfrom))
+                else:
+                    if qualified_identifier not in self.overridden_qualified_ids.dictionary():
+                        # the reference is never declared
+                        self.analyzer.error_mgr.add_error(
+                            FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, reference_node.zfrom))
 
     def _check_override_consistency(self):
         """
@@ -295,10 +270,10 @@ class SemCheckerIdentifiers:
         in later steps of the semantical analysis.
         :return: None
         """
-        for identifier in self.overridden_signatures.keys():
+        for identifier in self.overridden_qualified_ids.keys():
             # in this first loop, we check if there are same signatures with different types of blocks
             last_block = None
-            for block in self.overridden_signatures.get(identifier):
+            for block in self.overridden_qualified_ids.get(identifier):
                 if last_block is None:
                     last_block = block
                 else:
@@ -330,7 +305,7 @@ class SemCheckerIdentifiers:
         # we now dispatch the collected nodes
         reference = block.reference
         if isinstance(reference, AuxSTClass):
-            self.types.add(qualified_identifier, block, possible_duplicate)
+            self.classes.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTConstructor):
             self.constructors.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTDefinitionFunctionalTerm):

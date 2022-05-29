@@ -1,6 +1,15 @@
 from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTClassInstance import AuxSTClassInstance
+from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
+from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
+from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
+from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxSTArgs import AuxSTArgs
+from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTSelf import AuxSTSelf
 from anytree import search
 from poc.fplerror import FplErrorManager
 
@@ -16,12 +25,10 @@ class AuxSTClass(AuxSTBlock):
         self.zfrom = i.corrected_position('ClassHeader')
         self.zto = i.last_positions_by_rule['DefinitionClass'].pos_to_str()
         self.keyword = ""
+        self._hip = False
 
     def add_type(self, class_type: str):
-        if class_type in AuxRuleDependencies.dep["ObjectHeader"]:
-            if "obj" not in self.class_types:
-                self.class_types.append("obj")
-        else:
+        if class_type not in AuxRuleDependencies.dep["ObjectHeader"]:
             self.class_types.append(class_type)
 
     def initialize_vars(self, filename, error_mgr: FplErrorManager):
@@ -50,3 +57,60 @@ class AuxSTClass(AuxSTBlock):
         self._used_vars = search.findall_by_attr(var_spec_list_node, AuxSymbolTable.var, AuxSymbolTable.outline)
         self.filter_misused_templates(error_mgr, filename)
 
+    def create_callers_parent_properties(self, parent_class):
+        """
+        This method creates callers of all the properties of the parent class unless there are
+        already properties with the same name overriding those parent properties
+        :return:
+        """
+        self._hip = True
+        parents_properties = AuxSymbolTable.get_child_by_outline(parent_class, AuxSymbolTable.properties)
+        my_properties = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.properties)
+        for parent_property in parents_properties.children:
+            if parent_property.base_id() in my_properties.children:
+                # the property was overridden exists
+                pass
+            else:
+                if isinstance(parent_property,
+                              (AuxSTPredicateInstance, AuxSTClassInstance, AuxSTFunctionalTermInstance)):
+                    # common code for all three types of properties:
+                    new_instance = parent_property.clone()
+                    new_instance.parent = my_properties  # add the new instance to the properties of the current class
+                    # replace the var spec list of the new_instance
+                    old_spec_list = AuxSymbolTable.get_child_by_outline(new_instance, AuxSymbolTable.var_spec)
+                    AuxSymbolTable.remove_node_recursively(old_spec_list)
+                    new_spec_list = AuxSTVarSpecList()
+                    new_spec_list.parent = new_instance
+                    # we now replace the old contents with standard overrides calling the parent class' properties
+                    # depending on the type of the property
+                    if isinstance(parent_property, AuxSTPredicateInstance):
+                        old_predicate = None
+                        for child in new_instance.children:
+                            if isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs)):
+                                old_predicate = child
+                                break
+                        AuxSymbolTable.remove_node_recursively(old_predicate)
+                        new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
+                        new_predicate.id = parent_class.id + "." + parent_property.id
+                        new_predicate.parent = new_instance
+                        AuxSTArgs(parent_property.isa()).parent = new_predicate
+                    elif isinstance(parent_property, AuxSTClassInstance):
+                        stmt = AuxSTStatement(AuxSymbolTable.statement_assign,
+                                              parent_property.isa()).parent = new_spec_list
+                        slf = AuxSTSelf(parent_property.isa()).parent = stmt
+                        new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
+                        new_predicate.id = parent_class.id + "." + parent_property.id
+                        new_predicate.parent = slf
+                        AuxSTArgs(parent_property.isa()).parent = new_predicate
+                    else:
+                        stmt = AuxSTStatement(AuxSymbolTable.statement_return, parent_property.isa())
+                        stmt.parent = new_spec_list
+                        new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
+                        new_predicate.id = parent_class.id + "." + parent_property.id
+                        new_predicate.parent = stmt
+                        AuxSTArgs(parent_property.isa()).parent = new_predicate
+                else:
+                    raise AssertionError(str(type(parent_property)))
+
+    def has_inherited_properties(self):
+        return self._hip

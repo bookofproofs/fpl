@@ -27,6 +27,15 @@ class ClassTests(UtilTestCase):
         "test_class_15.fpl",
         "test_class_16.fpl",
         "test_class_17.fpl",
+        "test_class_18c.fpl",
+        "test_class_18ci.fpl",
+        "test_class_18f.fpl",
+        "test_class_18fi.fpl",
+        "test_class_18p.fpl",
+        "test_class_18pi.fpl",
+        "test_class_19_ccc.fpl",
+        "test_class_19_fff.fpl",
+        "test_class_19_ppp.fpl",
     ])
     def test_correct(self, use_case):
         super().syntax_analysis_correct(self.folder + "/" + use_case, self.rewrite)

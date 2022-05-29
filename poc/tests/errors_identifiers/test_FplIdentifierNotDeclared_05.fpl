@@ -1,0 +1,32 @@
+Test.Qualified
+{
+    theory
+    {
+        class TestStructure: obj
+        {
+
+            myVar: tplSet
+
+            TestStructure(x: tplSet)
+            {
+                myVar: tplSet
+            }
+
+            mandatory func InnerVar() -> tplSet
+            {
+                return myVar
+            }
+
+        }
+
+        function Test() -> obj
+        {
+            d: obj
+            d := TestStructure (1)
+            return d.InnerVar()
+        }
+    }
+}
+
+##############################
+FplIdentifierNotDeclared:26:21: Undeclared identifier 'obj.InnerVar'

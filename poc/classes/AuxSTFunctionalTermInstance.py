@@ -11,4 +11,13 @@ class AuxSTFunctionalTermInstance(AuxSTInstance):
         self.zto = i.last_positions_by_rule['FunctionalTermInstance'].pos_to_str()
         self.keyword = ""
 
-
+    def clone(self):
+        new_class_instance = self._copy(AuxSTFunctionalTermInstance(self._i))
+        new_class_instance.id = self.id
+        new_class_instance.def_type = self.def_type
+        new_class_instance.keyword = self.keyword
+        new_class_instance.zfrom = self.zfrom
+        new_class_instance.to = self.zto
+        new_class_instance.mandatory = self.mandatory
+        new_class_instance._is_inherited = True
+        return new_class_instance

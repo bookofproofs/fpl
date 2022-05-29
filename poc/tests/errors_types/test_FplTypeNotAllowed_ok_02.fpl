@@ -1,0 +1,19 @@
+TestTypes
+{
+    theory
+    {
+        function TestFunc()->obj
+        {
+            return undefined
+        }
+
+        class AlgebraicStructure: obj
+        {
+            myVar: TestFunc
+        }
+
+    }
+}
+
+##############################
+should not trigger FplTypeNotAllowed, since functional terms are allowed types

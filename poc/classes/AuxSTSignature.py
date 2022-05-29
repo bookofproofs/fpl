@@ -41,3 +41,9 @@ class AuxSTSignature(AuxST):
                     ret += "," + named_var_declaration.to_string()
         ret += "]"
         return ret
+
+    def clone(self):
+        new_signature = self._copy(AuxSTSignature(self._i))
+        new_signature.set_id(self._id)
+        new_signature.set_params(self._list_named_declarations)
+        return new_signature

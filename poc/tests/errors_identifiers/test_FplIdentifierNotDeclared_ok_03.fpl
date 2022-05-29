@@ -1,0 +1,53 @@
+Test.Qualified
+{
+    theory
+    {
+        class TestStructure: obj
+        {
+
+            myVar: tplSet
+
+            TestStructure(x: tplSet)
+            {
+                myVar: tplSet
+            }
+
+            mandatory func InnerVar() -> tplSet
+            {
+                return myVar
+            }
+
+        }
+
+        class DerivedTestStructure: TestStructure
+        {
+
+            DerivedTestStructure(y: tplSet)
+            {
+                self:=TestStructure(y)
+            }
+
+            optional predicate IsMaximal()
+            {
+                x: tplSet
+                y: pred
+                not ( ex x ( y(x, @self.InnerVar() ) ) )
+            }
+
+        }
+
+        class OtherStructure: obj
+        {
+            OtherStructure()
+            {
+                d: DerivedTestStructure
+                d := DerivedTestStructure (1)
+                assert d.IsMaximal()
+            }
+        }
+    }
+}
+
+##############################
+should not cause FplIdentifierNotDeclared:34:40: Undeclared identifier 'DerivedTestStructure.InnerVar' since
+InnerVar is inherited by DerivedTestStructure from TestStructure
