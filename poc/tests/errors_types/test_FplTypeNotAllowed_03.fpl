@@ -1,0 +1,24 @@
+TestTypes
+{
+    inference
+    {
+        TestInferenceRule()
+        {
+            pre: undefined
+            con: undefined
+        }
+
+    }
+    theory
+    {
+
+        class AlgebraicStructure: obj
+        {
+            myVar: TestInferenceRule
+        }
+
+    }
+}
+
+##############################
+FplTypeNotAllowed:17:19: 'TestInferenceRule[]' (RuleOfInference, found at 5,9) not allowed as a type

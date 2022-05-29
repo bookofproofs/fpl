@@ -312,3 +312,27 @@ class FplCrossNamespaceAmbiguity(FplInterpreterMessage):
                                                                             str(int(second_s[1]) + 1)),
             first_s[0], first_s[1], first.theory.file_name)
         self.diagnose_id = "SE0190"
+
+
+class FplTypeNotAllowed(FplInterpreterMessage):
+    def __init__(self, type_node, zfrom, file_name):
+        first_s = type_node.reference.zfrom.split(".")
+        second_s = zfrom.split(".")
+        if file_name == type_node.theory.file_name:
+            super().__init__(
+                "'{0}' ({1}, found at {2},{3}) not allowed as a type".format(type_node.reference.id,
+                                                                         type_node.reference.get_node_type_str(),
+                                                                         first_s[0],
+                                                                         str(int(first_s[1]) + 1)),
+                second_s[0], second_s[1], file_name
+            )
+        else:
+            super().__init__(
+                "'{0}' ({1}, found at {2}({3},{4})) not allowed as a type".format(type_node.reference.id,
+                                                                                  type_node.reference.get_node_type_str(),
+                                                                                  type_node.theory.file_name,
+                                                                                  first_s[0],
+                                                                                  str(int(first_s[1]) + 1)),
+                second_s[0], second_s[1], file_name
+            )
+        self.diagnose_id = "SE0200"

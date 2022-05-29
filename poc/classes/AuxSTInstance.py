@@ -1,7 +1,6 @@
 from poc.classes.AuxST import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
-from poc.classes.AuxSTClass import AuxSTClass
 from poc.fplerror import FplErrorManager
 
 
@@ -9,9 +8,11 @@ class AuxSTInstance(AuxSTBlock):
     def __init__(self, i):
         super().__init__(AuxSymbolTable.property, i)
         self.mandatory = False
+        self._i = i
+        self._is_inherited = False
 
     def initialize_vars(self, filename, error_mgr: FplErrorManager):
-        if type(self.parent.parent) is AuxSTClass:
+        if self.parent.parent.def_type == AuxSymbolTable.classDeclaration:
             # Case #1: We have a property of a class
             # collect class variable declarations (outer scope)
             classes_var_spec_list = AuxSymbolTable.get_child_by_outline(self.parent.parent, AuxSymbolTable.var_spec)
@@ -63,3 +64,10 @@ class AuxSTInstance(AuxSTBlock):
         # the used variables are only in the body
         self._used_vars = search.findall_by_attr(self, AuxSymbolTable.var, AuxSymbolTable.outline)
         self.filter_misused_templates(error_mgr, filename)
+
+    def isa(self):
+        # getter for the source analyser
+        return self._i
+
+    def is_inherited(self):
+        return self._is_inherited

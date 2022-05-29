@@ -1,0 +1,19 @@
+TestTypes
+{
+    theory
+    {
+        pred TestPredicate()
+        {
+            true
+        }
+
+        class AlgebraicStructure: obj
+        {
+            myVar: TestPredicate
+        }
+
+    }
+}
+
+##############################
+should not trigger FplTypeNotAllowed, since predicates are allowed types

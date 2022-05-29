@@ -17,6 +17,7 @@ class TypeTests(UtilTestCase):
         "test_types_var_decl_01.fpl",
         "test_types_var_decl_02.fpl",
         "test_types_var_decl_03.fpl",
+        "test_types_var_decl_04.fpl",
     ])
     def test_correct(self, use_case):
         super().syntax_analysis_correct(self.folder + "/" + use_case, self.rewrite)

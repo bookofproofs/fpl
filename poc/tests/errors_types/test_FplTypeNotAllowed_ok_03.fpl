@@ -1,0 +1,15 @@
+TestTypes
+{
+    theory
+    {
+
+        class AlgebraicStructure: obj
+        {
+            myVar: AlgebraicStructure
+        }
+
+    }
+}
+
+##############################
+should not trigger FplTypeNotAllowed, since classes are allowed types

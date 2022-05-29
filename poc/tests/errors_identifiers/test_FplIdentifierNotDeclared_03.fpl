@@ -1,0 +1,39 @@
+Test.Namespace
+{
+    theory
+    {
+        predicate Equal(x,y: obj)
+        {
+            // this is only a test to keep things simple
+            true
+        }
+
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+            optional pred IsLeftNeutralElement(e: tplSetElem)
+            {
+                x: tplSetElem
+
+                all x
+                (
+                    Equal(@self(e,x), x)
+                )
+            }
+
+            optional pred HasLeftNeutralElement()
+            {
+                e: tplSetElem
+                ex e
+                (
+                    // this should trigger
+                    // FplIdentifierNotDeclared:31:26: Undeclared identifier 'IsLeftNeutral'
+                    // since the correct name is IsLeftNeutralElement
+                    @self.IsLeftNeutral(e)
+                )
+            }
+        }
+    }
+}
+
+##############################
+FplIdentifierNotDeclared:31:26: Undeclared identifier 'BinOp.IsLeftNeutral'

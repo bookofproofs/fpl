@@ -1,6 +1,10 @@
+import re
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTArgs import AuxSTArgs
+from poc.classes.AuxSTConstants import AuxSTConstants
+from poc.fplerror import FplTypeNotAllowed
+from poc.fplerror import FplIdentifierNotDeclared
 
 
 class AuxSTType(AuxST):
@@ -11,6 +15,8 @@ class AuxSTType(AuxST):
         self.type_pattern = -1
         self.type_mod = ""
         self._parsing_info = None
+        self._type_node = None
+        self._qualified_id = None
 
     def set_type(self, var_type):
         if var_type.generalType is not None:
@@ -38,6 +44,8 @@ class AuxSTType(AuxST):
 
     def clone(self):
         other = self._copy(AuxSTType(self._i))
+        other._type_node = self._type_node
+        other._qualified_id = self._qualified_id
         if self.type_pattern == -1:
             # prevent cloning type when, in fact the type has params.
             # In this case replace the node by an AuxSTArgs node
@@ -51,3 +59,31 @@ class AuxSTType(AuxST):
             other.type_pattern = self.type_pattern
             other._parsing_info = self._parsing_info
             return other
+
+    def set_type_node(self, sem_identifiers, file_name):
+        qualified_identifier = self.get_qualified_id()
+        if qualified_identifier in sem_identifiers.classes.dictionary():
+            self._type_node = sem_identifiers.classes.get(qualified_identifier)[0]
+        elif qualified_identifier in sem_identifiers.predicates.dictionary():
+            self._type_node = sem_identifiers.predicates.get(qualified_identifier)[0]
+        elif qualified_identifier in sem_identifiers.functional_terms.dictionary():
+            self._type_node = sem_identifiers.functional_terms.get(qualified_identifier)[0]
+        elif qualified_identifier in sem_identifiers.overridden_qualified_ids.dictionary():
+            # any other found declared block is semantically not an allowed type,
+            # we trigger the
+            sem_identifiers.analyzer.error_mgr.add_error(
+                FplTypeNotAllowed(sem_identifiers.overridden_qualified_ids.get(qualified_identifier)[0], self.zfrom,
+                                  file_name)
+            )
+        else:
+            # otherwise we trigger the FplIdentifierNotDeclared error
+            sem_identifiers.analyzer.error_mgr.add_error(
+                FplIdentifierNotDeclared(qualified_identifier, file_name, self.zfrom))
+
+    def get_type_node(self):
+        self.set_type_node
+
+    def get_qualified_id(self):
+        if self._qualified_id is None:
+            self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
+        return self._qualified_id

@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.0
+* Feature: 
+  * Class inheritance of properties & semantical recognition of identifiers (still open: signature-conform "calling" of parent properties)
+  * New semantical error introduced: FplTypeNotAllowed
+  * Qualified identifiers extended to self and variables (qualified AuxSTPredicateWithArgs still open)
+  * Some new unit tests
 ## 1.7.2
 * Refactoring
   * Semantical analysis simplified

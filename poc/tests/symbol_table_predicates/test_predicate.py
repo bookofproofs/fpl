@@ -37,6 +37,9 @@ class PredicatesTests(UtilTestCase):
         "test_predicate_22.fpl",
         "test_predicate_23.fpl",
         "test_predicate_24.fpl",
+        "test_predicate_25.fpl",
+        "test_predicate_25a.fpl",
+        "test_predicate_25b.fpl",
     ])
     def test_correct(self, use_case):
         super().syntax_analysis_correct(self.folder + "/" + use_case, self.rewrite)

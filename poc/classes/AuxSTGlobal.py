@@ -1,5 +1,6 @@
 from anytree import AnyNode
 import re
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTGlobal(AnyNode):
@@ -15,5 +16,5 @@ class AuxSTGlobal(AnyNode):
 
     def get_qualified_id(self):
         if self._qualified_id is None:
-            self._qualified_id = re.sub(r"\[([0-9,\+\*\[\]:a-zA-Z_\$]*)\]", "", self.id)
+            self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
         return self._qualified_id

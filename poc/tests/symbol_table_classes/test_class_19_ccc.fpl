@@ -1,0 +1,122 @@
+TestNamespace
+{
+    theory
+    {
+        class FirstClass: obj
+        {
+            mandatory obj FirstProperty()
+            {
+                self:=undefined
+            }
+        }
+
+        class SecondClass: FirstClass
+        {
+            mandatory obj SecondProperty()
+            {
+                self:=undefined
+            }
+        }
+
+        class ThirdClass: SecondClass
+        {
+            mandatory obj ThirdProperty()
+            {
+                self:=undefined
+            }
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.FirstClass', id='FirstClass', reference=AuxSTClass(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.FirstClass[]', id='FirstClass[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.FirstClass.FirstProperty[]', id='FirstClass.FirstProperty[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.SecondClass', id='SecondClass', reference=AuxSTClass(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.SecondClass[]', id='SecondClass[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.SecondClass.SecondProperty[]', id='SecondClass.SecondProperty[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.SecondClass.FirstProperty[]', id='SecondClass.FirstProperty[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.ThirdClass', id='ThirdClass', reference=AuxSTClass(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.ThirdClass[]', id='ThirdClass[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.ThirdClass.ThirdProperty[]', id='ThirdClass.ThirdProperty[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.ThirdClass.SecondProperty[]', id='ThirdClass.SecondProperty[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.ThirdClass.FirstProperty[]', id='ThirdClass.FirstProperty[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='9f46fa0aa9c03fd45313b3a45b97fbdc', file_name='test_class_19_ccc.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   ├── AuxSTClass(class_types=[], def_type='class', id='FirstClass', keyword='class', outline='definition', zfrom='5.8', zto='11.9')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   ├── AuxSTConstructors(outline='constructors')
+    │   │   │   └── AuxSTConstructor(id='FirstClass[]', outline='defaultConstructor', zfrom='', zto='')
+    │   │   │       ├── AuxSTSignature(outline='signature', zfrom='7.13', zto='7.41')
+    │   │   │       └── AuxSTVarSpecList(outline='specificationList')
+    │   │   └── AuxSTProperties(outline='properties')
+    │   │       └── AuxSTClassInstance(def_type='classInstance', id='FirstProperty[]', mandatory=True, outline='property', zfrom='7.12', zto='10.13')
+    │   │           ├── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='7.22', zto='7.25')
+    │   │           ├── AuxSTSignature(outline='signature', zfrom='7.26', zto='7.41')
+    │   │           └── AuxSTVarSpecList(outline='specificationList')
+    │   │               └── AuxSTStatement(outline='statement', type=':=', zfrom='9.16', zto='9.31')
+    │   │                   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='9.16', zto='9.20')
+    │   │                   └── AuxSTPredicate(outline='undefined', zfrom='9.22', zto='9.31')
+    │   ├── AuxSTClass(class_types=['FirstClass'], def_type='class', id='SecondClass', keyword='class', outline='definition', zfrom='13.8', zto='19.9')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   ├── AuxSTConstructors(outline='constructors')
+    │   │   │   └── AuxSTConstructor(id='SecondClass[]', outline='defaultConstructor', zfrom='', zto='')
+    │   │   │       ├── AuxSTSignature(outline='signature', zfrom='15.12', zto='15.42')
+    │   │   │       └── AuxSTVarSpecList(outline='specificationList')
+    │   │   └── AuxSTProperties(outline='properties')
+    │   │       ├── AuxSTClassInstance(def_type='classInstance', id='SecondProperty[]', mandatory=True, outline='property', zfrom='15.12', zto='18.13')
+    │   │       │   ├── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='15.22', zto='15.25')
+    │   │       │   ├── AuxSTSignature(outline='signature', zfrom='15.26', zto='15.42')
+    │   │       │   └── AuxSTVarSpecList(outline='specificationList')
+    │   │       │       └── AuxSTStatement(outline='statement', type=':=', zfrom='17.16', zto='17.31')
+    │   │       │           ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='17.16', zto='17.20')
+    │   │       │           └── AuxSTPredicate(outline='undefined', zfrom='17.22', zto='17.31')
+    │   │       └── AuxSTClassInstance(def_type='classInstance', id='FirstProperty[]', mandatory=True, outline='property', to='10.13', zfrom='7.12', zto='10.13')
+    │   │           ├── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='7.22', zto='7.25')
+    │   │           ├── AuxSTSignature(outline='signature', zfrom='7.26', zto='7.41')
+    │   │           └── AuxSTVarSpecList(outline='specificationList')
+    │   │               ├── AuxSTStatement(outline='statement', type=':=', zfrom='25.12', zto='25.31')
+    │   │               ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='', zto='')
+    │   │               └── AuxSTPredicateWithArgs(id='FirstClass.FirstProperty[]', outline='predicateWithArgs', reference=None, zfrom='', zto='')
+    │   │                   └── AuxSTArgs(outline='arguments', zfrom='23.40', zto='23.41')
+    │   └── AuxSTClass(class_types=['SecondClass', 'FirstClass'], def_type='class', id='ThirdClass', keyword='class', outline='definition', zfrom='21.8', zto='27.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='ThirdClass[]', outline='defaultConstructor', zfrom='', zto='')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='23.13', zto='23.41')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProperties(outline='properties')
+    │           ├── AuxSTClassInstance(def_type='classInstance', id='ThirdProperty[]', mandatory=True, outline='property', zfrom='23.12', zto='26.13')
+    │           │   ├── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='23.22', zto='23.25')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='23.26', zto='23.41')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       └── AuxSTStatement(outline='statement', type=':=', zfrom='25.16', zto='25.31')
+    │           │           ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='25.16', zto='25.20')
+    │           │           └── AuxSTPredicate(outline='undefined', zfrom='25.22', zto='25.31')
+    │           ├── AuxSTClassInstance(def_type='classInstance', id='SecondProperty[]', mandatory=True, outline='property', to='18.13', zfrom='15.12', zto='18.13')
+    │           │   ├── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='15.22', zto='15.25')
+    │           │   ├── AuxSTSignature(outline='signature', zfrom='15.26', zto='15.42')
+    │           │   └── AuxSTVarSpecList(outline='specificationList')
+    │           │       ├── AuxSTStatement(outline='statement', type=':=', zfrom='25.8', zto='25.31')
+    │           │       ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='', zto='')
+    │           │       └── AuxSTPredicateWithArgs(id='SecondClass.SecondProperty[]', outline='predicateWithArgs', reference=None, zfrom='', zto='')
+    │           │           └── AuxSTArgs(outline='arguments', zfrom='23.40', zto='23.41')
+    │           └── AuxSTClassInstance(def_type='classInstance', id='FirstProperty[]', mandatory=True, outline='property', to='10.13', zfrom='7.12', zto='10.13')
+    │               ├── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='7.22', zto='7.25')
+    │               ├── AuxSTSignature(outline='signature', zfrom='7.26', zto='7.41')
+    │               └── AuxSTVarSpecList(outline='specificationList')
+    │                   ├── AuxSTStatement(outline='statement', type=':=', zfrom='25.4', zto='25.31')
+    │                   ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='', zto='')
+    │                   └── AuxSTPredicateWithArgs(id='SecondClass.FirstProperty[]', outline='predicateWithArgs', reference=None, zfrom='', zto='')
+    │                       └── AuxSTArgs(outline='arguments', zfrom='23.40', zto='23.41')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

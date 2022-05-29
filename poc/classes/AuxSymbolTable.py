@@ -352,7 +352,7 @@ class AuxSymbolTable:
                 child.parent = None
                 del child
         if theory_node is not None:
-            AuxSymbolTable._remove_node_recursively(theory_node)
+            AuxSymbolTable.remove_node_recursively(theory_node)
         else:
             # in case there was a syntax error last time, there was no global node.
             # therefore, try to find the corresponding theory_node of the file directly in the symbol table
@@ -360,13 +360,13 @@ class AuxSymbolTable:
             for theory_node in theories:
                 if theory_node.file_name == file_name:
                     namespace = theory_node.namespace
-                    AuxSymbolTable._remove_node_recursively(theory_node)
+                    AuxSymbolTable.remove_node_recursively(theory_node)
         return namespace
 
     @staticmethod
-    def _remove_node_recursively(node):
+    def remove_node_recursively(node):
         for child in node.children:
-            AuxSymbolTable._remove_node_recursively(child)
+            AuxSymbolTable.remove_node_recursively(child)
         if len(node.children) == 0:
             node.parent = None
             del node

@@ -1,0 +1,19 @@
+TestTypes
+{
+    theory
+    {
+        axiom TestAxiom()
+        {
+            true
+        }
+
+        class AlgebraicStructure: obj
+        {
+            myVar: TestAxiom
+        }
+
+    }
+}
+
+##############################
+FplTypeNotAllowed:12:19: 'TestAxiom[]' (Axiom, found at 5,9) not allowed as a type
