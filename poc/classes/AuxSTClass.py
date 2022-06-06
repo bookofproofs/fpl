@@ -114,3 +114,6 @@ class AuxSTClass(AuxSTBlock):
 
     def has_inherited_properties(self):
         return self._hip
+
+    def get_type_signature(self):
+        return self.id

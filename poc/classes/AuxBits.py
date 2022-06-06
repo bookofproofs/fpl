@@ -15,6 +15,10 @@ class AuxBits:
         return pattern_int == 0
 
     @staticmethod
+    def is_inbuilt_object(pattern_int: int):
+        return (pattern_int & AuxBits.objectBit) > 0 and (pattern_int & AuxBits.inbuiltBit) > 0
+
+    @staticmethod
     def is_object(pattern_int: int):
         return (pattern_int & AuxBits.objectBit) > 0
 
@@ -25,10 +29,6 @@ class AuxBits:
     @staticmethod
     def is_functional_term(pattern_int: int):
         return (pattern_int & AuxBits.functionalTermBit) > 0
-
-    @staticmethod
-    def in_built(pattern_int: int):
-        return (pattern_int & AuxBits.inbuiltBit) > 0
 
     @staticmethod
     def is_generic(pattern_int: int):

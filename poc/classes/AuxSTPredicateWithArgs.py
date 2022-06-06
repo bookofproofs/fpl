@@ -7,19 +7,21 @@ class AuxSTPredicateWithArgs(AuxSTBlock):
     def __init__(self, i):
         super().__init__(AuxSymbolTable.predicate_with_arguments, i)
         self.reference = None
-        # In case, a variable is used as a predicate with arguments,
-        # this field will contain a pointer to the type in the symbol table with which this variable was declared
-        self._declared_type = None
+        self._signature_correct = None  # None=>never checked, False=>wrong, True=>correct
 
     def clone(self):
         new_predicate = self._copy(AuxSTPredicateWithArgs(self._i))
         new_predicate.id = self.id
         new_predicate.outline = self.outline
-        new_predicate._declared_type = self._declared_type
+        new_predicate._signature_correct = self._signature_correct
+        new_predicate.reference = self.reference
         return new_predicate
 
-    def set_declared_type(self, node):
-        self._declared_type = node
+    def get_type_signature(self):
+        return self.reference.get_type_signature()
 
-    def get_declared_type(self):
-        return self._declared_type
+    def type_signature_correct(self):
+        return self._signature_correct
+
+    def set_type_signature_correctness(self, correct):
+        self._signature_correct = correct

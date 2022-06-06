@@ -9,10 +9,10 @@ from poc.fplerror import FplMalformedNamespace
 class SemanticAnalyser:
 
     def __init__(self, symbol_table_root: AnyNode, error_mgr: FplErrorManager):
-        self._symbol_table_root = symbol_table_root
+        self.symbol_table_root = symbol_table_root
         self.error_mgr = error_mgr
-        self.loaded_theories = AuxSymbolTable.get_theories(self._symbol_table_root)
-        self.globals_node = AuxSymbolTable.get_child_by_outline(self._symbol_table_root, AuxSymbolTable.globals)
+        self.loaded_theories = AuxSymbolTable.get_theories(self.symbol_table_root)
+        self.globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSymbolTable.globals)
         self.sem_checker_identifiers = SemCheckerIdentifiers(self)
 
     def semantic_analysis(self):

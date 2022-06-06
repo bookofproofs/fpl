@@ -66,3 +66,6 @@ class AuxSTPredicate(AuxST):
 
     def clone(self):
         return self._copy(AuxSTPredicate(self.outline, self._i))
+
+    def get_type_signature(self):  # noqa
+        return AuxSymbolTable.predicate

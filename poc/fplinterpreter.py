@@ -15,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.8.0"
+        self.version = "1.8.1"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -210,7 +210,7 @@ class FplInterpreter:
                     # now, since we have complemented the parent class, we can also complement the current one
                     parents_inheritance_set = all_classes_dict[parent_class_id].class_types
                     if parent_class_id in parents_inheritance_set:
-                        # we detected a circular inheritance todo
+                        # we detected a circular inheritance
                         raise NotImplementedError()
                     else:
                         # we clone all properties of the parent classes in the current class

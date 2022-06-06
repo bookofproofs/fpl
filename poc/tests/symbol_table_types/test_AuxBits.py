@@ -12,7 +12,7 @@ class AuxBitsTests(unittest.TestCase):
 
     @parameterized.expand([
         (AuxBits.objectBit, AuxBits.is_object),
-        (AuxBits.inbuiltBit, AuxBits.in_built),
+        (AuxBits.inbuiltBit, AuxBits.is_inbuilt),
         (AuxBits.extensionBit, AuxBits.is_extension),
         (AuxBits.predicateBit, AuxBits.is_predicate),
         (AuxBits.classBit, AuxBits.is_class),

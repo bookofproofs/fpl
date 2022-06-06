@@ -23,5 +23,5 @@ class AuxSTPredicateInstance(AuxSTInstance):
         new_predicate._is_inherited = True
         return new_predicate
 
-
-
+    def get_type_signature(self):  # noqa
+        return AuxSymbolTable.predicate

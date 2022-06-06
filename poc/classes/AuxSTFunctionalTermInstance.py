@@ -21,3 +21,7 @@ class AuxSTFunctionalTermInstance(AuxSTInstance):
         new_class_instance.mandatory = self.mandatory
         new_class_instance._is_inherited = True
         return new_class_instance
+
+    def get_type_signature(self):
+        type_child = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.type)
+        return type_child.id

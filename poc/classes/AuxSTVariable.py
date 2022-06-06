@@ -21,11 +21,4 @@ class AuxSTVariable(AuxST):
     def clone(self):
         other = self._copy(AuxSTVariable(self._i))
         other.id = self.id
-        other._declared_type = self._declared_type
         return other
-
-    def set_declared_type(self, node):
-        self._declared_type = node
-
-    def get_declared_type(self):
-        return self._declared_type

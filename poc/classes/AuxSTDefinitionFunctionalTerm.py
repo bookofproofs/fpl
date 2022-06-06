@@ -44,3 +44,7 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
             if type(child) is not AuxSTProperties:
                 self._used_vars += search.findall_by_attr(child, AuxSymbolTable.var, AuxSymbolTable.outline)
         self.filter_misused_templates(error_mgr, filename)
+
+    def get_type_signature(self):
+        type_child = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.type)
+        return type_child.id
