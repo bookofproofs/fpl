@@ -12,27 +12,35 @@ from poc.fplerror import FplCorollaryMissingTheoremLikeStatement
 from poc.fplerror import FplProvedConjecture
 from poc.fplerror import FplAmbiguousSignature
 from poc.fplerror import FplForbiddenOverride
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltType
 from poc.classes.AuxOverrideHandler import AuxOverrideHandler
-from poc.classes.AuxSTConstructor import AuxSTConstructor
-from poc.classes.AuxSTSignature import AuxSTSignature
-from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
-from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
-from poc.classes.AuxSTQualified import AuxSTQualified
-from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxSTAxiom import AuxSTAxiom
+from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
 from poc.classes.AuxSTClass import AuxSTClass
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance
+from poc.classes.AuxSTConjecture import AuxSTConjecture
+from poc.classes.AuxSTConstructor import AuxSTConstructor
+from poc.classes.AuxSTCorollary import AuxSTCorollary
 from poc.classes.AuxSTDefinitionFunctionalTerm import AuxSTDefinitionFunctionalTerm
 from poc.classes.AuxSTDefinitionPredicate import AuxSTDefinitionPredicate
+from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
+from poc.classes.AuxSTInstance import AuxSTInstance
 from poc.classes.AuxSTLemma import AuxSTLemma
-from poc.classes.AuxSTTheorem import AuxSTTheorem
+from poc.classes.AuxSTLocalization import AuxSTLocalization
+from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
+from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
 from poc.classes.AuxSTProposition import AuxSTProposition
-from poc.classes.AuxSTCorollary import AuxSTCorollary
-from poc.classes.AuxSTRuleOfInference import AuxSTRuleOfInference
-from poc.classes.AuxSTAxiom import AuxSTAxiom
-from poc.classes.AuxSTConjecture import AuxSTConjecture
 from poc.classes.AuxSTProof import AuxSTProof
+from poc.classes.AuxSTQualified import AuxSTQualified
+from poc.classes.AuxSTRuleOfInference import AuxSTRuleOfInference
+from poc.classes.AuxSTSelf import AuxSTSelf
+from poc.classes.AuxSTSignature import AuxSTSignature
+from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTTheorem import AuxSTTheorem
+from poc.classes.AuxSTTheory import AuxSTTheory
+from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxSTVariable import AuxSTVariable
 from anytree import search
 from poc.fplerror import FplMissingProof
 
@@ -75,9 +83,10 @@ class SemCheckerIdentifiers:
             self._check_for_malformed_gid(qualified_identifier, child)
             self._check_uniqueness_identifiers(qualified_identifier, child)
         self._check_override_consistency()
-        self._check_referencing_identifiers()
+        self._check_referencing_proof_corollary()
+        self._check_misspelled_types()
         self._check_vars()
-        self._check_misspelled_references()
+        self.check_signatures()
 
     def _check_vars(self):
         for child in self.analyzer.globals_node.children:
@@ -92,11 +101,14 @@ class SemCheckerIdentifiers:
         :param declared_vars: dictionary of declared vars of the building block
         :param file_name: FPL file name in which the building block is declared.
         :return: None, but each used variable stores internally a pointer to the symbol table node containing its type
+
         """
         for var_node in used_vars:
             if var_node.id not in declared_vars:
                 # the variable is undeclared if it was not found among the declared variables
                 self.analyzer.error_mgr.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
+                # set the type fo the variable to InbuiltUndefined
+                var_node.set_declared_type(InbuiltUndefined())
             elif not declared_vars[var_node.id].has_in_scope(var_node.zfrom):
                 # the variable is also undeclared if it was found among the declared variables
                 # but is outside the scope of this variable declaration
@@ -227,39 +239,18 @@ class SemCheckerIdentifiers:
         else:
             self._dispatch(qualified_identifier, block_list[0], None)
 
-    def _check_misspelled_references(self):
+    def _check_misspelled_types(self):
+        """
+        All AuxSTType nodes across all theories in the symbol table will be set to some internal representation,
+        even those that have undefined identifiers will be set to an internal representation of Undefined.
+        :return:
+        """
         for theory_node in self.analyzer.loaded_theories:
             # by convention of the FPL syntax, all pascal-case type names are user-defined
             # collect them
-            collect_type_references = search.findall(theory_node,
-                                                     filter_=lambda node: isinstance(node, AuxSTType)
-                                                                          and node.id[0].isupper())
+            collect_type_references = search.findall(theory_node, filter_=lambda node: isinstance(node, AuxSTType))
             for type_node in collect_type_references:
                 type_node.set_type_node(self, theory_node.file_name)
-
-            # by convention of the FPL syntax, all pascal-case reference names are user-defined
-            # collect them
-            collect_other_references = search.findall(theory_node,
-                                                      filter_=lambda node: isinstance(node, AuxSTPredicateWithArgs)
-                                                                           and node.id[0].isupper())
-            for reference_node in collect_other_references:
-                qualified_identifier = reference_node.get_qualified_id()
-                if isinstance(reference_node.parent, AuxSTQualified):
-                    # qualified identifiers need special treatment
-                    resolved_parent = reference_node.parent.resolve_parent()
-                    if resolved_parent is not None:
-                        # none if the resolve did not work due to other identifier-related errors caused by the user
-                        qualified_identifier = ".".join((resolved_parent.get_qualified_id(), qualified_identifier))
-                        if qualified_identifier not in self.overridden_qualified_ids.dictionary():
-                            # the reference is never declared
-                            self.analyzer.error_mgr.add_error(
-                                FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name,
-                                                         reference_node.zfrom))
-                else:
-                    if qualified_identifier not in self.overridden_qualified_ids.dictionary():
-                        # the reference is never declared
-                        self.analyzer.error_mgr.add_error(
-                            FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, reference_node.zfrom))
 
     def _check_override_consistency(self):
         """
@@ -341,7 +332,7 @@ class SemCheckerIdentifiers:
         else:
             raise NotImplementedError(type(reference))
 
-    def _check_referencing_identifiers(self):
+    def _check_referencing_proof_corollary(self):
         """
         Checks all global nodes whose ids end with a DollarDigitList grammar rule production (e.g. $1$3)
         Semantically, those nodes can only be proofs or corollaries of some theorem-like statements.
@@ -445,3 +436,111 @@ class SemCheckerIdentifiers:
                 # ignore that the variable not used in the body of the property since it is not semantically required.
                 return True
         return False
+
+    def check_signatures(self):
+        """
+        The method will check if the arguments in predicate_with_args match a given signature
+        :return:
+        """
+        collect_preds_with_args = search.findall(self.analyzer.symbol_table_root,
+                                                 filter_=lambda node: isinstance(node, AuxSTPredicateWithArgs) and
+                                                                      not isinstance(node.parent, AuxSTLocalization))
+        for pred_with_args in collect_preds_with_args:
+            self._determine_caller_signature_rek(pred_with_args)
+
+    def _determine_caller_signature_rek(self, predicate_with_args: AuxSTPredicateWithArgs):
+        if predicate_with_args.type_signature_correct() is None:
+            if predicate_with_args.id[0].isupper():
+                base_identifier = predicate_with_args.get_qualified_id()
+            else:
+                base_identifier = predicate_with_args.get_declared_type().get_qualified_id()
+
+            if isinstance(predicate_with_args.parent, AuxSTQualified):
+                parent_identifier = self.__resolve_parent_identifier(predicate_with_args.parent)
+            else:
+                parent_identifier = ""
+
+            if parent_identifier != "":
+                qualified_identifier = parent_identifier + "." + base_identifier
+            else:
+                qualified_identifier = base_identifier
+
+            if predicate_with_args.id[0].isupper():
+                if qualified_identifier not in self.overridden_qualified_ids.dictionary():
+                    # the reference of the predicate_with_args is never declared
+                    self.analyzer.error_mgr.add_error(
+                        FplIdentifierNotDeclared(qualified_identifier,
+                                                 predicate_with_args.path[1].file_name,
+                                                 predicate_with_args.zfrom))
+                    predicate_with_args.reference = InbuiltUndefined()
+                    predicate_with_args.set_type_signature_correctness(False)
+                else:
+                    self.__match_override_depending_on_arguments(predicate_with_args,
+                                                                 self.overridden_qualified_ids.get(
+                                                                     qualified_identifier))
+            elif predicate_with_args.outline == AuxSymbolTable.var:
+                self.__match_override_depending_on_arguments(predicate_with_args,
+                                                             [predicate_with_args.get_declared_type().get_type_node()])
+            else:
+                raise NotImplementedError()
+
+    def __match_override_depending_on_arguments(self, predicate_with_args: AuxSTPredicateWithArgs,
+                                                expected_overrides: list):
+        if isinstance(expected_overrides[0], InbuiltType):
+            predicate_with_args.reference = expected_overrides[0]
+        else:
+            predicate_with_args.reference = expected_overrides[0].reference
+        args = AuxSymbolTable.get_child_by_outline(predicate_with_args, AuxSymbolTable.arg_list)
+        arg_types = list()
+        for argument_node in args.children:
+            if isinstance(argument_node, AuxSTPredicateWithArgs):
+                # recursive call of for a new argument being itself a predicate with arguments
+                self._determine_caller_signature_rek(argument_node)
+                arg_types.append(argument_node.get_type_signature())
+            elif isinstance(argument_node, AuxSTVariable):
+                arg_types.append(argument_node.get_declared_type().get_type_signature())
+            elif isinstance(argument_node, AuxSTSelf):
+                self.__calculate_declared_type_of_self(argument_node)
+                arg_types.append(argument_node.get_declared_type().get_type_signature())
+            elif isinstance(argument_node, AuxSTPredicate):
+                arg_types.append(argument_node.get_type_signature())
+            elif isinstance(argument_node, AuxSTStatement):
+                arg_types.append(AuxSymbolTable.undefined)
+            else:
+                raise NotImplementedError(str(type(argument_node)))
+        correct = False  # todo
+        predicate_with_args.set_type_signature_correctness(correct)
+
+    def __calculate_declared_type_of_self(self, self_instance):
+        test_node = self_instance
+        maximum_reached = False
+        at = 0
+        while at <= self_instance.number_ats and not maximum_reached:
+            test_node = test_node.parent
+            if isinstance(test_node, (AuxSTInstance, AuxSTConstructor, AuxSTBlockWithSignature, AuxSTClass)):
+                at += 1
+            if isinstance(test_node.parent, AuxSTTheory):
+                maximum_reached = True
+        declared_type = None
+        if at > self_instance.number_ats and not maximum_reached:
+            # the test_node points to the intended node referenced by 'self'
+            # also remember the node in the this qualified identifier
+            declared_type = test_node
+
+        if declared_type is None:
+            declared_type = InbuiltUndefined()
+        self_instance.set_declared_type(declared_type)
+
+    def __resolve_parent_identifier(self, qualified_instance: AuxSTQualified):
+        parent = qualified_instance.parent
+        if isinstance(parent, AuxSTVariable):
+            return parent.get_declared_type().get_qualified_id()
+        elif isinstance(parent, AuxSTSelf):
+            self.__calculate_declared_type_of_self(parent)
+            return parent.get_declared_type().get_qualified_id()
+        elif isinstance(parent, AuxSTPredicateWithArgs):
+            if parent.type_signature_correct() is None:
+                self._determine_caller_signature_rek(parent)
+            return parent.get_qualified_id()
+        else:
+            raise NotImplementedError(str(type(parent)))

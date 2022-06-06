@@ -1,4 +1,9 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.1
+* Refactoring:
+  * Preparations for implementing a check if a AuxSTPredicateWithArgs arguments correspond to any given available overrides
+* Feature:
+  * New class AuxInbuiltTypes providing standard implementations of inbuilt types
 ## 1.8.0
 * Feature: 
   * Class inheritance of properties & semantical recognition of identifiers (still open: signature-conform "calling" of parent properties)

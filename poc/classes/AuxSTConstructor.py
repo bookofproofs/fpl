@@ -43,3 +43,6 @@ class AuxSTConstructor(AuxSTBlock):
             # the used variables are only in the body
             self._used_vars += search.findall_by_attr(self, AuxSymbolTable.var, AuxSymbolTable.outline)
             self.filter_misused_templates(error_mgr, filename)
+
+    def get_type_signature(self):
+        return self.parent.parent.id  # id of the constructor's class

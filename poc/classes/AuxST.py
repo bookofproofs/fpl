@@ -28,6 +28,7 @@ class AuxST(AuxSTOutline):
         self._error_mgr = i.errors
         self.zto = ""
         self.zfrom = ""
+        self._declared_type = None
 
     def register_child(self, node: AuxSTOutline):
         if not issubclass(type(node), AuxSTOutline):
@@ -43,10 +44,19 @@ class AuxST(AuxSTOutline):
     def _copy(self, instance):
         instance.zto = self.zto
         instance.zfrom = self.zfrom
+        instance._declared_type = self._declared_type
+        instance._i = self._i
+        instance._error_mgr = self._error_mgr
         for child in self.children:
             child_clone = child.clone()
             child_clone.parent = instance
         return instance
+
+    def set_declared_type(self, node):
+        self._declared_type = node
+
+    def get_declared_type(self):
+        return self._declared_type
 
 
 class AuxSTBlock(AuxST):

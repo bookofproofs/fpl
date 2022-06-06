@@ -35,16 +35,6 @@ Test.Qualified
             }
 
         }
-
-        class OtherStructure: obj
-        {
-            OtherStructure()
-            {
-                d: DerivedTestStructure
-                d := DerivedTestStructure (1)
-                assert d.IsMaximal()
-            }
-        }
     }
 }
 
