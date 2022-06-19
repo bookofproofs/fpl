@@ -1,17 +1,18 @@
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.fplerror import FplAmbiguousSignature
+from poc.fplerror import FplCorollaryMissingTheoremLikeStatement
+from poc.fplerror import FplForbiddenOverride
 from poc.fplerror import FplIdentifierAlreadyDeclared
-from poc.fplerror import FplUndeclaredVariable
-from poc.fplerror import FplUnusedVariable
+from poc.fplerror import FplIdentifierNotDeclared
 from poc.fplerror import FplMalformedGlobalId
 from poc.fplerror import FplMisspelledConstructor
 from poc.fplerror import FplMisspelledProperty
-from poc.fplerror import FplIdentifierNotDeclared
 from poc.fplerror import FplProofMissingTheoremLikeStatement
-from poc.fplerror import FplCorollaryMissingTheoremLikeStatement
 from poc.fplerror import FplProvedConjecture
-from poc.fplerror import FplAmbiguousSignature
-from poc.fplerror import FplForbiddenOverride
+from poc.fplerror import FplUndeclaredVariable
+from poc.fplerror import FplUnusedVariable
+from poc.fplerror import FplWrongArguments
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltType
 from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSTAxiom import AuxSTAxiom
@@ -508,8 +509,28 @@ class SemCheckerIdentifiers:
                 arg_types.append(AuxSymbolTable.undefined)
             else:
                 raise NotImplementedError(str(type(argument_node)))
-        correct = False  # todo
+        calc_signature = SemCheckerIdentifiers.__calc_signature_from_args(predicate_with_args, arg_types)
+        correct = calc_signature == predicate_with_args.reference.id
         predicate_with_args.set_type_signature_correctness(correct)
+        if not correct:
+            self.analyzer.error_mgr.add_error(FplWrongArguments(calc_signature, predicate_with_args))
+
+    @staticmethod
+    def __calc_signature_from_args(predicate_with_args: AuxSTPredicateWithArgs, arg_types: list):
+        ret = list()
+        running_type = ""
+        type_counter = 0
+        for current_type in arg_types:
+            if running_type != current_type:
+                if running_type != "":
+                    ret.append(str(type_counter) + ":" + running_type)
+                type_counter = 1
+                running_type = current_type
+            else:
+                type_counter += 1
+        if type_counter == 1 and len(ret) == 0:
+            ret.append(running_type)
+        return predicate_with_args.reference.get_qualified_id() + "[" + ",".join(ret) + "]"
 
     def __calculate_declared_type_of_self(self, self_instance):
         test_node = self_instance

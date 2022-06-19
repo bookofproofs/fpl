@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.2
+* Feature:
+  * New error FplWrongArguments and some first related test cases (all will currently fail).
 ## 1.8.1
 * Refactoring:
   * Preparations for implementing a check if a AuxSTPredicateWithArgs arguments correspond to any given available overrides

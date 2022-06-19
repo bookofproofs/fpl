@@ -1,0 +1,15 @@
+TestFplFplWrongArgumentsError
+{
+    theory
+    {
+        predicate TestPredicate()
+        {
+            p: pred(x:obj)
+            p(x)
+        }
+
+    }
+}
+
+##############################
+Should not trigger FplWrongArguments error

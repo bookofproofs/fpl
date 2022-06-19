@@ -1,0 +1,19 @@
+TestFplFplWrongArgumentsError
+{
+    theory
+    {
+        pred TestPredicate(a,b:obj)
+        {
+            true
+        }
+
+        pred OtherPredicate()
+        {
+            // should trigger FplWrongArguments since TestPredicate accepts two and not zero arguments of type obj
+            TestPredicate()
+        }
+    }
+}
+
+##############################
+to be specified

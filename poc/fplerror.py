@@ -321,9 +321,9 @@ class FplTypeNotAllowed(FplInterpreterMessage):
         if file_name == type_node.theory.file_name:
             super().__init__(
                 "'{0}' ({1}, found at {2},{3}) not allowed as a type".format(type_node.reference.id,
-                                                                         type_node.reference.get_node_type_str(),
-                                                                         first_s[0],
-                                                                         str(int(first_s[1]) + 1)),
+                                                                             type_node.reference.get_node_type_str(),
+                                                                             first_s[0],
+                                                                             str(int(first_s[1]) + 1)),
                 second_s[0], second_s[1], file_name
             )
         else:
@@ -336,3 +336,18 @@ class FplTypeNotAllowed(FplInterpreterMessage):
                 second_s[0], second_s[1], file_name
             )
         self.diagnose_id = "SE0200"
+
+
+class FplWrongArguments(FplInterpreterMessage):
+    def __init__(self, signature: str, node):
+        s = node.zfrom.split(".")
+        if len(s) == 1:
+            super().__init__("Wrong arguments '{0}' (expected '{1}')".format(signature, node.reference.id),
+                             1, 1, node.path[1].file_name
+                             )
+        else:
+            super().__init__(
+                "Wrong arguments '{0}' (expected '{1}')".format(signature, node.reference.id),
+                s[0], s[1], node.path[1].file_name
+            )
+        self.diagnose_id = "SE0220"

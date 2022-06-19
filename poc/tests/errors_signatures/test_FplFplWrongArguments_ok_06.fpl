@@ -1,0 +1,24 @@
+TestFplFplWrongArgumentsError
+{
+    theory
+    {
+        class Nat: obj
+        {
+
+        }
+
+        pred TestPredicate(x: obj)
+        {
+            true
+        }
+
+        pred OtherPredicate()
+        {
+            x: Nat
+            TestPredicate(x)
+        }
+    }
+}
+
+##############################
+should not trigger FplWrongArguments since TestPredicate accepts obj as argument that is base class of Nat
