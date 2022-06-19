@@ -1,0 +1,20 @@
+TestFplFplWrongArgumentsError
+{
+    inference
+    {
+        ExistsByExample(p: pred(c: obj))
+        {
+            x: Nat
+            premise:
+                p(c)
+            conclusion:
+                // The following should trigger FplWrongArguments since p(Nat) is here the same as p(undefined)
+                // and it cannot match p(obj)
+                ex x(p(x))
+        }
+    }
+    theory {}
+}
+
+##############################
+to be specified

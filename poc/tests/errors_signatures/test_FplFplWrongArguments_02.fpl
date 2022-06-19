@@ -1,0 +1,26 @@
+TestFplFplWrongArgumentsError
+{
+    theory
+    {
+        pred Equal(a,b: tpl)
+        {
+            p: pred(x, y, z:tpl)
+            iif
+            (
+                Equal(a,b),
+                all p
+                (
+                    iif
+                    (
+                        // the following should trigger FplWrongArguments since p(tpl) does not match p(tpl,tpl,tpl)
+                        p(a),
+                        p(b)
+                    )
+                )
+            )
+        }
+    }
+}
+
+##############################
+to be specified

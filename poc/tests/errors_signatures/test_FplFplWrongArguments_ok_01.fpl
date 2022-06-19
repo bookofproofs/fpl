@@ -1,0 +1,18 @@
+TestFplFplWrongArgumentsError
+{
+    inference
+    {
+        ExistsByExample(p: pred(c: obj))
+        {
+            x: obj
+            premise:
+                p(c)
+            conclusion:
+                ex x(p(x))
+        }
+    }
+    theory {}
+}
+
+##############################
+Should not trigger FplWrongArguments error

@@ -1,0 +1,19 @@
+TestFplFplWrongArgumentsError
+{
+    theory
+    {
+        pred TestPredicate(a:*obj)
+        {
+            true
+        }
+
+        pred OtherPredicate()
+        {
+            a,b,c:obj
+            TestPredicate()
+        }
+    }
+}
+
+##############################
+Should not trigger FplWrongArguments error
