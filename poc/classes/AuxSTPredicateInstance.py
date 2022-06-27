@@ -25,3 +25,6 @@ class AuxSTPredicateInstance(AuxSTInstance):
 
     def get_type_signature(self):  # noqa
         return AuxSymbolTable.predicate
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

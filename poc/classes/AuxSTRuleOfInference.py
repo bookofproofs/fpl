@@ -8,3 +8,6 @@ class AuxSTRuleOfInference(AuxSTBlockWithSignature):
         super().__init__(AuxSymbolTable.block_ir, i)
         self.zfrom = i.last_positions_by_rule['PredicateIdentifier'].pos_to_str()
         self.zto = i.last_positions_by_rule['RuleOfInference'].pos_to_str()
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

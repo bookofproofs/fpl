@@ -46,3 +46,6 @@ class AuxSTConstructor(AuxSTBlock):
 
     def get_type_signature(self):
         return self.parent.parent.id  # id of the constructor's class
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

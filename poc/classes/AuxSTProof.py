@@ -28,3 +28,6 @@ class AuxSTProof(AuxSTBlock):
 
         # call the standard initialize_vars method
         super().initialize_vars(filename, error_mgr)
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

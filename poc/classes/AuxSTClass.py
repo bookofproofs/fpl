@@ -117,3 +117,6 @@ class AuxSTClass(AuxSTBlock):
 
     def get_type_signature(self):
         return self.id
+
+    def evaluate(self, sem):
+        raise NotImplementedError()
