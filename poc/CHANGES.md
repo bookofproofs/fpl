@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.3
+* Refactoring:
+  * Introducing the 'evaluate' concept - a method to be implemented by (almost) each of the members of the symbol table that will implement the full semantics of each FPL language construct. 
 ## 1.8.2
 * Feature:
   * New error FplWrongArguments and some first related test cases (all will currently fail).

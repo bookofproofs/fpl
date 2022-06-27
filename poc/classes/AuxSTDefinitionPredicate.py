@@ -43,3 +43,5 @@ class AuxSTDefinitionPredicate(AuxSTBlockWithSignature):
                 self._used_vars += search.findall_by_attr(child, AuxSymbolTable.var, AuxSymbolTable.outline)
         self.filter_misused_templates(error_mgr, filename)
 
+    def evaluate(self, sem):
+        raise NotImplementedError()

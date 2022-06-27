@@ -10,4 +10,6 @@ class AuxSTAxiom(AuxSTBlockWithSignature):
         self.zto = i.last_positions_by_rule['Axiom'].pos_to_str()
         self.keyword = ""
 
+    def evaluate(self, sem):
+        raise NotImplementedError()
 

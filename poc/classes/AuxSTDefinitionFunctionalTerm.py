@@ -48,3 +48,6 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
     def get_type_signature(self):
         type_child = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.type)
         return type_child.id
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

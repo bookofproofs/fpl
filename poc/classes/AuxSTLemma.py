@@ -8,3 +8,6 @@ class AuxSTLemma(AuxSTBlockWithSignature):
         super().__init__(AuxSymbolTable.block_lem, i)
         self.zfrom = i.corrected_position('TheoremLikeStatementOrConjectureHeader')
         self.zto = i.last_positions_by_rule['TheoremLikeStatementOrConjecture'].pos_to_str()
+
+    def evaluate(self, sem):
+        raise NotImplementedError()
