@@ -1,6 +1,8 @@
 from anytree import AnyNode
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxEvaluation import EvaluateParams
 
 
 class AuxSTPredicate(AuxST):
@@ -23,44 +25,105 @@ class AuxSTPredicate(AuxST):
     def register_reference(self, reference: AnyNode):
         self.reference = reference  # noqa
 
-    def evaluate(self):
+    def evaluate(self, sem):
         if self._is_asserted:
-            return True
+            sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+            sem.eval_stack[-1].value = True
+            return
         elif self._is_revoked:
-            return False
+            sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+            sem.eval_stack[-1].value = False
+            return
         else:
             if self.outline == AuxSymbolTable.predicate_true:
-                return True
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                sem.eval_stack[-1].value = True
+                return
             elif self.outline == AuxSymbolTable.predicate_false:
-                return False
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                sem.eval_stack[-1].value = False
+                return
             elif self.outline == AuxSymbolTable.predicate_negation:
-                return not self.children[0].evaluate()
+                check = EvaluateParams.evaluate_recursion(sem, self.children[0], AuxSymbolTable.predicate)
+                if check.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                else:
+                    sem.eval_stack[-1].value = not check.returned_value
+                    sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                return
             elif self.outline == AuxSymbolTable.predicate_conjunction:
                 ret = True
                 for child in self.children:
-                    ret = ret and child.evaluate()
+                    check = EvaluateParams.evaluate_recursion(sem, child, AuxSymbolTable.predicate)
+                    if check.returned_value is None:
+                        sem.eval_stack[-1].value = InbuiltUndefined()
+                        return
+                    else:
+                        ret = ret and check.returned_value
                     if not ret:
+                        # stop further conjunction with False
                         break
-                return ret
+                EvaluateParams.propagate(sem, check)
+                sem.eval_stack[-1].value = ret
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                return
             elif self.outline == AuxSymbolTable.predicate_disjunction:
                 ret = False
                 for child in self.children:
-                    ret = ret or child.evaluate()
+                    check = EvaluateParams.evaluate_recursion(sem, child, AuxSymbolTable.predicate)
+                    if check.returned_value is None:
+                        sem.eval_stack[-1].value = InbuiltUndefined()
+                        return
+                    else:
+                        ret = ret or check.returned_value
                     if ret:
+                        # stop further disjunction with True
                         break
-                return ret
+                sem.eval_stack[-1].value = ret
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                return
             elif self.outline == AuxSymbolTable.predicate_equivalence:
-                p = self.children[0].evaluate()
-                q = self.children[1].evaluate()
-                return p == q
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0], AuxSymbolTable.predicate)
+                if p.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                    return
+                q = EvaluateParams.evaluate_recursion(sem, self.children[1], AuxSymbolTable.predicate)
+                if q.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                    return
+                sem.eval_stack[-1].value = p.returned_value == q.returned_value
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                return
             elif self.outline == AuxSymbolTable.predicate_exclusiveOr:
-                p = self.children[0].evaluate()
-                q = self.children[1].evaluate()
-                return (p and not q) or (q and not p)
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0], AuxSymbolTable.predicate)
+                if p.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                    return
+                q = EvaluateParams.evaluate_recursion(sem, self.children[1], AuxSymbolTable.predicate)
+                if q.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                    return
+                sem.eval_stack[-1].value = (p.returned_value and not q.returned_value) or (
+                            q.returned_value and not p.returned_value)
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                return
             elif self.outline == AuxSymbolTable.predicate_implication:
-                p = self.children[0].evaluate()
-                q = self.children[1].evaluate()
-                return not p or q
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0], AuxSymbolTable.predicate)
+                if p.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                    return
+                q = EvaluateParams.evaluate_recursion(sem, self.children[1], AuxSymbolTable.predicate)
+                if q.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                    return
+                sem.eval_stack[-1].value = not p.returned_value or q.returned_value
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                return
+            elif self.outline == AuxSymbolTable.intrinsic:
+                # we set intrinsic predicates as being True per default
+                sem.eval_stack[-1].value = True
+                sem.eval_stack[-1].actual_type = AuxSymbolTable.predicate
+                return
             else:
                 raise NotImplementedError(self.outline)
 

@@ -11,6 +11,7 @@ from poc.fplerror import FplProofMissingTheoremLikeStatement
 from poc.fplerror import FplProvedConjecture
 from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSTAxiom import AuxSTAxiom
@@ -38,6 +39,10 @@ from poc.fplerror import FplMissingProof
 class SemCheckerIdentifiers:
     def __init__(self, analyzer):
         self.analyzer = analyzer
+        # a stack to evaluate recursively the semantics of the symbol table
+        self.eval_stack = list()
+        # append root (dummy) params for later recursion
+        self.eval_stack.append(EvaluateParams())
         # a dictionary of all nodes by id (non-global identifier)
         self.theorem_like_statements = dict()  # all theorem like statements by id (non-global identifier)
 
@@ -433,12 +438,9 @@ class SemCheckerIdentifiers:
         :return: True, iff all global nodes could be evaluated consistently.
         """
         globals_node = AuxSymbolTable.get_child_by_outline(self.analyzer.symbol_table_root, AuxSymbolTable.globals)
-        ret = True
         for child in globals_node.children:
-            try:
-                v = child.reference.evaluate(self)
-                ret = ret and v
-            except NotImplementedError:
-                # todo: We have to implement all implementations of evaluate in each subclass
-                ret = ret and False
-        return ret
+            if isinstance(child.reference, (AuxSTAxiom, AuxSTDefinitionPredicate)):
+                EvaluateParams.evaluate_recursion(self, child.reference, AuxSymbolTable.predicate)
+            else:
+                raise NotImplementedError(str(type(child.reference)))
+

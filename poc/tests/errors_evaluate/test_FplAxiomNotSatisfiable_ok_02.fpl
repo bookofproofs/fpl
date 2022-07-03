@@ -1,0 +1,17 @@
+TestFplAxiomNotSatisfiable
+{
+    theory
+    {
+        axiom TestAxiom()
+        {
+            not ( OtherPredicate() )
+        }
+
+        predicate OtherPredicate()
+        {
+            false
+        }
+    }
+}
+##############################
+should not invoke FplAxiomNotSatisfiable

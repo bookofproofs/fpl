@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
-import tkinter.font as tkfont
+from tkinter import ttk, messagebox
 from poc.util.fplutil import Utils
 
 
@@ -25,7 +24,8 @@ class InfoBoxes:
 
         # number of errors label
         self._label_error_num = tk.Label(self._gridErrors, text="Errors (0)",
-                                         relief=tk.GROOVE, bg=self.ide.theme.get_bg_color(), fg=self.ide.theme.get_fg_color())
+                                         relief=tk.GROOVE, bg=self.ide.theme.get_bg_color(),
+                                         fg=self.ide.theme.get_fg_color())
         self._label_error_num.grid()
         self._label_error_num["compound"] = tk.LEFT
         self._label_error_num["image"] = self.ide.model.images["cancel"]
@@ -73,7 +73,7 @@ class InfoBoxes:
         tk.Grid.rowconfigure(self._gridErrors, 1, weight=100)
 
         self.tree_view_errors = ttk.Treeview(self._frameErrors, selectmode='browse',
-                                              column=('Type', 'Message', 'Line', 'Column', 'File'))
+                                             column=('Type', 'Message', 'Line', 'Column', 'File'))
         self.tree_view_errors.heading("#0", text="", anchor=tk.W)
         self.tree_view_errors.heading("#1", text="Code", anchor=tk.W)
         self.tree_view_errors.heading("#2", text="Message", anchor=tk.W)
@@ -132,7 +132,10 @@ class InfoBoxes:
         """
         record = Utils.identify_clicked_treeview_item(self.tree_view_errors)
         if record is not None:
-            self.ide.set_position_in_editor(record[2], record[3], record[4])
+            if record[4] != "":
+                self.ide.set_position_in_editor(record[2], record[3], record[4])
+            else:
+                messagebox.showerror("This is unfortunate, we are working on this!", record[1])
 
     def __add_scrollbar(self, frame, widget):
         scrollbar = tk.Scrollbar(frame)

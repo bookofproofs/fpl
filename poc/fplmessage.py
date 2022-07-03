@@ -98,3 +98,8 @@ class FplParserError(FplInterpreterMessage):
 
             msg += " " + str(self.inner_exception.stack)
         return msg
+
+
+class FplInterpreterSystemError(FplInterpreterMessage):
+    def __init__(self, trace_back):
+        super().__init__(trace_back, 0, 0, "")

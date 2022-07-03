@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 from anytree import search
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxSymbolTable import AuxSymbolTable
@@ -6,7 +7,6 @@ from poc.classes.AuxSTVarDec import AuxSTVarDec
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
 from poc.fplsourcetransformer import FPLSourceTransformer
-from parameterized import parameterized
 from tatsu.exceptions import FailedToken
 from tatsu.exceptions import FailedParse
 from tatsu.exceptions import FailedPattern

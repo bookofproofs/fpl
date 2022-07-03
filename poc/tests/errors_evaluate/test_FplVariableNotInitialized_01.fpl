@@ -1,0 +1,21 @@
+TestFplVariableNotInitialized
+{
+    theory
+    {
+        pred Greater(x,y: obj)
+        {
+        }
+
+        axiom GreaterTransitive()
+        {
+            x,y,z: obj
+            impl
+            (
+                and ( Greater(x,y), Greater(y,z) ),
+                Greater(x,z)
+            )
+        }
+    }
+}
+##############################
+SE0230

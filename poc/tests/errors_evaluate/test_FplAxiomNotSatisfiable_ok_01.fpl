@@ -1,0 +1,12 @@
+TestFplAxiomNotSatisfiable
+{
+    theory
+    {
+        axiom TestAxiom()
+        {
+            true
+        }
+    }
+}
+##############################
+should not invoke FplAxiomNotSatisfiable

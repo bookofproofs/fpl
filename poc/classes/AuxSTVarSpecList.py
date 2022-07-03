@@ -9,3 +9,7 @@ class AuxSTVarSpecList(AuxSTOutline):
 
     def clone(self):
         return AuxSTVarSpecList()
+
+    def evaluate(self, sem):
+        # todo: implement
+        pass

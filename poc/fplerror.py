@@ -351,3 +351,28 @@ class FplWrongArguments(FplInterpreterMessage):
                 s[0], s[1], node.path[1].file_name
             )
         self.diagnose_id = "SE0220"
+
+
+class FplVariableNotInitialized(FplInterpreterMessage):
+    def __init__(self, var):
+        s = var.zfrom.split(".")
+        super().__init__("Variable '{0}' neither initialized nor bound".format(var.id), s[0], s[1],
+                         var.path[1].file_name)
+        self.diagnose_id = "SE0230"
+
+
+class FplAxiomNotSatisfiable(FplInterpreterMessage):
+    def __init__(self, axiom):
+        s = axiom.zfrom.split(".")
+        super().__init__("Axiom '{0}' not satisfiable".format(axiom.id), s[0], s[1],
+                         axiom.path[1].file_name)
+        self.diagnose_id = "SE0240"
+
+
+class FplTypeMismatch(FplInterpreterMessage):
+    def __init__(self, node, expected, actual):
+        s = node.zfrom.split(".")
+        super().__init__("Type mismatch: expected '{0}', received '{1}' in this context)".format(expected, actual),
+                         s[0], s[1],
+                         node.path[1].file_name)
+        self.diagnose_id = "SE0250"

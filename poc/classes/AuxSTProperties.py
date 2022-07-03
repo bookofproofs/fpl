@@ -7,4 +7,6 @@ class AuxSTProperties(AuxSTOutline):
     def __init__(self):
         super().__init__(None, AuxSymbolTable.properties)
 
-
+    def evaluate(self, sem):
+        # todo: implement
+        pass
