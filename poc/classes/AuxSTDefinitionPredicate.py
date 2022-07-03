@@ -1,6 +1,11 @@
+from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTProperties import AuxSTProperties
+from poc.classes.AuxSTSignature import AuxSTSignature
+from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplErrorManager
 
@@ -44,4 +49,27 @@ class AuxSTDefinitionPredicate(AuxSTBlockWithSignature):
         self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
-        raise NotImplementedError()
+        if self.constant_value() is None:
+            signature = None
+            for child in self.children:
+                if isinstance(child, AuxSTSignature):
+                    signature = child
+                    EvaluateParams.evaluate_recursion(sem, child, None)
+                elif isinstance(child, AuxSTVarSpecList):
+                    EvaluateParams.evaluate_recursion(sem, child, None)
+                elif isinstance(child, AuxSTPredicate):
+                    ret = EvaluateParams.evaluate_recursion(sem, child, AuxSymbolTable.predicate)
+                    if ret.returned_value is None:
+                        sem.eval_stack[-1].value = InbuiltUndefined()
+                    else:
+                        EvaluateParams.propagate(sem, ret)
+                    if len(signature.children) == 0:
+                        self.set_constant_value(sem.eval_stack[-1])
+                elif isinstance(child, AuxSTProperties):
+                    EvaluateParams.evaluate_recursion(sem, child, None)
+                else:
+                    raise NotImplementedError(str(type(child)))
+        else:
+            # replace the stack by the immutable value
+            EvaluateParams.propagate(sem, self.constant_value())
+

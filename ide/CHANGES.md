@@ -1,4 +1,7 @@
 # Changes in the FPL IDE
+## 1.6.12
+* Bugfixes:
+  * Run-time errors will be displayed in the error list and do not cause the program to halt.
 ## 1.6.11
 * Bugfixes:
   * Number of auto-tabs in the new line after pressing <Return> corrected.

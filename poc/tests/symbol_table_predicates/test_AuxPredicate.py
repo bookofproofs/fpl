@@ -6,6 +6,9 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from anytree import AnyNode
+from poc.fplsemanticanalyzer import SemanticAnalyser
+from poc.fplerror import FplErrorManager
+from poc.classes.AuxEvaluation import EvaluateParams
 
 """
 Tests of FPL implementation of the predicate auxiliary class
@@ -53,6 +56,12 @@ class AuxPredicateTests(unittest.TestCase):
         cls.i.last_positions_by_rule["All"] = cls.aux_info
         cls.aux_inter = AuxInterpretation(cls.aux_info, cls.i.errors)
 
+        cls._symbol_table_root = AnyNode(outline=AuxSymbolTable.root)
+        cls._error_mgr = FplErrorManager()
+        AnyNode(outline=AuxSymbolTable.globals, parent=cls._symbol_table_root)
+        cls.analyzer = SemanticAnalyser(cls._symbol_table_root, cls._error_mgr)
+        cls.sem = cls.analyzer.sem_checker_identifiers
+
     @parameterized.expand([
         AuxSymbolTable.predicate_negation,
         AuxSymbolTable.predicate_implication,
@@ -73,9 +82,13 @@ class AuxPredicateTests(unittest.TestCase):
         """
         p = AuxSTPredicate(p_type, self.i)
         p.assert_predicate()
-        self.assertTrue(p.evaluate())
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, AuxSymbolTable.predicate)
+        self.assertTrue(ret.value)
         p.revoke_predicate()
-        self.assertFalse(p.evaluate())
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, AuxSymbolTable.predicate)
+        self.assertFalse(ret.value)
 
     @parameterized.expand([
         AuxSymbolTable.predicate_false,
@@ -87,11 +100,14 @@ class AuxPredicateTests(unittest.TestCase):
         :param p_type: true or false predicate type
         :return: None
         """
+
         p = AuxSTPredicate(p_type, self.i)
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, AuxSymbolTable.predicate)
+
         if p_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(p.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_false:
-            self.assertFalse(p.evaluate())
+            self.assertFalse(ret.value)
         else:
             raise NotImplementedError()
 
@@ -108,10 +124,13 @@ class AuxPredicateTests(unittest.TestCase):
         result = AuxSTPredicate(AuxSymbolTable.predicate_negation, self.i)
         p = AuxSTPredicate(p_type, self.i)
         result.register_child(p)
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, AuxSymbolTable.predicate)
+
         if p_type == AuxSymbolTable.predicate_true:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_false:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         else:
             raise NotImplementedError()
 
@@ -133,14 +152,17 @@ class AuxPredicateTests(unittest.TestCase):
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, AuxSymbolTable.predicate)
+
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         else:
             raise NotImplementedError()
 
@@ -162,14 +184,17 @@ class AuxPredicateTests(unittest.TestCase):
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, AuxSymbolTable.predicate)
+
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         else:
             raise NotImplementedError()
 
@@ -191,14 +216,17 @@ class AuxPredicateTests(unittest.TestCase):
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, AuxSymbolTable.predicate)
+
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         else:
             raise NotImplementedError()
 
@@ -220,14 +248,17 @@ class AuxPredicateTests(unittest.TestCase):
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, AuxSymbolTable.predicate)
+
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         else:
             raise NotImplementedError()
 
@@ -249,13 +280,16 @@ class AuxPredicateTests(unittest.TestCase):
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
         result.register_child(q)
+
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, AuxSymbolTable.predicate)
+
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
-            self.assertFalse(result.evaluate())
+            self.assertFalse(ret.value)
         elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
-            self.assertTrue(result.evaluate())
+            self.assertTrue(ret.value)
         else:
             raise NotImplementedError()

@@ -47,3 +47,7 @@ class AuxSTSignature(AuxST):
         new_signature.set_id(self._id)
         new_signature.set_params(self._list_named_declarations)
         return new_signature
+
+    def evaluate(self, sem):
+        # todo: assign the variables declared in the signature with the values of the arguments
+        pass

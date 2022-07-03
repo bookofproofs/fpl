@@ -15,6 +15,13 @@ class AuxSTOutline(AnyNode):
         super().__init__()
         self.outline = outline
         self.parent = parent
+        self._value = None
+
+    def set_value(self, value):
+        self._value = value
+
+    def get_value(self):
+        return self._value
 
 
 class AuxST(AuxSTOutline):

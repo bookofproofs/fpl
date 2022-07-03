@@ -1,9 +1,10 @@
+import traceback
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.SemCheckerIdentifiers import SemCheckerIdentifiers
-from poc.fplerror import FplErrorManager
-from poc.fplerror import FplIdentifierAlreadyDeclared
-from poc.fplerror import FplMalformedNamespace
+from poc.fplerror import FplErrorManager, FplIdentifierAlreadyDeclared, FplMalformedNamespace
+from poc.fplmessage import FplInterpreterSystemError
 
 
 class SemanticAnalyser:
@@ -20,8 +21,19 @@ class SemanticAnalyser:
         Semantic analysis
         :return:
         """
-        self._check_theories()
-        self.sem_checker_identifiers.analyse()
+        if AuxISourceAnalyser.verbose:
+            self._check_theories()
+            self.sem_checker_identifiers.analyse()
+        else:
+            # in non-verbose mode, we handle all exceptions 'user-friendly' as not to cause the main loop to halt
+            try:
+                self._check_theories()
+                self.sem_checker_identifiers.analyse()
+            except Exception:  # noqa
+                # add any exceptions during the semantic analysis into the regular error list
+                self.error_mgr.add_error(
+                    FplInterpreterSystemError(
+                        traceback.format_exc().replace("Traceback (most recent call last):\n  ", "")))
 
     def _check_theories(self):
         for theory in self.loaded_theories:

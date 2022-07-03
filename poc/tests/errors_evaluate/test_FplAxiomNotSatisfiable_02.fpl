@@ -1,0 +1,12 @@
+TestFplAxiomNotSatisfiable
+{
+    theory
+    {
+        axiom TestAxiom()
+        {
+            and (true, false)
+        }
+    }
+}
+##############################
+FplAxiomNotSatisfiable:5:8: Axiom 'TestAxiom[]' not satisfiable
