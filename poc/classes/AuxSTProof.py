@@ -1,4 +1,5 @@
-from poc.classes.AuxST import AuxSTBlock
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTBlock import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplerror import FplErrorManager
 
@@ -30,4 +31,4 @@ class AuxSTProof(AuxSTBlock):
         super().initialize_vars(filename, error_mgr)
 
     def evaluate(self, sem):
-        raise NotImplementedError()
+        sem.eval_stack[-1].value = InbuiltUndefined()

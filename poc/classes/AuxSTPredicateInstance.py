@@ -1,3 +1,4 @@
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTInstance import AuxSTInstance
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
@@ -23,8 +24,6 @@ class AuxSTPredicateInstance(AuxSTInstance):
         new_predicate._is_inherited = True
         return new_predicate
 
-    def get_type_signature(self):  # noqa
-        return AuxSymbolTable.predicate
-
     def evaluate(self, sem):
-        raise NotImplementedError()
+        sem.eval_stack[-1].value = InbuiltUndefined()
+

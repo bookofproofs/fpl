@@ -1,18 +1,22 @@
-from anytree import AnyNode
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from anytree import AnyNode, PreOrderIter
 from poc.fplerror import FplAmbiguousSignature
 from poc.fplerror import FplCorollaryMissingTheoremLikeStatement
 from poc.fplerror import FplForbiddenOverride
 from poc.fplerror import FplIdentifierAlreadyDeclared
+from poc.fplerror import FplIdentifierNotDeclared
 from poc.fplerror import FplMalformedGlobalId
 from poc.fplerror import FplMisspelledConstructor
 from poc.fplerror import FplMisspelledProperty
 from poc.fplerror import FplProofMissingTheoremLikeStatement
 from poc.fplerror import FplProvedConjecture
+from poc.fplerror import FplTypeNotAllowed
+from poc.fplerror import FplVariableBound
 from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
+from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltIndex, InbuiltObject, InbuiltPredicate, \
+    InbuiltFunctionalTerm, InbuiltExtension, InbuiltGeneric
 from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSTAxiom import AuxSTAxiom
 from poc.classes.AuxSTClass import AuxSTClass
@@ -32,6 +36,7 @@ from poc.classes.AuxSTRuleOfInference import AuxSTRuleOfInference
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTTheorem import AuxSTTheorem
 from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplMissingProof
 
@@ -85,9 +90,11 @@ class SemCheckerIdentifiers:
 
     def _check_vars(self):
         for child in self.analyzer.globals_node.children:
-            self._check_undeclared_var_usages(child.reference.get_used_vars(), child.reference.get_declared_vars(),
-                                              child.theory.file_name)
-            self._check_for_unused_vars(child.reference, child.theory.file_name)
+            declared_vars = child.reference.get_declared_vars()
+            used_vars = child.reference.get_used_vars()
+            self._check_undeclared_var_usages(used_vars, declared_vars, child.theory.file_name)
+            self._check_for_unused_vars(child.reference, child.theory.file_name, declared_vars)
+            self._check_bound_vars(child.reference, used_vars, declared_vars)
 
     def _check_undeclared_var_usages(self, used_vars: tuple, declared_vars: dict, file_name: str):
         """
@@ -118,27 +125,28 @@ class SemCheckerIdentifiers:
             else:
                 var_node.set_declared_type(declared_vars[var_node.id].children[0])
 
-    def _check_for_unused_vars(self, node: AnyNode, file_name: str):
+    def _check_for_unused_vars(self, node: AnyNode, file_name: str, declared_vars):
         """
         Checks if all declared variables are used in each building block, depending on their scope.
         :param node: node declared in the FPL code (object instance of the symbol table node)
         :param file_name: FPL file name in which the building block is declared.
+        :param: dictionary of declared vars of the building block
         :return: None
         """
-        # tuple of used vars of the building block
-        used_vars = SemCheckerIdentifiers.__get_all_used_vars(node)
-        # dictionary of declared vars of the building block
-        declared_vars = node.get_declared_vars()
+        # dictionary of used vars of the building block (values are lists of all occurrences)
+        used_vars_dict = SemCheckerIdentifiers.__get_all_used_vars(node)
         # To avoid false positives, we have to remove for this check all 'outer' declared variables
         # We have to do it, because e.g. those variables declared in the class do not necessarily have to be used
         # in the scope of each property or each constructor of the class.
         only_inner_declared = dict()
+        # in the same loop we identify the vars that are bound in the signature
+
         for identifier in declared_vars:
             if declared_vars[identifier].parent.parent == node:
                 only_inner_declared[identifier] = declared_vars[identifier]
 
         for identifier in only_inner_declared:
-            if identifier not in used_vars:
+            if identifier not in used_vars_dict:
                 # Even if the variable was not used, this might make sense semantically,
                 # If the variable was declared in the signature and there is an intrinsic definition.
                 # So we check for this additional condition
@@ -147,6 +155,67 @@ class SemCheckerIdentifiers:
                                                                                                       identifier]):
                     self.analyzer.error_mgr.add_error(
                         FplUnusedVariable(declared_vars[identifier].zfrom, identifier, file_name))
+
+                # initialize the main instance with the variable and type that has empty occurrences
+                empty_occurrences = list()
+                node.add_var_to_main_instance(identifier, empty_occurrences,
+                                              only_inner_declared[identifier].children[0])
+            else:
+                # add the type and all variable occurrences of the variable to the main instance of the node
+                # (the main instance will be a blueprint for creating new instances of the same node)
+                node.add_var_to_main_instance(identifier, used_vars_dict[identifier],
+                                              only_inner_declared[identifier].children[0])
+
+    def _check_bound_vars(self, node, used_vars, declared_vars):
+        """
+        :param used_vars: tuple of used vars of the building block
+        :param declared_vars: dictionary of declared vars of the building block
+        :return: None
+        """
+        # Calculate a set of variables that are bound in the signature
+        vars_bound_in_signature = dict()
+        for var_id in declared_vars:
+            var_declaration = declared_vars[var_id]
+            for path_node in var_declaration.path:
+                if isinstance(path_node, AuxSTSignature):
+                    if var_id not in vars_bound_in_signature:
+                        vars_bound_in_signature[var_id] = declared_vars[var_id]
+                    break
+
+        # First, mark all variable usages inside the block as 'bound', if they were declared
+        # in the signature of the block
+        for var_node in used_vars:
+            if var_node.id in vars_bound_in_signature:
+                # set the variable as bound if was bound in the signature
+                var_node.set_is_bound()
+
+        # Now, try to mark recursively also all variables that are bound in quantors (for all / exists)
+        self._bound_vars_in_quantors_rek(node, vars_bound_in_signature)
+
+    def _bound_vars_in_quantors_rek(self, current_node, vars_bound_so_far):
+        """
+        Prevents variables of being bound more than once in nested constructs inside the symbol table.
+        :param current_node: a node in the symbol table that bounds some further variables
+        :param vars_bound_so_far: dictionary of (key,value) pairs, key= var id, value = node bounding the variable,
+        that lists all variables that were already bound in the outer scope of current_node
+        :return:
+        """
+        # gather the quantors sub nodes of the node in pre-order
+        quantor_nodes = list(n for n in PreOrderIter(current_node, filter_=
+        lambda n1: isinstance(n1, AuxSTPredicate) and n1.outline in [AuxSymbolTable.predicate_all,
+                                                                     AuxSymbolTable.predicate_exists]))
+
+        for quantor in quantor_nodes:
+            for var_id in quantor.bound_vars:
+                if var_id in vars_bound_so_far:
+                    self.analyzer.error_mgr.add_error(FplVariableBound(var_id, quantor, vars_bound_so_far[var_id]))
+                else:
+                    # remember the quantor as a node bounding the variable
+                    vars_bound_so_far[var_id] = quantor
+                    # todo: mark all occurrences of the variable inside the quantor block as bound
+                    # todo: identify the case that the bound variable is never used inside the block
+                    pass
+            pass
 
     def _check_for_malformed_gid(self, qualified_identifier, node):
         """
@@ -245,7 +314,42 @@ class SemCheckerIdentifiers:
             # collect them
             collect_type_references = search.findall(theory_node, filter_=lambda node: isinstance(node, AuxSTType))
             for type_node in collect_type_references:
-                type_node.set_type_node(self, theory_node.file_name)
+                qualified_identifier = type_node.get_qualified_id()
+                if type_node.id[0].isupper():  # if the identifier starts with a Capital, we have a user-defined type
+                    if qualified_identifier in self.classes.dictionary():
+                        type_node.set_repr(self.classes.get(qualified_identifier))
+                    elif qualified_identifier in self.predicates.dictionary():
+                        type_node.set_repr(self.predicates.get(qualified_identifier))
+                    elif qualified_identifier in self.functional_terms.dictionary():
+                        type_node.set_repr(self.functional_terms.get(qualified_identifier))
+                    elif qualified_identifier in self.overridden_qualified_ids.dictionary():
+                        # any other found declared block is semantically not an allowed type,
+                        # we trigger the
+                        self.analyzer.error_mgr.add_error(
+                            FplTypeNotAllowed(self.overridden_qualified_ids.get(qualified_identifier)[0],
+                                              type_node.zfrom,
+                                              theory_node.file_name)
+                        )
+                        type_node.set_repr(InbuiltUndefined())
+                    else:
+                        self.analyzer.error_mgr.add_error(
+                            FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
+                        )
+                        type_node.set_repr(InbuiltUndefined())
+                elif AuxBits.is_index(type_node.type_pattern):
+                    type_node.set_repr(InbuiltIndex())
+                elif AuxBits.is_predicate(type_node.type_pattern):
+                    type_node.set_repr(InbuiltPredicate())
+                elif AuxBits.is_functional_term(type_node.type_pattern):
+                    type_node.set_repr(InbuiltFunctionalTerm())
+                elif AuxBits.is_generic(type_node.type_pattern):
+                    type_node.set_repr(InbuiltGeneric(type_node.id))
+                elif AuxBits.is_inbuilt_object(type_node.type_pattern):
+                    type_node.set_repr(InbuiltObject())
+                elif AuxBits.is_extension(type_node.type_pattern):
+                    type_node.set_repr(InbuiltExtension(type_node.id))
+                else:
+                    raise NotImplementedError("type_pattern " + str(self.type_pattern))
 
     def _check_override_consistency(self):
         """
@@ -297,6 +401,7 @@ class SemCheckerIdentifiers:
         elif isinstance(reference, AuxSTDefinitionFunctionalTerm):
             self.functional_terms.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTDefinitionPredicate):
+            reference.set_declared_type(InbuiltPredicate())
             self.predicates.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTClassInstance):
             self.instance_classes.add(qualified_identifier, block, possible_duplicate)
@@ -385,32 +490,34 @@ class SemCheckerIdentifiers:
                 )
 
     @staticmethod
-    def __gather_used_vars(gather_used_set: set, node: AnyNode):
+    def __gather_used_vars(gather_used_set: dict, node: AnyNode):
         # tuple of used vars of the building block
         used_vars = node.get_used_vars()
         for var_node in used_vars:
             if var_node.id not in gather_used_set:
-                gather_used_set.add(var_node.id)
+                gather_used_set[var_node.id] = list()
+            else:
+                gather_used_set[var_node.id].append(var_node)
 
     @staticmethod
     def __get_all_used_vars(node: AnyNode):
-        gather_used_set = set()
-        SemCheckerIdentifiers.__gather_used_vars(gather_used_set, node)
+        gather_used_dict = dict()
+        SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, node)
         if isinstance(node, AuxSTClass):
             # for classes, enrich also all variables used in constructors
             constructors = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.classConstructors)
             for child in constructors.children:
-                SemCheckerIdentifiers.__gather_used_vars(gather_used_set, child)
+                SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, child)
             # ... and properties
             properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
             for child in properties.children:
-                SemCheckerIdentifiers.__gather_used_vars(gather_used_set, child)
+                SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, child)
         elif isinstance(node, (AuxSTDefinitionPredicate, AuxSTDefinitionFunctionalTerm)):
             # for functional term definitions or predicate definitions, enrich also all variables used in properties
             properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
             for child in properties.children:
-                SemCheckerIdentifiers.__gather_used_vars(gather_used_set, child)
-        return gather_used_set
+                SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, child)
+        return gather_used_dict
 
     @staticmethod
     def __unused_variable_declared_in_signature_of_intrinsic(node: AnyNode, var_decl):
@@ -439,8 +546,4 @@ class SemCheckerIdentifiers:
         """
         globals_node = AuxSymbolTable.get_child_by_outline(self.analyzer.symbol_table_root, AuxSymbolTable.globals)
         for child in globals_node.children:
-            if isinstance(child.reference, (AuxSTAxiom, AuxSTDefinitionPredicate)):
-                EvaluateParams.evaluate_recursion(self, child.reference, AuxSymbolTable.predicate)
-            else:
-                raise NotImplementedError(str(type(child.reference)))
-
+            EvaluateParams.evaluate_recursion(self, child.reference, child.reference.get_declared_type())

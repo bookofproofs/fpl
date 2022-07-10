@@ -21,4 +21,4 @@ TestFplVariableNotInitialized
     }
 }
 ##############################
-todo
+Should not cause FplVariableNotInitialized when calling Greater(.,.), since the variables x,y,z are bound

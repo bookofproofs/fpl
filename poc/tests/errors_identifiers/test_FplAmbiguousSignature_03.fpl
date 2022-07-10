@@ -10,7 +10,7 @@ Test.Namespace
 
         pred Test()
         {
-            True
+            true
         }
     }
 }

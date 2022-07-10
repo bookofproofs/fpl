@@ -1,4 +1,5 @@
-from poc.classes.AuxST import AuxSTBlock
+from poc.classes.AuxInbuiltTypes import InbuiltClassInstance, InbuiltUndefined
+from poc.classes.AuxSTBlock import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplErrorManager
@@ -44,8 +45,8 @@ class AuxSTConstructor(AuxSTBlock):
             self._used_vars += search.findall_by_attr(self, AuxSymbolTable.var, AuxSymbolTable.outline)
             self.filter_misused_templates(error_mgr, filename)
 
-    def get_type_signature(self):
-        return self.parent.parent.id  # id of the constructor's class
-
     def evaluate(self, sem):
-        raise NotImplementedError()
+        if self.outline == AuxSymbolTable.classDefaultConstructor:
+            sem.eval_stack[-1].value = InbuiltClassInstance(self)
+        else:
+            sem.eval_stack[-1].value = InbuiltUndefined()

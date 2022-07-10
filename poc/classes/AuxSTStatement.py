@@ -1,5 +1,6 @@
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 
 
 class AuxSTStatement(AuxST):
@@ -42,3 +43,6 @@ class AuxSTStatement(AuxST):
 
     def clone(self):
         return AuxSTStatement(self.type, self._i)
+
+    def evaluate(self, sem):
+        sem.eval_stack[-1].value = InbuiltUndefined()

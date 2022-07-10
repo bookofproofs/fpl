@@ -4,7 +4,7 @@ Test.Namespace
     {
         axiom Test()
         {
-            True
+            true
         }
 
         conj Test()

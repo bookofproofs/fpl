@@ -339,17 +339,16 @@ class FplTypeNotAllowed(FplInterpreterMessage):
 
 
 class FplWrongArguments(FplInterpreterMessage):
-    def __init__(self, signature: str, node):
+    def __init__(self, arguments: list(), expected_arguments: list, node):
         s = node.zfrom.split(".")
-        if len(s) == 1:
-            super().__init__("Wrong arguments '{0}' (expected '{1}')".format(signature, node.reference.id),
-                             1, 1, node.path[1].file_name
-                             )
-        else:
-            super().__init__(
-                "Wrong arguments '{0}' (expected '{1}')".format(signature, node.reference.id),
-                s[0], s[1], node.path[1].file_name
-            )
+        one_of = ""
+        if len(expected_arguments) > 1:
+            one_of = " one of"
+        msg = "Wrong arguments {0}, expected{1} {2}".format(str(arguments), one_of, " or ".join(expected_arguments))
+
+        super().__init__(msg.replace("'", "").replace("[", "(").replace("]", ")"),
+                         s[0], s[1], node.path[1].file_name
+                         )
         self.diagnose_id = "SE0220"
 
 
@@ -369,10 +368,37 @@ class FplAxiomNotSatisfiable(FplInterpreterMessage):
         self.diagnose_id = "SE0240"
 
 
+class FplPremiseNotSatisfiable(FplInterpreterMessage):
+    def __init__(self, premise_node):
+        s = premise_node.zfrom.split(".")
+        super().__init__("Premise of '{0}' not satisfiable".format(premise_node.parent.id), s[0], s[1],
+                         premise_node.path[1].file_name)
+        self.diagnose_id = "SE0245"
+
+
 class FplTypeMismatch(FplInterpreterMessage):
     def __init__(self, node, expected, actual):
         s = node.zfrom.split(".")
-        super().__init__("Type mismatch: expected '{0}', received '{1}' in this context)".format(expected, actual),
+        super().__init__("Type mismatch: expected '{0}', received '{1}' in this context".format(expected, actual),
                          s[0], s[1],
                          node.path[1].file_name)
         self.diagnose_id = "SE0250"
+
+
+class FplPredicateRecursion(FplInterpreterMessage):
+    def __init__(self, node, node_recursion_occurred):
+        s = node_recursion_occurred.zfrom.split(".")
+        super().__init__("Cannot evaluate recursive predicates in '{0}'".format(node.id),
+                         s[0], s[1],
+                         node_recursion_occurred.path[1].file_name)
+        self.diagnose_id = "SE0260"
+
+
+class FplVariableBound(FplInterpreterMessage):
+    def __init__(self, var_id, quantor, already_bounding_node):
+        s = quantor.zfrom.split(".")
+        b = already_bounding_node.zfrom.split(".")
+        super().__init__("Variable '{0}' already bound at ({1},{2})".format(var_id, b[0], str(int(b[1]) + 1)),
+                         s[0], s[1],
+                         quantor.path[1].file_name)
+        self.diagnose_id = "SE0270"

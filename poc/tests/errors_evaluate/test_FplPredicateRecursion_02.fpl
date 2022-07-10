@@ -1,4 +1,4 @@
-TestFplFplWrongArgumentsError
+TestFplPredicateRecursionError
 {
     theory
     {
@@ -23,4 +23,4 @@ TestFplFplWrongArgumentsError
 }
 
 ##############################
-to be specified
+FplPredicateRecursion:10:16: Cannot evaluate recursive predicates in 'Equal[2:tpl]'

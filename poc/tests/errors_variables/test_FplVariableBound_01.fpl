@@ -1,0 +1,20 @@
+TestFplVariableBound
+{
+    theory
+    {
+        class Nat: obj
+        {
+
+        }
+
+        predicate TestPredicate(x:obj)
+        {
+            all x
+            (
+                true
+            )
+        }
+    }
+}
+##############################
+FplVariableBound:12:12: Variable 'x' already bound at (10,33)

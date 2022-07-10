@@ -1,49 +1,71 @@
+from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTType import AuxSTType
 
 
-class InbuiltType:
+class InbuiltUndefined(AuxSTType):
+    def __init__(self):
+        super().__init__(None)
+        self.id = AuxSymbolTable.undefined
+
+
+class InbuiltPredicate(AuxSTType):
+    def __init__(self):
+        super().__init__(None)
+        self.id = AuxSymbolTable.predicate
+        self.type_pattern = AuxBits.predicateBit
+
+
+class EvaluatedPredicate(AuxSTType):
+    def __init__(self, bool_value):
+        super().__init__(None)
+        self.id = AuxSymbolTable.predicate
+        self.type_pattern = AuxBits.predicateBit
+        if isinstance(bool_value, bool):
+            self.set_repr(bool_value)
+        else:
+            AssertionError("Expected boolean value, got " + str(bool_value))
+
+
+class InbuiltFunctionalTerm(AuxSTType):
+    def __init__(self):
+        super().__init__(None)
+        self.id = AuxSymbolTable.functionalTerm
+        self.type_pattern = AuxBits.functionalTermBit
+
+
+class InbuiltIndex(AuxSTType):
+    def __init__(self):
+        super().__init__(None)
+        self.id = AuxSymbolTable.index_value
+        self.type_pattern = AuxBits.indexBit
+
+
+class InbuiltGeneric(AuxSTType):
     def __init__(self, identifier):
+        super().__init__(None)
         self.id = identifier
-
-    def get_qualified_id(self):
-        return self.id
-
-    def get_type_signature(self):
-        return self.id
+        self.type_pattern = AuxBits.templateBit
 
 
-class InbuiltUndefined(InbuiltType):
+class InbuiltObject(AuxSTType):
     def __init__(self):
-        super().__init__(AuxSymbolTable.undefined)
+        super().__init__(None)
+        self.id = AuxSymbolTable.obj
+        self.type_pattern = AuxBits.templateBit
 
 
-class InbuiltPredicate(InbuiltType):
-    def __init__(self):
-        super().__init__(AuxSymbolTable.predicate)
-
-
-class InbuiltFunctionalTerm(InbuiltType):
-    def __init__(self):
-        super().__init__(AuxSymbolTable.functionalTerm)
-
-
-class InbuiltIndex(InbuiltType):
-    def __init__(self):
-        super().__init__(AuxSymbolTable.index_value)
-
-
-class InbuiltGeneric(InbuiltType):
+class InbuiltExtension(AuxSTType):
     def __init__(self, identifier):
-        super().__init__(AuxSymbolTable.generic)
+        super().__init__(None)
         self.id = identifier
+        self.type_pattern = AuxBits.extensionBit
 
 
-class InbuiltObject(InbuiltType):
-    def __init__(self):
-        super().__init__(AuxSymbolTable.obj)
+class InbuiltClassInstance(AuxSTType):
+    """ This class is a (multi-type) generic representation of all classes definable in FPL. """
+    def __init__(self, constructor):
+        super().__init__(None)
+        self.id = constructor.parent.parent.id
+        self.type_pattern = AuxBits.classBit
 
-
-class InbuiltExtension(InbuiltType):
-    def __init__(self, identifier):
-        super().__init__(AuxSymbolTable.obj)
-        self.id = identifier

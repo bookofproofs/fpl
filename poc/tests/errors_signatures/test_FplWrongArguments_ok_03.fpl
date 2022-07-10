@@ -1,8 +1,8 @@
-TestFplFplWrongArgumentsError
+TestFplWrongArgumentsError
 {
     theory
     {
-        pred TestPredicate(a:+obj)
+        pred TestPredicate(a,b:obj)
         {
             true
         }

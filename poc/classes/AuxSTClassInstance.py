@@ -1,3 +1,4 @@
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTInstance import AuxSTInstance
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
@@ -20,9 +21,5 @@ class AuxSTClassInstance(AuxSTInstance):
         new_class_instance._is_inherited = True
         return new_class_instance
 
-    def get_type_signature(self):
-        type_child = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.type)
-        return type_child.id
-
     def evaluate(self, sem):
-        raise NotImplementedError()
+        sem.eval_stack[-1].value = InbuiltUndefined()

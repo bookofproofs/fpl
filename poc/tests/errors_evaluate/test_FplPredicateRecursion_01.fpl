@@ -1,0 +1,13 @@
+TestFplPredicateRecursionError
+{
+    theory
+    {
+        pred TestPredicate()
+        {
+            TestPredicate()
+        }
+    }
+}
+
+##############################
+FplPredicateRecursion:7:12: Cannot evaluate recursive predicates in 'TestPredicate[]'

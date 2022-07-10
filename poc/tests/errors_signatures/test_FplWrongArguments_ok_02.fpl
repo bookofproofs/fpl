@@ -1,0 +1,25 @@
+TestFplWrongArgumentsError
+{
+    theory
+    {
+        pred Equal(a,b: tpl)
+        {
+            p: pred
+            iif
+            (
+                Equal(a,b),
+                all p
+                (
+                    iif
+                    (
+                        p(a),
+                        p(b)
+                    )
+                )
+            )
+        }
+    }
+}
+
+##############################
+Should not trigger FplWrongArguments error

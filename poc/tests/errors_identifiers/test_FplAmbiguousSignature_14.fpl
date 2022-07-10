@@ -4,12 +4,12 @@ Test.Namespace
     {
         axiom Test()
         {
-            True
+            true
         }
 
         pred Test()
         {
-            True
+            true
         }
     }
 }

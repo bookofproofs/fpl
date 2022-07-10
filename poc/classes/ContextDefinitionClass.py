@@ -42,6 +42,9 @@ class ContextDefinitionClass(AuxInterpretation):
             constructor = AuxSTConstructor(self._i)
             constructor.id = self.building_block.id + "[]"  # the same (empty) signature as that of the class
             constructor.outline = AuxSymbolTable.classDefaultConstructor
+            # the position of the default constructor is the same as of the whole class
+            constructor.zfrom = self.building_block.zfrom
+            constructor.zto = self.building_block.zto
             # with an empty signature
             signature = AuxSTSignature(self._i)
             signature.parent = constructor

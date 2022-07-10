@@ -136,7 +136,7 @@ class Utils:
     def check_if_error_occurs(error_msg: str, error_mgr: FplErrorManager, expected_diagnose_id):
         error_msg = error_msg.strip()
         for error in error_mgr.get_errors():
-            if error_msg in str(error):
+            if error_msg == str(error):
                 if expected_diagnose_id == error.diagnose_id:
                     return True
         return False
