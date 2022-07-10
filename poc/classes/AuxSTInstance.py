@@ -1,4 +1,4 @@
-from poc.classes.AuxST import AuxSTBlock
+from poc.classes.AuxSTBlock import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplErrorManager

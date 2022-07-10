@@ -1,8 +1,8 @@
-TestFplFplWrongArgumentsError
+TestFplWrongArgumentsError
 {
     theory
     {
-        pred TestPredicate(a:+obj)
+        pred TestPredicate(a:*obj)
         {
             true
         }
@@ -10,7 +10,7 @@ TestFplFplWrongArgumentsError
         pred OtherPredicate()
         {
             a,b,c:obj
-            TestPredicate(a)
+            TestPredicate(a,b)
         }
     }
 }

@@ -1,16 +1,19 @@
-from poc.classes.AuxST import AuxSTBlock
+from anytree import search
+from poc.classes.AuxBits import AuxBits
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.AuxSTClassInstance import AuxSTClassInstance
-from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
-from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
-from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
-from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
 from poc.classes.AuxSTArgs import AuxSTArgs
-from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxSTClassInstance import AuxSTClassInstance
+from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
+from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
+from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
 from poc.classes.AuxSTSelf import AuxSTSelf
-from anytree import search
+from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.fplerror import FplErrorManager
 
 
@@ -115,8 +118,17 @@ class AuxSTClass(AuxSTBlock):
     def has_inherited_properties(self):
         return self._hip
 
-    def get_type_signature(self):
-        return self.id
-
     def evaluate(self, sem):
-        raise NotImplementedError()
+        sem.eval_stack[-1].value = InbuiltUndefined()
+
+    def get_declared_type(self):
+        """
+        Override of the inherited method
+        :return:
+        """
+        if self._declared_type is None:
+            class_type = AuxSTType(self._i)
+            class_type.id = self.id
+            class_type.type_pattern = AuxBits.classBit
+            self.set_declared_type(class_type)
+        return self._declared_type

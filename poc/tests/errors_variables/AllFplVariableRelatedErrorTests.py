@@ -67,6 +67,8 @@ class AllFplVariableRelatedErrors(UtilTestCase):
         ("test_FplVariableAlreadyDeclared_class_09.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_class_10.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_class_11.fpl", "SE0080"),
+        ("test_FplVariableBound_01.fpl", "SE0270"),
+        ("test_FplVariableBound_02.fpl", "SE0270"),
     ])
     def test_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_fpl_error(self.folder + "/" + use_case, diagnose_id)

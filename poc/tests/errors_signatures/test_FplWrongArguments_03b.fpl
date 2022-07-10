@@ -1,4 +1,4 @@
-TestFplFplWrongArgumentsError
+TestFplWrongArgumentsError
 {
     theory
     {
@@ -16,4 +16,4 @@ TestFplFplWrongArgumentsError
 }
 
 ##############################
-to be specified
+FplWrongArguments:13:12: Wrong arguments (), expected (obj, obj)

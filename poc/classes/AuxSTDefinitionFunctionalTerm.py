@@ -1,11 +1,12 @@
-from poc.classes.AuxSTBlockWithSignature import AuxSTBlockWithSignature
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTBlock import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTProperties import AuxSTProperties
 from anytree import search
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
+class AuxSTDefinitionFunctionalTerm(AuxSTBlock):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_def, i)
@@ -45,9 +46,5 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBlockWithSignature):
                 self._used_vars += search.findall_by_attr(child, AuxSymbolTable.var, AuxSymbolTable.outline)
         self.filter_misused_templates(error_mgr, filename)
 
-    def get_type_signature(self):
-        type_child = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.type)
-        return type_child.id
-
     def evaluate(self, sem):
-        raise NotImplementedError()
+        sem.eval_stack[-1].value = InbuiltUndefined()

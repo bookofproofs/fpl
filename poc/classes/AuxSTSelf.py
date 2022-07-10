@@ -1,4 +1,5 @@
-from poc.classes.AuxST import AuxST, AuxSTBlock
+from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTBlock import AuxSTBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTTheory import AuxSTTheory
 from poc.classes.AuxSTInstance import AuxSTInstance

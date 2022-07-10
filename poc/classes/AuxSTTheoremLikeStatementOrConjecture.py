@@ -4,16 +4,14 @@ from poc.classes.AuxSTBlock import AuxSTBlock
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
-class AuxSTRuleOfInference(AuxSTBlock):
+class AuxSTTheoremLikeStatementOrConjecture(AuxSTBlock):
 
-    def __init__(self, i):
-        super().__init__(AuxSymbolTable.block_ir, i)
-        self.zfrom = i.last_positions_by_rule['PredicateIdentifier'].pos_to_str()
-        self.zto = i.last_positions_by_rule['RuleOfInference'].pos_to_str()
-        self.set_declared_type(InbuiltPredicate())
+    def __init__(self, block_type, i, zfrom, zto):
+        super().__init__(block_type, i)
+        self.zfrom = zfrom
+        self.zto = zto
 
     def evaluate(self, sem):
         if self.constant_value() is None:

@@ -48,3 +48,18 @@ class AuxSTVarDec(AuxST):
         if row == self._scope_start_row and col < self._scope_start_col:
             return False
         return True
+
+    def evaluate(self, sem):
+        """
+        In the evaluate method of the variable declaration, we set the
+        value of all variable usages to the default constructors
+        :param sem:
+        :return: None
+        """
+        node_of_declaration = self.parent.parent
+        main_instance = node_of_declaration.get_main_instance()
+        occurrences = main_instance[self.id].occurrences
+        for occurrence in occurrences:
+            # set the pointer to the type of each usage of the variable inside the node to the same type_node
+            occurrence.set_declared_type(main_instance[self.id].type_node)
+

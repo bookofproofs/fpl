@@ -1,4 +1,12 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.5
+* Refactoring:
+  * Removing get_required_signature() and replacing string-based type recognition in evaluation methods by a AuxSTType-based recognition
+* Feature:
+  * New error FplVariableBound and som first related test cases
+  * Initial implementation of the evaluate method of different symbol table node subtypes 
+  * Default constructors inherit the position as the class declaration (affected expected test cases of symbol table adjusted accordingly)
+  * Initial implementation of FplWrongArguments recognition
 ## 1.8.4
 * Refactoring / Feature:
   * New class AuxEvaluation added

@@ -1,0 +1,13 @@
+TestFplAxiomNotSatisfiable
+{
+    theory
+    {
+        proposition TestProposition()
+        {
+            pre: false
+            con: true
+        }
+    }
+}
+##############################
+FplPremiseNotSatisfiable:7:12: Premise of 'TestProposition[]' not satisfiable

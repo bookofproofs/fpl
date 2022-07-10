@@ -1,0 +1,16 @@
+TestFplVariableBound
+{
+    theory
+    {
+        predicate TestPredicate(y:obj)
+        {
+            x,y: obj
+            all x,y
+            (
+                iif (x, y)
+            )
+        }
+    }
+}
+##############################
+todo

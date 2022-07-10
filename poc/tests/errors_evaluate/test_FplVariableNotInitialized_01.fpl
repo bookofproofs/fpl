@@ -18,4 +18,4 @@ TestFplVariableNotInitialized
     }
 }
 ##############################
-SE0230
+FplVariableNotInitialized:14:30: Variable 'x' neither initialized nor bound
