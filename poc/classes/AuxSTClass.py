@@ -119,7 +119,9 @@ class AuxSTClass(AuxSTBlock):
         return self._hip
 
     def evaluate(self, sem):
+        sem.analyzer.current_building_block = self
         sem.eval_stack[-1].value = InbuiltUndefined()
+        self.set_sc_ready()
 
     def get_declared_type(self):
         """

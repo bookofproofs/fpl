@@ -1,0 +1,18 @@
+TestFplWrongArgumentsError
+{
+    theory
+    {
+        pred TestPredicate()
+        {
+            p: pred(c: obj)
+            x: Nat
+            // The following should trigger FplWrongArguments since p(Nat) is here the same as p(undefined)
+            // and it cannot match p(obj)
+            ex x ( p(x) )
+        }
+
+    }
+}
+
+##############################
+FplWrongArguments:11:19: Wrong arguments (Nat/undefined), expected (obj)

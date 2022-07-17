@@ -13,8 +13,12 @@ class InfoBoxes:
         self._frameDebug = ttk.Frame(self._tabControl)
         self._frameDebug.config()
 
+        self._frameSelfContainment = ttk.Frame(self._tabControl)
+        self._frameSelfContainment.config()
+
         self._tabControl.add(self._gridErrors, text='Error List')
         self._tabControl.add(self._frameDebug, text='Debug')
+        self._tabControl.add(self._frameSelfContainment, text='Self-Containment')
 
         self._tabControl.pack(expand=True, fill=tk.BOTH)
 

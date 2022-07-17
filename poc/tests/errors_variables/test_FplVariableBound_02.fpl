@@ -13,4 +13,4 @@ TestFplVariableBound
     }
 }
 ##############################
-todo
+FplVariableBound:8:12: Variable 'y' already bound at (5,33)

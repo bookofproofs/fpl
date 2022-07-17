@@ -45,6 +45,8 @@ class AuxSTBlock(AuxST):
         # instance_handler of variables declared for the block
         self._handler = AuxNodeInstanceHandler()
         self._main_guid = self._handler.add_instance()
+        # a flag that will be set to True once the very first evaluation was used to enrich the self-containment graph
+        self._sc_ready_flag = False
 
     def set_relative_id(self, name_of_parent: str):
         if name_of_parent == "":
@@ -174,4 +176,8 @@ class AuxSTBlock(AuxST):
     def evaluate(self, sem):
         raise NotImplementedError(str(sem.eval_stack[-1].node))
 
+    def is_sc_ready(self):
+        return self._sc_ready_flag
 
+    def set_sc_ready(self):
+        self._sc_ready_flag = True

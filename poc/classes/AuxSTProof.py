@@ -31,4 +31,6 @@ class AuxSTProof(AuxSTBlock):
         super().initialize_vars(filename, error_mgr)
 
     def evaluate(self, sem):
+        sem.analyzer.current_building_block = self
         sem.eval_stack[-1].value = InbuiltUndefined()
+        self.set_sc_ready()

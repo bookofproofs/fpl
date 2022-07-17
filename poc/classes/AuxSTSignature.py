@@ -1,6 +1,7 @@
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
 
 
 class AuxSTSignature(AuxST):
@@ -53,51 +54,9 @@ class AuxSTSignature(AuxST):
         return new_signature
 
     def evaluate(self, sem):
+        matcher = AuxParamsArgsMatcher()
         args_of_caller = sem.eval_stack[-1].arg_type_list
         if sem.eval_stack[-1].check_args:
             params_of_signature = list(self.children)
-            self._pointer_args = 0
-            self._pointer_params = 0
-            self._param_types.clear()
-            while self._try_match(sem, args_of_caller, params_of_signature):
-                pass
-            # pass any argument errors through to the calling node
-            sem.eval_stack[-2].argument_error = sem.eval_stack[-1].argument_error
+            matcher.try_match(sem, args_of_caller, params_of_signature)
         sem.eval_stack[-1].value = InbuiltUndefined()
-
-    def _try_match(self, sem, args_of_caller: list, params_of_signature: list):
-        if self._pointer_args >= len(args_of_caller) and self._pointer_params < len(params_of_signature):
-            type_param = params_of_signature[self._pointer_params].children[0]
-            self._param_types.append(type_param.to_string2())
-            self._pointer_params += 1
-            if type_param.type_mod not in ["+", "*"]:
-                # flag an argument error unless the params are variadic
-                sem.eval_stack[-1].argument_error = self._param_types
-            elif type_param.type_mod == "+" and len(args_of_caller) == 0:
-                # the params are expect at least one parameter
-                sem.eval_stack[-1].argument_error = self._param_types
-            return True
-        elif self._pointer_args < len(args_of_caller) and self._pointer_params >= len(params_of_signature):
-            self._pointer_args += 1
-            return True
-        elif self._pointer_args >= len(args_of_caller) and self._pointer_params >= len(params_of_signature):
-            return False
-        else:
-            type_arg = args_of_caller[self._pointer_args]
-            type_param = params_of_signature[self._pointer_params].children[0]
-            if type_param.id == type_arg.id:
-                if type_param.type_mod in ["+", "*"]:
-                    self._pointer_args += 1
-                elif type_arg.type_mod in ["+", "*"]:
-                    self._pointer_params += 1
-                    self._param_types.append(type_param.to_string2())
-                else:
-                    self._pointer_args += 1
-                    self._pointer_params += 1
-                    self._param_types.append(type_param.to_string2())
-            else:
-                self._pointer_args += 1
-                self._pointer_params += 1
-                self._param_types.append(type_param.to_string2())
-                sem.eval_stack[-1].argument_error = self._param_types
-        return True

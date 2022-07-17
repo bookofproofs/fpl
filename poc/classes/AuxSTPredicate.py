@@ -124,6 +124,13 @@ class AuxSTPredicate(AuxST):
                     return
                 sem.eval_stack[-1].value = EvaluatedPredicate(p.returned_value.get_repr())
                 return
+            elif self.outline == AuxSymbolTable.predicate_exists:
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate())
+                if p.returned_value is None:
+                    sem.eval_stack[-1].value = InbuiltUndefined()
+                    return
+                sem.eval_stack[-1].value = EvaluatedPredicate(p.returned_value.get_repr())
+                return
             elif self.outline == AuxSymbolTable.pre:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate())
                 if p.returned_value is None:

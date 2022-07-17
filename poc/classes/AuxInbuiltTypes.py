@@ -9,6 +9,12 @@ class InbuiltUndefined(AuxSTType):
         self.id = AuxSymbolTable.undefined
 
 
+class NamedUndefined(AuxSTType):
+    def __init__(self, identifier):
+        super().__init__(None)
+        self.id = identifier
+
+
 class InbuiltPredicate(AuxSTType):
     def __init__(self):
         super().__init__(None)
@@ -52,7 +58,7 @@ class InbuiltObject(AuxSTType):
     def __init__(self):
         super().__init__(None)
         self.id = AuxSymbolTable.obj
-        self.type_pattern = AuxBits.templateBit
+        self.type_pattern = AuxBits.inbuiltBit + AuxBits.objectBit
 
 
 class InbuiltExtension(AuxSTType):
@@ -64,8 +70,8 @@ class InbuiltExtension(AuxSTType):
 
 class InbuiltClassInstance(AuxSTType):
     """ This class is a (multi-type) generic representation of all classes definable in FPL. """
+
     def __init__(self, constructor):
         super().__init__(None)
         self.id = constructor.parent.parent.id
         self.type_pattern = AuxBits.classBit
-

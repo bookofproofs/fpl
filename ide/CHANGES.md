@@ -1,4 +1,7 @@
 # Changes in the FPL IDE
+## 1.6.13
+* Feature:
+  * Self-containment info box added (yet empty)
 ## 1.6.12
 * Bugfixes:
   * Run-time errors will be displayed in the error list and do not cause the program to halt.

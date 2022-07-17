@@ -2,6 +2,7 @@ import traceback
 from anytree import AnyNode
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
+from poc.classes.AuxSelfContainment import AuxSelfContainment
 from poc.SemCheckerIdentifiers import SemCheckerIdentifiers
 from poc.fplerror import FplErrorManager, FplIdentifierAlreadyDeclared, FplMalformedNamespace
 from poc.fplmessage import FplInterpreterSystemError
@@ -14,6 +15,16 @@ class SemanticAnalyser:
         self.error_mgr = error_mgr
         self.loaded_theories = AuxSymbolTable.get_theories(self.symbol_table_root)
         self.globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSymbolTable.globals)
+        # self-containment
+        self.sc = AuxSelfContainment()
+        # during the recursive evaluation process, this attribute stores the current FPL building block in which
+        # the recursion takes place for faster identification of this block during the recursion
+        self.current_building_block = None
+        # during the recursive evaluation process, this attribute stores the current reference type related
+        # to the current_building_block
+        self.current_reference_type = None
+        # during the recursive evaluation process, this attribute stores the expected functional term return type
+        self.current_func_term_return_type = None
         self.sem_checker_identifiers = SemCheckerIdentifiers(self)
 
     def semantic_analysis(self):

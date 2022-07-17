@@ -15,7 +15,7 @@ from ide.InfoBoxes import InfoBoxes
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.12'
+        self.ide_version = '1.6.13'
         self.theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')
@@ -110,6 +110,7 @@ class FplIde:
         """
         self.info_boxes.refresh_boxes(self.model.fpl_interpreter.get_error_mgr().get_errors())
         self.object_browser.refresh(self.model.fpl_interpreter.get_symbol_table_root())
+        self.model.fpl_interpreter.print_self_containment_graph()
 
     def get_status_bar(self):
         return self._statusBar

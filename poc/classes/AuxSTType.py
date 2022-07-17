@@ -70,6 +70,9 @@ class AuxSTType(AuxST):
             self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
         return self._qualified_id
 
+    def get_relative_id(self):
+        return self.id
+
     def set_repr(self, representation):
         if self._internal_representation is not None:
             AssertionError("Internal type representation already set.")

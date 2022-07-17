@@ -15,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.8.5"
+        self.version = "1.8.6"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -38,6 +38,8 @@ class FplInterpreter:
             self._utils.reload_library(self.library_node, self._theory_root_dir)
         else:
             self.library_node = library_node
+        # the analyzer will be initiated once the semantic_analysis method is called
+        self._analyzer = None
 
     def syntax_analysis(self, path_to_theory: str):
         self._syntax_analysis_rek(path_to_theory)
@@ -143,8 +145,12 @@ class FplInterpreter:
                                               fpl_file_node.file_name))
 
     def semantic_analysis(self):
-        analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._error_mgr)
-        analyzer.semantic_analysis()
+        self._analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._error_mgr)
+        self._analyzer.semantic_analysis()
+
+    def print_self_containment_graph(self):
+        for i in self._analyzer.sc.get_refs():
+            print(i)
 
     def symbol_table_to_str(self):
         return str(RenderTree(self._symbol_table_root))

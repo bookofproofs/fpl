@@ -46,7 +46,9 @@ class AuxSTConstructor(AuxSTBlock):
             self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
+        sem.analyzer.current_building_block = self
         if self.outline == AuxSymbolTable.classDefaultConstructor:
             sem.eval_stack[-1].value = InbuiltClassInstance(self)
         else:
             sem.eval_stack[-1].value = InbuiltUndefined()
+        self.set_sc_ready()

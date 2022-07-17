@@ -16,6 +16,7 @@ class AuxSTRuleOfInference(AuxSTBlock):
         self.set_declared_type(InbuiltPredicate())
 
     def evaluate(self, sem):
+        sem.analyzer.current_building_block = self
         if self.constant_value() is None:
             signature = None
             for child in self.children:
@@ -43,3 +44,4 @@ class AuxSTRuleOfInference(AuxSTBlock):
             # replace the stack by the immutable value
             sem.eval_stack.pop()
             sem.eval_stack.append(self.constant_value())
+        self.set_sc_ready()
