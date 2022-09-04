@@ -1,9 +1,11 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate, InbuiltUndefined, EvaluatedPredicate
 from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class AuxSTTheoremLikeStatementOrConjecture(AuxSTBlock):
@@ -17,6 +19,8 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBlock):
         sem.analyzer.current_building_block = self
         if self.constant_value() is None:
             signature = None
+            pre = None
+            con = None
             for child in self.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
@@ -27,11 +31,21 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBlock):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate())
-                    if ret.returned_value is None:
+                    if child.outline == AuxSymbolTable.pre:
+                        pre = ret.returned_value
+                    elif child.outline == AuxSymbolTable.con:
+                        con = ret.returned_value
+                elif isinstance(child, AuxSTOutline):
+                    if child.outline in [AuxSymbolTable.block_cor_root, AuxSymbolTable.block_proof_root]:
+                        for sub_child in child.children:
+                            EvaluateParams.evaluate_recursion(sem, sub_child, InbuiltUndefined())
                         sem.eval_stack[-1].value = InbuiltUndefined()
-                        return
                 else:
                     raise NotImplementedError(str(type(child)))
+
+            if pre is None or con is None:
+                sem.eval_stack[-1].value = InbuiltUndefined()
+                return
             # per default, we assume the truth of theorem-like statements
             # unless the evaluation of some of its sub-nodes was not successful
             sem.eval_stack[-1].value = EvaluatedPredicate(True)

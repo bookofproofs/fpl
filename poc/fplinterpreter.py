@@ -4,8 +4,7 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxSTClass import AuxSTClass
 from poc import fplsemanticanalyzer
-from poc.fplerror import FplErrorManager
-from poc.fplerror import FplNamespaceNotFound
+from poc.fplerror import FplErrorManager, FplNamespaceNotFound, FplCircularReference
 from poc import fplmessage
 import os
 import sys
@@ -15,7 +14,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.8.6"
+        self.version = "1.8.7"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -200,25 +199,33 @@ class FplInterpreter:
             if class_node.id not in all_classes_dict:
                 all_classes_dict[class_node.id] = class_node
 
+        avoid_circular_reference = list()
         for class_node_id in all_classes_dict:
-            self._complement_class_rek(class_node_id, all_classes_dict)
+            avoid_circular_reference.clear()
+            self._complement_class_rek(class_node_id, all_classes_dict, avoid_circular_reference)
 
-    def _complement_class_rek(self, class_node_id: str, all_classes_dict: dict):
+    def _complement_class_rek(self, class_node_id: str, all_classes_dict: dict, avoid_circular_reference: list):
         if class_node_id in all_classes_dict:
             class_node = all_classes_dict[class_node_id]
+
+            if class_node_id not in avoid_circular_reference:
+                avoid_circular_reference.append(class_node_id)
+            else:
+                # we detected a circular inheritance
+                avoid_circular_reference.append(class_node_id)
+                self._error_mgr.add_error(FplCircularReference(class_node, avoid_circular_reference))
+                return
+
             current_inheritance_set = class_node.class_types
             if not class_node.has_inherited_properties() and len(current_inheritance_set) > 0:
                 # we have to handle this class because len(current_inheritance_set) > 0 and
                 # the class is not yet marked as having inherited properties
                 parent_class_id = current_inheritance_set[0]
                 # we have to complement the parent class first
-                if self._complement_class_rek(parent_class_id, all_classes_dict):
+                if self._complement_class_rek(parent_class_id, all_classes_dict, avoid_circular_reference):
                     # now, since we have complemented the parent class, we can also complement the current one
                     parents_inheritance_set = all_classes_dict[parent_class_id].class_types
-                    if parent_class_id in parents_inheritance_set:
-                        # we detected a circular inheritance
-                        raise NotImplementedError()
-                    else:
+                    if parent_class_id not in parents_inheritance_set:
                         # we clone all properties of the parent classes in the current class
                         class_node.create_callers_parent_properties(all_classes_dict[parent_class_id])
                         # as a last step, complement the inheritance_set of the current class

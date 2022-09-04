@@ -16,10 +16,11 @@ TestFplWrongArgumentsError
         {
             x: obj
             // should trigger FplWrongArguments since TestPredicate accepts Nat as argument that is derived from obj
+            // and not vice versa
             TestPredicate(x)
         }
     }
 }
 
 ##############################
-FplWrongArguments:19:12: Wrong arguments (obj), expected (Nat)
+FplWrongArguments:20:12: Wrong arguments (obj), expected (Nat)

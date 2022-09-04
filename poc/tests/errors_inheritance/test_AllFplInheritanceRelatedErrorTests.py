@@ -21,8 +21,16 @@ class AllFplInheritanceRelatedErrorTests(UtilTestCase):
         ("test_FplInvalidInheritance_tpl_digit.fpl", "SE0050"),
         ("test_FplInvalidInheritance_template_digit.fpl", "SE0050"),
         ("test_FplInvalidInheritance_xid.fpl", "SE0050"),
+        ("test_FplCircularReference_01.fpl", "SE0280"),
     ])
     def test_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_fpl_error(self.folder + "/" + use_case, diagnose_id)
 
+    @parameterized.expand([
+        ("test_FplCircularReference_ok_01.fpl", "SE0280"),
+        ("test_FplCircularReference_ok_02.fpl", "SE0280"),
+        ("test_FplCircularReference_ok_03.fpl", "SE0280"),
+    ])
+    def test_no_errors(self, use_case, diagnose_id):
+        super().semantical_analysis_detects_no_fpl_error(self.folder + "/" + use_case, diagnose_id)
 

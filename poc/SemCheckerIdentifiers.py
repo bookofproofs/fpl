@@ -74,14 +74,14 @@ class SemCheckerIdentifiers:
     def analyse(self):
         """
         Check different semantics about FPL user-defined identifiers.
-        Implementation Note: We use one loop for different checks per building blocks for performance reasons.
         :return: None
         """
         for child in self.analyzer.globals_node.children:
             qualified_identifier = child.get_qualified_id()
             self.overridden_qualified_ids.add(qualified_identifier, child, None)
             self._check_for_malformed_gid(qualified_identifier, child)
-            self._check_uniqueness_identifiers(qualified_identifier, child)
+        for qualified_identifier in self.overridden_qualified_ids.dictionary():
+            self._check_uniqueness_identifiers(qualified_identifier)
         self._check_override_consistency()
         self._check_referencing_proof_corollary()
         self._check_misspelled_types()
@@ -259,11 +259,10 @@ class SemCheckerIdentifiers:
                 else:
                     self.analyzer.error_mgr.add_error(FplMalformedGlobalId(identifier, node))
 
-    def _check_uniqueness_identifiers(self, qualified_identifier: str, global_node):
+    def _check_uniqueness_identifiers(self, qualified_identifier: str):
         """
-        Checks for different identifier-related errors of building blocks have the same qualified identifiers.
-        :param global_node: Some child node from the globals node of the symbol table.
-        :param global_node: Some child node from the globals node of the symbol table.
+        Checks for different identifier-related errors of building blocks having the same qualified identifiers.
+        :param qualified_identifier: reference identifier (might be qualified like in 'ClassName.PropertyName')
         :return: None, but after this method, gid_collection is complete and ready to be used for other analysis steps
         """
         block_list = self.overridden_qualified_ids.get(qualified_identifier)
@@ -317,11 +316,11 @@ class SemCheckerIdentifiers:
                 qualified_identifier = type_node.get_qualified_id()
                 if type_node.id[0].isupper():  # if the identifier starts with a Capital, we have a user-defined type
                     if qualified_identifier in self.classes.dictionary():
-                        type_node.set_repr(self.classes.get(qualified_identifier))
+                        type_node.set_repr(self.classes.identify_representative(qualified_identifier))
                     elif qualified_identifier in self.predicates.dictionary():
-                        type_node.set_repr(self.predicates.get(qualified_identifier))
+                        type_node.set_repr(self.predicates.identify_representative(qualified_identifier))
                     elif qualified_identifier in self.functional_terms.dictionary():
-                        type_node.set_repr(self.functional_terms.get(qualified_identifier))
+                        type_node.set_repr(self.functional_terms.identify_representative(qualified_identifier))
                     elif qualified_identifier in self.overridden_qualified_ids.dictionary():
                         # any other found declared block is semantically not an allowed type,
                         # we trigger the

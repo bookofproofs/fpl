@@ -1,0 +1,17 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: Nat
+        {
+        }
+
+        class Nat: Zero
+        {
+        }
+
+    }
+}
+
+##############################
+FplCircularReference:5:8: Circular reference found [Zero, Nat, Zero]

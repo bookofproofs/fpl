@@ -19,6 +19,8 @@ class AuxSTRuleOfInference(AuxSTBlock):
         sem.analyzer.current_building_block = self
         if self.constant_value() is None:
             signature = None
+            pre = None
+            con = None
             for child in self.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
@@ -29,12 +31,17 @@ class AuxSTRuleOfInference(AuxSTBlock):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate())
-                    if ret.returned_value is None:
-                        sem.eval_stack[-1].value = InbuiltUndefined()
-                        return
+                    if child.outline == AuxSymbolTable.pre:
+                        pre = ret.returned_value
+                    elif child.outline == AuxSymbolTable.con:
+                        con = ret.returned_value
                 else:
                     raise NotImplementedError(str(type(child)))
-            # per default, we assume the truth of theorem-like statements
+
+            if pre is None or con is None:
+                sem.eval_stack[-1].value = InbuiltUndefined()
+                return
+            # per default, we assume the truth of inference rules
             # unless the evaluation of some of its sub-nodes was not successful
             sem.eval_stack[-1].value = EvaluatedPredicate(True)
 

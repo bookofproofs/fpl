@@ -17,4 +17,4 @@ TestFplWrongArgumentsError
 }
 
 ##############################
-FplWrongArguments:14:12: Wrong arguments ['obj', 'obj', 'obj'], expected ['obj', 'obj']
+FplWrongArguments:14:12: Wrong arguments (obj, obj, obj), expected (obj, obj)

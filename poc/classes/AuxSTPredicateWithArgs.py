@@ -52,7 +52,8 @@ class AuxSTPredicateWithArgs(AuxSTBlock):
                     self.reference = NamedUndefined(qualified_identifier)
                 else:
                     possible_overrides = sem.overridden_qualified_ids.get(qualified_identifier)
-                    # at this stage, we have a list of possible overrides, we now try to "call" them with the given arguments
+                    # at this stage, we have a list of possible overrides,
+                    # we now try to "call" them with the given arguments
                     mismatched_overrides = list()
                     for override in possible_overrides:
                         if self._check_illegal_recursion(sem, override):
