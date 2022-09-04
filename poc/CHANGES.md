@@ -1,4 +1,14 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.7
+* Bugfixes:
+  * Duplicate dispatching of qualified_identifiers in SemCheckerAnalysis._check_uniqueness_identifiers method caused by incorrect looping variable.
+  * Subnodes corollaries and proofs of theorem-like statements were wrongly skipped during the evaluation 
+  * Available testcases for FplWrongArguments are now successful
+  * Avoiding Circular Reference when evaluating predicates referring to themselves
+  * Nodes get the a correct representation instead of lists of possible overrides 
+* Feature:
+  * New error FplCircularReference with some related test cases
+  * Initial implementation of checking if parent classes have compatible types to classes derived from them.
 ## 1.8.6
 * Feature:
   * New class AuxSelfContainment

@@ -1,6 +1,7 @@
 from anytree import search
+from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxBits import AuxBits
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltObject
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTArgs import AuxSTArgs
@@ -120,6 +121,9 @@ class AuxSTClass(AuxSTBlock):
 
     def evaluate(self, sem):
         sem.analyzer.current_building_block = self
+        if not self.is_sc_ready():
+            sem.analyzer.sc.add_reference(None, sem.analyzer.current_building_block,
+                                          AuxReferenceType.semantical)
         sem.eval_stack[-1].value = InbuiltUndefined()
         self.set_sc_ready()
 
@@ -134,3 +138,15 @@ class AuxSTClass(AuxSTBlock):
             class_type.type_pattern = AuxBits.classBit
             self.set_declared_type(class_type)
         return self._declared_type
+
+    def is_of_type(self, some_type):
+        """
+        Checks if the class is derived from some_type.
+        :param some_type: a type
+        :return:
+        """
+        if isinstance(some_type, InbuiltObject):
+            # every class is an object
+            return True
+        else:
+            NotImplementedError(some_type)

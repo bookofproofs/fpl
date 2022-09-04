@@ -402,3 +402,15 @@ class FplVariableBound(FplInterpreterMessage):
                          s[0], s[1],
                          quantor.path[1].file_name)
         self.diagnose_id = "SE0270"
+
+
+class FplCircularReference(FplInterpreterMessage):
+    def __init__(self, class_node, list_references: list):
+        s = class_node.zfrom.split(".")
+        msg = "Circular reference found '{0}'".format(str(list_references))
+        msg = msg.replace("'", "")
+        super().__init__(
+            msg,
+            s[0], s[1],
+            class_node.path[1].file_name)
+        self.diagnose_id = "SE0280"

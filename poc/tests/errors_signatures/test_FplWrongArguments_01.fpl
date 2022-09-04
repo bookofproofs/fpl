@@ -17,4 +17,4 @@ TestFplWrongArgumentsError
 }
 
 ##############################
-to be specified
+FplWrongArguments:13:21: Wrong arguments (Nat/undefined), expected (obj)

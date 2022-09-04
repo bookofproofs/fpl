@@ -19,7 +19,6 @@ class AuxSTOutline(AnyNode):
     def get_declared_type(self):
         return self._declared_type
 
-
 class AuxST(AuxSTOutline):
     """
     A class for outline elements of the symbol table of the FPL transformer that have an ast_info and errors

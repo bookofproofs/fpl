@@ -21,4 +21,4 @@ TestFplWrongArgumentsError
 }
 
 ##############################
-should not trigger FplWrongArguments since TestPredicate accepts obj as argument that is base class of Nat
+should not trigger FplWrongArguments since TestPredicate accepts obj as argument that is the base class of Nat

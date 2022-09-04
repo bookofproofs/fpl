@@ -3,15 +3,14 @@ from poc.fplerror import FplErrorManager
 from poc.fplerror import FplAmbiguousSignature
 from poc.fplerror import FplForbiddenOverride
 
-
 """
 The AuxOverrideHandler class provides functionality to store building blocks with overriding signatures. 
 """
 
 
 class AuxOverrideHandler:
-    ALLOWED = True
-    NOT_ALLOWED = False
+    ALLOWED = True  # block type allows overriding signatures with the same identifier
+    NOT_ALLOWED = False  # block type does not allow overriding signatures with the same identifier
 
     def __init__(self, mode: bool, error_mgr: FplErrorManager):
         self._mode = mode
@@ -44,3 +43,21 @@ class AuxOverrideHandler:
 
     def dictionary(self):
         return self._dict
+
+    def identify_representative(self, identifier):
+        """
+        Identifies a representative based on the type of block
+        :param identifier:
+        :return:
+        """
+        if self._mode == AuxOverrideHandler.NOT_ALLOWED:
+            # in case the block type does not allow overriding, it is ensured that there is only one representative
+            return self._dict[identifier][0]
+        elif self._mode == AuxOverrideHandler.ALLOWED:
+            if len(self._dict[identifier]) == 1:
+                # in case the block type allows overriding and there is only one candidate, return it
+                return self._dict[identifier][0]
+            else:
+                raise AssertionError("More then ({0}) one representative possible".format(len(self._dict[identifier])))
+        else:
+            raise NotImplementedError(self._mode)

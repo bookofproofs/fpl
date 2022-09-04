@@ -1,0 +1,12 @@
+TestNamespace
+{
+    theory
+    {
+        class Zero: obj
+        {
+        }
+    }
+}
+
+##############################
+should not trigger FplCircularReference

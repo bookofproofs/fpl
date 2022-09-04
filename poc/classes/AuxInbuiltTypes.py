@@ -60,6 +60,9 @@ class InbuiltObject(AuxSTType):
         self.id = AuxSymbolTable.obj
         self.type_pattern = AuxBits.inbuiltBit + AuxBits.objectBit
 
+    def is_of_type(self, some_type):
+        return isinstance(some_type, InbuiltObject)
+
 
 class InbuiltExtension(AuxSTType):
     def __init__(self, identifier):
