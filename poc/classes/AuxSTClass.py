@@ -5,7 +5,7 @@ from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltObject
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTArgs import AuxSTArgs
-from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance
 from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
 from poc.classes.AuxSTPredicate import AuxSTPredicate
@@ -18,7 +18,7 @@ from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTClass(AuxSTBlock):
+class AuxSTClass(AuxSTBuildingBlock):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_def, i)

@@ -1,11 +1,22 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.8
+* Refactoring:
+  * Saving code by using AuxEvaluationBlockFunctionalTerm in AuxSTDefinitionFunctionalTerm and AuxSTFunctionalTermInstance
+  * Saving code by using AuxEvaluationBlockPredicate in AuxSTDefinitionPredicate and AuxSTPredicateInstance
+  * Deriving AusSTPredicateWithArgs not from AuxSTBlock but instead from its base class AuxST, because AuxSTBlock is reserved to be a common base class of all FPL building blocks. AusSTPredicateWithArgs is not an FPL building block.
+  * Renaming AuxSTBlock to AuxSTBuildingBlock to reflect the fact that it is the base class of all FPL building blocks. 
+* Feature / Bugfix:
+  * Implemented bounding variables inside quantor blocks, bugfixing related test cases
+* Bugfix
+  * Preventing re-evaluation of AuxSTPredicateWithArgs whose reference has been established to InbuiltUndefined
+  * Adding variables declared in the outer scope of inner building blocks to their main distance to prevent Key index errors during the evaluation process.
 ## 1.8.7
 * Bugfixes:
   * Duplicate dispatching of qualified_identifiers in SemCheckerAnalysis._check_uniqueness_identifiers method caused by incorrect looping variable.
   * Subnodes corollaries and proofs of theorem-like statements were wrongly skipped during the evaluation 
   * Available testcases for FplWrongArguments are now successful
   * Avoiding Circular Reference when evaluating predicates referring to themselves
-  * Nodes get the a correct representation instead of lists of possible overrides 
+  * Nodes get the correct representation instead of lists of possible overrides 
 * Feature:
   * New error FplCircularReference with some related test cases
   * Initial implementation of checking if parent classes have compatible types to classes derived from them.

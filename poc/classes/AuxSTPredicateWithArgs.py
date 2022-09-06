@@ -3,7 +3,7 @@ from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate, InbuiltFunctionalTerm, \
     NamedUndefined
 from poc.classes.AuxSelfContainment import AuxReferenceType
-from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxSTBuildingBlock import AuxST
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatement import AuxSTStatement
@@ -12,7 +12,7 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 from fplerror import FplIdentifierNotDeclared, FplWrongArguments, FplPredicateRecursion, FplVariableNotInitialized
 
 
-class AuxSTPredicateWithArgs(AuxSTBlock):
+class AuxSTPredicateWithArgs(AuxST):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.predicate_with_arguments, i)
@@ -104,10 +104,12 @@ class AuxSTPredicateWithArgs(AuxSTBlock):
                     sem.analyzer.sc.add_reference(self.reference, sem.analyzer.current_building_block,
                                                   AuxReferenceType.semantical)
         else:
-            ret = EvaluateParams.evaluate_recursion(sem, self.reference, propagated_expected_type,
-                                                    arg_list, True)
-            sem.eval_stack.pop()
-            sem.eval_stack.append(ret)
+            # avoid re-evaluation of InbuildUndefined
+            if not isinstance(self.reference, InbuiltUndefined):
+                ret = EvaluateParams.evaluate_recursion(sem, self.reference, propagated_expected_type,
+                                                        arg_list, True)
+                sem.eval_stack.pop()
+                sem.eval_stack.append(ret)
 
     def _issue_FplWrongArguments(self, sem, arg_type_list, mismatched_overrides):
         arg_types = list()

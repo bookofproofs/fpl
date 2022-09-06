@@ -1,13 +1,13 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate, InbuiltUndefined, EvaluatedPredicate
-from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
-class AuxSTRuleOfInference(AuxSTBlock):
+class AuxSTRuleOfInference(AuxSTBuildingBlock):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_ir, i)

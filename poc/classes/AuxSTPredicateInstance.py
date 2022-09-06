@@ -1,4 +1,4 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxEvaluationBlockPredicate import AuxEvaluationBlockPredicate
 from poc.classes.AuxSTInstance import AuxSTInstance
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
@@ -25,5 +25,6 @@ class AuxSTPredicateInstance(AuxSTInstance):
         return new_predicate
 
     def evaluate(self, sem):
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        AuxEvaluationBlockPredicate.evaluate(self, sem)
+
 

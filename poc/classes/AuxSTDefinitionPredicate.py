@@ -1,18 +1,12 @@
-from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
-from poc.classes.AuxSTBlock import AuxSTBlock
-from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxEvaluationBlockPredicate import AuxEvaluationBlockPredicate
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTProperties import AuxSTProperties
-from poc.classes.AuxSTSignature import AuxSTSignature
-from poc.classes.AuxSTVariable import AuxSTVariable
-from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTDefinitionPredicate(AuxSTBlock):
+class AuxSTDefinitionPredicate(AuxSTBuildingBlock):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_def, i)
@@ -51,31 +45,4 @@ class AuxSTDefinitionPredicate(AuxSTBlock):
         self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
-        sem.analyzer.current_building_block = self
-        if self.constant_value() is None:
-            signature = None
-            for child in self.children:
-                if isinstance(child, AuxSTSignature):
-                    signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(),
-                                                      sem.eval_stack[-1].arg_type_list,
-                                                      sem.eval_stack[-1].check_args)
-                elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
-                elif isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs, AuxSTVariable)):
-                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate())
-                    if ret.returned_value is None:
-                        sem.eval_stack[-1].value = InbuiltUndefined()
-                    else:
-                        sem.eval_stack[-1].value = ret.returned_value
-                    if len(signature.children) == 0:
-                        self.set_constant_value(sem.eval_stack[-1])
-                elif isinstance(child, AuxSTProperties):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
-                else:
-                    raise NotImplementedError(str(type(child)))
-        else:
-            # replace the stack by the immutable value
-            sem.eval_stack.pop()
-            sem.eval_stack.append(self.constant_value())
-        self.set_sc_ready()
+        AuxEvaluationBlockPredicate.evaluate(self, sem)

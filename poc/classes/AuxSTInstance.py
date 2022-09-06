@@ -1,10 +1,10 @@
-from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTInstance(AuxSTBlock):
+class AuxSTInstance(AuxSTBuildingBlock):
     def __init__(self, i):
         super().__init__(AuxSymbolTable.property, i)
         self.mandatory = False

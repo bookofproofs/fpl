@@ -9,7 +9,7 @@ local natural languages.
 
 Watch the video:
 
-[![Watch the video](https://i9.ytimg.com/vi_webp/ROCNCDRiBp0/mq2.webp?sqp=CKjH0pgG&rs=AOn4CLDMhxiK9MnXXcXQ1RgCNtgKr2ESPw)](https://www.youtube.com/watch?v=ROCNCDRiBp0)
+[![Watch the video](https://img.youtube.com/vi/ROCNCDRiBp0/0.jpg)](https://www.youtube.com/watch?v=ROCNCDRiBp0)
 
 While English is currently the de facto standard natural language for
 mathematical publications, FPL should further facilitate the dialog between 

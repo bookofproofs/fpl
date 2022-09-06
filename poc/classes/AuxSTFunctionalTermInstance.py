@@ -1,4 +1,4 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxEvaluationBlockFunctionalTerm import AuxEvaluationBlockFunctionalTerm
 from poc.classes.AuxSTInstance import AuxSTInstance
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
@@ -24,6 +24,4 @@ class AuxSTFunctionalTermInstance(AuxSTInstance):
         return new_class_instance
 
     def evaluate(self, sem):
-        sem.analyzer.current_building_block = self
-        sem.eval_stack[-1].value = InbuiltUndefined()
-        self.set_sc_ready()
+        AuxEvaluationBlockFunctionalTerm.evaluate(self, sem)

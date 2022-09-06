@@ -1,16 +1,12 @@
-from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
-from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxEvaluationBlockFunctionalTerm import AuxEvaluationBlockFunctionalTerm
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTProperties import AuxSTProperties
-from poc.classes.AuxSTSignature import AuxSTSignature
-from poc.classes.AuxSTType import AuxSTType
-from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from anytree import search
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTDefinitionFunctionalTerm(AuxSTBlock):
+class AuxSTDefinitionFunctionalTerm(AuxSTBuildingBlock):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_def, i)
@@ -51,28 +47,4 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBlock):
         self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
-        sem.analyzer.current_building_block = self
-        if self.constant_value() is None:
-            signature = None
-            for child in self.children:
-                if isinstance(child, AuxSTSignature):
-                    signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(),
-                                                      sem.eval_stack[-1].arg_type_list,
-                                                      sem.eval_stack[-1].check_args)
-                elif isinstance(child, AuxSTType):
-                    # remember the expected functional term return type
-                    sem.analyzer.current_func_term_return_type = child
-                elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
-                    # forget the expected functional term return type
-                    sem.analyzer.current_func_term_return_type = None
-                elif isinstance(child, AuxSTProperties):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
-                else:
-                    raise NotImplementedError(str(type(child)))
-        else:
-            # replace the stack by the immutable value
-            sem.eval_stack.pop()
-            sem.eval_stack.append(self.constant_value())
-        self.set_sc_ready()
+        AuxEvaluationBlockFunctionalTerm.evaluate(self, sem)

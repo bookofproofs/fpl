@@ -1,8 +1,9 @@
-from anytree import AnyNode
+from anytree import AnyNode, search
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxSTVariable import AuxSTVariable
 from fplerror import FplPremiseNotSatisfiable
 
 
@@ -12,6 +13,7 @@ class AuxSTPredicate(AuxST):
         super().__init__(outline, i)
         self._is_asserted = False
         self._is_revoked = False
+        self._bound_vars_marked = False
         self.set_declared_type(InbuiltPredicate())
 
     def set_id(self, identifier: str):
@@ -118,6 +120,7 @@ class AuxSTPredicate(AuxST):
                 sem.eval_stack[-1].value = EvaluatedPredicate(True)
                 return
             elif self.outline == AuxSymbolTable.predicate_all:
+                self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate())
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined()
@@ -125,6 +128,7 @@ class AuxSTPredicate(AuxST):
                 sem.eval_stack[-1].value = EvaluatedPredicate(p.returned_value.get_repr())
                 return
             elif self.outline == AuxSymbolTable.predicate_exists:
+                self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate())
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined()
@@ -158,3 +162,18 @@ class AuxSTPredicate(AuxST):
 
     def clone(self):
         return self._copy(AuxSTPredicate(self.outline, self._i))
+
+    def _mark_bound_vars(self):
+        """
+        In case this predicate is an exist or an all quantor, this method will
+        marks in the symbol table the variables bound by it inside the block of this quantor.
+        For performance reasons, an auxiliary variable self._bound_vars_marked is used to prevent
+        repeating this single time job when reevaluating the quantor during the semantical analysis.
+        :return: None
+        """
+        if not self._bound_vars_marked:
+            for var_name in self.bound_vars:
+                occurs = search.findall(self, lambda node: isinstance(node, AuxSTVariable) and node.id == var_name)
+                for var in occurs:
+                    var.set_is_bound()
+            self._bound_vars_marked = True

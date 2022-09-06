@@ -144,6 +144,16 @@ class SemCheckerIdentifiers:
         for identifier in declared_vars:
             if declared_vars[identifier].parent.parent == node:
                 only_inner_declared[identifier] = declared_vars[identifier]
+            else:
+                # ensure that variables declared in the outer scope (e.g. of a FPL class)
+                # are in the main instance of inner blocks (e.g. FPL class properties) so we can find them
+                # during the evaluation process.
+                if identifier in used_vars_dict:
+                    node.add_var_to_main_instance(identifier, used_vars_dict[identifier],
+                                                  declared_vars[identifier].children[0])
+                else:
+                    node.add_var_to_main_instance(identifier, list(),
+                                                  declared_vars[identifier].children[0])
 
         for identifier in only_inner_declared:
             if identifier not in used_vars_dict:
