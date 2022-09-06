@@ -27,7 +27,6 @@ class EvaluateParams:
         # node within which these params are being evaluated
         self.node = None
 
-
     def type_mismatch(self):
         """
         True, if the type of the returned value is different from the type of the expected_value

@@ -1,4 +1,6 @@
 from anytree import AnyNode
+import re
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTOutline(AnyNode):
@@ -19,6 +21,7 @@ class AuxSTOutline(AnyNode):
     def get_declared_type(self):
         return self._declared_type
 
+
 class AuxST(AuxSTOutline):
     """
     A class for outline elements of the symbol table of the FPL transformer that have an ast_info and errors
@@ -31,6 +34,7 @@ class AuxST(AuxSTOutline):
             self._error_mgr = i.errors
         self.zto = ""
         self.zfrom = ""
+        self._qualified_id = None
 
     def register_child(self, node: AuxSTOutline):
         if not issubclass(type(node), AuxSTOutline):
@@ -53,3 +57,8 @@ class AuxST(AuxSTOutline):
             child_clone = child.clone()
             child_clone.parent = instance
         return instance
+
+    def get_qualified_id(self):
+        if self._qualified_id is None:
+            self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
+        return self._qualified_id

@@ -1,9 +1,7 @@
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTTheory import AuxSTTheory
-from poc.classes.AuxSTInstance import AuxSTInstance
-from poc.classes.AuxSTConstructor import AuxSTConstructor
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 
 
@@ -34,7 +32,7 @@ class AuxSTSelf(AuxST):
             at = 0
             while at <= self.number_ats and not maximum_reached:
                 test_node = test_node.parent
-                if isinstance(test_node, (AuxSTInstance, AuxSTConstructor, AuxSTBlock)):
+                if isinstance(test_node, AuxSTBuildingBlock):
                     at += 1
                 if isinstance(test_node.parent, AuxSTTheory):
                     maximum_reached = True

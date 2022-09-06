@@ -1,10 +1,10 @@
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
-from poc.classes.AuxSTBlock import AuxSTBlock
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTProof(AuxSTBlock):
+class AuxSTProof(AuxSTBuildingBlock):
 
     def __init__(self, i):
         super().__init__(AuxSymbolTable.block_proof, i)

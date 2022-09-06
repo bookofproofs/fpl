@@ -1,18 +1,27 @@
 from anytree import search
 from gid import Guid
-import re
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplVariableAlreadyDeclared
 from poc.fplerror import FplTemplateMisused
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+
+"""
+The class AuxInstanceVariable stores the type and a list of occurrences of the variable inside a block.
+"""
 
 
 class AuxInstanceVariable:
     def __init__(self, occurrences: list, type_node):
         self.type_node = type_node.clone()
         self.occurrences = occurrences
+
+
+"""
+The class AuxNodeInstanceHandler simplifies the handling of building block instances. 
+An instance is identified by a Guid and stores internally a dictionary of 
+all instances of variables declared in the block by their name.
+"""
 
 
 class AuxNodeInstanceHandler(dict):
@@ -28,14 +37,13 @@ class AuxNodeInstanceHandler(dict):
         self[guid][var_id] = AuxInstanceVariable(occurrences, type_node)
 
 
-class AuxSTBlock(AuxST):
+class AuxSTBuildingBlock(AuxST):
     def __init__(self, outline: str, i):
         super().__init__(outline, i)
         self.id = ""
         self._relative_id = ""
         self._declared_vars = dict()
         self._used_vars = tuple()
-        self._qualified_id = None
         self._base_id = None
         # If the signature of the block has no parameters at all, the constant value
         # will be set after the evaluate method of the block will be called the very first time.
@@ -126,11 +134,6 @@ class AuxSTBlock(AuxST):
         d = str(type(self)).split(".")
         return d[-1][5:-2]
 
-    def get_qualified_id(self):
-        if self._qualified_id is None:
-            self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
-        return self._qualified_id
-
     def base_id(self):
         if self._base_id is None:
             irrelevant_prefix = ".".join(self.get_qualified_id().split(".")[0:-1])
@@ -181,3 +184,6 @@ class AuxSTBlock(AuxST):
 
     def set_sc_ready(self):
         self._sc_ready_flag = True
+
+    def get_repr(self):
+        return self
