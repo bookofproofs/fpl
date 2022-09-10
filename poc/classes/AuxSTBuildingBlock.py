@@ -184,6 +184,3 @@ class AuxSTBuildingBlock(AuxST):
 
     def set_sc_ready(self):
         self._sc_ready_flag = True
-
-    def get_repr(self):
-        return self

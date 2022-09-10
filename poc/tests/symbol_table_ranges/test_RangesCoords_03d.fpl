@@ -1,0 +1,13 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            self[!1~2!]
+        }
+
+    }
+}
+##############################
+tobedone

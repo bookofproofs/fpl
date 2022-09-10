@@ -1,9 +1,7 @@
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.AuxSTSelf import AuxSTSelf
-from poc.classes.AuxSTVariable import AuxSTVariable
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
-
+from poc.fplerror import FplIdentifierAmbiguous
 
 
 class AuxSTQualified(AuxST):
@@ -26,3 +24,22 @@ class AuxSTQualified(AuxST):
         my_copy._resolved_parent = self._resolved_parent
         return my_copy
 
+    def _initialize_qualified_id_from_parent(self, sem):
+        """
+        Initializes the _qualified_id attribute of AuxSTQualified based on the parent
+        :param sem: evaluation path where the but-last element is the parent node of AuxSTQualified in the symbol table
+        :return: None
+        """
+        if sem.eval_stack[-2].node.outline == AuxSymbolTable.var:
+            self._qualified_id = sem.eval_stack[-2].node.get_declared_type().get_qualified_id()
+        elif sem.eval_stack[-2].node.outline == AuxSymbolTable.selfInstance:
+            self._qualified_id = sem.eval_stack[-2].node.get_qualified_id()
+        else:
+            raise NotImplementedError()
+
+    def evaluate(self, sem):
+        self._initialize_qualified_id_from_parent(sem)
+        # there is (syntactically) only one child node of AuxSTQualified so
+        check = EvaluateParams.evaluate_recursion(sem, self.children[0], sem.eval_stack[-1].expected_type)
+        # set the value of the evaluation to the value retrieved
+        sem.eval_stack[-1].value = check.value

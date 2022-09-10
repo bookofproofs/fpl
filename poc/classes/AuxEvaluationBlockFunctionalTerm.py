@@ -27,6 +27,8 @@ class AuxEvaluationBlockFunctionalTerm:
                 elif isinstance(child, AuxSTType):
                     # remember the expected functional term return type
                     sem.analyzer.current_func_term_return_type = child
+                    # set the node's declared type to the return type of the functional term
+                    node.set_declared_type(child)
                 elif isinstance(child, AuxSTVarSpecList):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
                     # forget the expected functional term return type

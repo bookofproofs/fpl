@@ -8,8 +8,6 @@ class EvaluateParams:
     """
 
     def __init__(self):
-        # Identifier of a parent AuxSTQualified (if any, to identify the right override)
-        self.parent_identifier = ""
         # Type in which this recursive call is being used (and should return a compatible type)
         self.expected_type = None
         # a list of types to be used to call the matched override (needed only for AuxSTPredicateWithArgs)

@@ -12,7 +12,6 @@ class AuxSTOutline(AnyNode):
         super().__init__()
         self.outline = outline
         self.parent = parent
-        self._value = None
         self._declared_type = None
 
     def set_declared_type(self, type_node):
@@ -62,3 +61,4 @@ class AuxST(AuxSTOutline):
         if self._qualified_id is None:
             self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
         return self._qualified_id
+

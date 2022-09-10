@@ -1,0 +1,14 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            x: obj
+            x[1~2!]
+        }
+
+    }
+}
+##############################
+tobedone

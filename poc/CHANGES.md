@@ -1,4 +1,13 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.9
+* Bugfix
+  * Matching generic types with objects corrected
+  * Evaluation of 'self' with a qualified id corrected
+  * Evaluation of variables with a qualified id corrected
+* Feature
+  * Initial implementation of the evaluate method in AuxSTQualified
+  * Some additional syntax tree unit tests for qualified identifiers added
+  * Some additional syntax tree unit tests for ranges and coordinates added
 ## 1.8.8
 * Refactoring:
   * Saving code by using AuxEvaluationBlockFunctionalTerm in AuxSTDefinitionFunctionalTerm and AuxSTFunctionalTermInstance
