@@ -1,0 +1,37 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            self[1].SomeProperty()
+        }
+
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='ed9f4f81ea0dae092b8e7002b564223c', file_name='test_RangesCoords_01a.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='8.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTSelf(id='self', number_ats=0, outline='self', reference=None, zfrom='7.12', zto='7.19')
+    │       │   ├── AuxSTCoords(outline='coordinates', zfrom='7.17', zto='7.18')
+    │       │   │   └── AuxSTPredicate(id='1', outline='extDigit', zfrom='7.17', zto='7.18')
+    │       │   └── AuxSTQualified(outline='qualified', zfrom='7.19', zto='7.19')
+    │       │       └── AuxSTPredicateWithArgs(id='SomeProperty', outline='predicateWithArgs', reference=None, zfrom='7.20', zto='7.34')
+    │       │           └── AuxSTArgs(outline='arguments', zfrom='7.33', zto='7.34')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

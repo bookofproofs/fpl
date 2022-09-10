@@ -12,11 +12,11 @@ Test.Namespace
         {
             optional pred IsLeftNeutralElement(e: tplSetElem)
             {
-                x: tplSetElem
+                z: tplSetElem
 
-                all x
+                all z
                 (
-                    Equal(@self(e,x), x)
+                    Equal(@self(e,z), z)
                 )
             }
 

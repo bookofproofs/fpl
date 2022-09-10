@@ -36,6 +36,8 @@ class AuxParamsArgsMatcher:
                 return False
             else:
                 type_arg = args_of_caller[self._pointer_args]
+                if not hasattr(type_arg, "type_pattern"):
+                    type_arg = type_arg.get_declared_type()
                 type_param = params_of_signature[self._pointer_params].children[0]
                 if AuxParamsArgsMatcher.are_types_compatible(type_arg, type_param):
                     if type_param.type_mod in ["+", "*"]:
@@ -65,26 +67,28 @@ class AuxParamsArgsMatcher:
             return False
 
         # check consistency of types of the argument and the parameter it has to match
-        types_consistent = False
         if AuxBits.is_predicate(type_arg.type_pattern) and AuxBits.is_predicate(type_param.type_pattern):
-            types_consistent = True
-        elif AuxBits.is_functional_term(type_arg.type_pattern) and AuxBits.is_functional_term(type_param.type_pattern):
-            types_consistent = True
-        elif AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
-            types_consistent = True
-        if not types_consistent:
-            return False
-
-        if type_param.id == type_arg.id:
-            # if after the proceedings checks the ids are equal, we have a match
             return True
-        else:
-            # even though there is was no match of IDs, we have already ensured the consistency of types.
-            # In this case, we still have to check if the two consistent types with different IDs are still compatible,
-            # for instance due to class inheritance. The parameter has to 'accept' an argument if
-            # the argument's type is a derived class of the parameter's type.
-            if AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
-                return arg_repr.is_of_type(param_repr)
+        elif AuxBits.is_functional_term(type_arg.type_pattern) and AuxBits.is_functional_term(type_param.type_pattern):
+            return True
+        elif AuxBits.is_generic(type_arg.type_pattern) and AuxBits.is_generic(type_param.type_pattern):
+            return type_param.id == type_arg.id
+        elif AuxBits.is_generic(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
+            return True
+        elif AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_generic(type_param.type_pattern):
+            return True
+        elif AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
+            if type_param.id == type_arg.id:
+                # if after the proceedings checks the ids are equal, we have a match
+                return True
+            else:
+                # even though there is was no match of IDs, we have already ensured the consistency of types.
+                # In this case, we still have to check if the two consistent types
+                # with different IDs are still compatible,
+                # for instance due to class inheritance. The parameter has to 'accept' an argument if
+                # the argument's type is a derived class of the parameter's type.
+                if AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
+                    return arg_repr.is_of_type(param_repr)
 
         # in all other cases, return False (argument is not matching the parameter)
         return False

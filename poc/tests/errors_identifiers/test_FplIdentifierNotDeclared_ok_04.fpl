@@ -19,10 +19,10 @@ Test.Qualified
         pred Test()
         {
             d: TestStructure
-            d.InnerPreds()
+            d.InnerPred()
         }
     }
 }
 
 ##############################
-FplIdentifierNotDeclared:22:14: Undeclared identifier 'TestStructure.InnerPreds'
+should not trigger FplIdentifierNotDeclared

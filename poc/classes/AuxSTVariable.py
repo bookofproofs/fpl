@@ -1,8 +1,9 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTCoords import AuxSTCoords
+from poc.classes.AuxSTRange import AuxSTRange
+from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
-
 
 class AuxSTVariable(AuxST):
 
@@ -36,6 +37,20 @@ class AuxSTVariable(AuxST):
         self._is_bound = True
 
     def evaluate(self, sem):
-        sem.eval_stack[-1].value = self.get_declared_type().get_repr()
+        if len(self.children) > 0:
+            for child in self.children:
+                if isinstance(child, AuxSTCoords):
+                    raise NotImplementedError()
+                elif isinstance(child, AuxSTRange):
+                    raise NotImplementedError()
+                elif isinstance(child, AuxSTQualified):
+                    # due to the structure of symbol table, there can be only one child of self that is AuxSTQualified
+                    check = EvaluateParams.evaluate_recursion(sem, child, sem.eval_stack[-1].expected_type)
+                    # set the value of self's evaluation to the value of the qualified identifier
+                    sem.eval_stack[-1].value = check.value
+                else:
+                    raise NotImplementedError()
+        else:
+            sem.eval_stack[-1].value = self.get_declared_type().get_repr()
 
 

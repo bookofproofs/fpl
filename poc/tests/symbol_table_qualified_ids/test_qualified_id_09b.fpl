@@ -1,0 +1,62 @@
+ TestNamespace.SubNamespace
+{
+    theory
+    {
+        class SomeOtherObject: obj
+        {
+
+        }
+
+        class TestObject: obj
+        {
+            x: obj
+            TestObject(a: SomeOtherObject)
+            {
+                x := a.SomeProperty.AnotherProperty()
+            }
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.SubNamespace.SomeOtherObject', id='SomeOtherObject', reference=AuxSTClass(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.SubNamespace.SomeOtherObject[]', id='SomeOtherObject[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+│   ├── AuxSTGlobal(gid='TestNamespace.SubNamespace.TestObject', id='TestObject', reference=AuxSTClass(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.SubNamespace.TestObject[1:SomeOtherObject]', id='TestObject[1:SomeOtherObject]', reference=AuxSTConstructor(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='070cdd5cfab3ecc3bd78676f7392f2c6', file_name='test_qualified_id_09b.fpl', namespace='TestNamespace.SubNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   ├── AuxSTClass(class_types=[], def_type='class', id='SomeOtherObject', keyword='class', outline='definition', zfrom='5.8', zto='8.9')
+    │   │   ├── AuxSTVarSpecList(outline='specificationList')
+    │   │   ├── AuxSTConstructors(outline='constructors')
+    │   │   │   └── AuxSTConstructor(id='SomeOtherObject[]', outline='defaultConstructor', zfrom='5.8', zto='8.9')
+    │   │   │       ├── AuxSTSignature(outline='signature', zfrom='', zto='')
+    │   │   │       └── AuxSTVarSpecList(outline='specificationList')
+    │   │   └── AuxSTProperties(outline='properties')
+    │   └── AuxSTClass(class_types=[], def_type='class', id='TestObject', keyword='class', outline='definition', zfrom='10.8', zto='17.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTVarDec(id='x', outline='var_decl', zfrom='12.12', zto='12.18')
+    │       │       └── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='12.15', zto='12.18')
+    │       ├── AuxSTConstructors(outline='constructors')
+    │       │   └── AuxSTConstructor(id='TestObject[1:SomeOtherObject]', outline='constructor', zfrom='13.12', zto='16.13')
+    │       │       ├── AuxSTSignature(outline='signature', zfrom='13.12', zto='13.42')
+    │       │       │   └── AuxSTVarDec(id='a', outline='var_decl', zfrom='13.23', zto='13.41')
+    │       │       │       └── AuxSTType(id='SomeOtherObject', outline='type', type_mod=None, type_pattern=1, zfrom='13.26', zto='13.41')
+    │       │       └── AuxSTVarSpecList(outline='specificationList')
+    │       │           └── AuxSTStatement(outline='statement', type=':=', zfrom='15.21', zto='15.53')
+    │       │               ├── AuxSTVariable(id='x', outline='var', zfrom='15.16', zto='15.17')
+    │       │               └── AuxSTVariable(id='a', outline='var', zfrom='15.21', zto='15.22')
+    │       │                   └── AuxSTQualified(outline='qualified', zfrom='15.22', zto='15.22')
+    │       │                       └── AuxSTPredicateWithArgs(id='SomeProperty.AnotherProperty', outline='predicateWithArgs', reference=None, zfrom='15.23', zto='15.53')
+    │       │                           └── AuxSTArgs(outline='arguments', zfrom='15.52', zto='15.53')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

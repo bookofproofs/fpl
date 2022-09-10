@@ -5,6 +5,7 @@ from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, Eval
 from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxSTBuildingBlock import AuxST
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
+from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatement import AuxSTStatement
 from poc.classes.AuxSTVariable import AuxSTVariable
@@ -24,7 +25,6 @@ class AuxSTPredicateWithArgs(AuxST):
         new_predicate.id = self.id
         new_predicate.outline = self.outline
         new_predicate.reference = self.reference
-        new_predicate._value = self._value
         return new_predicate
 
     def evaluate(self, sem):
@@ -44,12 +44,13 @@ class AuxSTPredicateWithArgs(AuxST):
             # if the reference of this AuxSTPredicateWithArgs was never determined,
             # we first try to determine it.
             qualified_identifier = self._get_qualified_id(sem)
-            if qualified_identifier[0].isupper():
+            if qualified_identifier[0].isupper() or "." in qualified_identifier:
                 if qualified_identifier not in sem.overridden_qualified_ids.dictionary():
                     # the reference of the predicate_with_args is nowhere in the FPL sourcecode declared
                     sem.analyzer.error_mgr.add_error(
                         FplIdentifierNotDeclared(qualified_identifier, self.path[1].file_name, self.zfrom))
                     self.reference = NamedUndefined(qualified_identifier)
+                    self.reference.zfrom = self.zfrom
                 else:
                     possible_overrides = sem.overridden_qualified_ids.get(qualified_identifier)
                     # at this stage, we have a list of possible overrides,
@@ -125,9 +126,10 @@ class AuxSTPredicateWithArgs(AuxST):
             base_identifier = self.get_qualified_id()
         else:
             base_identifier = self.get_declared_type().get_qualified_id()
-        parent_identifier = sem.eval_stack[-1].parent_identifier
-        if parent_identifier != "":
-            qualified_identifier = parent_identifier + "." + base_identifier
+        # check if the predecessor was an AuxSTQualified node
+        if isinstance(sem.eval_stack[-2].node, AuxSTQualified):
+            # if so, correct the qualified identifier by its identifier
+            qualified_identifier = sem.eval_stack[-2].node.get_qualified_id() + "." + base_identifier
         else:
             qualified_identifier = base_identifier
         return qualified_identifier
