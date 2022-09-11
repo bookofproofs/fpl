@@ -31,9 +31,9 @@ class EvaluateParams:
         :return: Boolean Value
         """
         if self.expected_type is None:
-            self.expected_type = InbuiltUndefined()
+            self.expected_type = InbuiltUndefined(self.node)
         if self.value is None:
-            self.value = InbuiltUndefined()
+            self.value = InbuiltUndefined(self.node)
         return self.expected_type.id != self.value.id
 
     @staticmethod
@@ -61,8 +61,6 @@ class EvaluateParams:
         else:
             eval_params.returned_value = eval_params.value
 
-        if node.get_declared_type() is None:
-            node.set_declared_type(InbuiltUndefined())
         # as a last step, we have to set the evaluated value of the symbol table element
         node.get_declared_type().set_repr(eval_params.value)
         return eval_params

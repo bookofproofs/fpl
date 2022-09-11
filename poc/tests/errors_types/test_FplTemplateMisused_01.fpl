@@ -10,7 +10,6 @@ TestAxiom
                 NotEquals(Zero(), Succ(tplNat))
             )
         }
-
     }
 }
 

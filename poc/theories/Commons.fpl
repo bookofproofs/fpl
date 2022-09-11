@@ -69,18 +69,14 @@ Fpl.Commons
         {
             p: pred 
 
+			all p
+			(
 				iif
 				(
-					Equal(a,b),
-					all p
-					(
-						iif
-						(
-							p(a),
-							p(b)
-						)
-					)
+					p(a),
+					p(b)
 				)
+			)
         }
 
         pred NotEqual(x,y: tpl)
@@ -131,6 +127,7 @@ Fpl.Commons
     }
 
 }
+
 
 
 

@@ -9,4 +9,4 @@ class AuxSTJustification(AuxST):
         super().__init__(AuxSymbolTable.justification, i)
 
     def evaluate(self, sem):
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        sem.eval_stack[-1].value = InbuiltUndefined(self)

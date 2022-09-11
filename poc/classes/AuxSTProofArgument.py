@@ -10,4 +10,4 @@ class AuxSTProofArgument(AuxST):
         self.type = ""
 
     def evaluate(self, sem):
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        sem.eval_stack[-1].value = InbuiltUndefined(self)

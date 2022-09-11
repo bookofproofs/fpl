@@ -3,6 +3,7 @@ from gid import Guid
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplVariableAlreadyDeclared
 from poc.fplerror import FplTemplateMisused
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
@@ -94,6 +95,8 @@ class AuxSTBuildingBlock(AuxST):
             for node in self._used_vars:
                 if node.id.startswith("tpl"):
                     error_mgr.add_error(FplTemplateMisused(node.id, node.zfrom, filename))
+                    # set the declared type of this var
+                    node.set_declared_type(InbuiltUndefined(node))
         self._used_vars = ok_vars
 
     def append_variable_already_declared(self, var_declaration, error_mgr: FplErrorManager, filename):

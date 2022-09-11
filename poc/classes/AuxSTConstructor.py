@@ -50,5 +50,11 @@ class AuxSTConstructor(AuxSTBuildingBlock):
         if self.outline == AuxSymbolTable.classDefaultConstructor:
             sem.eval_stack[-1].value = InbuiltClassInstance(self)
         else:
-            sem.eval_stack[-1].value = InbuiltUndefined()
+            sem.eval_stack[-1].value = InbuiltUndefined(self)
         self.set_sc_ready()
+
+    def get_declared_type(self):
+        if self._declared_type is None:
+            # the type of the constructor corresponds to the type of its class
+            self.set_declared_type(self.parent.parent.get_declared_type())
+        return self._declared_type

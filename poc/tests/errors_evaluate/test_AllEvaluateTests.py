@@ -31,6 +31,7 @@ class AllEvaluateTests(UtilTestCase):
         ("test_FplVariableNotInitialized_ok_01.fpl", "SE0230"),
         ("test_FplAxiomNotSatisfiable_ok_01.fpl", "SE0240"),
         ("test_FplAxiomNotSatisfiable_ok_02.fpl", "SE0240"),
+        ("test_FplPremiseNotSatisfiable_ok_01.fpl", "SE0245"),
     ])
     def test_no_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_no_fpl_error(self.folder + "/" + use_case, diagnose_id)

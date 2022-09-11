@@ -15,14 +15,15 @@ class ContextEntityWithCoord(AuxInterpretation):
         self.predicate = None
         self._sub_node = None
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["EntityWithCoord"]+["Identifier"], self.rule_aggregator)
+                                      AuxRuleDependencies.dep["EntityWithCoord"] + ["Identifier", "LeftBound"],
+                                      self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Entity" or rule == "Identifier":
             self.predicate = parsing_info.predicate  # noqa
             self.predicate.register_child(self._sub_node)
             self.stop_aggregation = True
-        elif rule == "Range":
+        elif rule == "ClosedOrOpenRange":
             self._sub_node = parsing_info.range  # noqa
         elif rule == "CoordList":
             self._sub_node = parsing_info.predicate  # noqa
@@ -33,4 +34,3 @@ class ContextEntityWithCoord(AuxInterpretation):
         new_info.predicate.zto = i.last_positions_by_rule['EntityWithCoord'].pos_to_str()
         new_info.predicate.zfrom = i.corrected_position('Entity')
         i.parse_list.append(new_info)
-

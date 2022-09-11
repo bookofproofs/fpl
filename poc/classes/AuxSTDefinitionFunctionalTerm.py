@@ -2,6 +2,7 @@ from poc.classes.AuxEvaluationBlockFunctionalTerm import AuxEvaluationBlockFunct
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTProperties import AuxSTProperties
+from poc.classes.AuxSTType import AuxSTType
 from anytree import search
 from poc.fplerror import FplErrorManager
 
@@ -48,3 +49,8 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBuildingBlock):
 
     def evaluate(self, sem):
         AuxEvaluationBlockFunctionalTerm.evaluate(self, sem)
+
+    def get_declared_type(self):
+        if self._declared_type is None:
+            AuxEvaluationBlockFunctionalTerm.initialize_declared_type_of_functional_term(self)
+        return self._declared_type

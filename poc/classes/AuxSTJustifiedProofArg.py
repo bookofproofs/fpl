@@ -8,4 +8,4 @@ class AuxSTJustifiedProofArg(AuxSTProofArgument):
         super().__init__(i)
 
     def evaluate(self, sem):
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        sem.eval_stack[-1].value = InbuiltUndefined(self)

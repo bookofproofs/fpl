@@ -2,6 +2,7 @@ from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplerror import FplErrorManager
+from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 
 
 class AuxSTProof(AuxSTBuildingBlock):
@@ -11,6 +12,8 @@ class AuxSTProof(AuxSTBuildingBlock):
         self.zfrom = i.corrected_position('ProofHeader')
         self.zto = i.last_positions_by_rule['Proof'].pos_to_str()
         self._referenced_theorem_like_stmt = None
+        # Proofs are predicates per default
+        self.set_declared_type(InbuiltPredicate(self))
 
     def set_referenced_theorem_like_stmt(self, node):
         self._referenced_theorem_like_stmt = node
@@ -32,5 +35,5 @@ class AuxSTProof(AuxSTBuildingBlock):
 
     def evaluate(self, sem):
         sem.analyzer.current_building_block = self
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        sem.eval_stack[-1].value = InbuiltUndefined(self)
         self.set_sc_ready()

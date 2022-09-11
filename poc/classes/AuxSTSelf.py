@@ -50,7 +50,7 @@ class AuxSTSelf(AuxST):
             self.reference = test_node
             self._declared_type = test_node.get_declared_type()
             if self._declared_type is None:
-                declared_type = InbuiltUndefined()
+                declared_type = InbuiltUndefined(self)
         # initializes the qualified id of self depending on the determined self._declared_type
         self.get_qualified_id()
 

@@ -1,5 +1,6 @@
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTInstance import AuxSTInstance
+from poc.classes.AuxSTType import AuxSTType
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
@@ -23,5 +24,14 @@ class AuxSTClassInstance(AuxSTInstance):
 
     def evaluate(self, sem):
         sem.analyzer.current_building_block = self
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        sem.eval_stack[-1].value = InbuiltUndefined(self)
         self.set_sc_ready()
+
+    def get_declared_type(self):
+        if self._declared_type is None:
+            # determine the class instance's type from the symbol table
+            for child in self.children:
+                if isinstance(child, AuxSTType):
+                    self._declared_type = child
+                    break
+        return self._declared_type

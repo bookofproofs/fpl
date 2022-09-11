@@ -1,7 +1,7 @@
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate, InbuiltFunctionalTerm, \
-    NamedUndefined
+    NamedUndefined, AuxInbuiltType
 from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxSTBuildingBlock import AuxST
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
@@ -49,8 +49,7 @@ class AuxSTPredicateWithArgs(AuxST):
                     # the reference of the predicate_with_args is nowhere in the FPL sourcecode declared
                     sem.analyzer.error_mgr.add_error(
                         FplIdentifierNotDeclared(qualified_identifier, self.path[1].file_name, self.zfrom))
-                    self.reference = NamedUndefined(qualified_identifier)
-                    self.reference.zfrom = self.zfrom
+                    self.reference = NamedUndefined(self, qualified_identifier)
                 else:
                     possible_overrides = sem.overridden_qualified_ids.get(qualified_identifier)
                     # at this stage, we have a list of possible overrides,
@@ -59,7 +58,7 @@ class AuxSTPredicateWithArgs(AuxST):
                     for override in possible_overrides:
                         if self._check_illegal_recursion(sem, override):
                             sem.analyzer.error_mgr.add_error(FplPredicateRecursion(override.reference, self))
-                            self.reference = InbuiltUndefined()
+                            self.reference = InbuiltUndefined(self)
                             break
                         ret = EvaluateParams.evaluate_recursion(sem, override.reference, propagated_expected_type,
                                                                 arg_list, True)
@@ -72,7 +71,7 @@ class AuxSTPredicateWithArgs(AuxST):
 
                     if len(mismatched_overrides) >= len(possible_overrides):
                         self._issue_FplWrongArguments(sem, ret.arg_type_list, mismatched_overrides)
-                        self.reference = InbuiltUndefined()
+                        self.reference = InbuiltUndefined(self)
                 if not isinstance(self.reference, (InbuiltUndefined, NamedUndefined)):
                     # at this stage, only if self.reference is not InbuiltUndefined, it is instead
                     # a matched override of the Pascal Case identifier somewhere in the FPL source code.
@@ -93,8 +92,7 @@ class AuxSTPredicateWithArgs(AuxST):
                         mismatched_overrides = list()
                         mismatched_overrides.append(str(sem.eval_stack[-1].argument_error))
                         self._issue_FplWrongArguments(sem, arg_list, mismatched_overrides)
-                self.reference = InbuiltPredicate()
-                sem.eval_stack[-1].value = self.reference
+                self.reference = InbuiltPredicate(self)
             else:
                 raise NotImplementedError()
             if not sem.analyzer.current_building_block.is_sc_ready():
@@ -104,9 +102,15 @@ class AuxSTPredicateWithArgs(AuxST):
                 else:
                     sem.analyzer.sc.add_reference(self.reference, sem.analyzer.current_building_block,
                                                   AuxReferenceType.semantical)
+            # set the declared type of self to the declared type of its reference, unless it is inbuilt
+            if isinstance(self.reference, AuxInbuiltType):
+                # prevent infinite recursion, since the inbuilt types have no declared types on their own
+                self.set_declared_type(self.reference)
+            else:
+                self.set_declared_type(self.reference.get_declared_type())
         else:
-            # avoid re-evaluation of InbuildUndefined
-            if not isinstance(self.reference, InbuiltUndefined):
+            # avoid re-evaluation of inbuilt types
+            if not isinstance(self.reference, AuxInbuiltType):
                 ret = EvaluateParams.evaluate_recursion(sem, self.reference, propagated_expected_type,
                                                         arg_list, True)
                 sem.eval_stack.pop()

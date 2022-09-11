@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.10
+* Bugfix
+  * Index error when trying to log FplTypeMismatch errors based on some inbuilt type from the AuxInbuiltTypes.py
+  * Explicit initialization of the declared_type of nodes in the symbol table
+  * Adjusted AuxRuldDependencies and ContextEntityWithCoord to reflect the FPL grammar fix version 1.1.9.
+  * Fixed test cases related to ranges to reflect the FPL grammar fix version 1.1.9
 ## 1.8.9
 * Bugfix
   * Matching generic types with objects corrected

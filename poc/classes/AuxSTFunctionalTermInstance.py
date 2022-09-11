@@ -25,3 +25,8 @@ class AuxSTFunctionalTermInstance(AuxSTInstance):
 
     def evaluate(self, sem):
         AuxEvaluationBlockFunctionalTerm.evaluate(self, sem)
+
+    def get_declared_type(self):
+        if self._declared_type is None:
+            AuxEvaluationBlockFunctionalTerm.initialize_declared_type_of_functional_term(self)
+        return self._declared_type

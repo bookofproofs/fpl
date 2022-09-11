@@ -8,7 +8,6 @@ import anytree
 from anytree import Resolver
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTGlobal import AuxSTGlobal
-from poc.classes.AuxSTVarDec import AuxSTVarDec
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplVariableDuplicateInVariableList
 from poc.fplerror import FplTemplateMisused
@@ -373,3 +372,6 @@ class AuxSymbolTable:
         if len(node.children) == 0:
             node.parent = None
             del node
+
+
+from poc.classes.AuxSTVarDec import AuxSTVarDec

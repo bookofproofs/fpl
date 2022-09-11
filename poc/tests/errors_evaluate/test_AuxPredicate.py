@@ -84,11 +84,11 @@ class AuxPredicateTests(unittest.TestCase):
         p = AuxSTPredicate(p_type, self.i)
         p.assert_predicate()
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate(p))
         self.assertTrue(ret.value.get_repr())
         p.revoke_predicate()
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate(p))
         self.assertFalse(ret.value.get_repr())
 
     @parameterized.expand([
@@ -103,7 +103,7 @@ class AuxPredicateTests(unittest.TestCase):
         """
 
         p = AuxSTPredicate(p_type, self.i)
-        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate(p))
 
         if p_type == AuxSymbolTable.predicate_true:
             self.assertTrue(ret.value.get_repr())
@@ -126,7 +126,7 @@ class AuxPredicateTests(unittest.TestCase):
         p = AuxSTPredicate(p_type, self.i)
         result.register_child(p)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(p))
 
         if p_type == AuxSymbolTable.predicate_true:
             self.assertFalse(ret.value.get_repr())
@@ -154,7 +154,7 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
             self.assertFalse(ret.value.get_repr())
@@ -186,7 +186,7 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
             self.assertFalse(ret.value.get_repr())
@@ -218,7 +218,7 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
             self.assertTrue(ret.value.get_repr())
@@ -250,7 +250,7 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
             self.assertFalse(ret.value.get_repr())
@@ -282,7 +282,7 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate())
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
         if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
             self.assertTrue(ret.value.get_repr())

@@ -379,9 +379,13 @@ class FplPremiseNotSatisfiable(FplInterpreterMessage):
 class FplTypeMismatch(FplInterpreterMessage):
     def __init__(self, node, expected, actual):
         s = node.zfrom.split(".")
+        if hasattr(node, "copied_path"):
+            path = node.copied_path
+        else:
+            path = node.path
         super().__init__("Type mismatch: expected '{0}', received '{1}' in this context".format(expected, actual),
                          s[0], s[1],
-                         node.path[1].file_name)
+                         path[1].file_name)
         self.diagnose_id = "SE0250"
 
 

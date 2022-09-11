@@ -1,4 +1,5 @@
 from poc.classes.AuxST import AuxST
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 
 
 class AuxSTVarDec(AuxST):
@@ -9,6 +10,8 @@ class AuxSTVarDec(AuxST):
         self._scope_start_col = 0
         self._scope_end_row = 0
         self._scope_end_col = 0
+        # the var declaration node in the symbol table has the inbuilt undefined type per default
+        self.set_declared_type(InbuiltUndefined(self.parent))
 
     def clone(self):
         other = self._copy(AuxSTVarDec(self._i))
@@ -62,4 +65,3 @@ class AuxSTVarDec(AuxST):
         for occurrence in occurrences:
             # set the pointer to the type of each usage of the variable inside the node to the same type_node
             occurrence.set_declared_type(main_instance[self.id].type_node)
-
