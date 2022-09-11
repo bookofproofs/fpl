@@ -13,7 +13,7 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
         super().__init__(AuxSymbolTable.block_ir, i)
         self.zfrom = i.last_positions_by_rule['PredicateIdentifier'].pos_to_str()
         self.zto = i.last_positions_by_rule['RuleOfInference'].pos_to_str()
-        self.set_declared_type(InbuiltPredicate())
+        self.set_declared_type(InbuiltPredicate(self))
 
     def evaluate(self, sem):
         sem.analyzer.current_building_block = self
@@ -24,13 +24,13 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
             for child in self.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(),
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child),
                                                       sem.eval_stack[-1].arg_type_list,
                                                       sem.eval_stack[-1].check_args)
                 elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTPredicate):
-                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate())
+                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
                     if child.outline == AuxSymbolTable.pre:
                         pre = ret.returned_value
                     elif child.outline == AuxSymbolTable.con:
@@ -39,11 +39,11 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
                     raise NotImplementedError(str(type(child)))
 
             if pre is None or con is None:
-                sem.eval_stack[-1].value = InbuiltUndefined()
+                sem.eval_stack[-1].value = InbuiltUndefined(self)
                 return
             # per default, we assume the truth of inference rules
             # unless the evaluation of some of its sub-nodes was not successful
-            sem.eval_stack[-1].value = EvaluatedPredicate(True)
+            sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
 
             if len(signature.children) == 0:
                 self.set_constant_value(sem.eval_stack[-1])

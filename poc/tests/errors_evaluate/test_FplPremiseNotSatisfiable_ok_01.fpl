@@ -1,0 +1,19 @@
+TestFplPremiseNotSatisfiable
+{
+    inference
+    {
+        ModusPonens()
+        {
+            p,q: pred
+
+            premise:
+                and (p, impl (p,q) )
+            conclusion:
+                q
+        }
+    }
+
+    theory {}
+}
+##############################
+should not trigger FplPremiseNotSatisfiable

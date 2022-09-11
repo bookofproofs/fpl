@@ -5,10 +5,37 @@ TestNamespace
         pred Test()
         {
             x: obj
-            x[!1~2!].SomeProperty
+            x[!1~2!].SomeProperty()
         }
 
     }
 }
 ##############################
-tobedone
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='8d4de6d51dd826869ce5f86452ce5792', file_name='test_RangesCoords_12da.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='9.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTVarDec(id='x', outline='var_decl', zfrom='7.12', zto='7.18')
+    │       │       └── AuxSTType(id='obj', outline='type', type_mod=None, type_pattern=17, zfrom='7.15', zto='7.18')
+    │       ├── AuxSTVariable(id='x', outline='var', zfrom='8.12', zto='8.20')
+    │       │   ├── AuxSTRange(left_included=False, outline='range', right_included=False, zfrom='8.13', zto='8.20')
+    │       │   │   ├── AuxSTPredicate(id='1', outline='extDigit', zfrom='8.15', zto='8.16')
+    │       │   │   └── AuxSTPredicate(id='2', outline='extDigit', zfrom='8.17', zto='8.18')
+    │       │   └── AuxSTQualified(outline='qualified', zfrom='8.20', zto='8.20')
+    │       │       └── AuxSTPredicateWithArgs(id='SomeProperty', outline='predicateWithArgs', reference=None, zfrom='8.21', zto='8.35')
+    │       │           └── AuxSTArgs(outline='arguments', zfrom='8.34', zto='8.35')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

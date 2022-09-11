@@ -18,6 +18,8 @@ class AuxSTOutline(AnyNode):
         self._declared_type = type_node
 
     def get_declared_type(self):
+        if self._declared_type is None:
+            raise AssertionError("The declared type of " + str(type(self)) + " is unexpectedly None")
         return self._declared_type
 
 

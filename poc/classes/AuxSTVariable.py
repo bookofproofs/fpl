@@ -5,6 +5,7 @@ from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 
+
 class AuxSTVariable(AuxST):
 
     def __init__(self, i):
@@ -52,5 +53,3 @@ class AuxSTVariable(AuxST):
                     raise NotImplementedError()
         else:
             sem.eval_stack[-1].value = self.get_declared_type().get_repr()
-
-

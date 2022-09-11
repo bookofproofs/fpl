@@ -1,4 +1,7 @@
 # Changes in the Proof of Concept Theories
+## 1.0.7
+* Bugfixes: 
+  * FplPredicateRecursion error corrected in Equal predicate definition in Commons.fpl
 ## 1.0.6
 * Bugfixes:
   * Corrected some additional semantical errors detected by the FPL interpreter version 1.6.5. 

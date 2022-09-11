@@ -1,4 +1,6 @@
 # Changes in the FPL grammar
+## 1.1.9
+* EntityWithCoord corrected to support left and right bounds
 ## 1.1.8
 * Undo last ReferencingIdentifier simplifications since we need proofs of corollaries.
 ## 1.1.7

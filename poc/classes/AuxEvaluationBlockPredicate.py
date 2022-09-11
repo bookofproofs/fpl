@@ -22,21 +22,21 @@ class AuxEvaluationBlockPredicate:
             for child in node.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(),
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child),
                                                       sem.eval_stack[-1].arg_type_list,
                                                       sem.eval_stack[-1].check_args)
                 elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs, AuxSTVariable)):
-                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate())
+                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
                     if ret.returned_value is None:
-                        sem.eval_stack[-1].value = InbuiltUndefined()
+                        sem.eval_stack[-1].value = InbuiltUndefined(node)
                     else:
                         sem.eval_stack[-1].value = ret.returned_value
                     if len(signature.children) == 0:
                         node.set_constant_value(sem.eval_stack[-1])
                 elif isinstance(child, AuxSTProperties):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined())
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 else:
                     raise NotImplementedError(str(type(child)))
         else:
@@ -44,3 +44,8 @@ class AuxEvaluationBlockPredicate:
             sem.eval_stack.pop()
             sem.eval_stack.append(node.constant_value())
         node.set_sc_ready()
+
+    @staticmethod
+    def initialize_declared_type_of_predicate(predicate):
+        # the predicate's block's type is the inbuilt predicate
+        predicate.set_declared_type(InbuiltPredicate(predicate))

@@ -43,3 +43,9 @@ class AuxSTQualified(AuxST):
         check = EvaluateParams.evaluate_recursion(sem, self.children[0], sem.eval_stack[-1].expected_type)
         # set the value of the evaluation to the value retrieved
         sem.eval_stack[-1].value = check.value
+
+    def get_declared_type(self):
+        if self._declared_type is None:
+            # the AuxSTQualified's declared type is always the type of its parent node in the symbol table
+            self.set_declared_type(self.parent.get_declared_type())
+        return self._declared_type

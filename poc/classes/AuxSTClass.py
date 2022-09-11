@@ -124,7 +124,7 @@ class AuxSTClass(AuxSTBuildingBlock):
         if not self.is_sc_ready():
             sem.analyzer.sc.add_reference(None, sem.analyzer.current_building_block,
                                           AuxReferenceType.semantical)
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        sem.eval_stack[-1].value = InbuiltUndefined(self)
         self.set_sc_ready()
 
     def get_declared_type(self):

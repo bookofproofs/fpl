@@ -110,7 +110,7 @@ class SemCheckerIdentifiers:
                 # the variable is undeclared if it was not found among the declared variables
                 self.analyzer.error_mgr.add_error(FplUndeclaredVariable(var_node.zfrom, var_node.id, file_name))
                 # set the type fo the variable to InbuiltUndefined
-                var_node.set_declared_type(InbuiltUndefined())
+                var_node.set_declared_type(InbuiltUndefined(var_node))
             elif not declared_vars[var_node.id].has_in_scope(var_node.zfrom):
                 # the variable is also undeclared if it was found among the declared variables
                 # but is outside the scope of this variable declaration
@@ -339,24 +339,24 @@ class SemCheckerIdentifiers:
                                               type_node.zfrom,
                                               theory_node.file_name)
                         )
-                        type_node.set_repr(InbuiltUndefined())
+                        type_node.set_repr(InbuiltUndefined(type_node))
                     else:
                         self.analyzer.error_mgr.add_error(
                             FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
                         )
-                        type_node.set_repr(InbuiltUndefined())
+                        type_node.set_repr(InbuiltUndefined(type_node))
                 elif AuxBits.is_index(type_node.type_pattern):
-                    type_node.set_repr(InbuiltIndex())
+                    type_node.set_repr(InbuiltIndex(type_node))
                 elif AuxBits.is_predicate(type_node.type_pattern):
-                    type_node.set_repr(InbuiltPredicate())
+                    type_node.set_repr(InbuiltPredicate(type_node))
                 elif AuxBits.is_functional_term(type_node.type_pattern):
-                    type_node.set_repr(InbuiltFunctionalTerm())
+                    type_node.set_repr(InbuiltFunctionalTerm(type_node))
                 elif AuxBits.is_generic(type_node.type_pattern):
-                    type_node.set_repr(InbuiltGeneric(type_node.id))
+                    type_node.set_repr(InbuiltGeneric(type_node, type_node.id))
                 elif AuxBits.is_inbuilt_object(type_node.type_pattern):
-                    type_node.set_repr(InbuiltObject())
+                    type_node.set_repr(InbuiltObject(type_node))
                 elif AuxBits.is_extension(type_node.type_pattern):
-                    type_node.set_repr(InbuiltExtension(type_node.id))
+                    type_node.set_repr(InbuiltExtension(type_node))
                 else:
                     raise NotImplementedError("type_pattern " + str(self.type_pattern))
 
@@ -410,7 +410,7 @@ class SemCheckerIdentifiers:
         elif isinstance(reference, AuxSTDefinitionFunctionalTerm):
             self.functional_terms.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTDefinitionPredicate):
-            reference.set_declared_type(InbuiltPredicate())
+            reference.set_declared_type(InbuiltPredicate(reference))
             self.predicates.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTClassInstance):
             self.instance_classes.add(qualified_identifier, block, possible_duplicate)

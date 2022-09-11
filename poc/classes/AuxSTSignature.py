@@ -21,6 +21,8 @@ class AuxSTSignature(AuxST):
         self._pointer_args = 0
         self._pointer_params = 0
         self._param_types = list()
+        # the signature node in the symbol table has the inbuilt undefined type per default
+        self.set_declared_type(InbuiltUndefined(self))
 
     def set_id(self, identifier):
         self._id = identifier
@@ -59,4 +61,5 @@ class AuxSTSignature(AuxST):
         if sem.eval_stack[-1].check_args:
             params_of_signature = list(self.children)
             matcher.try_match(sem, args_of_caller, params_of_signature)
-        sem.eval_stack[-1].value = InbuiltUndefined()
+        sem.eval_stack[-1].value = InbuiltUndefined(self)
+
