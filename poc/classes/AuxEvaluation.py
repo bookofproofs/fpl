@@ -52,8 +52,9 @@ class EvaluateParams:
         node.evaluate(sem)  # start recursion
         eval_params = sem.eval_stack.pop()  # garbage-collect the stack
         # check if there is a type mismatch
+
         if eval_params.type_mismatch():
-            sem.analyzer.error_mgr.add_error(
+            sem.error_mgr.add_error(
                 FplTypeMismatch(node, eval_params.expected_type.id, eval_params.value.id)
             )
             # since we have a type mismatch, we have to return None

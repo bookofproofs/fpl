@@ -16,7 +16,7 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
         self.set_declared_type(InbuiltPredicate(self))
 
     def evaluate(self, sem):
-        sem.analyzer.current_building_block = self
+        sem.current_building_block = self
         if self.constant_value() is None:
             signature = None
             pre = None

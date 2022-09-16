@@ -47,7 +47,7 @@ class AuxSTPredicateWithArgs(AuxST):
             if qualified_identifier[0].isupper() or "." in qualified_identifier:
                 if qualified_identifier not in sem.overridden_qualified_ids.dictionary():
                     # the reference of the predicate_with_args is nowhere in the FPL sourcecode declared
-                    sem.analyzer.error_mgr.add_error(
+                    sem.error_mgr.add_error(
                         FplIdentifierNotDeclared(qualified_identifier, self.path[1].file_name, self.zfrom))
                     self.reference = NamedUndefined(self, qualified_identifier)
                 else:
@@ -57,7 +57,7 @@ class AuxSTPredicateWithArgs(AuxST):
                     mismatched_overrides = list()
                     for override in possible_overrides:
                         if self._check_illegal_recursion(sem, override):
-                            sem.analyzer.error_mgr.add_error(FplPredicateRecursion(override.reference, self))
+                            sem.error_mgr.add_error(FplPredicateRecursion(override.reference, self))
                             self.reference = InbuiltUndefined(self)
                             break
                         ret = EvaluateParams.evaluate_recursion(sem, override.reference, propagated_expected_type,
@@ -93,15 +93,14 @@ class AuxSTPredicateWithArgs(AuxST):
                         mismatched_overrides.append(str(sem.eval_stack[-1].argument_error))
                         self._issue_FplWrongArguments(sem, arg_list, mismatched_overrides)
                 self.reference = InbuiltPredicate(self)
+                sem.eval_stack[-1].value = self.reference
             else:
                 raise NotImplementedError()
-            if not sem.analyzer.current_building_block.is_sc_ready():
+            if not sem.current_building_block.is_sc_ready():
                 if AuxBits.is_predicate(propagated_expected_type.type_pattern):
-                    sem.analyzer.sc.add_reference(self.reference, sem.analyzer.current_building_block,
-                                                  AuxReferenceType.logical)
+                    sem.sc.add_reference(self.reference, sem.current_building_block, AuxReferenceType.logical)
                 else:
-                    sem.analyzer.sc.add_reference(self.reference, sem.analyzer.current_building_block,
-                                                  AuxReferenceType.semantical)
+                    sem.sc.add_reference(self.reference, sem.current_building_block, AuxReferenceType.semantical)
             # set the declared type of self to the declared type of its reference, unless it is inbuilt
             if isinstance(self.reference, AuxInbuiltType):
                 # prevent infinite recursion, since the inbuilt types have no declared types on their own
@@ -123,7 +122,7 @@ class AuxSTPredicateWithArgs(AuxST):
                 arg_types.append(type_node.to_string2() + "/" + type_node.get_repr().id)
             else:
                 arg_types.append(type_node.to_string2())
-        sem.analyzer.error_mgr.add_error(FplWrongArguments(arg_types, mismatched_overrides, self))
+        sem.error_mgr.add_error(FplWrongArguments(arg_types, mismatched_overrides, self))
 
     def _get_qualified_id(self, sem):
         if self.id[0].isupper():
@@ -149,7 +148,7 @@ class AuxSTPredicateWithArgs(AuxST):
                 arg_type_list.append(argument_node.get_declared_type())
             elif isinstance(argument_node, AuxSTVariable):
                 if not argument_node.is_bound_or_initialized():
-                    sem.analyzer.error_mgr.add_error(FplVariableNotInitialized(argument_node))
+                    sem.error_mgr.add_error(FplVariableNotInitialized(argument_node))
                 arg_type_list.append(argument_node.get_declared_type())
             elif isinstance(argument_node, AuxSTSelf):
                 arg_type_list.append(argument_node.get_declared_type())

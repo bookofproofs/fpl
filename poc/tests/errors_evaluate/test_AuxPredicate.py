@@ -61,7 +61,7 @@ class AuxPredicateTests(unittest.TestCase):
         cls._error_mgr = FplErrorManager()
         AnyNode(outline=AuxSymbolTable.globals, parent=cls._symbol_table_root)
         cls.analyzer = SemanticAnalyser(cls._symbol_table_root, cls._error_mgr)
-        cls.sem = cls.analyzer.sem_checker_identifiers
+        cls.sem = cls.analyzer
 
     @parameterized.expand([
         AuxSymbolTable.predicate_negation,

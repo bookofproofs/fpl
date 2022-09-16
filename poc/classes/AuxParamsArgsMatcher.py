@@ -36,9 +36,6 @@ class AuxParamsArgsMatcher:
                 return False
             else:
                 type_arg = args_of_caller[self._pointer_args]
-                if type_arg is None:
-                    print("")
-                    return
                 if not hasattr(type_arg, "type_pattern"):
                     type_arg = type_arg.get_declared_type()
                 type_param = params_of_signature[self._pointer_params].children[0]

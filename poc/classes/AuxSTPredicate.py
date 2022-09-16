@@ -142,7 +142,7 @@ class AuxSTPredicate(AuxST):
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                 elif not self.check_satisfiability():
-                    sem.analyzer.error_mgr.add_error(FplPremiseNotSatisfiable(self))
+                    sem.error_mgr.add_error(FplPremiseNotSatisfiable(self))
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                 else:
                     # since the premise is satisfiable, we 'assume' it to be true for the theory to come

@@ -120,10 +120,9 @@ class AuxSTClass(AuxSTBuildingBlock):
         return self._hip
 
     def evaluate(self, sem):
-        sem.analyzer.current_building_block = self
+        sem.current_building_block = self
         if not self.is_sc_ready():
-            sem.analyzer.sc.add_reference(None, sem.analyzer.current_building_block,
-                                          AuxReferenceType.semantical)
+            sem.sc.add_reference(None, sem.current_building_block, AuxReferenceType.semantical)
         sem.eval_stack[-1].value = InbuiltUndefined(self)
         self.set_sc_ready()
 

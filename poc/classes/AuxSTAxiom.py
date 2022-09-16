@@ -20,7 +20,7 @@ class AuxSTAxiom(AuxSTBuildingBlock):
         self.set_declared_type(InbuiltPredicate(self))
 
     def evaluate(self, sem):
-        sem.analyzer.current_building_block = self
+        sem.current_building_block = self
         if self.constant_value() is None:
             signature = None
             for child in self.children:
@@ -36,7 +36,7 @@ class AuxSTAxiom(AuxSTBuildingBlock):
                     if ret.returned_value is None:
                         sem.eval_stack[-1].value = InbuiltUndefined(self)
                     elif not ret.returned_value.get_repr():
-                        sem.analyzer.error_mgr.add_error(FplAxiomNotSatisfiable(self))
+                        sem.error_mgr.add_error(FplAxiomNotSatisfiable(self))
                         sem.eval_stack[-1].value = InbuiltUndefined(self)
                     else:
                         # since the axiom is satisfiable, we 'assume' it to be true for the theory to come
