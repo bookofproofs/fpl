@@ -1,0 +1,41 @@
+TestTypes
+{
+    theory
+    {
+        pred Equal(a,b: tplSetElem)
+        {
+            p: pred
+
+			all p
+			(
+				iif
+				(
+					p(a),
+					p(b)
+				)
+			)
+        }
+
+
+        func BinOp(x,y: tplSetElem) -> tplSetElem
+        {
+            optional pred IsLeftNeutralElement(e: tplSetElem)
+            {
+                Equal(@self(e,x), x)
+            }
+
+            optional pred IsRightNeutralElement(e: tplSetElem)
+            {
+                Equal(@self(x,e), x)
+            }
+
+            optional pred IsNeutralElement(e: tplSetElem)
+            {
+                and (IsLeftNeutralElement(e), IsRightNeutralElement(e))
+            }
+        }
+    }
+}
+
+##############################
+should not trigger FplTypeMismatch

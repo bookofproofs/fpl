@@ -14,10 +14,8 @@ from poc.fplerror import FplVariableBound
 from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
 from poc.classes.AuxBits import AuxBits
-from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltIndex, InbuiltObject, InbuiltPredicate, \
     InbuiltFunctionalTerm, InbuiltExtension, InbuiltGeneric
-from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSTAxiom import AuxSTAxiom
 from poc.classes.AuxSTClass import AuxSTClass
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance
@@ -44,32 +42,6 @@ from poc.fplerror import FplMissingProof
 class SemCheckerIdentifiers:
     def __init__(self, analyzer):
         self.analyzer = analyzer
-        # a stack to evaluate recursively the semantics of the symbol table
-        self.eval_stack = list()
-        # append root (dummy) params for later recursion
-        self.eval_stack.append(EvaluateParams())
-        # a dictionary of all nodes by id (non-global identifier)
-        self.theorem_like_statements = dict()  # all theorem like statements by id (non-global identifier)
-
-        # In the following, we specify, which building blocks are allowed to have overrides
-        # (i.e. the same identifiers, but different signatures).
-        self.theorems = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.lemmas = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.propositions = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.corollaries = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.axioms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.conjectures = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.classes = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.proofs = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.instance_classes = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.instance_functional_terms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.instance_predicates = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.functional_terms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        self.predicates = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.analyzer.error_mgr)
-        # allowed ones:
-        self.overridden_qualified_ids = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.inference_rules = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.analyzer.error_mgr)
-        self.constructors = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.analyzer.error_mgr)
 
     def analyse(self):
         """
@@ -78,15 +50,14 @@ class SemCheckerIdentifiers:
         """
         for child in self.analyzer.globals_node.children:
             qualified_identifier = child.get_qualified_id()
-            self.overridden_qualified_ids.add(qualified_identifier, child, None)
+            self.analyzer.overridden_qualified_ids.add(qualified_identifier, child, None)
             self._check_for_malformed_gid(qualified_identifier, child)
-        for qualified_identifier in self.overridden_qualified_ids.dictionary():
+        for qualified_identifier in self.analyzer.overridden_qualified_ids.dictionary():
             self._check_uniqueness_identifiers(qualified_identifier)
         self._check_override_consistency()
         self._check_referencing_proof_corollary()
         self._check_misspelled_types()
         self._check_vars()
-        self.evaluate()
 
     def _check_vars(self):
         for child in self.analyzer.globals_node.children:
@@ -275,7 +246,7 @@ class SemCheckerIdentifiers:
         :param qualified_identifier: reference identifier (might be qualified like in 'ClassName.PropertyName')
         :return: None, but after this method, gid_collection is complete and ready to be used for other analysis steps
         """
-        block_list = self.overridden_qualified_ids.get(qualified_identifier)
+        block_list = self.analyzer.overridden_qualified_ids.get(qualified_identifier)
         if len(block_list) > 1:
             # only if there is more than one building block with the same qualified identifier, errors might occur
             unique_gids = dict()
@@ -325,17 +296,17 @@ class SemCheckerIdentifiers:
             for type_node in collect_type_references:
                 qualified_identifier = type_node.get_qualified_id()
                 if type_node.id[0].isupper():  # if the identifier starts with a Capital, we have a user-defined type
-                    if qualified_identifier in self.classes.dictionary():
-                        type_node.set_repr(self.classes.identify_representative(qualified_identifier))
-                    elif qualified_identifier in self.predicates.dictionary():
-                        type_node.set_repr(self.predicates.identify_representative(qualified_identifier))
-                    elif qualified_identifier in self.functional_terms.dictionary():
-                        type_node.set_repr(self.functional_terms.identify_representative(qualified_identifier))
-                    elif qualified_identifier in self.overridden_qualified_ids.dictionary():
+                    if qualified_identifier in self.analyzer.classes.dictionary():
+                        type_node.set_repr(self.analyzer.classes.identify_representative(qualified_identifier))
+                    elif qualified_identifier in self.analyzer.predicates.dictionary():
+                        type_node.set_repr(self.analyzer.predicates.identify_representative(qualified_identifier))
+                    elif qualified_identifier in self.analyzer.functional_terms.dictionary():
+                        type_node.set_repr(self.analyzer.functional_terms.identify_representative(qualified_identifier))
+                    elif qualified_identifier in self.analyzer.overridden_qualified_ids.dictionary():
                         # any other found declared block is semantically not an allowed type,
                         # we trigger the
                         self.analyzer.error_mgr.add_error(
-                            FplTypeNotAllowed(self.overridden_qualified_ids.get(qualified_identifier)[0],
+                            FplTypeNotAllowed(self.analyzer.overridden_qualified_ids.get(qualified_identifier)[0],
                                               type_node.zfrom,
                                               theory_node.file_name)
                         )
@@ -369,10 +340,10 @@ class SemCheckerIdentifiers:
         in later steps of the semantical analysis.
         :return: None
         """
-        for identifier in self.overridden_qualified_ids.keys():
+        for identifier in self.analyzer.overridden_qualified_ids.keys():
             # in this first loop, we check if there are same signatures with different types of blocks
             last_block = None
-            for block in self.overridden_qualified_ids.get(identifier):
+            for block in self.analyzer.overridden_qualified_ids.get(identifier):
                 if last_block is None:
                     last_block = block
                 else:
@@ -404,40 +375,40 @@ class SemCheckerIdentifiers:
         # we now dispatch the collected nodes
         reference = block.reference
         if isinstance(reference, AuxSTClass):
-            self.classes.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.classes.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTConstructor):
-            self.constructors.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.constructors.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTDefinitionFunctionalTerm):
-            self.functional_terms.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.functional_terms.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTDefinitionPredicate):
             reference.set_declared_type(InbuiltPredicate(reference))
-            self.predicates.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.predicates.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTClassInstance):
-            self.instance_classes.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.instance_classes.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTPredicateInstance):
-            self.instance_predicates.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.instance_predicates.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTFunctionalTermInstance):
-            self.instance_functional_terms.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.instance_functional_terms.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTProof):
-            self.proofs.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.proofs.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTTheorem):
-            self.theorems.add(qualified_identifier, block, possible_duplicate)
-            self.theorem_like_statements[qualified_identifier] = block
+            self.analyzer.theorems.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.theorem_like_statements[qualified_identifier] = block
         elif isinstance(reference, AuxSTProposition):
-            self.propositions.add(qualified_identifier, block, possible_duplicate)
-            self.theorem_like_statements[qualified_identifier] = block
+            self.analyzer.propositions.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.theorem_like_statements[qualified_identifier] = block
         elif isinstance(reference, AuxSTLemma):
-            self.lemmas.add(qualified_identifier, block, possible_duplicate)
-            self.theorem_like_statements[qualified_identifier] = block
+            self.analyzer.lemmas.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.theorem_like_statements[qualified_identifier] = block
         elif isinstance(reference, AuxSTCorollary):
-            self.corollaries.add(qualified_identifier, block, possible_duplicate)
-            self.theorem_like_statements[qualified_identifier] = block
+            self.analyzer.corollaries.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.theorem_like_statements[qualified_identifier] = block
         elif isinstance(reference, AuxSTAxiom):
-            self.axioms.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.axioms.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTRuleOfInference):
-            self.inference_rules.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.inference_rules.add(qualified_identifier, block, possible_duplicate)
         elif isinstance(reference, AuxSTConjecture):
-            self.conjectures.add(qualified_identifier, block, possible_duplicate)
+            self.analyzer.conjectures.add(qualified_identifier, block, possible_duplicate)
         else:
             raise NotImplementedError(type(reference))
 
@@ -452,50 +423,51 @@ class SemCheckerIdentifiers:
         d) proof for a statement formulated as a conjecture -> FplProvedConjecture
         :return: None, updates the error list
         """
-        for qualified_identifier in self.theorem_like_statements:
+        for qualified_identifier in self.analyzer.theorem_like_statements:
             s = qualified_identifier.split("$")
             referenced_identifier = "".join(s[0:-1])
-            global_node = self.theorem_like_statements[qualified_identifier]
+            global_node = self.analyzer.theorem_like_statements[qualified_identifier]
             reference = global_node.reference
             # check for FplCorollaryMissingTheoremLikeStatement error
             if isinstance(reference, AuxSTCorollary):
-                if referenced_identifier not in self.theorem_like_statements:
+                if referenced_identifier not in self.analyzer.theorem_like_statements:
                     self.analyzer.error_mgr.add_error(
                         FplCorollaryMissingTheoremLikeStatement(referenced_identifier,
-                                                                self.theorem_like_statements[qualified_identifier]))
+                                                                self.analyzer.theorem_like_statements[
+                                                                    qualified_identifier]))
             # check for the FplMissingProof warning
             proof_found = False
-            for proof_id in self.proofs.keys():
+            for proof_id in self.analyzer.proofs.keys():
                 if proof_id.startswith(qualified_identifier + "$"):
                     proof_found = True
             if not proof_found:
                 self.analyzer.error_mgr.add_error(FplMissingProof(global_node))
 
-        for qualified_identifier in self.proofs.keys():
+        for qualified_identifier in self.analyzer.proofs.keys():
             # check for the FplProofMissingTheoremLikeStatement error
             s = qualified_identifier.split("$")
             referenced_identifier = "".join(s[0:-1])
             # syntactically, proofs cannot be overridden, thus there is only one per identifier
-            global_proof_node = self.proofs.get(qualified_identifier)[0]  # so we take this only one [0]
+            global_proof_node = self.analyzer.proofs.get(qualified_identifier)[0]  # so we take this only one [0]
             proof_node = global_proof_node.reference
-            if referenced_identifier not in self.theorem_like_statements:
+            if referenced_identifier not in self.analyzer.theorem_like_statements:
                 self.analyzer.error_mgr.add_error(
                     FplProofMissingTheoremLikeStatement(referenced_identifier, global_proof_node))
             else:
                 # Remember the proof's theorem-like statement once and for ever so we do not need to look for it anymore
                 proof_node.set_referenced_theorem_like_stmt(
-                    self.theorem_like_statements[referenced_identifier].reference)
+                    self.analyzer.theorem_like_statements[referenced_identifier].reference)
 
             # Now, it is possible to initialize the declared and used variables in the proof properly, since we
             # (hopefully) know its theorem-like statement.
             # Hereby we check for unused variables and already declared variables
-            proof_node.initialize_vars(self.proofs.get(qualified_identifier)[0].theory.file_name,
+            proof_node.initialize_vars(self.analyzer.proofs.get(qualified_identifier)[0].theory.file_name,
                                        self.analyzer.error_mgr)
 
             # check for the FplProvedConjecture error
-            if referenced_identifier in self.conjectures.keys():
+            if referenced_identifier in self.analyzer.conjectures.keys():
                 self.analyzer.error_mgr.add_error(
-                    FplProvedConjecture(global_proof_node, self.conjectures.get(referenced_identifier)[0])
+                    FplProvedConjecture(global_proof_node, self.analyzer.conjectures.get(referenced_identifier)[0])
                 )
 
     @staticmethod
@@ -547,12 +519,3 @@ class SemCheckerIdentifiers:
                 # ignore that the variable not used in the body of the property since it is not semantically required.
                 return True
         return False
-
-    def evaluate(self):
-        """
-        The method will check all the global nodes if they can be evaluated consistently.
-        :return: True, iff all global nodes could be evaluated consistently.
-        """
-        globals_node = AuxSymbolTable.get_child_by_outline(self.analyzer.symbol_table_root, AuxSymbolTable.globals)
-        for child in globals_node.children:
-            EvaluateParams.evaluate_recursion(self, child.reference, child.reference.get_declared_type())

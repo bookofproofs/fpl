@@ -1,7 +1,9 @@
 import traceback
 from anytree import AnyNode
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
+from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSelfContainment import AuxSelfContainment
 from poc.SemCheckerIdentifiers import SemCheckerIdentifiers
 from poc.fplerror import FplErrorManager, FplIdentifierAlreadyDeclared, FplMalformedNamespace
@@ -26,6 +28,33 @@ class SemanticAnalyser:
         # during the recursive evaluation process, this attribute stores the expected functional term return type
         self.current_func_term_return_type = None
         self.sem_checker_identifiers = SemCheckerIdentifiers(self)
+        # a stack to evaluate recursively the semantics of the symbol table
+        self.eval_stack = list()
+        # append root (dummy) params for later recursion
+        self.eval_stack.append(EvaluateParams())
+
+        # a dictionary of all nodes by id (non-global identifier)
+        self.theorem_like_statements = dict()  # all theorem like statements by id (non-global identifier)
+
+        # In the following, we specify, which building blocks are allowed to have overrides
+        # (i.e. the same identifiers, but different signatures).
+        self.theorems = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.lemmas = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.propositions = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.corollaries = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.axioms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.conjectures = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.classes = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.proofs = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.instance_classes = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.instance_functional_terms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.instance_predicates = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.functional_terms = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        self.predicates = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
+        # allowed ones:
+        self.overridden_qualified_ids = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.error_mgr)
+        self.inference_rules = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.error_mgr)
+        self.constructors = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.error_mgr)
 
     def semantic_analysis(self):
         """
@@ -35,11 +64,13 @@ class SemanticAnalyser:
         if AuxISourceAnalyser.verbose:
             self._check_theories()
             self.sem_checker_identifiers.analyse()
+            self.evaluate()
         else:
             # in non-verbose mode, we handle all exceptions 'user-friendly' as not to cause the main loop to halt
             try:
                 self._check_theories()
                 self.sem_checker_identifiers.analyse()
+                self.evaluate()
             except Exception:  # noqa
                 # add any exceptions during the semantic analysis into the regular error list
                 self.error_mgr.add_error(
@@ -79,3 +110,12 @@ class SemanticAnalyser:
                 duplicate_checker.add(chunk)
             else:
                 self.error_mgr.add_error(FplMalformedNamespace(theory.namespace, theory.file_name))
+
+    def evaluate(self):
+        """
+        The method will check all the global nodes if they can be evaluated consistently.
+        :return: True, iff all global nodes could be evaluated consistently.
+        """
+        globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSymbolTable.globals)
+        for child in globals_node.children:
+            EvaluateParams.evaluate_recursion(self, child.reference, child.reference.get_declared_type())

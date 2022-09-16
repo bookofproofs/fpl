@@ -115,6 +115,7 @@ class AllFplIdentifierRelatedErrorTests(UtilTestCase):
         ("test_FplIdentifierNotDeclared_ok_02.fpl", "SE0090"),
         ("test_FplIdentifierNotDeclared_ok_03.fpl", "SE0090"),
         ("test_FplIdentifierNotDeclared_ok_04.fpl", "SE0090"),
+        ("test_FplIdentifierNotDeclared_ok_05.fpl", "SE0090"),
         ("test_FplMissingProof_ok_01.fpl", "SE0140"),
         ("test_FplProvedConjecture_ok_01.fpl", "SE0150"),
         ("test_FplProofMissingTheoremLikeStatement_ok_01.fpl", "SE0160"),

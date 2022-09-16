@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.8.11
+* Refactoring
+  * Move evaluate method and related attributes from SemCheckIdentifiers to SemanticAnalyser
+  * Simplification of affected method callers in the source code of different classes   
+* Bugfixes
+  * Some additional test cases to help localize false positives of FplWrongArguments, FplIdentifierNotDeclared and FplTypeMismatch errors
 ## 1.8.10
 * Bugfix
   * Index error when trying to log FplTypeMismatch errors based on some inbuilt type from the AuxInbuiltTypes.py

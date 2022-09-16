@@ -37,6 +37,7 @@ class AllFplSignatureRelatedErrorTests(UtilTestCase):
         ("test_FplWrongArguments_ok_05c.fpl", "SE0220"),
         ("test_FplWrongArguments_ok_05d.fpl", "SE0220"),
         ("test_FplWrongArguments_ok_06.fpl", "SE0220"),
+        ("test_FplWrongArguments_ok_07.fpl", "SE0220"),
     ])
     def test_no_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_no_fpl_error(self.folder + "/" + use_case, diagnose_id)
