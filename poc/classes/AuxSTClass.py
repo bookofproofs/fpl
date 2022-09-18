@@ -3,7 +3,7 @@ from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltObject
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTArgs import AuxSTArgs
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance
@@ -15,15 +15,16 @@ from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatement import AuxSTStatement
 from poc.classes.AuxSTType import AuxSTType
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
+from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplerror import FplErrorManager
 
 
 class AuxSTClass(AuxSTBuildingBlock):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.block_def, i)
+        super().__init__(AuxSTConstants.block_def, i)
         self.class_types = []
-        self.def_type = AuxSymbolTable.classDeclaration
+        self.def_type = AuxSTConstants.classDeclaration
         self.id = ""
         self._content = None
         self.zfrom = i.corrected_position('ClassHeader')
@@ -38,10 +39,10 @@ class AuxSTClass(AuxSTBuildingBlock):
     def initialize_vars(self, filename, error_mgr: FplErrorManager):
         # The declared variables of a class are in its variable specification list only.
         # (i.e. do not consider the sub-scopes of constructors and properties)
-        var_spec_list_node = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.var_spec)
+        var_spec_list_node = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.var_spec)
 
-        declared_vars_tuple = search.findall_by_attr(var_spec_list_node, AuxSymbolTable.var_decl,
-                                                     AuxSymbolTable.outline)
+        declared_vars_tuple = search.findall_by_attr(var_spec_list_node, AuxSTConstants.var_decl,
+                                                     AuxSTConstants.outline)
         for var_declaration in declared_vars_tuple:
             unique_source_code_id_of_var = var_declaration.id + '|' + str(self.zfrom)
 
@@ -58,7 +59,7 @@ class AuxSTClass(AuxSTBuildingBlock):
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit
         # The used variables of a class are, therefore, limited to the scope of the class without the scopes of
         # of its sub nodes.
-        self._used_vars = search.findall_by_attr(var_spec_list_node, AuxSymbolTable.var, AuxSymbolTable.outline)
+        self._used_vars = search.findall_by_attr(var_spec_list_node, AuxSTConstants.var, AuxSTConstants.outline)
         self.filter_misused_templates(error_mgr, filename)
 
     def create_callers_parent_properties(self, parent_class):
@@ -68,8 +69,8 @@ class AuxSTClass(AuxSTBuildingBlock):
         :return:
         """
         self._hip = True
-        parents_properties = AuxSymbolTable.get_child_by_outline(parent_class, AuxSymbolTable.properties)
-        my_properties = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.properties)
+        parents_properties = AuxSymbolTable.get_child_by_outline(parent_class, AuxSTConstants.properties)
+        my_properties = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.properties)
         for parent_property in parents_properties.children:
             if parent_property.base_id() in my_properties.children:
                 # the property was overridden exists
@@ -81,7 +82,7 @@ class AuxSTClass(AuxSTBuildingBlock):
                     new_instance = parent_property.clone()
                     new_instance.parent = my_properties  # add the new instance to the properties of the current class
                     # replace the var spec list of the new_instance
-                    old_spec_list = AuxSymbolTable.get_child_by_outline(new_instance, AuxSymbolTable.var_spec)
+                    old_spec_list = AuxSymbolTable.get_child_by_outline(new_instance, AuxSTConstants.var_spec)
                     AuxSymbolTable.remove_node_recursively(old_spec_list)
                     new_spec_list = AuxSTVarSpecList()
                     new_spec_list.parent = new_instance
@@ -97,21 +98,27 @@ class AuxSTClass(AuxSTBuildingBlock):
                         new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id
                         new_predicate.parent = new_instance
+                        new_predicate.zfrom = parent_property.zfrom
+                        new_predicate.zto = parent_property.zto
                         AuxSTArgs(parent_property.isa()).parent = new_predicate
                     elif isinstance(parent_property, AuxSTClassInstance):
-                        stmt = AuxSTStatement(AuxSymbolTable.statement_assign,
+                        stmt = AuxSTStatement(AuxSTConstants.statement_assign,
                                               parent_property.isa()).parent = new_spec_list
                         slf = AuxSTSelf(parent_property.isa()).parent = stmt
                         new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id
                         new_predicate.parent = slf
+                        new_predicate.zfrom = parent_property.zfrom
+                        new_predicate.zto = parent_property.zto
                         AuxSTArgs(parent_property.isa()).parent = new_predicate
                     else:
-                        stmt = AuxSTStatement(AuxSymbolTable.statement_return, parent_property.isa())
+                        stmt = AuxSTStatement(AuxSTConstants.statement_return, parent_property.isa())
                         stmt.parent = new_spec_list
                         new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id
                         new_predicate.parent = stmt
+                        new_predicate.zfrom = parent_property.zfrom
+                        new_predicate.zto = parent_property.zto
                         AuxSTArgs(parent_property.isa()).parent = new_predicate
                 else:
                     raise AssertionError(str(type(parent_property)))

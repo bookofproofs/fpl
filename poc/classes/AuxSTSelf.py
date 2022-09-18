@@ -1,21 +1,23 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTTheory import AuxSTTheory
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
+from poc.classes.AuxPredicateState import AuxPredicateState
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 
 
 class AuxSTSelf(AuxST):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.selfInstance, i)
+        super().__init__(AuxSTConstants.selfInstance, i)
         self.reference = None
         self.number_ats = 0
-        self.id = AuxSymbolTable.selfInstance
+        self.id = AuxSTConstants.selfInstance
+        self._predicate_state = AuxPredicateState(self)
 
     def to_string(self):
         ret = "@" * self.number_ats + "self"
@@ -79,3 +81,13 @@ class AuxSTSelf(AuxST):
                     raise NotImplementedError()
         else:
             EvaluateParams.evaluate_recursion(sem, self.reference, sem.eval_stack[-1].expected_type)
+
+    def get_state(self):
+        return self._predicate_state
+
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = self.id
+            for arg in self.children:
+                self._long_id += arg.get_long_id()
+        return self._long_id

@@ -8,14 +8,14 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextDefaultResult(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.statement = AuxSTStatement(AuxSymbolTable.case_default, i)
+        self.statement = AuxSTStatement(AuxSTConstants.case_default, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["DefaultResult"], self.rule_aggregator)
 

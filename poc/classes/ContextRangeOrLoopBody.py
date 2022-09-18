@@ -6,7 +6,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 
@@ -15,7 +15,7 @@ class ContextRangeOrLoopBody(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.varCounter = AuxSTPredicate(AuxSymbolTable.ids, i)
+        self.varCounter = AuxSTPredicate(AuxSTConstants.ids, i)
         self.varCounter.set_id("")
         self.varRange = AuxSTRange(i)
         self.statement_list = None

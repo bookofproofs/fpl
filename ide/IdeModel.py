@@ -1,5 +1,5 @@
 from anytree import AnyNode, RenderTree
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.util.fplutil import Utils
 import tkinter as tk
 import os
@@ -21,7 +21,7 @@ class IdeModel:
         self._config_init()
         self.path_to_fpl_root = os.path.abspath(
             self.config.get(Settings.section_paths, Settings.option_paths_fpl_theories))
-        self.library = AnyNode(outline=AuxSymbolTable.library)
+        self.library = AnyNode(outline=AuxSTConstants.library)
         self.utils.reload_library(self.library, self.path_to_fpl_root)
         self.fpl_parser = self.utils.get_parser("../grammar/fpl_tatsu_format.ebnf")
         self.fpl_source_transformer = FPLSourceTransformer(self.fpl_parser)

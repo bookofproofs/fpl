@@ -72,7 +72,12 @@ class AuxParamsArgsMatcher:
         elif AuxBits.is_functional_term(type_arg.type_pattern) and AuxBits.is_functional_term(type_param.type_pattern):
             return True
         elif AuxBits.is_generic(type_arg.type_pattern) and AuxBits.is_generic(type_param.type_pattern):
-            return type_param.id == type_arg.id
+            if type_param.get_scope().id == type_arg.get_scope().id:
+                return type_param.id == type_arg.id
+            else:
+                # return true even if the names of the generic types are not the same if the
+                # scope they are declared in are not the same
+                return True
         elif AuxBits.is_generic(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
             return True
         elif AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_generic(type_param.type_pattern):

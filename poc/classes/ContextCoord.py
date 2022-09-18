@@ -7,14 +7,14 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextCoord(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSymbolTable.uninterpreted, i)
+        self.predicate = AuxSTPredicate(AuxSTConstants.uninterpreted, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Coord"], self.rule_aggregator)
 

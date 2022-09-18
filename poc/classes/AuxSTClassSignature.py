@@ -1,5 +1,5 @@
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc import fplerror
 from poc.classes.AuxBits import AuxBits
 
@@ -7,7 +7,7 @@ from poc.classes.AuxBits import AuxBits
 class AuxSTClassSignature(AuxST):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.signature_class, i)
+        super().__init__(AuxSTConstants.signature_class, i)
         self.id = ''
         self.type = ''
         self.type_pattern = 0

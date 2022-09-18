@@ -1,10 +1,10 @@
 from poc.classes.AuxST import AuxSTOutline
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTConstructors(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(None, AuxSymbolTable.classConstructors)
+        super().__init__(None, AuxSTConstants.classConstructors)
 
 

@@ -6,7 +6,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSymbolTableHelpers import AuxSymbolTableHelpers
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 
 
@@ -37,7 +37,7 @@ class ContextVariableSpecificationList(AuxInterpretation):
             # in the symbol table
             if parsing_info.named_var_declaration.var_list is not None:
                 parsing_info.named_var_declaration.var_list.reverse()  # noqa
-            AuxSymbolTable.add_vars_to_node(i, parent_with_var_spec.variable_spec,
+            AuxSymbolTableHelpers.add_vars_to_node(i, parent_with_var_spec.variable_spec,
                                             parsing_info.named_var_declaration)  # noqa
         else:
             # we have a statement and register it as a single statement node in the symbol table

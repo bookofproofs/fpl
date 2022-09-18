@@ -1,13 +1,13 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxST import AuxSTOutline
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTProperties(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(None, AuxSymbolTable.properties)
+        super().__init__(None, AuxSTConstants.properties)
         # the properties node in the symbol table has the inbuilt undefined type per default
         self.set_declared_type(InbuiltUndefined(self.parent))
 

@@ -8,7 +8,7 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.ContextVariableSpecificationList import  ContextVariableSpecificationList
 
 
@@ -18,7 +18,7 @@ class ContextAxiomBlock(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self._i = i
         # Predicate is optional in the grammar and we initialize it in any case
-        self.predicate = AuxSTPredicate(AuxSymbolTable.intrinsic, i)
+        self.predicate = AuxSTPredicate(AuxSTConstants.intrinsic, i)
         # specification list is optional in the grammar and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         self.aggregate_previous_rules(i.parse_list,

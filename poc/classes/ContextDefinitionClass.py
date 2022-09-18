@@ -7,6 +7,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTClass import AuxSTClass
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTConstructor import AuxSTConstructor
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
@@ -34,14 +35,14 @@ class ContextDefinitionClass(AuxInterpretation):
             self.building_block.register_child(parsing_info.variable_spec)  # noqa
 
     def provide_default_constructor(self):
-        classes_constructors = AuxSymbolTable.get_child_by_outline(self.building_block, AuxSymbolTable.classConstructors)
-        any_constructor = search.findall_by_attr(classes_constructors, AuxSymbolTable.classConstructor,
+        classes_constructors = AuxSymbolTable.get_child_by_outline(self.building_block, AuxSTConstants.classConstructors)
+        any_constructor = search.findall_by_attr(classes_constructors, AuxSTConstants.classConstructor,
                                                  name="outline")
         if len(any_constructor) == 0:
             # add an empty constructor
             constructor = AuxSTConstructor(self._i)
             constructor.id = self.building_block.id + "[]"  # the same (empty) signature as that of the class
-            constructor.outline = AuxSymbolTable.classDefaultConstructor
+            constructor.outline = AuxSTConstants.classDefaultConstructor
             # the position of the default constructor is the same as of the whole class
             constructor.zfrom = self.building_block.zfrom
             constructor.zto = self.building_block.zto

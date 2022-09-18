@@ -34,6 +34,7 @@ from poc.classes.AuxSTRuleOfInference import AuxSTRuleOfInference
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTTheorem import AuxSTTheorem
 from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplMissingProof
@@ -183,8 +184,8 @@ class SemCheckerIdentifiers:
         """
         # gather the quantors sub nodes of the node in pre-order
         quantor_nodes = list(n for n in PreOrderIter(current_node, filter_=
-        lambda n1: isinstance(n1, AuxSTPredicate) and n1.outline in [AuxSymbolTable.predicate_all,
-                                                                     AuxSymbolTable.predicate_exists]))
+        lambda n1: isinstance(n1, AuxSTPredicate) and n1.outline in [AuxSTConstants.predicate_all,
+                                                                     AuxSTConstants.predicate_exists]))
 
         for quantor in quantor_nodes:
             for var_id in quantor.bound_vars:
@@ -271,7 +272,7 @@ class SemCheckerIdentifiers:
                             not (isinstance(block.reference, AuxSTConstructor) and
                                  isinstance(unique_gids[block.gid].reference, AuxSTConstructor)):
                         # If the types are the same and even the signature is the same, we have a duplicate declaration
-                        if block.reference.outline != AuxSymbolTable.classDefaultConstructor:
+                        if block.reference.outline != AuxSTConstants.classDefaultConstructor:
                             self.analyzer.error_mgr.add_error(
                                 FplIdentifierAlreadyDeclared(block.reference.id,
                                                              block.reference.zfrom,
@@ -486,16 +487,16 @@ class SemCheckerIdentifiers:
         SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, node)
         if isinstance(node, AuxSTClass):
             # for classes, enrich also all variables used in constructors
-            constructors = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.classConstructors)
+            constructors = AuxSymbolTable.get_child_by_outline(node, AuxSTConstants.classConstructors)
             for child in constructors.children:
                 SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, child)
             # ... and properties
-            properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
+            properties = AuxSymbolTable.get_child_by_outline(node, AuxSTConstants.properties)
             for child in properties.children:
                 SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, child)
         elif isinstance(node, (AuxSTDefinitionPredicate, AuxSTDefinitionFunctionalTerm)):
             # for functional term definitions or predicate definitions, enrich also all variables used in properties
-            properties = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
+            properties = AuxSymbolTable.get_child_by_outline(node, AuxSTConstants.properties)
             for child in properties.children:
                 SemCheckerIdentifiers.__gather_used_vars(gather_used_dict, child)
         return gather_used_dict
@@ -505,12 +506,12 @@ class SemCheckerIdentifiers:
         if isinstance(var_decl.parent, AuxSTSignature):
             if var_decl.parent.parent == node:
                 if isinstance(node, AuxSTDefinitionFunctionalTerm) or isinstance(node, AuxSTFunctionalTermInstance):
-                    definition = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.var_spec)
+                    definition = AuxSymbolTable.get_child_by_outline(node, AuxSTConstants.var_spec)
                     # The functional term's definition was intrinsic if its var specification subnode is empty
                     return len(definition.children) == 0
                 elif isinstance(node, AuxSTDefinitionPredicate) or isinstance(node, AuxSTPredicateInstance):
                     # The predicate's definition was intrinsic if it has an
-                    found_intrinsic_definition = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.intrinsic)
+                    found_intrinsic_definition = AuxSymbolTable.get_child_by_outline(node, AuxSTConstants.intrinsic)
                     return found_intrinsic_definition is not None and \
                            isinstance(found_intrinsic_definition, AuxSTPredicate) and \
                            found_intrinsic_definition.parent == node

@@ -6,7 +6,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 
 
@@ -15,7 +15,7 @@ class ContextKeysOfVariadicVariable(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self._i = i
-        self.predicate = AuxSTPredicate(AuxSymbolTable.variadic_var, i)
+        self.predicate = AuxSTPredicate(AuxSTConstants.variadic_var, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["KeysOfVariadicVariable"] +
                                       ["VariableList", "Identifier"], self.rule_aggregator)

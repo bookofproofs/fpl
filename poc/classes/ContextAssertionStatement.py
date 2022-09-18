@@ -6,7 +6,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
 
 
@@ -14,8 +14,8 @@ class ContextAssertionStatement(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.statement = AuxSTStatement(AuxSymbolTable.statement_assert, i)
-        self.statement.type = AuxSymbolTable.statement_assert
+        self.statement = AuxSTStatement(AuxSTConstants.statement_assert, i)
+        self.statement.type = AuxSTConstants.statement_assert
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["AssertionStatement"], self.rule_aggregator)
 

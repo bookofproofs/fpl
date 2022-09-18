@@ -1,11 +1,11 @@
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTRange(AuxST):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.rng, i)
+        super().__init__(AuxSTConstants.rng, i)
         self.left_included = False
         self.right_included = False
 

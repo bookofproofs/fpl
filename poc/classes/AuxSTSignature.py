@@ -1,13 +1,14 @@
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
+from poc.classes.AuxSymbolTableHelpers import AuxSymbolTableHelpers
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
 
 
 class AuxSTSignature(AuxST):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.signature, i)
+        super().__init__(AuxSTConstants.signature, i)
         self._list_named_declarations = None
         self._id = None
         self._i = i
@@ -34,7 +35,7 @@ class AuxSTSignature(AuxST):
         if self._list_named_declarations is not None:
             for named_var_declaration in self._list_named_declarations:
                 named_var_declaration.var_list.reverse()
-                AuxSymbolTable.add_vars_to_node(self._i, self, named_var_declaration)
+                AuxSymbolTableHelpers.add_vars_to_node(self._i, self, named_var_declaration)
 
     def to_string(self):
         ret = self._id + "["

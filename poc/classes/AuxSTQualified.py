@@ -1,13 +1,13 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.fplerror import FplIdentifierAmbiguous
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTQualified(AuxST):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.qualified, i)
+        super().__init__(AuxSTConstants.qualified, i)
         # the resolved_parent is the node in the symbol table that can possibly be identified
         # during the semantic analysis
         self._resolved_parent = None
@@ -30,9 +30,9 @@ class AuxSTQualified(AuxST):
         :param sem: evaluation path where the but-last element is the parent node of AuxSTQualified in the symbol table
         :return: None
         """
-        if sem.eval_stack[-2].node.outline == AuxSymbolTable.var:
+        if sem.eval_stack[-2].node.outline == AuxSTConstants.var:
             self._qualified_id = sem.eval_stack[-2].node.get_declared_type().get_qualified_id()
-        elif sem.eval_stack[-2].node.outline == AuxSymbolTable.selfInstance:
+        elif sem.eval_stack[-2].node.outline == AuxSTConstants.selfInstance:
             self._qualified_id = sem.eval_stack[-2].node.get_qualified_id()
         else:
             raise NotImplementedError()
@@ -49,3 +49,8 @@ class AuxSTQualified(AuxST):
             # the AuxSTQualified's declared type is always the type of its parent node in the symbol table
             self.set_declared_type(self.parent.get_declared_type())
         return self._declared_type
+
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = "."
+        return self._long_id

@@ -7,7 +7,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 
 
@@ -15,7 +15,7 @@ class ContextConditionFollowedByResult(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.statement = AuxSTStatement(AuxSymbolTable.case, i)
+        self.statement = AuxSTStatement(AuxSTConstants.case, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["ConditionFollowedByResult"], self.rule_aggregator)
 

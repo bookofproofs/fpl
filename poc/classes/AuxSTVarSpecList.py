@@ -1,13 +1,14 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTVarDec import AuxSTVarDec
 from poc.classes.AuxST import AuxSTOutline
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTVarSpecList(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(None, AuxSymbolTable.var_spec)
+        super().__init__(None, AuxSTConstants.var_spec)
         # var spec lists have the inbuilt undefined type per default
         self.set_declared_type(InbuiltUndefined(self.parent))
 
@@ -16,5 +17,8 @@ class AuxSTVarSpecList(AuxSTOutline):
 
     def evaluate(self, sem):
         for child in self.children:
+            if isinstance(child,AuxSTVarDec):
+                # initialize the declared type of AuxSTVarDec nodes
+                child.set_declared_type(InbuiltUndefined(child))
             EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(self.parent))
         sem.eval_stack[-1].value = InbuiltUndefined(self.parent)

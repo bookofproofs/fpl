@@ -4,13 +4,13 @@ from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTRuleOfInference(AuxSTBuildingBlock):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.block_ir, i)
+        super().__init__(AuxSTConstants.block_ir, i)
         self.zfrom = i.last_positions_by_rule['PredicateIdentifier'].pos_to_str()
         self.zto = i.last_positions_by_rule['RuleOfInference'].pos_to_str()
         self.set_declared_type(InbuiltPredicate(self))
@@ -31,9 +31,9 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
-                    if child.outline == AuxSymbolTable.pre:
+                    if child.outline == AuxSTConstants.pre:
                         pre = ret.returned_value
-                    elif child.outline == AuxSymbolTable.con:
+                    elif child.outline == AuxSTConstants.con:
                         con = ret.returned_value
                 else:
                     raise NotImplementedError(str(type(child)))

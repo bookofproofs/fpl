@@ -1,6 +1,7 @@
 import tatsu
 from anytree import AnyNode, RenderTree, search
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxSTClass import AuxSTClass
 from poc import fplsemanticanalyzer
@@ -14,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.8.11"
+        self.version = "1.9.0"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -23,9 +24,9 @@ class FplInterpreter:
             self._theory_root_dir = abs_path
         else:
             self._theory_root_dir = os.path.dirname(abs_path)
-        self._symbol_table_root = AnyNode(outline=AuxSymbolTable.root)
+        self._symbol_table_root = AnyNode(outline=AuxSTConstants.root)
         self._utils = Utils()
-        AnyNode(outline=AuxSymbolTable.globals, parent=self._symbol_table_root)
+        AnyNode(outline=AuxSTConstants.globals, parent=self._symbol_table_root)
         self.file_specific_tags = dict()
         # Used for the recursive loading of namespaces into to symbol table while syntax analysis is running
         # The syntax analysis stores in this dictionary for every namespace / FPL-combination
@@ -33,7 +34,7 @@ class FplInterpreter:
         self.processed_namespaces = set()
         if library_node is None:
             self.library_node = AnyNode()
-            AnyNode(outline=AuxSymbolTable.library, parent=self.library_node)
+            AnyNode(outline=AuxSTConstants.library, parent=self.library_node)
             self._utils.reload_library(self.library_node, self._theory_root_dir)
         else:
             self.library_node = library_node
@@ -84,7 +85,7 @@ class FplInterpreter:
                     self.file_specific_tags[fpl_theory_node.file_name] = fpl_file_node.get_analyser().i.highlight_tags
 
                     # load namespaces used by the loaded theory into the symbol table recursively
-                    uses_node = AuxSymbolTable.get_child_by_outline(fpl_theory_node, AuxSymbolTable.uses)
+                    uses_node = AuxSymbolTable.get_child_by_outline(fpl_theory_node, AuxSTConstants.uses)
                     for used_namespace in uses_node.children:
                         files_related_to_namespace = \
                             AuxSymbolTable.get_library_by_namespace(self.library_node,
