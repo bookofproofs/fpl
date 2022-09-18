@@ -8,13 +8,13 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextUndefinedHeader(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSymbolTable.undefined, i)
+        self.predicate = AuxSTPredicate(AuxSTConstants.undefined, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["UndefinedHeader"], self.rule_aggregator)
 

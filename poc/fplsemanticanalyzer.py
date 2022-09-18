@@ -2,10 +2,12 @@ import traceback
 from anytree import AnyNode
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSelfContainment import AuxSelfContainment
 from poc.SemCheckerIdentifiers import SemCheckerIdentifiers
+from poc.SemPredicateAnalyzer import SemPredicateAnalyzer
 from poc.fplerror import FplErrorManager, FplIdentifierAlreadyDeclared, FplMalformedNamespace
 from poc.fplmessage import FplInterpreterSystemError
 
@@ -16,7 +18,7 @@ class SemanticAnalyser:
         self.symbol_table_root = symbol_table_root
         self.error_mgr = error_mgr
         self.loaded_theories = AuxSymbolTable.get_theories(self.symbol_table_root)
-        self.globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSymbolTable.globals)
+        self.globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSTConstants.globals)
         # self-containment
         self.sc = AuxSelfContainment()
         # during the recursive evaluation process, this attribute stores the current FPL building block in which
@@ -28,6 +30,7 @@ class SemanticAnalyser:
         # during the recursive evaluation process, this attribute stores the expected functional term return type
         self.current_func_term_return_type = None
         self.sem_checker_identifiers = SemCheckerIdentifiers(self)
+        self.sem_predicate_analyzer = SemPredicateAnalyzer(self)
         # a stack to evaluate recursively the semantics of the symbol table
         self.eval_stack = list()
         # append root (dummy) params for later recursion
@@ -64,12 +67,14 @@ class SemanticAnalyser:
         if AuxISourceAnalyser.verbose:
             self._check_theories()
             self.sem_checker_identifiers.analyse()
+            self.sem_predicate_analyzer.pre_process_predicates()
             self.evaluate()
         else:
             # in non-verbose mode, we handle all exceptions 'user-friendly' as not to cause the main loop to halt
             try:
                 self._check_theories()
                 self.sem_checker_identifiers.analyse()
+                self.sem_predicate_analyzer.pre_process_predicates()
                 self.evaluate()
             except Exception:  # noqa
                 # add any exceptions during the semantic analysis into the regular error list
@@ -88,7 +93,7 @@ class SemanticAnalyser:
         :return: None
         """
         duplicate_checker = dict()
-        uses_node = AuxSymbolTable.get_child_by_outline(theory, AuxSymbolTable.uses)
+        uses_node = AuxSymbolTable.get_child_by_outline(theory, AuxSTConstants.uses)
         for child in uses_node.children:
             if child.id not in duplicate_checker:
                 duplicate_checker[child.id] = child
@@ -116,6 +121,6 @@ class SemanticAnalyser:
         The method will check all the global nodes if they can be evaluated consistently.
         :return: True, iff all global nodes could be evaluated consistently.
         """
-        globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSymbolTable.globals)
+        globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSTConstants.globals)
         for child in globals_node.children:
             EvaluateParams.evaluate_recursion(self, child.reference, child.reference.get_declared_type())

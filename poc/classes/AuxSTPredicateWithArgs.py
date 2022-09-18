@@ -2,6 +2,7 @@ from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate, InbuiltFunctionalTerm, \
     NamedUndefined, AuxInbuiltType
+from poc.classes.AuxPredicateState import AuxPredicateState
 from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxSTBuildingBlock import AuxST
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
@@ -9,6 +10,7 @@ from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatement import AuxSTStatement
 from poc.classes.AuxSTVariable import AuxSTVariable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from fplerror import FplIdentifierNotDeclared, FplWrongArguments, FplPredicateRecursion, FplVariableNotInitialized
 
@@ -16,9 +18,10 @@ from fplerror import FplIdentifierNotDeclared, FplWrongArguments, FplPredicateRe
 class AuxSTPredicateWithArgs(AuxST):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.predicate_with_arguments, i)
+        super().__init__(AuxSTConstants.predicate_with_arguments, i)
         self.reference = None
         self._is_bound = False
+        self._predicate_state = AuxPredicateState(self)
 
     def clone(self):
         new_predicate = self._copy(AuxSTPredicateWithArgs(self._i))
@@ -85,7 +88,7 @@ class AuxSTPredicateWithArgs(AuxST):
                 declared_type = self.get_declared_type()
                 if len(declared_type.children) > 0:
                     # if the predicate type has 'parameters', we also check if the arguments match them
-                    param_list = AuxSymbolTable.get_child_by_outline(declared_type, AuxSymbolTable.arg_list)
+                    param_list = AuxSymbolTable.get_child_by_outline(declared_type, AuxSTConstants.arg_list)
                     matcher = AuxParamsArgsMatcher()
                     matcher.try_match(sem, arg_list, list(param_list.children))
                     if sem.eval_stack[-1].argument_error is not None:
@@ -139,7 +142,7 @@ class AuxSTPredicateWithArgs(AuxST):
 
     def _calculate_arguments(self, sem):
         # create a list of argument types to be matched with any of the available overrides
-        args = AuxSymbolTable.get_child_by_outline(self, AuxSymbolTable.arg_list)
+        args = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.arg_list)
         arg_type_list = list()
         for argument_node in args.children:
             if isinstance(argument_node, AuxSTPredicateWithArgs):
@@ -169,3 +172,13 @@ class AuxSTPredicateWithArgs(AuxST):
 
     def set_is_bound(self):
         self._is_bound = True
+
+    def get_state(self):
+        return self._predicate_state
+
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = self.id
+            for arg in self.children:
+                self._long_id += arg.get_long_id()
+        return self._long_id

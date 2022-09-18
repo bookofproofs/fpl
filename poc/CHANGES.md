@@ -1,4 +1,22 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.0
+* Features
+  * New class SemPredicateAnalyzer to preprocess all compound and prime predicates, among other to be able to check their satisfiability
+  * New class AuxPredicateState to store the state of a predicate (both a compound or a prime)
+  * Using the z3 library to check satisfiability of predicates
+  * new method get_long_id to better identify predicates with arguments (and their reoccurrences) inside a block
+  * new method get_scope to identify the building block each node in the symbol table resists in
+* Refactoring
+  * Enhancing AuxNodeInstanceHandler to AuxNodeInstanceHandlers as a dictionary of AuxInstanceHandler objects
+  * Moving all constants from AuxSymbolTable to AuxSTConstants
+  * Moving add_vars_to_node from AuxSymbolTable to new class AuxSymbolTableHelpers
+* Bugfixes:
+  * Failing FplPremiseNotSatisfiable unit test fixed
+  * Failing FplWrongArguments for different generic types unit test fixed 
+  * Index error (run-time) while reporting some FplTypeMismatch errors
+  * Missing zfrom and zto attributes in inherited properties
+* Known Bugs
+  * (Still) many false positives with respect to the FplTypeMismatch error
 ## 1.8.11
 * Refactoring
   * Move evaluate method and related attributes from SemCheckIdentifiers to SemanticAnalyser

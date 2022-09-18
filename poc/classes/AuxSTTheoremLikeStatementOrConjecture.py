@@ -5,7 +5,7 @@ from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTTheoremLikeStatementOrConjecture(AuxSTBuildingBlock):
@@ -33,12 +33,12 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBuildingBlock):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
-                    if child.outline == AuxSymbolTable.pre:
+                    if child.outline == AuxSTConstants.pre:
                         pre = ret.returned_value
-                    elif child.outline == AuxSymbolTable.con:
+                    elif child.outline == AuxSTConstants.con:
                         con = ret.returned_value
                 elif isinstance(child, AuxSTOutline):
-                    if child.outline in [AuxSymbolTable.block_cor_root, AuxSymbolTable.block_proof_root]:
+                    if child.outline in [AuxSTConstants.block_cor_root, AuxSTConstants.block_proof_root]:
                         for sub_child in child.children:
                             EvaluateParams.evaluate_recursion(sem, sub_child, InbuiltUndefined(child))
                         sem.eval_stack[-1].value = InbuiltUndefined(child)

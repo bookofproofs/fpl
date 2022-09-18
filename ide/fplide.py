@@ -15,7 +15,7 @@ from ide.InfoBoxes import InfoBoxes
 class FplIde:
 
     def __init__(self):
-        self.ide_version = '1.6.13'
+        self.ide_version = '1.6.14'
         self.theme = DefaultTheme()
         self.window = tk.Tk()
         self.window.call('encoding', 'system', 'utf-8')

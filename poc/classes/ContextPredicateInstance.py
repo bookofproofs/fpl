@@ -9,7 +9,7 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
 from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextPredicateInstance(AuxInterpretation):
@@ -30,7 +30,7 @@ class ContextPredicateInstance(AuxInterpretation):
             self.building_block.register_child(parsing_info.symbol_signature)  # noqa
         elif rule == "PredicateInstanceBlock":
             if parsing_info.predicate is None:
-                self.building_block.register_child(AuxSTPredicate(AuxSymbolTable.intrinsic, self._i))
+                self.building_block.register_child(AuxSTPredicate(AuxSTConstants.intrinsic, self._i))
             else:
                 self.building_block.register_child(parsing_info.predicate)  # noqa
             self.building_block.register_child(parsing_info.variable_spec)  # noqa

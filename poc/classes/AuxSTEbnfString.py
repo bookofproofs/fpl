@@ -1,9 +1,9 @@
 from poc.classes.AuxST import AuxSTOutline
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTEbnfString(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(parent=None, outline=AuxSymbolTable.ebnf_string)  # noqa
+        super().__init__(parent=None, outline=AuxSTConstants.ebnf_string)  # noqa
         self.string = ""

@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
@@ -57,23 +57,23 @@ class AuxPredicateTests(unittest.TestCase):
         cls.i.last_positions_by_rule["All"] = cls.aux_info
         cls.aux_inter = AuxInterpretation(cls.aux_info, cls.i.errors)
 
-        cls._symbol_table_root = AnyNode(outline=AuxSymbolTable.root)
+        cls._symbol_table_root = AnyNode(outline=AuxSTConstants.root)
         cls._error_mgr = FplErrorManager()
-        AnyNode(outline=AuxSymbolTable.globals, parent=cls._symbol_table_root)
+        AnyNode(outline=AuxSTConstants.globals, parent=cls._symbol_table_root)
         cls.analyzer = SemanticAnalyser(cls._symbol_table_root, cls._error_mgr)
         cls.sem = cls.analyzer
 
     @parameterized.expand([
-        AuxSymbolTable.predicate_negation,
-        AuxSymbolTable.predicate_implication,
-        AuxSymbolTable.predicate_conjunction,
-        AuxSymbolTable.predicate_disjunction,
-        AuxSymbolTable.predicate_equivalence,
-        AuxSymbolTable.predicate_exclusiveOr,
-        AuxSymbolTable.predicate_exists,
-        AuxSymbolTable.predicate_all,
-        AuxSymbolTable.predicate_false,
-        AuxSymbolTable.predicate_true,
+        AuxSTConstants.predicate_negation,
+        AuxSTConstants.predicate_implication,
+        AuxSTConstants.predicate_conjunction,
+        AuxSTConstants.predicate_disjunction,
+        AuxSTConstants.predicate_equivalence,
+        AuxSTConstants.predicate_exclusiveOr,
+        AuxSTConstants.predicate_exists,
+        AuxSTConstants.predicate_all,
+        AuxSTConstants.predicate_false,
+        AuxSTConstants.predicate_true,
     ])
     def test_assert_revoke(self, p_type: str):
         """
@@ -92,8 +92,8 @@ class AuxPredicateTests(unittest.TestCase):
         self.assertFalse(ret.value.get_repr())
 
     @parameterized.expand([
-        AuxSymbolTable.predicate_false,
-        AuxSymbolTable.predicate_true,
+        AuxSTConstants.predicate_false,
+        AuxSTConstants.predicate_true,
     ])
     def test_truth_table_true_false(self, p_type: str):
         """
@@ -105,16 +105,16 @@ class AuxPredicateTests(unittest.TestCase):
         p = AuxSTPredicate(p_type, self.i)
         ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate(p))
 
-        if p_type == AuxSymbolTable.predicate_true:
+        if p_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_false:
+        elif p_type == AuxSTConstants.predicate_false:
             self.assertFalse(ret.value.get_repr())
         else:
             raise NotImplementedError()
 
     @parameterized.expand([
-        AuxSymbolTable.predicate_false,
-        AuxSymbolTable.predicate_true,
+        AuxSTConstants.predicate_false,
+        AuxSTConstants.predicate_true,
     ])
     def test_truth_table_negation(self, p_type: str):
         """
@@ -122,24 +122,24 @@ class AuxPredicateTests(unittest.TestCase):
         :param p_type: true or false predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_negation, self.i)
+        result = AuxSTPredicate(AuxSTConstants.predicate_negation, self.i)
         p = AuxSTPredicate(p_type, self.i)
         result.register_child(p)
 
         ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(p))
 
-        if p_type == AuxSymbolTable.predicate_true:
+        if p_type == AuxSTConstants.predicate_true:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_false:
+        elif p_type == AuxSTConstants.predicate_false:
             self.assertTrue(ret.value.get_repr())
         else:
             raise NotImplementedError()
 
     @parameterized.expand([
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_true),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_true),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_true),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_true),
     ])
     def test_truth_table_conjunction(self, p_type: str, q_type: str):
         """
@@ -148,7 +148,7 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_conjunction, self.i)
+        result = AuxSTPredicate(AuxSTConstants.predicate_conjunction, self.i)
         p = AuxSTPredicate(p_type, self.i)
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
@@ -156,22 +156,22 @@ class AuxPredicateTests(unittest.TestCase):
 
         ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
-        if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
+        if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
         else:
             raise NotImplementedError()
 
     @parameterized.expand([
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_true),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_true),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_true),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_true),
     ])
     def test_truth_table_disjunction(self, p_type: str, q_type: str):
         """
@@ -180,7 +180,7 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_disjunction, self.i)
+        result = AuxSTPredicate(AuxSTConstants.predicate_disjunction, self.i)
         p = AuxSTPredicate(p_type, self.i)
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
@@ -188,22 +188,22 @@ class AuxPredicateTests(unittest.TestCase):
 
         ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
-        if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
+        if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
         else:
             raise NotImplementedError()
 
     @parameterized.expand([
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_true),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_true),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_true),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_true),
     ])
     def test_truth_table_equivalence(self, p_type: str, q_type: str):
         """
@@ -212,7 +212,7 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_equivalence, self.i)
+        result = AuxSTPredicate(AuxSTConstants.predicate_equivalence, self.i)
         p = AuxSTPredicate(p_type, self.i)
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
@@ -220,22 +220,22 @@ class AuxPredicateTests(unittest.TestCase):
 
         ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
-        if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
+        if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
         else:
             raise NotImplementedError()
 
     @parameterized.expand([
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_true),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_true),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_true),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_true),
     ])
     def test_truth_table_exclusive_or(self, p_type: str, q_type: str):
         """
@@ -244,7 +244,7 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_exclusiveOr, self.i)
+        result = AuxSTPredicate(AuxSTConstants.predicate_exclusiveOr, self.i)
         p = AuxSTPredicate(p_type, self.i)
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
@@ -252,22 +252,22 @@ class AuxPredicateTests(unittest.TestCase):
 
         ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
-        if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
+        if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
             self.assertFalse(ret.value.get_repr())
         else:
             raise NotImplementedError()
 
     @parameterized.expand([
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_false, AuxSymbolTable.predicate_true),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_false),
-        (AuxSymbolTable.predicate_true, AuxSymbolTable.predicate_true),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_false, AuxSTConstants.predicate_true),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_false),
+        (AuxSTConstants.predicate_true, AuxSTConstants.predicate_true),
     ])
     def test_truth_table_implication(self, p_type: str, q_type: str):
         """
@@ -276,7 +276,7 @@ class AuxPredicateTests(unittest.TestCase):
         :param q_type: second predicate type
         :return: None
         """
-        result = AuxSTPredicate(AuxSymbolTable.predicate_implication, self.i)
+        result = AuxSTPredicate(AuxSTConstants.predicate_implication, self.i)
         p = AuxSTPredicate(p_type, self.i)
         q = AuxSTPredicate(q_type, self.i)
         result.register_child(p)
@@ -284,13 +284,13 @@ class AuxPredicateTests(unittest.TestCase):
 
         ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
 
-        if p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_false:
+        if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_false and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_false:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
             self.assertFalse(ret.value.get_repr())
-        elif p_type == AuxSymbolTable.predicate_true and q_type == AuxSymbolTable.predicate_true:
+        elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
             self.assertTrue(ret.value.get_repr())
         else:
             raise NotImplementedError()

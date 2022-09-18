@@ -1,26 +1,25 @@
-from anytree import AnyNode
 from poc.classes.AuxBits import AuxBits
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTType import AuxSTType
 
 
 class AuxInbuiltType(AuxSTType):
     def __init__(self, node):
         super().__init__(None)
-        self.copied_path = tuple()
+        self._copied_path = tuple()
         if node is not None:
             if hasattr(node, "zfrom"):
                 self.zfrom = node.zfrom
             if hasattr(node, "zto"):
                 self.zto = node.zto
             if hasattr(node, "path"):
-                self.copied_path = node.path
+                self._copied_path = node.path
 
 
 class InbuiltUndefined(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
-        self.id = AuxSymbolTable.undefined
+        self.id = AuxSTConstants.undefined
         # the inbuilt undefined is a type of itself
 
 
@@ -34,14 +33,14 @@ class NamedUndefined(AuxInbuiltType):
 class InbuiltPredicate(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
-        self.id = AuxSymbolTable.predicate
+        self.id = AuxSTConstants.predicate
         self.type_pattern = AuxBits.predicateBit
 
 
 class EvaluatedPredicate(AuxInbuiltType):
     def __init__(self, node, bool_value):
         super().__init__(node)
-        self.id = AuxSymbolTable.predicate
+        self.id = AuxSTConstants.predicate
         self.type_pattern = AuxBits.predicateBit
         if isinstance(bool_value, bool):
             self.set_repr(bool_value)
@@ -52,14 +51,14 @@ class EvaluatedPredicate(AuxInbuiltType):
 class InbuiltFunctionalTerm(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
-        self.id = AuxSymbolTable.functionalTerm
+        self.id = AuxSTConstants.functionalTerm
         self.type_pattern = AuxBits.functionalTermBit
 
 
 class InbuiltIndex(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
-        self.id = AuxSymbolTable.index_value
+        self.id = AuxSTConstants.index_value
         self.type_pattern = AuxBits.indexBit
 
 
@@ -73,7 +72,7 @@ class InbuiltGeneric(AuxInbuiltType):
 class InbuiltObject(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
-        self.id = AuxSymbolTable.obj
+        self.id = AuxSTConstants.obj
         self.type_pattern = AuxBits.inbuiltBit + AuxBits.objectBit
 
     def is_of_type(self, some_type):

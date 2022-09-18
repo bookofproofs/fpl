@@ -7,7 +7,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 
 
@@ -15,7 +15,7 @@ class ContextIndexValue(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSymbolTable.index_value, i)
+        self.predicate = AuxSTPredicate(AuxSTConstants.index_value, i)
         self._i = i
         self._sub_index = None
         self.aggregate_previous_rules(i.parse_list,
@@ -35,7 +35,7 @@ class ContextIndexValue(AuxInterpretation):
             self._sub_index = parsing_info.var  # noqa
         elif rule == "Digit":
             # remember the sub index
-            self._sub_index = AuxSTPredicate(AuxSymbolTable.digit, self._i)
+            self._sub_index = AuxSTPredicate(AuxSTConstants.digit, self._i)
             self._sub_index.zto = self._i.last_positions_by_rule['Digit'].pos_to_str()
             self._sub_index.zfrom = self._i.corrected_position('Digit')
             self._sub_index.set_id(parsing_info.get_cst())

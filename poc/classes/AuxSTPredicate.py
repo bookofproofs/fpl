@@ -1,9 +1,11 @@
+import z3
 from anytree import AnyNode, search
-from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxPredicateState import AuxPredicateState
+from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTVariable import AuxSTVariable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from fplerror import FplPremiseNotSatisfiable
 
 
@@ -11,6 +13,7 @@ class AuxSTPredicate(AuxST):
 
     def __init__(self, outline: str, i):
         super().__init__(outline, i)
+        self._predicate_state = AuxPredicateState(self)
         self._is_asserted = False
         self._is_revoked = False
         self._bound_vars_marked = False
@@ -37,20 +40,20 @@ class AuxSTPredicate(AuxST):
             sem.eval_stack[-1].value = EvaluatedPredicate(self, False)
             return
         else:
-            if self.outline == AuxSymbolTable.predicate_true:
+            if self.outline == AuxSTConstants.predicate_true:
                 sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
                 return
-            elif self.outline == AuxSymbolTable.predicate_false:
+            elif self.outline == AuxSTConstants.predicate_false:
                 sem.eval_stack[-1].value = EvaluatedPredicate(self, False)
                 return
-            elif self.outline == AuxSymbolTable.predicate_negation:
+            elif self.outline == AuxSTConstants.predicate_negation:
                 check = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if check.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                 else:
                     sem.eval_stack[-1].value = EvaluatedPredicate(self, not check.returned_value.get_repr())
                 return
-            elif self.outline == AuxSymbolTable.predicate_conjunction:
+            elif self.outline == AuxSTConstants.predicate_conjunction:
                 ret = True
                 for child in self.children:
                     check = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
@@ -64,7 +67,7 @@ class AuxSTPredicate(AuxST):
                         break
                 sem.eval_stack[-1].value = EvaluatedPredicate(self, ret)
                 return
-            elif self.outline == AuxSymbolTable.predicate_disjunction:
+            elif self.outline == AuxSTConstants.predicate_disjunction:
                 ret = False
                 for child in self.children:
                     check = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
@@ -78,7 +81,7 @@ class AuxSTPredicate(AuxST):
                         break
                 sem.eval_stack[-1].value = EvaluatedPredicate(self, ret)
                 return
-            elif self.outline == AuxSymbolTable.predicate_equivalence:
+            elif self.outline == AuxSTConstants.predicate_equivalence:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
@@ -90,7 +93,7 @@ class AuxSTPredicate(AuxST):
                 sem.eval_stack[-1].value = EvaluatedPredicate(self,
                                                               p.returned_value.get_repr() == q.returned_value.get_repr())
                 return
-            elif self.outline == AuxSymbolTable.predicate_exclusiveOr:
+            elif self.outline == AuxSTConstants.predicate_exclusiveOr:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
@@ -101,11 +104,11 @@ class AuxSTPredicate(AuxST):
                     return
                 sem.eval_stack[-1].value = EvaluatedPredicate(self,
                                                               (
-                                                                          p.returned_value.get_repr() and not q.returned_value.get_repr()) or
+                                                                      p.returned_value.get_repr() and not q.returned_value.get_repr()) or
                                                               (
-                                                                          q.returned_value.get_repr() and not p.returned_value.get_repr()))
+                                                                      q.returned_value.get_repr() and not p.returned_value.get_repr()))
                 return
-            elif self.outline == AuxSymbolTable.predicate_implication:
+            elif self.outline == AuxSTConstants.predicate_implication:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
@@ -117,11 +120,11 @@ class AuxSTPredicate(AuxST):
                 sem.eval_stack[-1].value = EvaluatedPredicate(self,
                                                               not p.returned_value.get_repr() or q.returned_value.get_repr())
                 return
-            elif self.outline == AuxSymbolTable.intrinsic:
+            elif self.outline == AuxSTConstants.intrinsic:
                 # we set intrinsic predicates as being True per default
                 sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
                 return
-            elif self.outline == AuxSymbolTable.predicate_all:
+            elif self.outline == AuxSTConstants.predicate_all:
                 self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if p.returned_value is None:
@@ -129,7 +132,7 @@ class AuxSTPredicate(AuxST):
                     return
                 sem.eval_stack[-1].value = EvaluatedPredicate(self, p.returned_value.get_repr())
                 return
-            elif self.outline == AuxSymbolTable.predicate_exists:
+            elif self.outline == AuxSTConstants.predicate_exists:
                 self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if p.returned_value is None:
@@ -137,7 +140,7 @@ class AuxSTPredicate(AuxST):
                     return
                 sem.eval_stack[-1].value = EvaluatedPredicate(self, p.returned_value.get_repr())
                 return
-            elif self.outline == AuxSymbolTable.pre:
+            elif self.outline == AuxSTConstants.pre:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
@@ -147,16 +150,16 @@ class AuxSTPredicate(AuxST):
                 else:
                     # since the premise is satisfiable, we 'assume' it to be true for the theory to come
                     sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
-            elif self.outline == AuxSymbolTable.con:
+            elif self.outline == AuxSTConstants.con:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if p.returned_value is None:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                 else:
                     sem.eval_stack[-1].value = EvaluatedPredicate(self, p.returned_value.get_repr())
-            elif self.outline == AuxSymbolTable.undefined:
+            elif self.outline == AuxSTConstants.undefined:
                 # the syntax allows it, but not the semantics
                 sem.eval_stack[-1].value = InbuiltUndefined(self)
-            elif self.outline == AuxSymbolTable.ids:
+            elif self.outline == AuxSTConstants.ids:
                 # the syntax allows it, but not the semantics
                 sem.eval_stack[-1].value = InbuiltUndefined(self)
             else:
@@ -182,11 +185,20 @@ class AuxSTPredicate(AuxST):
 
     def check_satisfiability(self):
         """
-        This method checks if the current predicate is satisfiable if
+        This method checks if the current predicate is satisfiable.
         :return: True if this AuxSTPredicate is satisfiable, False if not
         """
-        # todo This is an NP-complete problem and has to be implemented using brute force by replacing
-        # all N constituents of the predicate by N temporary boolean variables and trying out all 2^N possible
-        # evaluations and checking whether there is at least one of them satisfying the predicate
-        # for the time beeing, we provide a 'default' implementation by assuming satisfiability
-        return True
+        return self._predicate_state.is_satisfiable()
+
+    def get_state(self):
+        return self._predicate_state
+
+    def get_long_id(self):
+        if self._long_id is None:
+            if self.outline in [AuxSTConstants.extDigit, AuxSTConstants.ids, AuxSTConstants.variadic_var]:
+                self._long_id = self.id
+            else:
+                self._long_id = self.outline
+            for arg in self.children:
+                self._long_id += arg.get_long_id()
+        return self._long_id

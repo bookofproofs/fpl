@@ -1,6 +1,6 @@
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.fplerror import FplErrorManager
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 
@@ -8,7 +8,7 @@ from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 class AuxSTProof(AuxSTBuildingBlock):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.block_proof, i)
+        super().__init__(AuxSTConstants.block_proof, i)
         self.zfrom = i.corrected_position('ProofHeader')
         self.zto = i.last_positions_by_rule['Proof'].pos_to_str()
         self._referenced_theorem_like_stmt = None

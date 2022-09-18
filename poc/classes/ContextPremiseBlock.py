@@ -5,7 +5,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
@@ -14,7 +14,7 @@ class ContextPremiseBlock(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSymbolTable.pre, i)
+        self.predicate = AuxSTPredicate(AuxSTConstants.pre, i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["PremiseBlock"] +
                                       AuxRuleDependencies.dep["PremiseHeader"], self.rule_aggregator)

@@ -49,7 +49,7 @@ class UtilTestCase(unittest.TestCase):
         result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
         r = interpreter.get_symbol_table_root()
-        globals_node = AuxSymbolTable.get_child_by_outline(r, AuxSymbolTable.globals)
+        globals_node = AuxSymbolTable.get_child_by_outline(r, AuxSTConstants.globals)
         if use_case.endswith("test_robustness_types_var_decl.fpl"):
             r = search.findall(globals_node.children[0].reference, lambda node: isinstance(node, AuxSTVarDec))
             self.assertEqual(number_of_nodes, len(r))

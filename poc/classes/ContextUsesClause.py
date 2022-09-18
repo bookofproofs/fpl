@@ -2,6 +2,7 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextUsesClause(AuxInterpretation):
@@ -19,7 +20,7 @@ class ContextUsesClause(AuxInterpretation):
     @ staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextUsesClause(i)
-        uses_node = AuxSymbolTable.get_child_by_outline(i.theory_node, AuxSymbolTable.uses)
+        uses_node = AuxSymbolTable.get_child_by_outline(i.theory_node, AuxSTConstants.uses)
         for used_namespace in reversed(new_info.used_namespaces):
             used_namespace.parent = uses_node
         i.parse_list.append(new_info)

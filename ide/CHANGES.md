@@ -1,4 +1,7 @@
 # Changes in the FPL IDE
+## 1.6.14
+* Feature
+  * Adjustments to reflect the refactoring work done in FPL interpreter version 1.9.0 
 ## 1.6.13
 * Feature:
   * Self-containment info box added (yet empty)

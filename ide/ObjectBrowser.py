@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from anytree import AnyNode
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.util.fplutil import Utils
 
@@ -28,7 +29,6 @@ class ObjectBrowser:
         """
         Updates the object tree according to the current syntax tree.
         :param root: root of the syntax tree
-        :param tree_view: object tree widget in the IDE
         :return: None
         """
         # dictionary prevents creating multiple theory nodes for the same namespace split across different FPL files
@@ -44,19 +44,19 @@ class ObjectBrowser:
                                                      text=theory_node.namespace,
                                                      values=("", "", "0.0"))
             self._propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
-                                                 AuxSymbolTable.block_ir_root, "_i", "Inference Rules")
+                                                 AuxSTConstants.block_ir_root, "_i", "Inference Rules")
             self._propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
-                                                 AuxSymbolTable.block_axiom_root, "_a", "Axioms")
+                                                 AuxSTConstants.block_axiom_root, "_a", "Axioms")
             self._propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
-                                                 AuxSymbolTable.block_conj_root, "_c", "Conjectures")
+                                                 AuxSTConstants.block_conj_root, "_c", "Conjectures")
             self._propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
-                                                 AuxSymbolTable.block_def_root, "_d", "Definitions")
+                                                 AuxSTConstants.block_def_root, "_d", "Definitions")
             self._propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
-                                                 AuxSymbolTable.block_thm_root, "_t", "Theorems")
+                                                 AuxSTConstants.block_thm_root, "_t", "Theorems")
             self._propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
-                                                 AuxSymbolTable.block_prop_root, "_p", "Propositions")
+                                                 AuxSTConstants.block_prop_root, "_p", "Propositions")
             self._propagate_object_tree_children(theory_node, tree_view_theories[theory_node.namespace],
-                                                 AuxSymbolTable.block_lem_root, "_l", "Lemmas")
+                                                 AuxSTConstants.block_lem_root, "_l", "Lemmas")
 
     def _propagate_object_tree_children(self, theory_node: AnyNode, treeview_theory_node, outline: str, postfix: str,
                                         node_title: str):
@@ -77,8 +77,8 @@ class ObjectBrowser:
             pr = None
             fu = None
             for child in syntax_tree_node.children:
-                if outline == AuxSymbolTable.block_def_root:
-                    if child.def_type == AuxSymbolTable.classDeclaration:
+                if outline == AuxSTConstants.block_def_root:
+                    if child.def_type == AuxSTConstants.classDeclaration:
                         if need_def_objects:
                             ob = self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                                   iid=theory_node.namespace + postfix + '_o',
@@ -91,13 +91,13 @@ class ObjectBrowser:
                                                                values=("ok", theory_node.file_name, child.zfrom))
                         self.__propagate_object_tree_children_sub(theory_node, child, obj,
                                                                   theory_node.namespace + postfix + '_o' + child.id + '_c',
-                                                                  AuxSymbolTable.classConstructors,
+                                                                  AuxSTConstants.classConstructors,
                                                                   need_def_objects_constructors)
                         self.__propagate_object_tree_children_sub(theory_node, child, obj,
                                                                   theory_node.namespace + postfix + '_o' + child.id + '_p',
-                                                                  AuxSymbolTable.properties,
+                                                                  AuxSTConstants.properties,
                                                                   need_def_objects_properties)
-                    elif child.def_type == AuxSymbolTable.predicateDeclaration:
+                    elif child.def_type == AuxSTConstants.predicateDeclaration:
                         if need_def_predicates:
                             pr = self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                                   iid=theory_node.namespace + postfix + '_p',
@@ -110,9 +110,9 @@ class ObjectBrowser:
                                                                 values=("ok", theory_node.file_name, child.zfrom))
                         self.__propagate_object_tree_children_sub(theory_node, child, prop,
                                                                   theory_node.namespace + postfix + '_p' + child.id + '_p',
-                                                                  AuxSymbolTable.properties,
+                                                                  AuxSTConstants.properties,
                                                                   need_def_predicate_properties)
-                    elif child.def_type == AuxSymbolTable.functionalTerm:
+                    elif child.def_type == AuxSTConstants.functionalTerm:
                         if need_def_functions:
                             fu = self._object_browser_tree.insert(parent=tree_view_node, index=tk.END,
                                                                   iid=theory_node.namespace + postfix + '_f',
@@ -125,7 +125,7 @@ class ObjectBrowser:
                                                                 values=("ok", theory_node.file_name, child.zfrom))
                         self.__propagate_object_tree_children_sub(theory_node, child, func,
                                                                   theory_node.namespace + postfix + '_f' + child.id + '_p',
-                                                                  AuxSymbolTable.properties,
+                                                                  AuxSTConstants.properties,
                                                                   need_def_function_properties)
                     else:
                         raise NotImplementedError(outline)
@@ -136,11 +136,11 @@ class ObjectBrowser:
 
     def __propagate_object_tree_children_sub(self, theory_node: AnyNode, node: AnyNode, tree_view_node, postfix: str,
                                              outline: str, need_for_outline_node: bool):
-        if outline == AuxSymbolTable.classConstructors:
-            sub_node = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.classConstructors)
+        if outline == AuxSTConstants.classConstructors:
+            sub_node = AuxSymbolTable.get_child_by_outline(node, AuxSTConstants.classConstructors)
             sub_node_title = 'Constructors'
         else:
-            sub_node = AuxSymbolTable.get_child_by_outline(node, AuxSymbolTable.properties)
+            sub_node = AuxSymbolTable.get_child_by_outline(node, AuxSTConstants.properties)
             sub_node_title = 'Properties'
 
         if len(sub_node.children) > 0:
@@ -150,7 +150,7 @@ class ObjectBrowser:
                                                                       text=sub_node_title,
                                                                       values=("", "", "0.0"))
             for sub_sub_node in sub_node.children:
-                if sub_sub_node.outline == AuxSymbolTable.classDefaultConstructor:
+                if sub_sub_node.outline == AuxSTConstants.classDefaultConstructor:
                     self._object_browser_tree.insert(parent=sub_node_tree_view, index=tk.END,
                                                      iid=postfix + node.id + sub_sub_node.id,
                                                      text=sub_sub_node.id + " (intrinsic)",

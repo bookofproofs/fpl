@@ -36,4 +36,4 @@ Test.Namespace
 }
 
 ##############################
-FplIdentifierNotDeclared:10:16: Undeclared identifier 'MyPredicate'
+this should not trigger FplIdentifierNotDeclared for IsLeftNeutralElement

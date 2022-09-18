@@ -1,4 +1,4 @@
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplAmbiguousSignature
 from poc.fplerror import FplForbiddenOverride
@@ -32,7 +32,7 @@ class AuxOverrideHandler:
                 else:
                     # if the type of the possible_duplicate equals the type of the node,
                     # and the collection allows overrides, trigger an FplAmbiguousSignature error
-                    if possible_duplicate != node and node.reference.outline != AuxSymbolTable.classDefaultConstructor:
+                    if possible_duplicate != node and node.reference.outline != AuxSTConstants.classDefaultConstructor:
                         self._error_mgr.add_error(FplForbiddenOverride(node, possible_duplicate))
 
     def get(self, identifier):

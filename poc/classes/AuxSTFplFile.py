@@ -1,14 +1,14 @@
 import hashlib
 from poc.fplerror import FplErrorManager
 from poc.classes.AuxST import AuxSTOutline
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.fplsyntaxanalyzer import FPLSyntaxAnalyzer
 
 
 class AuxSTFplFile(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(None, AuxSymbolTable.file)
+        super().__init__(None, AuxSTConstants.file)
         self.file_name = ""
         self._fpl_source = ""
         self._md5_hash = hashlib.md5()

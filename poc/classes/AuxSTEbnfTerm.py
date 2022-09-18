@@ -1,8 +1,8 @@
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTEbnfTerm(AuxST):
 
     def __init__(self, i):
-        super().__init__(AuxSymbolTable.ebnf_term, i)
+        super().__init__(AuxSTConstants.ebnf_term, i)

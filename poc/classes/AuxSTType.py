@@ -1,6 +1,6 @@
 import re
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSymbolTableHelpers import AuxSymbolTableHelpers
 from poc.classes.AuxSTArgs import AuxSTArgs
 from poc.classes.AuxSTConstants import AuxSTConstants
 
@@ -31,7 +31,7 @@ class AuxSTType(AuxST):
             type_node = type_node.clone()
             type_node.parent = self
             for next_var_declaration in self._parsing_info.paramTuple.tuple:
-                AuxSymbolTable.add_vars_to_node(self._i, type_node, next_var_declaration)
+                AuxSymbolTableHelpers.add_vars_to_node(self._i, type_node, next_var_declaration)
 
     def to_string(self):
         ret = self.id
