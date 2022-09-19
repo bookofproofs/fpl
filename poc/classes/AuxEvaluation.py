@@ -49,6 +49,7 @@ class EvaluateParams:
             eval_params.arg_type_list = args
         # push it on the stack
         sem.eval_stack.append(eval_params)
+
         node.evaluate(sem)  # start recursion
         eval_params = sem.eval_stack.pop()  # garbage-collect the stack
         # check if there is a type mismatch

@@ -49,32 +49,22 @@ class AuxSTPredicateWithArgs(AuxST):
             qualified_identifier = self._get_qualified_id(sem)
             if qualified_identifier[0].isupper() or "." in qualified_identifier:
                 if qualified_identifier not in sem.overridden_qualified_ids.dictionary():
-                    # the reference of the predicate_with_args is nowhere in the FPL sourcecode declared
-                    sem.error_mgr.add_error(
-                        FplIdentifierNotDeclared(qualified_identifier, self.path[1].file_name, self.zfrom))
-                    self.reference = NamedUndefined(self, qualified_identifier)
+                    # if the qualified_identifier is not found, re-check the current scope
+                    # (addressing properties directly and without "@self."
+                    # inside the definition where there are declared)
+                    scope = self.get_scope()
+                    s = scope.id.split("[")
+                    another_qualified_identifier = s[0] + "." + qualified_identifier
+                    if another_qualified_identifier not in sem.overridden_qualified_ids.dictionary():
+                        # the reference of the predicate_with_args is nowhere in the FPL sourcecode declared
+                        sem.error_mgr.add_error(
+                            FplIdentifierNotDeclared(qualified_identifier, self.path[1].file_name, self.zfrom))
+                        self.reference = NamedUndefined(self, qualified_identifier)
+                    else:
+                        ret = self.__get_possible_override(sem, another_qualified_identifier, propagated_expected_type,
+                                                           arg_list)
                 else:
-                    possible_overrides = sem.overridden_qualified_ids.get(qualified_identifier)
-                    # at this stage, we have a list of possible overrides,
-                    # we now try to "call" them with the given arguments
-                    mismatched_overrides = list()
-                    for override in possible_overrides:
-                        if self._check_illegal_recursion(sem, override):
-                            sem.error_mgr.add_error(FplPredicateRecursion(override.reference, self))
-                            self.reference = InbuiltUndefined(self)
-                            break
-                        ret = EvaluateParams.evaluate_recursion(sem, override.reference, propagated_expected_type,
-                                                                arg_list, True)
-                        if ret.argument_error is not None:
-                            mismatched_overrides.append(str(ret.argument_error))
-                        else:
-                            # break searching for matching overrides, if one was found
-                            self.reference = override.reference
-                            break
-
-                    if len(mismatched_overrides) >= len(possible_overrides):
-                        self._issue_FplWrongArguments(sem, ret.arg_type_list, mismatched_overrides)
-                        self.reference = InbuiltUndefined(self)
+                    ret = self.__get_possible_override(sem, qualified_identifier, propagated_expected_type, arg_list)
                 if not isinstance(self.reference, (InbuiltUndefined, NamedUndefined)):
                     # at this stage, only if self.reference is not InbuiltUndefined, it is instead
                     # a matched override of the Pascal Case identifier somewhere in the FPL source code.
@@ -116,7 +106,36 @@ class AuxSTPredicateWithArgs(AuxST):
                 ret = EvaluateParams.evaluate_recursion(sem, self.reference, propagated_expected_type,
                                                         arg_list, True)
                 sem.eval_stack.pop()
-                sem.eval_stack.append(ret)
+            else:
+                ret = sem.eval_stack.pop()
+                ret.value = self.reference
+            sem.eval_stack.append(ret)
+
+    def __get_possible_override(self, sem, qualified_identifier, propagated_expected_type, arg_list):
+        ret = sem.eval_stack[-1]
+        possible_overrides = sem.overridden_qualified_ids.get(qualified_identifier)
+        # at this stage, we have a list of possible overrides,
+        # we now try to "call" them with the given arguments
+        mismatched_overrides = list()
+        for override in possible_overrides:
+            if self._check_illegal_recursion(sem, override):
+                sem.error_mgr.add_error(FplPredicateRecursion(override.reference, self))
+                self.reference = InbuiltUndefined(self)
+                break
+            ret = EvaluateParams.evaluate_recursion(sem, override.reference, propagated_expected_type,
+                                                    arg_list, True)
+            if ret.argument_error is not None:
+                mismatched_overrides.append(str(ret.argument_error))
+            else:
+                # break searching for matching overrides, if one was found
+                self.reference = override.reference
+                break
+
+        if len(mismatched_overrides) >= len(possible_overrides):
+            self._issue_FplWrongArguments(sem, ret.arg_type_list, mismatched_overrides)
+            self.reference = InbuiltUndefined(self)
+
+        return ret
 
     def _issue_FplWrongArguments(self, sem, arg_type_list, mismatched_overrides):
         arg_types = list()

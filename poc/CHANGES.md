@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.1
+* Bugfixes:
+  * Some FplTypeMismatch errors fixed
 ## 1.9.0
 * Features
   * New class SemPredicateAnalyzer to preprocess all compound and prime predicates, among other to be able to check their satisfiability
