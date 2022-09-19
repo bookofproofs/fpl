@@ -1,5 +1,5 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTConstants import AuxSTConstants
 
@@ -13,5 +13,6 @@ class AuxSTProperties(AuxSTOutline):
 
     def evaluate(self, sem):
         for child in self.children:
-            EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(self.parent))
+            expected_type = child.get_declared_type()
+            EvaluateParams.evaluate_recursion(sem, child, expected_type)
         sem.eval_stack[-1].value = InbuiltUndefined(self.parent)

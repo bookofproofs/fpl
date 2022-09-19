@@ -123,4 +123,5 @@ class SemanticAnalyser:
         """
         globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSTConstants.globals)
         for child in globals_node.children:
-            EvaluateParams.evaluate_recursion(self, child.reference, child.reference.get_declared_type())
+            expected_type = child.reference.get_declared_type()
+            EvaluateParams.evaluate_recursion(self, child.reference, expected_type)
