@@ -12,7 +12,8 @@ from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
 from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
 from poc.classes.AuxSTSelf import AuxSTSelf
-from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTStatementAssign import AuxSTStatementAssign
+from poc.classes.AuxSTStatementReturn import AuxSTStatementReturn
 from poc.classes.AuxSTType import AuxSTType
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSymbolTable import AuxSymbolTable
@@ -102,8 +103,7 @@ class AuxSTClass(AuxSTBuildingBlock):
                         new_predicate.zto = parent_property.zto
                         AuxSTArgs(parent_property.isa()).parent = new_predicate
                     elif isinstance(parent_property, AuxSTClassInstance):
-                        stmt = AuxSTStatement(AuxSTConstants.statement_assign,
-                                              parent_property.isa()).parent = new_spec_list
+                        stmt = AuxSTStatementAssign(parent_property.isa()).parent = new_spec_list
                         slf = AuxSTSelf(parent_property.isa()).parent = stmt
                         new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id
@@ -112,7 +112,7 @@ class AuxSTClass(AuxSTBuildingBlock):
                         new_predicate.zto = parent_property.zto
                         AuxSTArgs(parent_property.isa()).parent = new_predicate
                     else:
-                        stmt = AuxSTStatement(AuxSTConstants.statement_return, parent_property.isa())
+                        stmt = AuxSTStatementReturn(parent_property.isa())
                         stmt.parent = new_spec_list
                         new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id

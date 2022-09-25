@@ -3,6 +3,7 @@ from parameterized import parameterized
 from anytree import search
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTVarDec import AuxSTVarDec
 from poc.util.fplutil import Utils
 from poc.fplinterpreter import FplInterpreter
