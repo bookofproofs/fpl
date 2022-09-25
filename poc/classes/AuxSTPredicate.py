@@ -1,5 +1,5 @@
 import z3
-from anytree import AnyNode, search
+from anytree import AnyNode, search, PreOrderIter
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxPredicateState import AuxPredicateState
@@ -202,3 +202,22 @@ class AuxSTPredicate(AuxST):
             for arg in self.children:
                 self._long_id += arg.get_long_id()
         return self._long_id
+
+    def get_used_vars(self):
+        """
+        Get a list of all variables used in this predicate in the pre-order of their occurrence in the symbol table
+        :return: a list of these variables
+        """
+        return list(n for n in PreOrderIter(self, filter_=lambda n1: isinstance(n1, AuxSTVariable)))
+
+    def get_used_var_names_set(self):
+        """
+        Get a set of all variable names used in this predicate
+        :return: a set of these variable names
+        """
+        used_vars = self.get_used_vars()
+        s = set()
+        for var in used_vars:
+            if var.id not in s:
+                s.add(var.id)
+        return s

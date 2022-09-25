@@ -152,6 +152,15 @@ class FplUnusedVariable(FplInterpreterMessage):
         self.diagnose_id = "SE0075"
 
 
+class FplUnusedBoundVariable(FplInterpreterMessage):
+    def __init__(self, var_id, quantor_node):
+        s = quantor_node.zfrom.split(".")
+        super().__init__(
+            "The unused bound quantor variable '{0}'".format(var_id),
+            s[0], s[1], quantor_node.path[1].file_name)
+        self.diagnose_id = "SE0077"
+
+
 class FplVariableAlreadyDeclared(FplInterpreterMessage):
     def __init__(self, zfrom: str, other_zfrom: str, var_name: str, file_name: str):
         s = zfrom.split(".")

@@ -69,6 +69,9 @@ class AllFplVariableRelatedErrors(UtilTestCase):
         ("test_FplVariableAlreadyDeclared_class_11.fpl", "SE0080"),
         ("test_FplVariableBound_01.fpl", "SE0270"),
         ("test_FplVariableBound_02.fpl", "SE0270"),
+        ("test_FplVariableBound_03.fpl", "SE0270"),
+        ("test_FplUnusedBoundVariable_01.fpl", "SE0077"),
+        ("test_FplUnusedBoundVariable_02.fpl", "SE0077"),
     ])
     def test_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_fpl_error(self.folder + "/" + use_case, diagnose_id)
@@ -87,6 +90,7 @@ class AllFplVariableRelatedErrors(UtilTestCase):
         ("test_FplVariableAlreadyDeclared_class_ok.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_predicate_ok.fpl", "SE0080"),
         ("test_FplVariableAlreadyDeclared_functional_term_ok.fpl", "SE0080"),
+        ("test_FplVariableBound_ok_01.fpl", "SE0270"),
     ])
     def test_no_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_no_fpl_error(self.folder + "/" + use_case, diagnose_id)

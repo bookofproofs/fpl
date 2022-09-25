@@ -1,0 +1,16 @@
+TestTypes
+{
+    theory
+    {
+        class Magma: AlgebraicStructure
+        {
+            Magma(x: tplSet, op: BinOp)
+            {
+                self:=AlgebraicStructure(x,op)
+            }
+        }
+    }
+}
+
+##############################
+should not trigger FplTypeMismatch

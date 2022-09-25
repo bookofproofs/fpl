@@ -1,45 +1,6 @@
-from anytree import AnyNode
 import re
+from poc.classes.AuxSTOutline import AuxSTOutline
 from poc.classes.AuxSTConstants import AuxSTConstants
-
-
-class AuxSTOutline(AnyNode):
-    """
-    A class for elements of the symbol table of the FPL transformer that have an an outline
-    """
-
-    def __init__(self, parent: AnyNode, outline: str):
-        super().__init__()
-        self.outline = outline
-        self.parent = parent
-        self._declared_type = None
-        self._long_id = None
-
-    def set_declared_type(self, type_node):
-        self._declared_type = type_node
-
-    def get_declared_type(self):
-        if self._declared_type is None:
-            raise AssertionError("The declared type of " + str(type(self)) + " is unexpectedly None")
-        return self._declared_type
-
-    def get_long_id(self):
-        """
-        A default implementation for all classes derived from AuxST
-        :return: ""
-        """
-        if self._long_id is None:
-            self._long_id = ""
-        return self._long_id
-
-    def get_scope(self):
-        if len(self.path) > 3:
-            return self.path[3]
-        if hasattr(self, AuxSTConstants.copied_path):
-            if len(self._copied_path) > 3:
-                return self._copied_path[3]
-            else:
-                raise NotImplementedError()
 
 
 class AuxST(AuxSTOutline):
