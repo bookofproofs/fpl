@@ -1,0 +1,18 @@
+TestFplVariableBound
+{
+    theory
+    {
+        class Nat: obj {}
+
+        predicate TestPredicate()
+        {
+            x, y: obj
+            all x,y
+            (
+                assert is(x,Nat)
+            )
+        }
+    }
+}
+##############################
+FplUnusedBoundVariable:10:12: The unused bound quantor variable 'y'

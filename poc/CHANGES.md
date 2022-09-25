@@ -1,4 +1,13 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.2
+* Bugfixes:
+  * Some FplVariableBound fixed
+* Refactoring
+  * separating the class AuxSTOutline from AuxST.py into a separate AuxSTOutline.py file
+* Feature:
+  * Minor scope method of all AuxSTOutline-type nodes inside the symbol table
+  * new error FplUnusedBoundVariable + some test cases added 
+  * Some test cases added to isolate remaining still occurring FplTypeMismatch errors
 ## 1.9.1
 * Bugfixes:
   * Some FplTypeMismatch errors fixed

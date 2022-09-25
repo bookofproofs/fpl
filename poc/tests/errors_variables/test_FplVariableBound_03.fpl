@@ -1,0 +1,19 @@
+TestFplVariableBound
+{
+    theory
+    {
+        predicate TestPredicate(y:obj)
+        {
+            x: obj
+            all x
+            (
+                ex x
+                (
+                    iif (x, y)
+                )
+            )
+        }
+    }
+}
+##############################
+FplVariableBound:10:16: Variable 'x' already bound at (8,13)

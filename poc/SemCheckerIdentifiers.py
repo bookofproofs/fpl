@@ -13,6 +13,7 @@ from poc.fplerror import FplTypeNotAllowed
 from poc.fplerror import FplVariableBound
 from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
+from poc.fplerror import FplUnusedBoundVariable
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltIndex, InbuiltObject, InbuiltPredicate, \
     InbuiltFunctionalTerm, InbuiltExtension, InbuiltGeneric
@@ -20,6 +21,7 @@ from poc.classes.AuxSTAxiom import AuxSTAxiom
 from poc.classes.AuxSTClass import AuxSTClass
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance
 from poc.classes.AuxSTConjecture import AuxSTConjecture
+from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTConstructor import AuxSTConstructor
 from poc.classes.AuxSTCorollary import AuxSTCorollary
 from poc.classes.AuxSTDefinitionFunctionalTerm import AuxSTDefinitionFunctionalTerm
@@ -34,7 +36,7 @@ from poc.classes.AuxSTRuleOfInference import AuxSTRuleOfInference
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTTheorem import AuxSTTheorem
 from poc.classes.AuxSTType import AuxSTType
-from poc.classes.AuxSTConstants import AuxSTConstants
+from poc.classes.AuxSTVariable import AuxSTVariable
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplMissingProof
@@ -182,20 +184,22 @@ class SemCheckerIdentifiers:
         that lists all variables that were already bound in the outer scope of current_node
         :return:
         """
-        # gather the quantors sub nodes of the node in pre-order
+        # gather the quantors sub nodes of the node in pre-order that are in the same minor scope
         quantor_nodes = list(n for n in PreOrderIter(current_node, filter_=
-        lambda n1: isinstance(n1, AuxSTPredicate) and n1.outline in [AuxSTConstants.predicate_all,
-                                                                     AuxSTConstants.predicate_exists]))
+        lambda n1: isinstance(n1, AuxSTPredicate) and
+                   n1.get_minor_scope() == n1.get_scope() and
+                   n1.outline in [AuxSTConstants.predicate_all, AuxSTConstants.predicate_exists]))
 
         for quantor in quantor_nodes:
+            used_vars_in_quantor = quantor.get_used_var_names_set()
             for var_id in quantor.bound_vars:
                 if var_id in vars_bound_so_far:
                     self.analyzer.error_mgr.add_error(FplVariableBound(var_id, quantor, vars_bound_so_far[var_id]))
                 else:
                     # remember the quantor as a node bounding the variable
                     vars_bound_so_far[var_id] = quantor
-                    # todo: mark all occurrences of the variable inside the quantor block as bound
-                    # todo: identify the case that the bound variable is never used inside the block
+                    if var_id not in used_vars_in_quantor:
+                        self.analyzer.error_mgr.add_error(FplUnusedBoundVariable(var_id, quantor))
                     pass
             pass
 
