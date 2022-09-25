@@ -33,9 +33,9 @@ class AuxSTAxiom(AuxSTBuildingBlock):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
-                    if ret.returned_value is None:
+                    if ret.evaluation_error:
                         sem.eval_stack[-1].value = InbuiltUndefined(self)
-                    elif not ret.returned_value.get_repr():
+                    elif not ret.value.get_repr():
                         sem.error_mgr.add_error(FplAxiomNotSatisfiable(self))
                         sem.eval_stack[-1].value = InbuiltUndefined(self)
                     else:
@@ -44,7 +44,7 @@ class AuxSTAxiom(AuxSTBuildingBlock):
                 elif isinstance(child, AuxSTStatement):
                     # handle the 'is' statement
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
-                    if ret.returned_value is None:
+                    if ret.evaluation_error:
                         sem.eval_stack[-1].value = InbuiltUndefined(self)
                     else:
                         # since the axiom is satisfiable, we 'assume' it to be true for the theory to come

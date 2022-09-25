@@ -32,9 +32,9 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
                     if child.outline == AuxSTConstants.pre:
-                        pre = ret.returned_value
+                        pre = ret.value
                     elif child.outline == AuxSTConstants.con:
-                        con = ret.returned_value
+                        con = ret.value
                 else:
                     raise NotImplementedError(str(type(child)))
 
