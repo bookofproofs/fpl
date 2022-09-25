@@ -34,9 +34,9 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBuildingBlock):
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
                     if child.outline == AuxSTConstants.pre:
-                        pre = ret.returned_value
+                        pre = ret.value
                     elif child.outline == AuxSTConstants.con:
-                        con = ret.returned_value
+                        con = ret.value
                 elif isinstance(child, AuxSTOutline):
                     if child.outline in [AuxSTConstants.block_cor_root, AuxSTConstants.block_proof_root]:
                         for sub_child in child.children:

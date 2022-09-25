@@ -48,20 +48,20 @@ class AuxSTPredicate(AuxST):
                 return
             elif self.outline == AuxSTConstants.predicate_negation:
                 check = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if check.returned_value is None:
+                if check.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                 else:
-                    sem.eval_stack[-1].value = EvaluatedPredicate(self, not check.returned_value.get_repr())
+                    sem.eval_stack[-1].value = EvaluatedPredicate(self, not check.value.get_repr())
                 return
             elif self.outline == AuxSTConstants.predicate_conjunction:
                 ret = True
                 for child in self.children:
                     check = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
-                    if check.returned_value is None:
+                    if check.evaluation_error:
                         sem.eval_stack[-1].value = InbuiltUndefined(self)
                         return
                     else:
-                        ret = ret and check.returned_value.get_repr()
+                        ret = ret and check.value.get_repr()
                     if not ret:
                         # stop further conjunction with False
                         break
@@ -71,11 +71,11 @@ class AuxSTPredicate(AuxST):
                 ret = False
                 for child in self.children:
                     check = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
-                    if check.returned_value is None:
+                    if check.evaluation_error:
                         sem.eval_stack[-1].value = InbuiltUndefined(self)
                         return
                     else:
-                        ret = ret or check.returned_value.get_repr()
+                        ret = ret or check.value.get_repr()
                     if ret:
                         # stop further disjunction with True
                         break
@@ -83,42 +83,38 @@ class AuxSTPredicate(AuxST):
                 return
             elif self.outline == AuxSTConstants.predicate_equivalence:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if p.returned_value is None:
+                if p.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
                 q = EvaluateParams.evaluate_recursion(sem, self.children[1], InbuiltPredicate(self.children[1]))
-                if q.returned_value is None:
+                if q.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self,
-                                                              p.returned_value.get_repr() == q.returned_value.get_repr())
+                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr() == q.value.get_repr())
                 return
             elif self.outline == AuxSTConstants.predicate_exclusiveOr:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if p.returned_value is None:
+                if p.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
                 q = EvaluateParams.evaluate_recursion(sem, self.children[1], InbuiltPredicate(self.children[1]))
-                if q.returned_value is None:
+                if q.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
                 sem.eval_stack[-1].value = EvaluatedPredicate(self,
-                                                              (
-                                                                      p.returned_value.get_repr() and not q.returned_value.get_repr()) or
-                                                              (
-                                                                      q.returned_value.get_repr() and not p.returned_value.get_repr()))
+                                                              (p.value.get_repr() and not q.value.get_repr()) or
+                                                              (q.value.get_repr() and not p.value.get_repr()))
                 return
             elif self.outline == AuxSTConstants.predicate_implication:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if p.returned_value is None:
+                if p.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
                 q = EvaluateParams.evaluate_recursion(sem, self.children[1], InbuiltPredicate(self.children[1]))
-                if q.returned_value is None:
+                if q.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self,
-                                                              not p.returned_value.get_repr() or q.returned_value.get_repr())
+                sem.eval_stack[-1].value = EvaluatedPredicate(self, not p.value.get_repr() or q.value.get_repr())
                 return
             elif self.outline == AuxSTConstants.intrinsic:
                 # we set intrinsic predicates as being True per default
@@ -127,22 +123,22 @@ class AuxSTPredicate(AuxST):
             elif self.outline == AuxSTConstants.predicate_all:
                 self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if p.returned_value is None:
+                if p.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.returned_value.get_repr())
+                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr())
                 return
             elif self.outline == AuxSTConstants.predicate_exists:
                 self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if p.returned_value is None:
+                if p.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.returned_value.get_repr())
+                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr())
                 return
             elif self.outline == AuxSTConstants.pre:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if p.returned_value is None:
+                if p.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                 elif not self.check_satisfiability():
                     sem.error_mgr.add_error(FplPremiseNotSatisfiable(self))
@@ -152,10 +148,10 @@ class AuxSTPredicate(AuxST):
                     sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
             elif self.outline == AuxSTConstants.con:
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
-                if p.returned_value is None:
+                if p.evaluation_error:
                     sem.eval_stack[-1].value = InbuiltUndefined(self)
                 else:
-                    sem.eval_stack[-1].value = EvaluatedPredicate(self, p.returned_value.get_repr())
+                    sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr())
             elif self.outline == AuxSTConstants.undefined:
                 # the syntax allows it, but not the semantics
                 sem.eval_stack[-1].value = InbuiltUndefined(self)

@@ -21,9 +21,9 @@ class EvaluateParams:
         # (could be any type, since FPL has the same syntax for all)
         self.value = None
         # as value, but might be None if an error occurred (e.g. a type mismatch)
-        self.returned_value = None
-        # node within which these params are being evaluated
         self.node = None
+        # true if an evaluation error occurred
+        self.evaluation_error = False
 
     def type_mismatch(self):
         """
@@ -58,10 +58,7 @@ class EvaluateParams:
             sem.error_mgr.add_error(
                 FplTypeMismatch(node, eval_params.expected_type.id, eval_params.value.id)
             )
-            # since we have a type mismatch, we have to return None
-            eval_params.returned_value = None
-        else:
-            eval_params.returned_value = eval_params.value
+            eval_params.evaluation_error = True
 
         # as a last step, we have to set the evaluated value of the symbol table element
         node.get_declared_type().set_repr(eval_params.value)

@@ -29,10 +29,10 @@ class AuxEvaluationBlockPredicate:
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs, AuxSTVariable)):
                     ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
-                    if ret.returned_value is None:
+                    if ret.evaluation_error:
                         sem.eval_stack[-1].value = InbuiltUndefined(node)
                     else:
-                        sem.eval_stack[-1].value = ret.returned_value
+                        sem.eval_stack[-1].value = ret.value
                     if len(signature.children) == 0:
                         node.set_constant_value(sem.eval_stack[-1])
                 elif isinstance(child, AuxSTProperties):
