@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.4
+* Bugfix:
+  * NameError in symbol table robustness tests
+  * Minify method when parsing long comments
+* Refactoring
+  * Providing separate classes for each statement type in the the symbol table, adjusting the test cases accordingly.
 ## 1.9.3
 * Refactoring
   * Eliminating the difference between returned_value and value attributes in the AuxEvaluation class

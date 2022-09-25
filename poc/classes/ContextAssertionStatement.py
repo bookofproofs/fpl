@@ -7,15 +7,14 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTStatementAssert import AuxSTStatementAssert
 
 
 class ContextAssertionStatement(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.statement = AuxSTStatement(AuxSTConstants.statement_assert, i)
-        self.statement.type = AuxSTConstants.statement_assert
+        self.statement = AuxSTStatementAssert(i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["AssertionStatement"], self.rule_aggregator)
 

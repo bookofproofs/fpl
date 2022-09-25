@@ -30,11 +30,11 @@ class AuxPrettifier:
         """
         if isinstance(ast_info.cst, str):
             if ast_info.rule == "Comment":
-                self._append_indented(ast_info.cst)
+                self._append_indented(ast_info.cst, ignore_minified=True)
             elif ast_info.rule == "CommentWhitespaceList":
                 pass
             elif ast_info.rule == "LongComment":
-                self._append_indented(ast_info.cst, linebreaks=2)
+                self._append_indented(ast_info.cst, linebreaks=2, ignore_minified=True)
             elif ast_info.rule == "IW":
                 pass
             elif ast_info.rule == "CW":
@@ -252,11 +252,7 @@ class AuxPrettifier:
     def _append_to_minified(self, text: str, significant_whitespaces=False):
         if not significant_whitespaces:
             text = text.strip()
-        if text[0:2] == "//" or text[0:2] == "/*":
-            # ignore comments
-            pass
-        else:
-            self._minified += text
+        self._minified += text
 
     def _append(self, text: str, strip=False, significant_whitespaces=False):
         self._append_to_minified(text, significant_whitespaces)
@@ -264,8 +260,10 @@ class AuxPrettifier:
             self._prettified = self._prettified.strip()
         self._prettified += text
 
-    def _append_indented(self, text: str, linebreaks=1, strip=False, significant_whitespaces=False):
-        self._append_to_minified(text, significant_whitespaces)
+    def _append_indented(self, text: str, linebreaks=1, strip=False, significant_whitespaces=False,
+                         ignore_minified=False):
+        if not ignore_minified:
+            self._append_to_minified(text, significant_whitespaces)
         if strip:
             self._prettified = self._prettified.strip()
         self._prettified += text + "\n" * linebreaks + "\t" * self._indent

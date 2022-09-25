@@ -1,15 +1,14 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTStatementIsOp import AuxSTStatementIsOp
 
 
 class ContextIsOperator(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTStatement(AuxSTConstants.statement_is, i)
+        self.predicate = AuxSTStatementIsOp(i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["IsOperator"] + ["IdStartsWithSmallCase"],
                                       self.rule_aggregator)

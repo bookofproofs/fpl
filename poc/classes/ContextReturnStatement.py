@@ -6,16 +6,15 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTStatementReturn import AuxSTStatementReturn
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextReturnStatement(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.statement = AuxSTStatement(AuxSTConstants.statement_return, i)
+        self.statement = AuxSTStatementReturn(i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["ReturnStatement"] +
                                       AuxRuleDependencies.dep["ReturnHeader"], self.rule_aggregator)
