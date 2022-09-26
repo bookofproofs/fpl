@@ -428,3 +428,14 @@ class FplCircularReference(FplInterpreterMessage):
             s[0], s[1],
             class_node.path[1].file_name)
         self.diagnose_id = "SE0280"
+
+
+class FplInvalidUseReturnStmt(FplInterpreterMessage):
+    def __init__(self, return_node):
+        s = return_node.zfrom.split(".")
+        msg = "A return statement is invalid in this context"
+        super().__init__(
+            msg,
+            s[0], s[1],
+            return_node.path[1].file_name)
+        self.diagnose_id = "SE0290"

@@ -1,0 +1,18 @@
+TestFplInvalidUseReturnStmt
+{
+    inference
+    {
+        ExistsByExample(p: pred(c: obj))
+        {
+            x: Nat
+            premise:
+                p(c)
+            conclusion:
+                return true
+        }
+    }
+    theory {}
+}
+
+##############################
+FplInvalidUseReturnStmt:11:16: A return statement is invalid in this context

@@ -20,7 +20,6 @@ class AuxSTAxiom(AuxSTBuildingBlock):
         self.set_declared_type(InbuiltPredicate(self))
 
     def evaluate(self, sem):
-        sem.current_building_block = self
         if self.constant_value() is None:
             signature = None
             for child in self.children:

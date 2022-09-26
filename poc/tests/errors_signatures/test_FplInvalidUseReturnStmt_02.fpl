@@ -1,0 +1,14 @@
+TestFplInvalidUseReturnStmt
+{
+    theory
+    {
+        class TestClass: obj
+        {
+            x: obj
+            return x
+        }
+    }
+}
+
+##############################
+FplInvalidUseReturnStmt:11:16: A return statement is invalid in this context

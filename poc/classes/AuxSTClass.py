@@ -1,4 +1,5 @@
 from anytree import search
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltObject
@@ -7,10 +8,12 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTArgs import AuxSTArgs
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance
+from poc.classes.AuxSTConstructors import AuxSTConstructors
 from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
 from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxSTProperties import AuxSTProperties
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatementAssign import AuxSTStatementAssign
 from poc.classes.AuxSTStatementReturn import AuxSTStatementReturn
@@ -127,11 +130,20 @@ class AuxSTClass(AuxSTBuildingBlock):
         return self._hip
 
     def evaluate(self, sem):
-        sem.current_building_block = self
         if not self.is_sc_ready():
-            sem.sc.add_reference(None, sem.current_building_block, AuxReferenceType.semantical)
-        sem.eval_stack[-1].value = InbuiltUndefined(self)
-        self.set_sc_ready()
+            sem.sc.add_reference(None, self.get_scope(), AuxReferenceType.semantical)
+            self.set_sc_ready()
+        for child in self.children:
+            if isinstance(child, AuxSTVarSpecList):
+                EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+            elif isinstance(child, AuxSTConstructors):
+                EvaluateParams.evaluate_recursion(sem, child, child.get_declared_type())
+            elif isinstance(child, AuxSTProperties):
+                EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+            else:
+                raise NotImplementedError(child)
+        # the value of a class is itself
+        sem.eval_stack[-1].value = self
 
     def get_declared_type(self):
         """

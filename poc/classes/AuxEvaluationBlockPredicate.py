@@ -16,7 +16,6 @@ class AuxEvaluationBlockPredicate:
 
     @staticmethod
     def evaluate(node, sem):
-        sem.current_building_block = node
         if node.constant_value() is None:
             signature = None
             for child in node.children:

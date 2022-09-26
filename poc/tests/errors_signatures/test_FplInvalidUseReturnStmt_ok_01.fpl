@@ -1,0 +1,14 @@
+TestFplInvalidUseReturnStmt
+{
+    theory
+    {
+        func Zero() -> Nat
+        {
+            return Nat(0)
+        }
+    }
+
+}
+
+##############################
+should not trigger FplInvalidUseReturnStmt

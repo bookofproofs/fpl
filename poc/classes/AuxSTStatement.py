@@ -1,5 +1,4 @@
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxPredicateState import AuxPredicateState
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 

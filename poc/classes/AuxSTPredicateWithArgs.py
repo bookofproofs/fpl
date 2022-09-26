@@ -89,11 +89,11 @@ class AuxSTPredicateWithArgs(AuxST):
                 sem.eval_stack[-1].value = self.reference
             else:
                 raise NotImplementedError()
-            if not sem.current_building_block.is_sc_ready():
+            if not self.get_scope().is_sc_ready():
                 if AuxBits.is_predicate(propagated_expected_type.type_pattern):
-                    sem.sc.add_reference(self.reference, sem.current_building_block, AuxReferenceType.logical)
+                    sem.sc.add_reference(self.reference, self.get_scope(), AuxReferenceType.logical)
                 else:
-                    sem.sc.add_reference(self.reference, sem.current_building_block, AuxReferenceType.semantical)
+                    sem.sc.add_reference(self.reference, self.get_scope(), AuxReferenceType.semantical)
             # set the declared type of self to the declared type of its reference, unless it is inbuilt
             if isinstance(self.reference, AuxInbuiltType):
                 # prevent infinite recursion, since the inbuilt types have no declared types on their own

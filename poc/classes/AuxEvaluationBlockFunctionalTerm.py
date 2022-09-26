@@ -15,7 +15,6 @@ class AuxEvaluationBlockFunctionalTerm:
 
     @staticmethod
     def evaluate(node, sem):
-        sem.current_building_block = node
         if node.constant_value() is None:
             return_value = None
             for child in node.children:
@@ -24,13 +23,9 @@ class AuxEvaluationBlockFunctionalTerm:
                                                       sem.eval_stack[-1].arg_type_list,
                                                       sem.eval_stack[-1].check_args)
                 elif isinstance(child, AuxSTType):
-                    # remember the expected functional term return type
-                    sem.current_func_term_return_type = child
                     return_value = child
                 elif isinstance(child, AuxSTVarSpecList):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
-                    # forget the expected functional term return type
-                    sem.current_func_term_return_type = None
                 elif isinstance(child, AuxSTProperties):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 else:
