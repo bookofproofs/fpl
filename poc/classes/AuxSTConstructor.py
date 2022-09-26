@@ -47,7 +47,6 @@ class AuxSTConstructor(AuxSTBuildingBlock):
             self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
-        sem.current_building_block = self
         if self.outline == AuxSTConstants.classDefaultConstructor:
             sem.eval_stack[-1].value = InbuiltClassInstance(self)
         else:

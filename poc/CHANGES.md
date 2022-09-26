@@ -1,4 +1,12 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.6
+* Bugfix:
+  * Corrected declared type of the return statement, depending on the type of functional term it is in. 
+  * Initial evaluation method of AuxSTClass corrected to include the children of AuxSTClass in the symbol table
+* Feature: 
+  * New FplInvalidUseReturnStmt error + some test cases added 
+* Refactoring:
+  * Getting rid of the attributes current_* in the SemanticAnalyser class 
 ## 1.9.5
 * Refactoring:
   * The outline of all statements in the symbol table become more specific, replacing the old "type" attribute that was removed in 1.9.4.

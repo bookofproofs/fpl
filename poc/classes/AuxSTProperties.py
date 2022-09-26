@@ -1,5 +1,5 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTConstants import AuxSTConstants
 

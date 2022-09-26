@@ -21,24 +21,14 @@ class SemanticAnalyser:
         self.globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSTConstants.globals)
         # self-containment
         self.sc = AuxSelfContainment()
-        # during the recursive evaluation process, this attribute stores the current FPL building block in which
-        # the recursion takes place for faster identification of this block during the recursion
-        self.current_building_block = None
-        # during the recursive evaluation process, this attribute stores the current reference type related
-        # to the current_building_block
-        self.current_reference_type = None
-        # during the recursive evaluation process, this attribute stores the expected functional term return type
-        self.current_func_term_return_type = None
         self.sem_checker_identifiers = SemCheckerIdentifiers(self)
         self.sem_predicate_analyzer = SemPredicateAnalyzer(self)
         # a stack to evaluate recursively the semantics of the symbol table
         self.eval_stack = list()
         # append root (dummy) params for later recursion
         self.eval_stack.append(EvaluateParams())
-
         # a dictionary of all nodes by id (non-global identifier)
         self.theorem_like_statements = dict()  # all theorem like statements by id (non-global identifier)
-
         # In the following, we specify, which building blocks are allowed to have overrides
         # (i.e. the same identifiers, but different signatures).
         self.theorems = AuxOverrideHandler(AuxOverrideHandler.NOT_ALLOWED, self.error_mgr)
