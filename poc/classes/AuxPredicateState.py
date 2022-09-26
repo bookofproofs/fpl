@@ -83,7 +83,16 @@ class AuxPredicateState:
             self._register(self._parent_with_this_state.outline + "_" + self._parent_with_this_state.id)
         elif self._parent_with_this_state.outline in [AuxSTConstants.predicate_with_arguments, AuxSTConstants.var,
                                                       AuxSTConstants.variadic_var, AuxSTConstants.index_value,
-                                                      AuxSTConstants.statement, AuxSTConstants.selfInstance,
+                                                      AuxSTConstants.statement_assert,
+                                                      AuxSTConstants.statement_assign,
+                                                      AuxSTConstants.statement_cases,
+                                                      AuxSTConstants.statement_case,
+                                                      AuxSTConstants.statement_case_default,
+                                                      AuxSTConstants.statement_is,
+                                                      AuxSTConstants.statement_loop,
+                                                      AuxSTConstants.statement_py,
+                                                      AuxSTConstants.statement_range,
+                                                      AuxSTConstants.statement_return, AuxSTConstants.selfInstance,
                                                       AuxSTConstants.preReferenced]:
             self._register_and_set_expression()
         else:

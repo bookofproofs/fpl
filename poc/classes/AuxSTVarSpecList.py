@@ -17,8 +17,12 @@ class AuxSTVarSpecList(AuxSTOutline):
 
     def evaluate(self, sem):
         for child in self.children:
-            if isinstance(child,AuxSTVarDec):
+            if isinstance(child, AuxSTVarDec):
                 # initialize the declared type of AuxSTVarDec nodes
                 child.set_declared_type(InbuiltUndefined(child))
-            EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(self.parent))
+            expected_type = self._determine_exptected_type(child)
+            EvaluateParams.evaluate_recursion(sem, child, expected_type)
         sem.eval_stack[-1].value = InbuiltUndefined(self.parent)
+
+    def _determine_exptected_type(self, child):
+        return InbuiltUndefined(child)

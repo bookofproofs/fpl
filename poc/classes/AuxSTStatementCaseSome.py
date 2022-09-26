@@ -6,7 +6,7 @@ from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 class AuxSTStatementCaseSome(AuxSTStatement):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.case, i)
+        super().__init__(AuxSTConstants.statement_case, i)
         self.zfrom = i.corrected_position('Predicate')
         self.zto = i.last_positions_by_rule['ConditionFollowedByResult'].pos_to_str()
         # the case statement is a undefined

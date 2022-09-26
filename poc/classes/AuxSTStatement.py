@@ -7,7 +7,7 @@ from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 class AuxSTStatement(AuxST):
 
     def __init__(self, statement_type: str, i):
-        super().__init__(AuxSTConstants.statement, i)
+        super().__init__(statement_type, i)
         self._statement_type = statement_type
         self._predicate_state = AuxPredicateState(self)
 

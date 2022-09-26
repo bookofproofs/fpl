@@ -14,3 +14,6 @@ class AuxSTStatementAssign(AuxSTStatement):
 
     def clone(self):
         return AuxSTStatementAssign(self._i)
+
+    def evaluate(self, sem):
+        raise NotImplementedError()
