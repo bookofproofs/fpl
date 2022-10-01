@@ -19,9 +19,7 @@ class AuxEvaluationBlockFunctionalTerm:
             return_value = None
             for child in node.children:
                 if isinstance(child, AuxSTSignature):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child),
-                                                      sem.eval_stack[-1].arg_type_list,
-                                                      sem.eval_stack[-1].check_args)
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTType):
                     return_value = child
                 elif isinstance(child, AuxSTVarSpecList):

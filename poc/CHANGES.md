@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.7
+* Refactoring: 
+  * Single python files for the classes AuxNodeInstanceHandler, AuxInstanceVariable and AuxNodeInstanceHandlers (originally all in AuxSTBuildingBlock.py) 
+  * Renaming these classes into AuxSTBuildingBlockInstanceHandler, AuxSTBuildingBlockInstanceVariable and AuxSTBuildingBlockInstanceHandlers 
+  * Cloning instance handlers in AuxSTPredicateWithArgs whenever a 'call' is established to separate the scope of variables for each call
+  * Simplified calls of EvaluateParams.evaluate_recursion
 ## 1.9.6
 * Bugfix:
   * Corrected declared type of the return statement, depending on the type of functional term it is in. 
@@ -40,7 +46,7 @@
   * new method get_long_id to better identify predicates with arguments (and their reoccurrences) inside a block
   * new method get_scope to identify the building block each node in the symbol table resists in
 * Refactoring
-  * Enhancing AuxNodeInstanceHandler to AuxNodeInstanceHandlers as a dictionary of AuxInstanceHandler objects
+  * Enhancing AuxNodeInstanceHandler to AuxBlockInstanceHandlers as a dictionary of AuxInstanceHandler objects
   * Moving all constants from AuxSymbolTable to AuxSTConstants
   * Moving add_vars_to_node from AuxSymbolTable to new class AuxSymbolTableHelpers
 * Bugfixes:

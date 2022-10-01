@@ -1,61 +1,15 @@
 from anytree import search
-from gid import Guid
 from poc.fplerror import FplErrorManager
 from poc.fplerror import FplVariableAlreadyDeclared
 from poc.fplerror import FplTemplateMisused
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTBuildingBlockInstanceHandlers import AuxSTBuildingBlockInstanceHandlers
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-
-"""
-The class AuxInstanceVariable stores the type and a list of occurrences of the variable inside a block.
-"""
-
-
-class AuxInstanceVariable:
-    def __init__(self, occurrences: list, type_node):
-        self.type_node = type_node.clone()
-        self.occurrences = occurrences
-
-
-class AuxInstanceHandler:
-    def __init__(self):
-        self._my_vars = dict()
-        self._my_ids = dict()
-
-    def add_instance_variable(self, var_id: str, occurrences: list, type_node):
-        self._my_vars[var_id] = AuxInstanceVariable(occurrences, type_node)
-
-    def get_instance_variable(self, var_id):
-        return self._my_vars[var_id]
-
-    def add_identifier_with_expression(self, identifier, expression):
-        if identifier in self._my_ids:
-            AssertionError(identifier + " already registered wit " + str(self._my_ids[identifier]))
-        else:
-            self._my_ids[identifier] = expression
-
-    def get_identifiers_expression(self, identifier):
-        return self._my_ids[identifier]
 
 
 """
-The class AuxNodeInstanceHandlers simplifies the handling of building block instance handlers. 
-An instance is identified by a Guid and stores internally a AuxInstanceHandler object.
+The class AuxSTBuildingBlock is a base class for all FPL building blocks
 """
-
-
-class AuxNodeInstanceHandlers(dict):
-    def __init__(self):
-        super().__init__()
-
-    def add_instance(self):
-        guid = Guid()
-        self[str(guid)] = AuxInstanceHandler()
-        return str(guid)
-
-    def add_instance_variable(self, guid: Guid, var_id: str, occurrences: list, type_node):
-        self[guid].add_instance_variable(var_id, occurrences, type_node)
 
 
 class AuxSTBuildingBlock(AuxST):
@@ -72,8 +26,7 @@ class AuxSTBuildingBlock(AuxST):
         # The evaluate method will check if the static value is not None and simply return its value
         self._constant_value = None
         # instance handlers for the block
-        self._handlers = AuxNodeInstanceHandlers()
-        self._main_guid = self._handlers.add_instance()
+        self._handlers = AuxSTBuildingBlockInstanceHandlers()
         # a flag that will be set to True once the very first evaluation was used to enrich the self-containment graph
         self._sc_ready_flag = False
 
@@ -173,31 +126,27 @@ class AuxSTBuildingBlock(AuxST):
             raise AssertionError("Constant value already set.")
 
     def add_var_to_main_instance(self, var_id: str, occurrences: list, type_node):
-        self._handlers.add_instance_variable(self._main_guid, var_id, occurrences, type_node)
+        self._handlers.main_instance.add_instance_variable(var_id, occurrences, type_node)
 
     def clone_main_instance(self):
-        guid = self._handlers.add_instance()
-        for var_id in self._handlers[self._main_guid]:
-            self._handlers.add_instance_variable(guid, var_id,
-                                                 self._handlers[self._main_guid][var_id].occurrences,
-                                                 self._handlers[self._main_guid][var_id].type_node)
-        return guid
-
-    def clear_instance_handler(self):
-        for guid in self._handlers:
-            # remove all but the main instance of the node
-            if guid != self._main_guid:
-                for var_id in self._handlers[guid]:
-                    self._handlers[guid][var_id].occurrences.clear()
-                    AuxSymbolTable.remove_node_recursively(self._handlers[guid][var_id].type_node)
-                self._handlers[guid].clear
-                del self._handlers[guid]
+        instance_clone = self._handlers.add_instance()
+        main_instance_vars = self._handlers.main_instance.get_vars()
+        for var_id in main_instance_vars:
+            instance_clone.add_instance_variable(var_id,
+                                                 main_instance_vars[var_id].occurrences,
+                                                 main_instance_vars[var_id].type_node)
+        return instance_clone
 
     def get_instance(self, guid: str):
         return self._handlers[guid]
 
+    def remove_instance(self, guid):
+        instance = self.get_instance(guid)
+        instance.clear_instance()
+        del self._handlers[guid]
+
     def get_main_instance(self):
-        return self._handlers[self._main_guid]
+        return self._handlers.main_instance
 
     def evaluate(self, sem):
         raise NotImplementedError(str(sem.eval_stack[-1].node))

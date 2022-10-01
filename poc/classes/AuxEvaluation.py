@@ -24,6 +24,11 @@ class EvaluateParams:
         self.node = None
         # true if an evaluation error occurred
         self.evaluation_error = False
+        # the (recursively) last building block, inside which we evaluate a new instance
+        self.building_block = None
+        # instance guid inside the building block handler,
+        # separating the scope from other calls of the same building block
+        self.instance_guid = None
 
     def type_mismatch(self):
         """
@@ -37,16 +42,26 @@ class EvaluateParams:
         return self.expected_type.id != self.value.id
 
     @staticmethod
-    def evaluate_recursion(sem, node, expected_type, args=list(), check_args=False):
+    def evaluate_recursion(sem, node, expected_type, arg_type_list=None, check_args=None, building_block=None,
+                           instance_guid=None):
         # create a new evaluation params set
         eval_params = EvaluateParams()
         eval_params.check_args = check_args
         eval_params.node = node
+        if building_block is None:
+            # propagate the last building block and its guid
+            eval_params.building_block = sem.eval_stack[-1].building_block
+            eval_params.instance_guid = sem.eval_stack[-1].instance_guid
+            eval_params.arg_type_list = sem.eval_stack[-1].arg_type_list
+            eval_params.check_args = sem.eval_stack[-1].check_args
+        else:
+            eval_params.building_block = building_block
+            eval_params.instance_guid = instance_guid
+            eval_params.arg_type_list = arg_type_list
+            eval_params.check_args = check_args
+
         # whose expected type is the required one
         eval_params.expected_type = expected_type
-        if len(args) > 0:
-            # remember the optional arguments in the EvaluateParams instance
-            eval_params.arg_type_list = args
         # push it on the stack
         sem.eval_stack.append(eval_params)
 

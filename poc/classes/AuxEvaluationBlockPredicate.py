@@ -21,9 +21,7 @@ class AuxEvaluationBlockPredicate:
             for child in node.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child),
-                                                      sem.eval_stack[-1].arg_type_list,
-                                                      sem.eval_stack[-1].check_args)
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTVarSpecList):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs, AuxSTVariable)):
