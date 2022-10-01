@@ -16,7 +16,6 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
         self.set_declared_type(InbuiltPredicate(self))
 
     def evaluate(self, sem):
-        sem.current_building_block = self
         if self.constant_value() is None:
             signature = None
             pre = None
@@ -24,9 +23,7 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
             for child in self.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child),
-                                                      sem.eval_stack[-1].arg_type_list,
-                                                      sem.eval_stack[-1].check_args)
+                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTVarSpecList):
                     EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
                 elif isinstance(child, AuxSTPredicate):

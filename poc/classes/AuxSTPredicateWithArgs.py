@@ -65,15 +65,15 @@ class AuxSTPredicateWithArgs(AuxST):
                                                            arg_list)
                 else:
                     ret = self.__get_possible_override(sem, qualified_identifier, propagated_expected_type, arg_list)
-                if not isinstance(self.reference, (InbuiltUndefined, NamedUndefined)):
-                    # at this stage, only if self.reference is not InbuiltUndefined, it is instead
+                if isinstance(self.reference, (InbuiltUndefined, NamedUndefined)):
+                    sem.eval_stack[-1].value = self.reference
+                else:
+                    # at this stage, if self.reference is not InbuiltUndefined, it is instead
                     # a matched override of the Pascal Case identifier somewhere in the FPL source code.
-                    # In this case, ret contains an evaluated return value of this override
+                    # In this case, ret contains an evaluated value of this override
                     # and we replace the stack by this evaluation
                     sem.eval_stack.pop()
                     sem.eval_stack.append(ret)
-                else:
-                    sem.eval_stack[-1].value = self.reference
             elif qualified_identifier in ["pred", "predicate"]:
                 declared_type = self.get_declared_type()
                 if len(declared_type.children) > 0:
@@ -104,7 +104,10 @@ class AuxSTPredicateWithArgs(AuxST):
             # avoid re-evaluation of inbuilt types
             if not isinstance(self.reference, AuxInbuiltType):
                 ret = EvaluateParams.evaluate_recursion(sem, self.reference, propagated_expected_type,
-                                                        arg_list, True)
+                                                        arg_type_list=arg_list,
+                                                        check_args=True,
+                                                        building_block=self.reference,
+                                                        instance_guid=self.reference.clone_main_instance().id)
                 sem.eval_stack.pop()
             else:
                 ret = sem.eval_stack.pop()
@@ -123,9 +126,13 @@ class AuxSTPredicateWithArgs(AuxST):
                 self.reference = InbuiltUndefined(self)
                 break
             ret = EvaluateParams.evaluate_recursion(sem, override.reference, propagated_expected_type,
-                                                    arg_list, True)
+                                                    arg_type_list=arg_list,
+                                                    check_args=True,
+                                                    building_block=override.reference,
+                                                    instance_guid=override.reference.clone_main_instance().id)
             if ret.argument_error is not None:
                 mismatched_overrides.append(str(ret.argument_error))
+                override.reference.remove_instance(ret.instance_guid)
             else:
                 # break searching for matching overrides, if one was found
                 self.reference = override.reference
