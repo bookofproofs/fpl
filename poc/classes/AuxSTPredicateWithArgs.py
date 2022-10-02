@@ -191,8 +191,8 @@ class AuxSTPredicateWithArgs(AuxST):
         if not isinstance(sem.eval_stack[-1].expected_type, (InbuiltPredicate, EvaluatedPredicate)):
             return False
         else:
-            for eval_params in sem.eval_stack:
-                if eval_params.node == override.reference and override.reference is not None:
+            for register in sem.eval_stack:
+                if register.node == override.reference and override.reference is not None:
                     return True
             return False
 

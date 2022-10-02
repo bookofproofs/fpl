@@ -14,4 +14,3 @@ class AuxSTStatementCaseSome(AuxSTStatement):
 
     def clone(self):
         return AuxSTStatementCaseSome(self._i)
-

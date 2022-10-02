@@ -88,3 +88,7 @@ class AuxSTType(AuxST):
         # in the symbol table
         pass
 
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = self.to_string()
+        return self._long_id

@@ -14,3 +14,6 @@ class AuxSTStatementAssert(AuxSTStatement):
 
     def clone(self):
         return AuxSTStatementAssert(self._i)
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

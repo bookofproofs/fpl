@@ -9,9 +9,10 @@ class AuxSTStatement(AuxST):
         super().__init__(statement_type, i)
         self._statement_type = statement_type
         self._predicate_state = AuxPredicateState(self)
+        self.set_declared_type(InbuiltUndefined(self))
 
     def evaluate(self, sem):
-        sem.eval_stack[-1].value = InbuiltUndefined(self)
+        raise NotImplementedError(str(type(self)))
 
     def get_state(self):
         return self._predicate_state

@@ -9,7 +9,9 @@ from anytree import AnyNode
 from poc.fplsemanticanalyzer import SemanticAnalyser
 from poc.fplerror import FplErrorManager
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxEvaluationRegister import AuxEvaluationRegister
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
+from poc.classes.AuxSTDefinitionPredicate import AuxSTDefinitionPredicate
 
 """
 Tests of FPL implementation of the predicate auxiliary class
@@ -62,6 +64,13 @@ class AuxPredicateTests(unittest.TestCase):
         AnyNode(outline=AuxSTConstants.globals, parent=cls._symbol_table_root)
         cls.analyzer = SemanticAnalyser(cls._symbol_table_root, cls._error_mgr)
         cls.sem = cls.analyzer
+        cls.i.last_positions_by_rule["PredicateHeader"] = cls.aux_info
+        cls.i.last_positions_by_rule["DefinitionPredicate"] = cls.aux_info
+        register = AuxEvaluationRegister()
+        register.building_block = AuxSTDefinitionPredicate(cls.i)
+        register.instance_guid = register.building_block.get_main_instance().id
+        register.instance = register.building_block.get_instance(register.instance_guid);
+        cls.sem.eval_stack.append(register)
 
     @parameterized.expand([
         AuxSTConstants.predicate_negation,

@@ -1,10 +1,11 @@
 from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTVarDec(AuxST):
 
     def __init__(self, i):
-        super().__init__("var_decl", i)
+        super().__init__(AuxSTConstants.var_decl, i)
         self._scope_start_row = 0
         self._scope_start_col = 0
         self._scope_end_row = 0
@@ -15,7 +16,7 @@ class AuxSTVarDec(AuxST):
         other.id = self.id
         return other
 
-    def initialize_scope(self, zto:str):
+    def initialize_scope(self, zto: str):
         """
         Initializes the scope of this variable declaration.
         By default, the scope starts with the beginning of the variable declaration and ends with the scope of the
@@ -62,3 +63,8 @@ class AuxSTVarDec(AuxST):
         for occurrence in var.occurrences:
             # set the pointer to the type of each usage of the variable inside the node to the same type_node
             occurrence.set_declared_type(var.type_node)
+
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = "AuxSTVarDec_" + self.id
+        return self._long_id

@@ -64,3 +64,7 @@ class AuxSTSignature(AuxST):
             matcher.try_match(sem, args_of_caller, params_of_signature)
         sem.eval_stack[-1].value = InbuiltUndefined(self)
 
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = "AuxSTSignature"
+        return self._long_id

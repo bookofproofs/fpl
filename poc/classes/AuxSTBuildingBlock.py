@@ -5,7 +5,7 @@ from poc.fplerror import FplTemplateMisused
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTBuildingBlockInstanceHandlers import AuxSTBuildingBlockInstanceHandlers
 from poc.classes.AuxST import AuxST
-
+from poc.classes.AuxSTConstants import AuxSTConstants
 
 """
 The class AuxSTBuildingBlock is a base class for all FPL building blocks
@@ -46,7 +46,7 @@ class AuxSTBuildingBlock(AuxST):
          :return: None
          """
         # blocks's variable declarations
-        _declared_vars_tuple = search.findall_by_attr(self, "var_decl", "outline")
+        _declared_vars_tuple = search.findall_by_attr(self, AuxSTConstants.var_decl, AuxSTConstants.outline)
         for var_declaration in _declared_vars_tuple:
             if var_declaration.id not in self._declared_vars:
                 # set the scope of the variable
@@ -88,6 +88,8 @@ class AuxSTBuildingBlock(AuxST):
                                            self._declared_vars[var_declaration.id].zfrom,
                                            var_declaration.id,
                                            filename))
+        # make sure, this duplicate variable declaration will also have an inbuilt type necessary for later evaluation
+        var_declaration.set_declared_type(InbuiltUndefined(var_declaration))
 
     def get_declared_vars(self):
         """
@@ -156,3 +158,8 @@ class AuxSTBuildingBlock(AuxST):
 
     def set_sc_ready(self):
         self._sc_ready_flag = True
+
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = self.id
+        return self._long_id

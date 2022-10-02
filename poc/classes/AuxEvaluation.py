@@ -1,80 +1,79 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.fplerror import FplTypeMismatch
+from poc.classes.AuxEvaluationRegister import AuxEvaluationRegister
 
 
 class EvaluateParams:
-    """
-    Optional params for the evaluate method of any node in the AuxSymbolTable recursively
-    """
-
-    def __init__(self):
-        # Type in which this recursive call is being used (and should return a compatible type)
-        self.expected_type = None
-        # a list of types to be used to call the matched override (needed only for AuxSTPredicateWithArgs)
-        self.arg_type_list = list()
-        # check args is a flag indicating if arg_type_list is a representation
-        # of arguments of some AuxSTPredicateWithArgs (even if empty)
-        self.check_args = False
-        # a possible argument error when assigning the arg_type_list to the parameters of override's signature
-        self.argument_error = None
-        # the returned value after recursion
-        # (could be any type, since FPL has the same syntax for all)
-        self.value = None
-        # as value, but might be None if an error occurred (e.g. a type mismatch)
-        self.node = None
-        # true if an evaluation error occurred
-        self.evaluation_error = False
-        # the (recursively) last building block, inside which we evaluate a new instance
-        self.building_block = None
-        # instance guid inside the building block handler,
-        # separating the scope from other calls of the same building block
-        self.instance_guid = None
-
-    def type_mismatch(self):
-        """
-        True, if the type of the returned value is different from the type of the expected_value
-        :return: Boolean Value
-        """
-        if self.expected_type is None:
-            self.expected_type = InbuiltUndefined(self.node)
-        if self.value is None:
-            self.value = InbuiltUndefined(self.node)
-        return self.expected_type.id != self.value.id
 
     @staticmethod
     def evaluate_recursion(sem, node, expected_type, arg_type_list=None, check_args=None, building_block=None,
                            instance_guid=None):
+        """
+
+        :param sem:
+        :param node:
+        :param expected_type:
+        :param arg_type_list:
+        :param check_args:
+        :param building_block:
+        :param instance_guid:
+        :return:
+        """
         # create a new evaluation params set
-        eval_params = EvaluateParams()
-        eval_params.check_args = check_args
-        eval_params.node = node
+        register = AuxEvaluationRegister()
+        register.check_args = check_args
+        register.node = node
         if building_block is None:
-            # propagate the last building block and its guid
-            eval_params.building_block = sem.eval_stack[-1].building_block
-            eval_params.instance_guid = sem.eval_stack[-1].instance_guid
-            eval_params.arg_type_list = sem.eval_stack[-1].arg_type_list
-            eval_params.check_args = sem.eval_stack[-1].check_args
+            # propagate the last building block, its guid, a list of argument types and if we want to check these args
+            previous = sem.eval_stack[-1]
+            register.building_block = previous.building_block
+            register.instance_guid = previous.instance_guid
+            register.arg_type_list = previous.arg_type_list
+            register.check_args = previous.check_args
+            register.instance = previous.instance
         else:
-            eval_params.building_block = building_block
-            eval_params.instance_guid = instance_guid
-            eval_params.arg_type_list = arg_type_list
-            eval_params.check_args = check_args
+            register.building_block = building_block
+            register.instance_guid = instance_guid
+            register.arg_type_list = arg_type_list
+            register.check_args = check_args
+            register.instance = building_block.get_instance(instance_guid)
 
         # whose expected type is the required one
-        eval_params.expected_type = expected_type
-        # push it on the stack
-        sem.eval_stack.append(eval_params)
+        register.expected_type = expected_type
 
-        node.evaluate(sem)  # start recursion
-        eval_params = sem.eval_stack.pop()  # garbage-collect the stack
-        # check if there is a type mismatch
+        if EvaluateParams._evaluation_necessary(register):
+            # push it on the stack
+            sem.eval_stack.append(register)
 
-        if eval_params.type_mismatch():
-            sem.error_mgr.add_error(
-                FplTypeMismatch(node, eval_params.expected_type.id, eval_params.value.id)
-            )
-            eval_params.evaluation_error = True
+            node.evaluate(sem)  # start recursion
+            register = sem.eval_stack.pop()  # garbage-collect the stack
+            # check if there is a type mismatch
 
-        # as a last step, we have to set the evaluated value of the symbol table element
-        node.get_declared_type().set_repr(eval_params.value)
-        return eval_params
+            if register.type_mismatch():
+                sem.error_mgr.add_error(
+                    FplTypeMismatch(node, register.expected_type.id, register.value.id)
+                )
+                register.evaluation_error = True
+
+            # as a last step, we have to set the evaluated value of the symbol table element
+            node.get_declared_type().set_repr(register.value)
+
+            # store the value of eval_params of the node in the instance of the building block
+            register.instance.set_register(register)
+        return register
+
+    @staticmethod
+    def _evaluation_necessary(register):
+        register_id = register.node.get_long_id()
+        if register.instance.has_register(register_id):
+            EvaluateParams._copy_evaluation(register_id, register)
+            return register.is_dirty  # evaluation is necessary, if the register exists but is dirty
+        # evaluation is necessary, if the register does not exist
+        return True
+
+    @staticmethod
+    def _copy_evaluation(source_register_id, target_register):
+        register = target_register.instance.get_register(source_register_id)
+        target_register.value = register.value
+        target_register.evaluation_error = register.evaluation_error
+        target_register.argument_error = register.argument_error
+        target_register.is_dirty = register.is_dirty
