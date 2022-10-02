@@ -1,6 +1,5 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
@@ -52,5 +51,5 @@ class AuxSTQualified(AuxST):
 
     def get_long_id(self):
         if self._long_id is None:
-            self._long_id = "."
+            self._long_id = self.to_string()
         return self._long_id

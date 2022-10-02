@@ -25,3 +25,8 @@ class AuxSTRange(AuxST):
         other.left_included = self.left_included
         other.right_included = self.right_included
         return other
+
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = self.to_string()
+        return self._long_id

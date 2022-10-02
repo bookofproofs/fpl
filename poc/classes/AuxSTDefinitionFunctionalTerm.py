@@ -1,3 +1,4 @@
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxEvaluationBlockFunctionalTerm import AuxEvaluationBlockFunctionalTerm
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants

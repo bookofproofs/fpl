@@ -16,3 +16,8 @@ class AuxSTProperties(AuxSTOutline):
             expected_type = child.get_declared_type()
             EvaluateParams.evaluate_recursion(sem, child, expected_type)
         sem.eval_stack[-1].value = InbuiltUndefined(self.parent)
+
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = "AuxSTProperties"
+        return self._long_id

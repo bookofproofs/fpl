@@ -1,4 +1,11 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.8
+* Refactoring:
+  * Making get_long_id() in AuxSTOutline abstract to force implementing it in all classes inheriting from AuxSTOutline
+  * Implementing the get_long_id() methods in all affected classes
+  * Making EvaluateParams class a pure static class by separating a new class AuxEvaluationRegister
+  * Renaming local variables named 'eval_params' to 'register' to make their meaning more explicit 
+  * Making evaluate() in AuxSTStatement abstract to force implementing it in all inheriting classes. However, those implementations will raise the NotImplementedError  
 ## 1.9.7
 * Refactoring: 
   * Single python files for the classes AuxNodeInstanceHandler, AuxInstanceVariable and AuxNodeInstanceHandlers (originally all in AuxSTBuildingBlock.py) 

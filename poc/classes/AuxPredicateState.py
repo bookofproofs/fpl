@@ -114,9 +114,9 @@ class AuxPredicateState:
             self.expression = args[0]
 
     def _register_and_set_expression(self):
-        long_id = self._parent_with_this_state.get_long_id()
-        self._register(long_id)
-        self.expression = self.block_instance.get_identifiers_expression(long_id)
+        get_long_id = self._parent_with_this_state.get_long_id()
+        self._register(get_long_id)
+        self.expression = self.block_instance.get_identifiers_expression(get_long_id)
 
     def _determine_satisfiability(self):
         if self.current & self._satisfiability_check_done == 0:

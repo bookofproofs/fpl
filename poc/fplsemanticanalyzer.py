@@ -25,8 +25,6 @@ class SemanticAnalyser:
         self.sem_predicate_analyzer = SemPredicateAnalyzer(self)
         # a stack to evaluate recursively the semantics of the symbol table
         self.eval_stack = list()
-        # append root (dummy) params for later recursion
-        self.eval_stack.append(EvaluateParams())
         # a dictionary of all nodes by id (non-global identifier)
         self.theorem_like_statements = dict()  # all theorem like statements by id (non-global identifier)
         # In the following, we specify, which building blocks are allowed to have overrides

@@ -16,19 +16,11 @@ class AuxSTVarSpecList(AuxSTOutline):
 
     def evaluate(self, sem):
         for child in self.children:
-            expected_type = self._determine_exptected_type(child)
+            expected_type = child.get_declared_type()
             EvaluateParams.evaluate_recursion(sem, child, expected_type)
         sem.eval_stack[-1].value = InbuiltUndefined(self.parent)
 
-    def _determine_exptected_type(self, child):
-        if child.outline == AuxSTConstants.statement_assign:
-            # the expected type of the assignment is the type of the variable to which we assign the value
-            return child.children[0].get_declared_type()
-        elif child.outline == AuxSTConstants.statement_return:
-            return child.get_declared_type()
-        elif child.outline == AuxSTConstants.var_decl:
-            # the expected type of var declarations is undefined, which is also initialize
-            child.set_declared_type(InbuiltUndefined(child))
-            return child.get_declared_type()
-        else:
-            raise NotImplementedError(child)
+    def get_long_id(self):
+        if self._long_id is None:
+            self._long_id = "AuxSTVarSpecList"
+        return self._long_id

@@ -25,13 +25,7 @@ class AuxSTOutline(AnyNode):
         return self._declared_type
 
     def get_long_id(self):
-        """
-        A default implementation for all classes derived from AuxST
-        :return: ""
-        """
-        if self._long_id is None:
-            self._long_id = ""
-        return self._long_id
+        raise NotImplementedError(str(type(self)))
 
     def get_scope(self):
         """
