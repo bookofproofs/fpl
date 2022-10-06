@@ -1,9 +1,10 @@
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 
 
-class AuxSTStatementAssert(AuxSTStatement):
+class AuxSTStatementAssert(AuxSTStatement, AuxSTTypeInterface):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.statement_assert, i)

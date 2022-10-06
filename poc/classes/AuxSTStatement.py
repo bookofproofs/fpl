@@ -1,6 +1,5 @@
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxPredicateState import AuxPredicateState
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 
 
 class AuxSTStatement(AuxST):
@@ -9,7 +8,6 @@ class AuxSTStatement(AuxST):
         super().__init__(statement_type, i)
         self._statement_type = statement_type
         self._predicate_state = AuxPredicateState(self)
-        self.set_declared_type(InbuiltUndefined(self))
 
     def evaluate(self, sem):
         raise NotImplementedError(str(type(self)))

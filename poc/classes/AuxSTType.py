@@ -14,7 +14,6 @@ class AuxSTType(AuxST):
         self.type_mod = ""
         self._parsing_info = None
         self._qualified_id = None
-        self._internal_representation = None
 
     def set_type(self, var_type):
         if var_type.generalType is not None:
@@ -50,7 +49,6 @@ class AuxSTType(AuxST):
     def clone(self):
         other = self._copy(AuxSTType(self._i))
         other._qualified_id = self._qualified_id
-        other._internal_representation = self._internal_representation
         if self.type_pattern == -1:
             # prevent cloning type when, in fact the type has params.
             # In this case replace the node by an AuxSTArgs node
@@ -72,15 +70,6 @@ class AuxSTType(AuxST):
 
     def get_relative_id(self):
         return self.id
-
-    def set_repr(self, representation):
-        if self._internal_representation is not None:
-            AssertionError("Internal type representation already set.")
-        else:
-            self._internal_representation = representation
-
-    def get_repr(self):
-        return self._internal_representation
 
     def evaluate(self, sem):
         # a separate evaluation of type nodes is not required since they are already fully represented by themselves

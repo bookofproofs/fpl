@@ -59,10 +59,7 @@ class AuxParamsArgsMatcher:
 
     @staticmethod
     def are_types_compatible(type_arg, type_param):
-        # handy variables for the representations of the types
-        arg_repr = type_arg.get_repr()
-        param_repr = type_param.get_repr()
-        if isinstance(param_repr, InbuiltUndefined) or isinstance(arg_repr, InbuiltUndefined):
+        if isinstance(type_arg, InbuiltUndefined) or isinstance(type_param, InbuiltUndefined):
             # if any of the representations are undefined, return false
             return False
 
@@ -89,11 +86,14 @@ class AuxParamsArgsMatcher:
             else:
                 # even though there is was no match of IDs, we have already ensured the consistency of types.
                 # In this case, we still have to check if the two consistent types
-                # with different IDs are still compatible,
-                # for instance due to class inheritance. The parameter has to 'accept' an argument if
+                # with different IDs are still compatible, for instance due to class inheritance.
+                # The parameter has to 'accept' an argument if
                 # the argument's type is a derived class of the parameter's type.
                 if AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
-                    return arg_repr.is_of_type(param_repr)
+                    if AuxBits.is_inbuilt_object(type_param.type_pattern):
+                        return
+                    else:
+                        return type_arg.is_of_type(type_param)
 
         # in all other cases, return False (argument is not matching the parameter)
         return False

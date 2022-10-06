@@ -2,7 +2,7 @@ from anytree import search
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxBits import AuxBits
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltObject
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTArgs import AuxSTArgs
@@ -135,15 +135,15 @@ class AuxSTClass(AuxSTBuildingBlock):
             self.set_sc_ready()
         for child in self.children:
             if isinstance(child, AuxSTVarSpecList):
-                EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                EvaluateParams.evaluate_recursion(sem, child)
             elif isinstance(child, AuxSTConstructors):
-                EvaluateParams.evaluate_recursion(sem, child, child.get_declared_type())
+                EvaluateParams.evaluate_recursion(sem, child)
             elif isinstance(child, AuxSTProperties):
-                EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                EvaluateParams.evaluate_recursion(sem, child)
             else:
                 raise NotImplementedError(child)
-        # the value of a class is itself
-        sem.eval_stack[-1].value = self
+        # the value of a class is a wrapper object with its type
+        sem.eval_stack[-1].value = InbuiltValueAtRuntime(self, self)
 
     def get_declared_type(self):
         """
@@ -163,7 +163,7 @@ class AuxSTClass(AuxSTBuildingBlock):
         :param some_type: a type
         :return:
         """
-        if isinstance(some_type, InbuiltObject):
+        if some_type.id == AuxSTConstants.obj:
             # every class is an object
             return True
         else:

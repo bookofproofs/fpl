@@ -1,15 +1,16 @@
-import z3
 from anytree import AnyNode, search, PreOrderIter
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate
+from poc.classes.AuxInbuiltTypes import InbuiltPredicate
+from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxPredicateState import AuxPredicateState
 from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.classes.AuxSTVariable import AuxSTVariable
 from poc.classes.AuxSTConstants import AuxSTConstants
 from fplerror import FplPremiseNotSatisfiable
 
 
-class AuxSTPredicate(AuxST):
+class AuxSTPredicate(AuxST, AuxSTTypeInterface):
 
     def __init__(self, outline: str, i):
         super().__init__(outline, i)
@@ -33,131 +34,145 @@ class AuxSTPredicate(AuxST):
         self.reference = reference  # noqa
 
     def evaluate(self, sem):
+        new_value = InbuiltValuePredicate(self)
+        sem.eval_stack[-1].value = new_value
         if self._is_asserted:
-            sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
+            new_value.set_true()
             return
         elif self._is_revoked:
-            sem.eval_stack[-1].value = EvaluatedPredicate(self, False)
+            new_value.set_false()
             return
         else:
             if self.outline == AuxSTConstants.predicate_true:
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
+                new_value.set_true()
                 return
             elif self.outline == AuxSTConstants.predicate_false:
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, False)
+                new_value.set_false()
                 return
             elif self.outline == AuxSTConstants.predicate_negation:
                 check = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
                 if check.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                 else:
-                    sem.eval_stack[-1].value = EvaluatedPredicate(self, not check.value.get_repr())
+                    new_value.set_to(not check.value.get_value())
                 return
             elif self.outline == AuxSTConstants.predicate_conjunction:
                 ret = True
                 for child in self.children:
-                    check = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
+                    check = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
                     if check.evaluation_error:
-                        sem.eval_stack[-1].value = InbuiltUndefined(self)
+                        new_value.set_undetermined()
                         return
                     else:
-                        ret = ret and check.value.get_repr()
+                        ret = ret and check.value.get_value()
                     if not ret:
                         # stop further conjunction with False
                         break
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, ret)
+                new_value.set_to(ret)
                 return
             elif self.outline == AuxSTConstants.predicate_disjunction:
                 ret = False
                 for child in self.children:
-                    check = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
+                    check = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
                     if check.evaluation_error:
-                        sem.eval_stack[-1].value = InbuiltUndefined(self)
+                        new_value.set_undetermined()
                         return
                     else:
-                        ret = ret or check.value.get_repr()
+                        ret = ret or check.value.get_value()
                     if ret:
                         # stop further disjunction with True
                         break
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, ret)
+                new_value.set_to(ret)
                 return
             elif self.outline == AuxSTConstants.predicate_equivalence:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
+                                                      expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                q = EvaluateParams.evaluate_recursion(sem, self.children[1], InbuiltPredicate(self.children[1]))
+                q = EvaluateParams.evaluate_recursion(sem, self.children[1],
+                                                      expected_type=InbuiltPredicate(self.children[1]))
                 if q.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr() == q.value.get_repr())
+                new_value.set_to(p.value.get_value() == q.value.get_value())
                 return
             elif self.outline == AuxSTConstants.predicate_exclusiveOr:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
+                                                      expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                q = EvaluateParams.evaluate_recursion(sem, self.children[1], InbuiltPredicate(self.children[1]))
+                q = EvaluateParams.evaluate_recursion(sem, self.children[1],
+                                                      expected_type=InbuiltPredicate(self.children[1]))
                 if q.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self,
-                                                              (p.value.get_repr() and not q.value.get_repr()) or
-                                                              (q.value.get_repr() and not p.value.get_repr()))
+                new_value.set_to(p.value.get_value() and not q.value.get_value() or
+                                 (q.value.get_value() and not p.value.get_value()))
+
                 return
             elif self.outline == AuxSTConstants.predicate_implication:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
+                                                      expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                q = EvaluateParams.evaluate_recursion(sem, self.children[1], InbuiltPredicate(self.children[1]))
+                q = EvaluateParams.evaluate_recursion(sem, self.children[1],
+                                                      expected_type=InbuiltPredicate(self.children[1]))
                 if q.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, not p.value.get_repr() or q.value.get_repr())
+                new_value.set_to(not p.value.get_value() or q.value.get_value())
                 return
             elif self.outline == AuxSTConstants.intrinsic:
-                # we set intrinsic predicates as being True per default
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
+                # we set intrinsic predicates as being undetermined per default
+                new_value.set_undetermined()
                 return
             elif self.outline == AuxSTConstants.predicate_all:
                 self._mark_bound_vars()
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
+                                                      expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr())
+                new_value.set_to(p.value.get_value())
                 return
             elif self.outline == AuxSTConstants.predicate_exists:
                 self._mark_bound_vars()
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
+                                                      expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                     return
-                sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr())
+                new_value.set_to(p.value.get_value())
                 return
             elif self.outline == AuxSTConstants.pre:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
+                                                      expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                 elif not self.check_satisfiability():
                     sem.error_mgr.add_error(FplPremiseNotSatisfiable(self))
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_false()
                 else:
                     # since the premise is satisfiable, we 'assume' it to be true for the theory to come
-                    sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
+                    new_value.set_true()
             elif self.outline == AuxSTConstants.con:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
+                                                      expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
-                    sem.eval_stack[-1].value = InbuiltUndefined(self)
+                    new_value.set_undetermined()
                 else:
-                    sem.eval_stack[-1].value = EvaluatedPredicate(self, p.value.get_repr())
+                    new_value.set_to(p.value.get_value())
             elif self.outline == AuxSTConstants.undefined:
                 # the syntax allows it, but not the semantics
-                sem.eval_stack[-1].value = InbuiltUndefined(self)
+                # todo: correct symbol table! sem.eval_stack[-1].value = InbuiltUndefined(self)
+                new_value.set_undetermined()
             elif self.outline == AuxSTConstants.ids:
                 # the syntax allows it, but not the semantics
-                sem.eval_stack[-1].value = InbuiltUndefined(self)
+                # todo: correct symbol table! sem.eval_stack[-1].value = InbuiltUndefined(self)
+                new_value.set_undetermined()
             else:
                 raise NotImplementedError(self.outline)
 

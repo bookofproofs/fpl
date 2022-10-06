@@ -1,11 +1,11 @@
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.fplerror import FplInvalidUseReturnStmt
 
 
-class AuxSTStatementReturn(AuxSTStatement):
-
+class AuxSTStatementReturn(AuxSTStatement, AuxSTTypeInterface):
     def __init__(self, i):
         super().__init__(AuxSTConstants.statement_return, i)
         self.zfrom = i.corrected_position('ReturnHeader')
@@ -28,3 +28,6 @@ class AuxSTStatementReturn(AuxSTStatement):
                 # and the declared type is undefined
                 self.set_declared_type(InbuiltUndefined(self))
         return self._declared_type
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

@@ -38,8 +38,9 @@ class AuxSTQualified(AuxST):
 
     def evaluate(self, sem):
         self._initialize_qualified_id_from_parent(sem)
+        propagated_expected_type = sem.eval_stack[-1].expected_type
         # there is (syntactically) only one child node of AuxSTQualified so
-        check = EvaluateParams.evaluate_recursion(sem, self.children[0], sem.eval_stack[-1].expected_type)
+        check = EvaluateParams.evaluate_recursion(sem, self.children[0], expected_type=propagated_expected_type)
         # set the value of the evaluation to the value retrieved
         sem.eval_stack[-1].value = check.value
 

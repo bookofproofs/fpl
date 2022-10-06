@@ -4,10 +4,11 @@ from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTVariable(AuxST):
+class AuxSTVariable(AuxST, AuxSTTypeInterface):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.var, i)
@@ -48,13 +49,14 @@ class AuxSTVariable(AuxST):
                     raise NotImplementedError()
                 elif isinstance(child, AuxSTQualified):
                     # due to the structure of symbol table, there can be only one child of self that is AuxSTQualified
-                    check = EvaluateParams.evaluate_recursion(sem, child, sem.eval_stack[-1].expected_type)
+                    propagated_expected_type = sem.eval_stack[-1].expected_type
+                    check = EvaluateParams.evaluate_recursion(sem, child, expected_type=propagated_expected_type)
                     # set the value of self's evaluation to the value of the qualified identifier
                     sem.eval_stack[-1].value = check.value
                 else:
                     raise NotImplementedError()
         else:
-            sem.eval_stack[-1].value = self.get_declared_type().get_repr()
+            raise NotImplementedError()
 
     def get_state(self):
         return self._predicate_state

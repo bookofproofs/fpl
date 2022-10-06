@@ -15,7 +15,7 @@ from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
 from poc.fplerror import FplUnusedBoundVariable
 from poc.classes.AuxBits import AuxBits
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltIndex, InbuiltObject, InbuiltPredicate, \
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltIndex, InbuiltPredicate, \
     InbuiltFunctionalTerm, InbuiltExtension, InbuiltGeneric
 from poc.classes.AuxSTAxiom import AuxSTAxiom
 from poc.classes.AuxSTClass import AuxSTClass
@@ -36,7 +36,6 @@ from poc.classes.AuxSTRuleOfInference import AuxSTRuleOfInference
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTTheorem import AuxSTTheorem
 from poc.classes.AuxSTType import AuxSTType
-from poc.classes.AuxSTVariable import AuxSTVariable
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from anytree import search
 from poc.fplerror import FplMissingProof
@@ -303,11 +302,11 @@ class SemCheckerIdentifiers:
                 qualified_identifier = type_node.get_qualified_id()
                 if type_node.id[0].isupper():  # if the identifier starts with a Capital, we have a user-defined type
                     if qualified_identifier in self.analyzer.classes.dictionary():
-                        type_node.set_repr(self.analyzer.classes.identify_representative(qualified_identifier))
+                        pass
                     elif qualified_identifier in self.analyzer.predicates.dictionary():
-                        type_node.set_repr(self.analyzer.predicates.identify_representative(qualified_identifier))
+                        pass
                     elif qualified_identifier in self.analyzer.functional_terms.dictionary():
-                        type_node.set_repr(self.analyzer.functional_terms.identify_representative(qualified_identifier))
+                        pass
                     elif qualified_identifier in self.analyzer.overridden_qualified_ids.dictionary():
                         # any other found declared block is semantically not an allowed type,
                         # we trigger the
@@ -316,24 +315,22 @@ class SemCheckerIdentifiers:
                                               type_node.zfrom,
                                               theory_node.file_name)
                         )
-                        type_node.set_repr(InbuiltUndefined(type_node))
                     else:
                         self.analyzer.error_mgr.add_error(
                             FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
                         )
-                        type_node.set_repr(InbuiltUndefined(type_node))
                 elif AuxBits.is_index(type_node.type_pattern):
-                    type_node.set_repr(InbuiltIndex(type_node))
+                    pass
                 elif AuxBits.is_predicate(type_node.type_pattern):
-                    type_node.set_repr(InbuiltPredicate(type_node))
+                    pass
                 elif AuxBits.is_functional_term(type_node.type_pattern):
-                    type_node.set_repr(InbuiltFunctionalTerm(type_node))
+                    pass
                 elif AuxBits.is_generic(type_node.type_pattern):
-                    type_node.set_repr(InbuiltGeneric(type_node, type_node.id))
+                    pass
                 elif AuxBits.is_inbuilt_object(type_node.type_pattern):
-                    type_node.set_repr(InbuiltObject(type_node))
+                    pass
                 elif AuxBits.is_extension(type_node.type_pattern):
-                    type_node.set_repr(InbuiltExtension(type_node))
+                    pass
                 else:
                     raise NotImplementedError("type_pattern " + str(self.type_pattern))
 

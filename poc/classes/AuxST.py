@@ -5,7 +5,7 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 
 class AuxST(AuxSTOutline):
     """
-    A class for outline elements of the symbol table of the FPL transformer that have an ast_info and errors
+    A class for outline elements of the symbol table that have an ast_info and errors
     """
 
     def __init__(self, outline: str, i):

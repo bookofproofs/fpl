@@ -122,6 +122,8 @@ class AuxPredicateState:
         if self.current & self._satisfiability_check_done == 0:
             # determine satisfiability if the check has never been done yet
             s = z3.Solver()
+            if self.expression is None:
+                print("")
             s.add(self.expression)
             if s.check() == z3.sat:
                 self.current |= self._satisfiable

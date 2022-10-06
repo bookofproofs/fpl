@@ -1,5 +1,5 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
 from poc.classes.AuxSTProperties import AuxSTProperties
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTType import AuxSTType
@@ -16,21 +16,19 @@ class AuxEvaluationBlockFunctionalTerm:
     @staticmethod
     def evaluate(node, sem):
         if node.constant_value() is None:
-            return_value = None
+            type_pointer = None
             for child in node.children:
                 if isinstance(child, AuxSTSignature):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTType):
-                    return_value = child
+                    type_pointer = child
                 elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTProperties):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 else:
                     raise NotImplementedError(str(type(child)))
-            ret = sem.eval_stack.pop()
-            ret.value = return_value
-            sem.eval_stack.append(ret)
+            sem.eval_stack[-1].value = InbuiltValueAtRuntime(node, type_pointer)
         else:
             # replace the stack by the immutable value
             sem.eval_stack.pop()

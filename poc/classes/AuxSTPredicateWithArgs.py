@@ -1,21 +1,23 @@
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, EvaluatedPredicate, InbuiltFunctionalTerm, \
-    NamedUndefined, AuxInbuiltType
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, AuxInbuiltType, InbuiltPredicate
+from poc.classes.AuxInbuiltValues import InbuiltValueNamedUndefined, InbuiltValueUndefined, \
+    InbuiltValueAtRuntime, InbuiltValuePredicate
 from poc.classes.AuxPredicateState import AuxPredicateState
 from poc.classes.AuxSelfContainment import AuxReferenceType
-from poc.classes.AuxSTBuildingBlock import AuxST
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
+from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.classes.AuxSTVariable import AuxSTVariable
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from fplerror import FplIdentifierNotDeclared, FplWrongArguments, FplPredicateRecursion, FplVariableNotInitialized
 
 
-class AuxSTPredicateWithArgs(AuxST):
+class AuxSTPredicateWithArgs(AuxST, AuxSTTypeInterface):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.predicate_with_arguments, i)
@@ -59,13 +61,13 @@ class AuxSTPredicateWithArgs(AuxST):
                         # the reference of the predicate_with_args is nowhere in the FPL sourcecode declared
                         sem.error_mgr.add_error(
                             FplIdentifierNotDeclared(qualified_identifier, self.path[1].file_name, self.zfrom))
-                        self.reference = NamedUndefined(self, qualified_identifier)
+                        self.reference = InbuiltValueNamedUndefined(self, qualified_identifier)
                     else:
                         ret = self.__get_possible_override(sem, another_qualified_identifier, propagated_expected_type,
                                                            arg_list)
                 else:
                     ret = self.__get_possible_override(sem, qualified_identifier, propagated_expected_type, arg_list)
-                if isinstance(self.reference, (InbuiltUndefined, NamedUndefined)):
+                if isinstance(self.reference, (InbuiltValueUndefined, InbuiltValueNamedUndefined)):
                     sem.eval_stack[-1].value = self.reference
                 else:
                     # at this stage, if self.reference is not InbuiltUndefined, it is instead
@@ -85,7 +87,7 @@ class AuxSTPredicateWithArgs(AuxST):
                         mismatched_overrides = list()
                         mismatched_overrides.append(str(sem.eval_stack[-1].argument_error))
                         self._issue_FplWrongArguments(sem, arg_list, mismatched_overrides)
-                self.reference = InbuiltPredicate(self)
+                self.reference = InbuiltValuePredicate(self)
                 sem.eval_stack[-1].value = self.reference
             else:
                 raise NotImplementedError()
@@ -94,16 +96,13 @@ class AuxSTPredicateWithArgs(AuxST):
                     sem.sc.add_reference(self.reference, self.get_scope(), AuxReferenceType.logical)
                 else:
                     sem.sc.add_reference(self.reference, self.get_scope(), AuxReferenceType.semantical)
-            # set the declared type of self to the declared type of its reference, unless it is inbuilt
-            if isinstance(self.reference, AuxInbuiltType):
-                # prevent infinite recursion, since the inbuilt types have no declared types on their own
-                self.set_declared_type(self.reference)
-            else:
-                self.set_declared_type(self.reference.get_declared_type())
+            # set the declared type of self to the declared type of its reference
+            self.set_declared_type(self.reference.get_declared_type())
         else:
             # avoid re-evaluation of inbuilt types
-            if not isinstance(self.reference, AuxInbuiltType):
-                ret = EvaluateParams.evaluate_recursion(sem, self.reference, propagated_expected_type,
+            if not isinstance(self.reference, InbuiltValuePredicate):
+                ret = EvaluateParams.evaluate_recursion(sem, self.reference,
+                                                        expected_type=propagated_expected_type,
                                                         arg_type_list=arg_list,
                                                         check_args=True,
                                                         building_block=self.reference,
@@ -111,7 +110,8 @@ class AuxSTPredicateWithArgs(AuxST):
                 sem.eval_stack.pop()
             else:
                 ret = sem.eval_stack.pop()
-                ret.value = self.reference
+                # the value of this predicate with args is a wrapper object with the type of its reference
+                ret.value = InbuiltValueAtRuntime(self, self.reference.get_declared_type())
             sem.eval_stack.append(ret)
 
     def __get_possible_override(self, sem, qualified_identifier, propagated_expected_type, arg_list):
@@ -123,9 +123,10 @@ class AuxSTPredicateWithArgs(AuxST):
         for override in possible_overrides:
             if self._check_illegal_recursion(sem, override):
                 sem.error_mgr.add_error(FplPredicateRecursion(override.reference, self))
-                self.reference = InbuiltUndefined(self)
+                self.reference = InbuiltValueUndefined(self)
                 break
-            ret = EvaluateParams.evaluate_recursion(sem, override.reference, propagated_expected_type,
+            ret = EvaluateParams.evaluate_recursion(sem, override.reference,
+                                                    expected_type=propagated_expected_type,
                                                     arg_type_list=arg_list,
                                                     check_args=True,
                                                     building_block=override.reference,
@@ -140,15 +141,15 @@ class AuxSTPredicateWithArgs(AuxST):
 
         if len(mismatched_overrides) >= len(possible_overrides):
             self._issue_FplWrongArguments(sem, ret.arg_type_list, mismatched_overrides)
-            self.reference = InbuiltUndefined(self)
+            self.reference = InbuiltValueUndefined(self)
 
         return ret
 
     def _issue_FplWrongArguments(self, sem, arg_type_list, mismatched_overrides):
         arg_types = list()
         for type_node in arg_type_list:
-            if isinstance(type_node.get_repr(), InbuiltUndefined):
-                arg_types.append(type_node.to_string2() + "/" + type_node.get_repr().id)
+            if isinstance(type_node, InbuiltUndefined):
+                arg_types.append(type_node.to_string2() + "/" + type_node.id)
             else:
                 arg_types.append(type_node.to_string2())
         sem.error_mgr.add_error(FplWrongArguments(arg_types, mismatched_overrides, self))
@@ -188,7 +189,7 @@ class AuxSTPredicateWithArgs(AuxST):
         return arg_type_list
 
     def _check_illegal_recursion(self, sem, override):
-        if not isinstance(sem.eval_stack[-1].expected_type, (InbuiltPredicate, EvaluatedPredicate)):
+        if not isinstance(sem.eval_stack[-1].expected_type, InbuiltPredicate):
             return False
         else:
             for register in sem.eval_stack:

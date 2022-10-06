@@ -1,6 +1,9 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
 from poc.classes.AuxSTInstance import AuxSTInstance
+from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTType import AuxSTType
+from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
@@ -23,7 +26,18 @@ class AuxSTClassInstance(AuxSTInstance):
         return new_class_instance
 
     def evaluate(self, sem):
-        sem.eval_stack[-1].value = InbuiltUndefined(self)
+        type_node = None
+        for child in self.children:
+            if isinstance(child, AuxSTSignature):
+                EvaluateParams.evaluate_recursion(sem, child)
+            elif isinstance(child, AuxSTType):
+                type_node = child
+            elif isinstance(child, AuxSTVarSpecList):
+                EvaluateParams.evaluate_recursion(sem, child)
+            else:
+                raise NotImplementedError(str(type(child)))
+        # the value of the constructor is a wrapper object with the type of its class
+        sem.eval_stack[-1].value = InbuiltValueAtRuntime(self, type_node)
         self.set_sc_ready()
 
     def get_declared_type(self):

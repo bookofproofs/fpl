@@ -23,29 +23,11 @@ class InbuiltUndefined(AuxInbuiltType):
         # the inbuilt undefined is a type of itself
 
 
-class NamedUndefined(AuxInbuiltType):
-    def __init__(self, node, identifier):
-        super().__init__(node)
-        self.id = identifier
-        # the declared type of is the inbuilt undefined
-
-
 class InbuiltPredicate(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
         self.id = AuxSTConstants.predicate
         self.type_pattern = AuxBits.predicateBit
-
-
-class EvaluatedPredicate(AuxInbuiltType):
-    def __init__(self, node, bool_value):
-        super().__init__(node)
-        self.id = AuxSTConstants.predicate
-        self.type_pattern = AuxBits.predicateBit
-        if isinstance(bool_value, bool):
-            self.set_repr(bool_value)
-        else:
-            AssertionError("Expected boolean value, got " + str(bool_value))
 
 
 class InbuiltFunctionalTerm(AuxInbuiltType):
@@ -67,16 +49,6 @@ class InbuiltGeneric(AuxInbuiltType):
         super().__init__(node)
         self.id = identifier
         self.type_pattern = AuxBits.templateBit
-
-
-class InbuiltObject(AuxInbuiltType):
-    def __init__(self, node):
-        super().__init__(node)
-        self.id = AuxSTConstants.obj
-        self.type_pattern = AuxBits.inbuiltBit + AuxBits.objectBit
-
-    def is_of_type(self, some_type):
-        return isinstance(some_type, InbuiltObject)
 
 
 class InbuiltExtension(AuxInbuiltType):

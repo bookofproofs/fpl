@@ -1,5 +1,4 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTConstants import AuxSTConstants
 
@@ -8,17 +7,13 @@ class AuxSTVarSpecList(AuxSTOutline):
 
     def __init__(self):
         super().__init__(None, AuxSTConstants.var_spec)
-        # var spec lists have the inbuilt undefined type per default
-        self.set_declared_type(InbuiltUndefined(self.parent))
 
     def clone(self):  # noqa
         return AuxSTVarSpecList()
 
     def evaluate(self, sem):
         for child in self.children:
-            expected_type = child.get_declared_type()
-            EvaluateParams.evaluate_recursion(sem, child, expected_type)
-        sem.eval_stack[-1].value = InbuiltUndefined(self.parent)
+            EvaluateParams.evaluate_recursion(sem, child)
 
     def get_long_id(self):
         if self._long_id is None:

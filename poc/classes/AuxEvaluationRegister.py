@@ -37,6 +37,4 @@ class AuxEvaluationRegister:
         True, if the type of the returned value is different from the type of the expected_value
         :return: Boolean value
         """
-        if self.value is None:
-            self.value = InbuiltUndefined(self.node)
-        return self.expected_type.id != self.value.id
+        return self.expected_type.id != self.value.get_declared_type().id

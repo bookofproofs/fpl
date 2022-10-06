@@ -1,9 +1,10 @@
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 
 
-class AuxSTStatementIsOp(AuxSTStatement):
+class AuxSTStatementIsOp(AuxSTStatement, AuxSTTypeInterface):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.statement_is, i)
@@ -14,3 +15,6 @@ class AuxSTStatementIsOp(AuxSTStatement):
 
     def clone(self):
         return AuxSTStatementIsOp(self._i)
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

@@ -3,7 +3,10 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxSTLemma(AuxSTTheoremLikeStatementOrConjecture):
-
     def __init__(self, i):
         super().__init__(AuxSTConstants.block_lem, i, i.corrected_position('TheoremLikeStatementOrConjectureHeader'),
                          i.last_positions_by_rule['TheoremLikeStatementOrConjecture'].pos_to_str())
+
+    def evaluate(self, sem):
+        super().evaluate(sem)
+        sem.eval_stack[-1].value.set_true()

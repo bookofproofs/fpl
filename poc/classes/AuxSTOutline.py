@@ -4,7 +4,7 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 
 class AuxSTOutline(AnyNode):
     """
-    A class for elements of the symbol table of the FPL transformer that have an an outline
+    A class for elements of the symbol table that have an an outline
     """
 
     def __init__(self, parent: AnyNode, outline: str):
@@ -15,14 +15,6 @@ class AuxSTOutline(AnyNode):
         self._long_id = None
         self._scope = None
         self._minor_scope = None
-
-    def set_declared_type(self, type_node):
-        self._declared_type = type_node
-
-    def get_declared_type(self):
-        if self._declared_type is None:
-            raise AssertionError("The declared type of " + str(type(self)) + " is unexpectedly None")
-        return self._declared_type
 
     def get_long_id(self):
         raise NotImplementedError(str(type(self)))

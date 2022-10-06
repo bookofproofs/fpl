@@ -113,7 +113,8 @@ class SemanticAnalyser:
         for child in globals_node.children:
             expected_type = child.reference.get_declared_type()
             # start recursive evaluation for each reference
-            EvaluateParams.evaluate_recursion(self, child.reference, expected_type,
+            EvaluateParams.evaluate_recursion(self, child.reference,
+                                              expected_type=expected_type,
                                               arg_type_list=list(),
                                               check_args=False,
                                               building_block=child.reference,

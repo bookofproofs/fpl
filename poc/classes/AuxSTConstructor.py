@@ -1,7 +1,10 @@
-from poc.classes.AuxInbuiltTypes import InbuiltClassInstance, InbuiltUndefined
+from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTSignature import AuxSTSignature
+from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from anytree import search
 from poc.fplerror import FplErrorManager
 
@@ -47,10 +50,15 @@ class AuxSTConstructor(AuxSTBuildingBlock):
             self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
-        if self.outline == AuxSTConstants.classDefaultConstructor:
-            sem.eval_stack[-1].value = InbuiltClassInstance(self)
-        else:
-            sem.eval_stack[-1].value = InbuiltUndefined(self)
+        for child in self.children:
+            if isinstance(child, AuxSTSignature):
+                EvaluateParams.evaluate_recursion(sem, child)
+            elif isinstance(child, AuxSTVarSpecList):
+                EvaluateParams.evaluate_recursion(sem, child)
+            else:
+                raise NotImplementedError(str(type(child)))
+        # the value of the constructor is a wrapper object with the type of its class
+        sem.eval_stack[-1].value = InbuiltValueAtRuntime(self, self.parent.parent)
         self.set_sc_ready()
 
     def get_declared_type(self):

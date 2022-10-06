@@ -1,4 +1,9 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.9
+* Refactoring:
+  * Replacing the concept of internal representation of a type by wrapper classes AuxInbuiltValue* that will "have" this type
+  * By this replacement, we no more misuse inbuilt types to be 'values' of their own.
+  * Implementing set_declared_type and get_declared_type only for those nodes in the symbol table where it is necessary
 ## 1.9.8
 * Refactoring:
   * Making get_long_id() in AuxSTOutline abstract to force implementing it in all classes inheriting from AuxSTOutline

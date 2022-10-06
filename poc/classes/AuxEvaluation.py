@@ -1,11 +1,13 @@
 from poc.fplerror import FplTypeMismatch
 from poc.classes.AuxEvaluationRegister import AuxEvaluationRegister
+from poc.classes.AuxSTConstants import AuxSTConstants
+from poc.classes.AuxInbuiltValues import InbuiltValueUndefined
 
 
 class EvaluateParams:
 
     @staticmethod
-    def evaluate_recursion(sem, node, expected_type, arg_type_list=None, check_args=None, building_block=None,
+    def evaluate_recursion(sem, node, expected_type=None, arg_type_list=None, check_args=None, building_block=None,
                            instance_guid=None):
         """
 
@@ -37,8 +39,8 @@ class EvaluateParams:
             register.check_args = check_args
             register.instance = building_block.get_instance(instance_guid)
 
-        # whose expected type is the required one
-        register.expected_type = expected_type
+        if expected_type is not None:
+            register.expected_type = expected_type
 
         if EvaluateParams._evaluation_necessary(register):
             # push it on the stack
@@ -47,18 +49,15 @@ class EvaluateParams:
             node.evaluate(sem)  # start recursion
             register = sem.eval_stack.pop()  # garbage-collect the stack
             # check if there is a type mismatch
+            if register.expected_type is not None:
+                if register.type_mismatch():
+                    sem.error_mgr.add_error(
+                        FplTypeMismatch(node, register.expected_type.id, register.value.get_declared_type().id)
+                    )
+                    register.evaluation_error = True
+                # store the value of eval_params of the node in the instance of the building block
+                register.instance.set_register(register)
 
-            if register.type_mismatch():
-                sem.error_mgr.add_error(
-                    FplTypeMismatch(node, register.expected_type.id, register.value.id)
-                )
-                register.evaluation_error = True
-
-            # as a last step, we have to set the evaluated value of the symbol table element
-            node.get_declared_type().set_repr(register.value)
-
-            # store the value of eval_params of the node in the instance of the building block
-            register.instance.set_register(register)
         return register
 
     @staticmethod

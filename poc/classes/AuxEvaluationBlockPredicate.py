@@ -1,5 +1,6 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
+from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
 from poc.classes.AuxSTProperties import AuxSTProperties
@@ -18,22 +19,24 @@ class AuxEvaluationBlockPredicate:
     def evaluate(node, sem):
         if node.constant_value() is None:
             signature = None
+            new_value = InbuiltValuePredicate(node)
+            sem.eval_stack[-1].value = new_value
             for child in node.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs, AuxSTVariable)):
-                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
+                    ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
                     if ret.evaluation_error:
-                        sem.eval_stack[-1].value = InbuiltUndefined(node)
+                        new_value.set_undetermined()
                     else:
-                        sem.eval_stack[-1].value = ret.value
+                        new_value.set_to(ret.value.get_value())
                     if len(signature.children) == 0:
                         node.set_constant_value(sem.eval_stack[-1])
                 elif isinstance(child, AuxSTProperties):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 else:
                     raise NotImplementedError(str(type(child)))
         else:

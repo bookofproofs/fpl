@@ -93,12 +93,12 @@ class AuxPredicateTests(unittest.TestCase):
         p = AuxSTPredicate(p_type, self.i)
         p.assert_predicate()
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate(p))
-        self.assertTrue(ret.value.get_repr())
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, expected_type=InbuiltPredicate(p))
+        self.assertTrue(ret.value.get_value())
         p.revoke_predicate()
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate(p))
-        self.assertFalse(ret.value.get_repr())
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, expected_type=InbuiltPredicate(p))
+        self.assertFalse(ret.value.get_value())
 
     @parameterized.expand([
         AuxSTConstants.predicate_false,
@@ -112,12 +112,12 @@ class AuxPredicateTests(unittest.TestCase):
         """
 
         p = AuxSTPredicate(p_type, self.i)
-        ret = EvaluateParams.evaluate_recursion(self.sem, p, InbuiltPredicate(p))
+        ret = EvaluateParams.evaluate_recursion(self.sem, p, expected_type=InbuiltPredicate(p))
 
         if p_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_false:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         else:
             raise NotImplementedError()
 
@@ -135,12 +135,12 @@ class AuxPredicateTests(unittest.TestCase):
         p = AuxSTPredicate(p_type, self.i)
         result.register_child(p)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(p))
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, expected_type=InbuiltPredicate(p))
 
         if p_type == AuxSTConstants.predicate_true:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_false:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         else:
             raise NotImplementedError()
 
@@ -163,16 +163,16 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, expected_type=InbuiltPredicate(result))
 
         if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         else:
             raise NotImplementedError()
 
@@ -195,16 +195,16 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, expected_type=InbuiltPredicate(result))
 
         if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         else:
             raise NotImplementedError()
 
@@ -227,16 +227,16 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, expected_type=InbuiltPredicate(result))
 
         if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         else:
             raise NotImplementedError()
 
@@ -259,16 +259,16 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, expected_type=InbuiltPredicate(result))
 
         if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         else:
             raise NotImplementedError()
 
@@ -291,15 +291,15 @@ class AuxPredicateTests(unittest.TestCase):
         result.register_child(p)
         result.register_child(q)
 
-        ret = EvaluateParams.evaluate_recursion(self.sem, result, InbuiltPredicate(result))
+        ret = EvaluateParams.evaluate_recursion(self.sem, result, expected_type=InbuiltPredicate(result))
 
         if p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_false:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_false and q_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_false:
-            self.assertFalse(ret.value.get_repr())
+            self.assertFalse(ret.value.get_value())
         elif p_type == AuxSTConstants.predicate_true and q_type == AuxSTConstants.predicate_true:
-            self.assertTrue(ret.value.get_repr())
+            self.assertTrue(ret.value.get_value())
         else:
             raise NotImplementedError()

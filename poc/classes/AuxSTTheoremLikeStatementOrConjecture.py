@@ -1,5 +1,6 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltPredicate, InbuiltUndefined, EvaluatedPredicate
+from poc.classes.AuxInbuiltTypes import InbuiltPredicate, InbuiltUndefined
+from poc.classes.AuxInbuiltValues import InbuiltValuePredicate, InbuiltValueUndefined
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTPredicate import AuxSTPredicate
@@ -19,17 +20,19 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBuildingBlock):
 
     def evaluate(self, sem):
         if self.constant_value() is None:
+            new_value = InbuiltValuePredicate(self)
+            sem.eval_stack[-1].value = new_value
             signature = None
             pre = None
             con = None
             for child in self.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTPredicate):
-                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
+                    ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
                     if child.outline == AuxSTConstants.pre:
                         pre = ret.value
                     elif child.outline == AuxSTConstants.con:
@@ -37,17 +40,9 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBuildingBlock):
                 elif isinstance(child, AuxSTOutline):
                     if child.outline in [AuxSTConstants.block_cor_root, AuxSTConstants.block_proof_root]:
                         for sub_child in child.children:
-                            EvaluateParams.evaluate_recursion(sem, sub_child, InbuiltUndefined(child))
-                        sem.eval_stack[-1].value = InbuiltUndefined(child)
+                            EvaluateParams.evaluate_recursion(sem, sub_child)
                 else:
                     raise NotImplementedError(str(type(child)))
-
-            if pre is None or con is None:
-                sem.eval_stack[-1].value = InbuiltUndefined(self)
-                return
-            # per default, we assume the truth of theorem-like statements
-            # unless the evaluation of some of its sub-nodes was not successful
-            sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
 
             if len(signature.children) == 0:
                 self.set_constant_value(sem.eval_stack[-1])

@@ -1,16 +1,14 @@
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 
 
-class AuxSTStatementPyDel(AuxSTStatement):
+class AuxSTStatementPyDel(AuxSTStatement, AuxSTTypeInterface):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.statement_py, i)
         self.zfrom = i.corrected_position('py')
         self.zto = i.last_positions_by_rule['PythonDelegate'].pos_to_str()
-        # the py statement is a undefined
-        self.set_declared_type(InbuiltUndefined(self))
 
     def get_long_id(self):
         if self._long_id is None:
@@ -21,3 +19,6 @@ class AuxSTStatementPyDel(AuxSTStatement):
 
     def clone(self):
         return AuxSTStatementPyDel(self._i)
+
+    def evaluate(self, sem):
+        raise NotImplementedError()

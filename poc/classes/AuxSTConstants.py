@@ -103,6 +103,7 @@ class AuxSTConstants:
     translation_list = "translationList"
     type = "type"
     undefined = "undefined"
+    undetermined = "undetermined"
     used = "used"
     uses = "uses"
     uninterpreted = "uninterpreted"

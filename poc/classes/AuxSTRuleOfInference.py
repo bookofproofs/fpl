@@ -1,13 +1,15 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltPredicate, InbuiltUndefined, EvaluatedPredicate
+from poc.classes.AuxInbuiltTypes import InbuiltPredicate, InbuiltUndefined
+from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTRuleOfInference(AuxSTBuildingBlock):
+class AuxSTRuleOfInference(AuxSTBuildingBlock, AuxSTTypeInterface):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.block_ir, i)
@@ -17,17 +19,19 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
 
     def evaluate(self, sem):
         if self.constant_value() is None:
+            new_value = InbuiltValuePredicate(self)
+            sem.eval_stack[-1].value = new_value
             signature = None
             pre = None
             con = None
             for child in self.children:
                 if isinstance(child, AuxSTSignature):
                     signature = child
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child, InbuiltUndefined(child))
+                    EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTPredicate):
-                    ret = EvaluateParams.evaluate_recursion(sem, child, InbuiltPredicate(child))
+                    ret = EvaluateParams.evaluate_recursion(sem, child)
                     if child.outline == AuxSTConstants.pre:
                         pre = ret.value
                     elif child.outline == AuxSTConstants.con:
@@ -36,11 +40,11 @@ class AuxSTRuleOfInference(AuxSTBuildingBlock):
                     raise NotImplementedError(str(type(child)))
 
             if pre is None or con is None:
-                sem.eval_stack[-1].value = InbuiltUndefined(self)
+                new_value.set_undetermined()
                 return
             # per default, we assume the truth of inference rules
             # unless the evaluation of some of its sub-nodes was not successful
-            sem.eval_stack[-1].value = EvaluatedPredicate(self, True)
+            new_value.set_true()
 
             if len(signature.children) == 0:
                 self.set_constant_value(sem.eval_stack[-1])

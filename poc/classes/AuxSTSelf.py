@@ -64,6 +64,7 @@ class AuxSTSelf(AuxST):
 
     def evaluate(self, sem):
         # initialize the reference of self, depending on the number of '@'
+        propagated_expected_type = sem.eval_stack[-1].expected_type
         if self.reference is None:
             self._initialize_reference()
         if len(self.children) > 0:
@@ -74,13 +75,15 @@ class AuxSTSelf(AuxST):
                     raise NotImplementedError()
                 elif isinstance(child, AuxSTQualified):
                     # due to the structure of symbol table, there can be only one child of self that is AuxSTQualified
-                    check = EvaluateParams.evaluate_recursion(sem, child, sem.eval_stack[-1].expected_type)
+                    check = EvaluateParams.evaluate_recursion(sem, child,
+                                                              expected_type=sem.eval_stack[-1].expected_type)
                     # set the value of self's evaluation to the value of the qualified identifier
                     sem.eval_stack[-1].value = check.value
                 else:
                     raise NotImplementedError()
         else:
-            EvaluateParams.evaluate_recursion(sem, self.reference, sem.eval_stack[-1].expected_type)
+
+            EvaluateParams.evaluate_recursion(sem, self.reference, expected_type=sem.eval_stack[-1].expected_type)
 
     def get_state(self):
         return self._predicate_state
