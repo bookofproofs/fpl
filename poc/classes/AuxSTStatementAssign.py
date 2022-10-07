@@ -1,5 +1,7 @@
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
+from poc.classes.AuxSTSelf import AuxSTSelf
 
 
 class AuxSTStatementAssign(AuxSTStatement):
@@ -13,4 +15,10 @@ class AuxSTStatementAssign(AuxSTStatement):
         return AuxSTStatementAssign(self._i)
 
     def evaluate(self, sem):
-        raise NotImplementedError()
+        # first, establish the type of the assignee
+        if isinstance(self.children[0], AuxSTSelf):
+            assignee_type = self.children[0].get_declared_type()
+        else:
+            raise NotImplementedError(str(type(self.children[0])))
+        ret = EvaluateParams.evaluate_recursion(sem, self.children[1], assignee_type)
+        sem.eval_stack[-1].value = ret.value

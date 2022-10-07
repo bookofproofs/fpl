@@ -40,6 +40,7 @@ class InbuiltValueNamedUndefined(AuxInbuiltValue):
     def __init__(self, node, identifier: str):
         super().__init__(node)
         self._value = identifier
+        self.set_declared_type(InbuiltUndefined(node))
 
 
 class InbuiltValuePredicate(AuxInbuiltValue):

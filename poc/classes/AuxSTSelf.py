@@ -75,15 +75,13 @@ class AuxSTSelf(AuxST):
                     raise NotImplementedError()
                 elif isinstance(child, AuxSTQualified):
                     # due to the structure of symbol table, there can be only one child of self that is AuxSTQualified
-                    check = EvaluateParams.evaluate_recursion(sem, child,
-                                                              expected_type=sem.eval_stack[-1].expected_type)
+                    check = EvaluateParams.evaluate_recursion(sem, child, expected_type=propagated_expected_type)
                     # set the value of self's evaluation to the value of the qualified identifier
                     sem.eval_stack[-1].value = check.value
                 else:
                     raise NotImplementedError()
         else:
-
-            EvaluateParams.evaluate_recursion(sem, self.reference, expected_type=sem.eval_stack[-1].expected_type)
+            EvaluateParams.evaluate_recursion(sem, self.reference, expected_type=propagated_expected_type)
 
     def get_state(self):
         return self._predicate_state
