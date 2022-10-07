@@ -100,7 +100,7 @@ class AuxSTPredicateWithArgs(AuxST, AuxSTTypeInterface):
             self.set_declared_type(self.reference.get_declared_type())
         else:
             # avoid re-evaluation of inbuilt types
-            if not isinstance(self.reference, InbuiltValuePredicate):
+            if not isinstance(self.reference, (InbuiltValuePredicate, InbuiltValueNamedUndefined)):
                 ret = EvaluateParams.evaluate_recursion(sem, self.reference,
                                                         expected_type=propagated_expected_type,
                                                         arg_type_list=arg_list,

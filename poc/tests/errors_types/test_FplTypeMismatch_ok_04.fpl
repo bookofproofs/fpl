@@ -2,11 +2,16 @@ TestTypes
 {
     theory
     {
-        class Magma: AlgebraicStructure
+
+        class TestStructure: obj
         {
-            Magma(x: tplSet, op: BinOp)
+        }
+
+        class DerivedStructure: TestStructure
+        {
+            DerivedStructure()
             {
-                self:=AlgebraicStructure(x,op)
+                self:=TestStructure()
             }
         }
     }

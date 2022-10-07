@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.10
+* Bugfix
+  * Completed the missing declared_type of InbuiltValueNamedUndefined
+  * Initial implementation of the assignment statement (NotImplementedError)
 ## 1.9.9
 * Refactoring:
   * Replacing the concept of internal representation of a type by wrapper classes AuxInbuiltValue* that will "have" this type
