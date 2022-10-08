@@ -157,14 +157,3 @@ class AuxSTClass(AuxSTBuildingBlock):
             self.set_declared_type(class_type)
         return self._declared_type
 
-    def is_of_type(self, some_type):
-        """
-        Checks if the class is derived from some_type.
-        :param some_type: a type
-        :return:
-        """
-        if some_type.id == AuxSTConstants.obj:
-            # every class is an object
-            return True
-        else:
-            NotImplementedError(some_type)

@@ -1,4 +1,9 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.11
+* Refactoring:
+  * Abandoning the classes AusPredicateState and SemPredicateAnalyzer and replacing it by a z3-based implementation in AuxInbuiltValue
+  * Simplifying the code of the EvaluateParams class 
+  * Removing is_of_type methods from AuxSTClass and AuxSTGlobal
 ## 1.9.10
 * Bugfix
   * Completed the missing declared_type of InbuiltValueNamedUndefined

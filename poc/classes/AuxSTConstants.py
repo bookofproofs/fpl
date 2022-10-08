@@ -65,7 +65,6 @@ class AuxSTConstants:
     predicate_false = "false"
     predicate_implication = "=>"
     predicate_negation = "not"
-    predicate_state = "_predicate_state"
     predicate_true = "true"
     predicate_identifier = "predicateIdentifier"
     predicate_with_arguments = "predicateWithArgs"

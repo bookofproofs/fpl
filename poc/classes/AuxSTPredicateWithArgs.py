@@ -1,9 +1,8 @@
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, AuxInbuiltType, InbuiltPredicate
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValueNamedUndefined, InbuiltValueUndefined, \
-    InbuiltValueAtRuntime, InbuiltValuePredicate
-from poc.classes.AuxPredicateState import AuxPredicateState
+    InbuiltValueAtRuntime, InbuiltValuePredicate, AuxInbuiltValue
 from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
 from poc.classes.AuxST import AuxST
@@ -23,7 +22,6 @@ class AuxSTPredicateWithArgs(AuxST, AuxSTTypeInterface):
         super().__init__(AuxSTConstants.predicate_with_arguments, i)
         self.reference = None
         self._is_bound = False
-        self._predicate_state = AuxPredicateState(self)
 
     def clone(self):
         new_predicate = self._copy(AuxSTPredicateWithArgs(self._i))
@@ -99,8 +97,8 @@ class AuxSTPredicateWithArgs(AuxST, AuxSTTypeInterface):
             # set the declared type of self to the declared type of its reference
             self.set_declared_type(self.reference.get_declared_type())
         else:
-            # avoid re-evaluation of inbuilt types
-            if not isinstance(self.reference, (InbuiltValuePredicate, InbuiltValueNamedUndefined)):
+            # avoid re-evaluation of inbuilt values
+            if not isinstance(self.reference, AuxInbuiltValue):
                 ret = EvaluateParams.evaluate_recursion(sem, self.reference,
                                                         expected_type=propagated_expected_type,
                                                         arg_type_list=arg_list,
@@ -199,9 +197,6 @@ class AuxSTPredicateWithArgs(AuxST, AuxSTTypeInterface):
 
     def set_is_bound(self):
         self._is_bound = True
-
-    def get_state(self):
-        return self._predicate_state
 
     def get_long_id(self):
         if self._long_id is None:

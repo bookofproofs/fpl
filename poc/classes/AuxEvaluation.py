@@ -1,7 +1,7 @@
+import z3
 from poc.fplerror import FplTypeMismatch
 from poc.classes.AuxEvaluationRegister import AuxEvaluationRegister
-from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxInbuiltValues import InbuiltValueUndefined
+from poc.classes.AuxBits import AuxBits
 
 
 class EvaluateParams:
@@ -21,44 +21,33 @@ class EvaluateParams:
         :return:
         """
         # create a new evaluation params set
-        register = AuxEvaluationRegister()
-        register.check_args = check_args
-        register.node = node
-        if building_block is None:
-            # propagate the last building block, its guid, a list of argument types and if we want to check these args
-            previous = sem.eval_stack[-1]
-            register.building_block = previous.building_block
-            register.instance_guid = previous.instance_guid
-            register.arg_type_list = previous.arg_type_list
-            register.check_args = previous.check_args
-            register.instance = previous.instance
-        else:
-            register.building_block = building_block
-            register.instance_guid = instance_guid
-            register.arg_type_list = arg_type_list
-            register.check_args = check_args
-            register.instance = building_block.get_instance(instance_guid)
+        register = AuxEvaluationRegister(node, expected_type, check_args)
 
-        if expected_type is not None:
-            register.expected_type = expected_type
+        if building_block is None:
+            EvaluateParams._propagate(sem, register)
+        else:
+            EvaluateParams._create(register, building_block, instance_guid, arg_type_list)
 
         if EvaluateParams._evaluation_necessary(register):
-            # push it on the stack
-            sem.eval_stack.append(register)
-
-            node.evaluate(sem)  # start recursion
-            register = sem.eval_stack.pop()  # garbage-collect the stack
-            # check if there is a type mismatch
-            if register.expected_type is not None:
-                if register.type_mismatch():
-                    sem.error_mgr.add_error(
-                        FplTypeMismatch(node, register.expected_type.id, register.value.get_declared_type().id)
-                    )
-                    register.evaluation_error = True
-                # store the value of eval_params of the node in the instance of the building block
-                register.instance.set_register(register)
-
+            register = EvaluateParams._re_evaluate(sem, node, register, expected_type)
         return register
+
+    @staticmethod
+    def _propagate(sem, register):
+        # propagate the last building block, its guid, a list of argument types and if we want to check these args
+        previous = sem.eval_stack[-1]
+        register.building_block = previous.building_block
+        register.instance_guid = previous.instance_guid
+        register.arg_type_list = previous.arg_type_list
+        register.check_args = previous.check_args
+        register.instance = previous.instance
+
+    @staticmethod
+    def _create(register, building_block, instance_guid, arg_type_list):
+        register.building_block = building_block
+        register.instance_guid = instance_guid
+        register.arg_type_list = arg_type_list
+        register.instance = building_block.get_instance(instance_guid)
 
     @staticmethod
     def _evaluation_necessary(register):
@@ -76,3 +65,28 @@ class EvaluateParams:
         target_register.evaluation_error = register.evaluation_error
         target_register.argument_error = register.argument_error
         target_register.is_dirty = register.is_dirty
+
+    @staticmethod
+    def _re_evaluate(sem, node, register, expected_type):
+        # push it on the stack
+        sem.eval_stack.append(register)
+
+        node.evaluate(sem)  # start recursion
+        register = sem.eval_stack.pop()  # garbage-collect the stack
+
+        if expected_type is not None and \
+                AuxBits.is_predicate(expected_type.type_pattern) and \
+                register.value.get_expression() is None:
+            # create a new z3 expression if the expected type is a predicate and the does not have a z3 expression yet
+            register.value.set_expression(z3.Bool(node.get_long_id()))
+
+        # check if there is a type mismatch
+        if register.expected_type is not None:
+            if register.type_mismatch():
+                sem.error_mgr.add_error(
+                    FplTypeMismatch(node, register.expected_type.id, register.value.get_declared_type().id)
+                )
+                register.evaluation_error = True
+            # store the value of eval_params of the node in the instance of the building block
+            register.instance.set_register(register)
+        return register

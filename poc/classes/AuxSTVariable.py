@@ -1,5 +1,4 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxPredicateState import AuxPredicateState
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
@@ -18,7 +17,6 @@ class AuxSTVariable(AuxST, AuxSTTypeInterface):
         self._declared_type = None  # a pointer to the type in the symbol table with which this variable was declared
         self._is_bound = False
         self._is_initialized = False
-        self._predicate_state = AuxPredicateState(self)
 
     def to_string(self):
         """
@@ -57,9 +55,6 @@ class AuxSTVariable(AuxST, AuxSTTypeInterface):
                     raise NotImplementedError()
         else:
             raise NotImplementedError()
-
-    def get_state(self):
-        return self._predicate_state
 
     def get_long_id(self):
         if self._long_id is None:

@@ -18,6 +18,3 @@ class AuxSTGlobal(AnyNode):
         if self._qualified_id is None:
             self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
         return self._qualified_id
-
-    def is_of_type(self, some_type):
-        return self.reference.is_of_type(some_type)

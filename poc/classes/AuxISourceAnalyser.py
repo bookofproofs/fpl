@@ -9,7 +9,7 @@ Implements an interface between the classes named Context<Something> and the cla
 
 
 class AuxISourceAnalyser:
-    verbose = False  # True <=> verbose mode and no try-catch blocks for run time errors
+    verbose = True  # True <=> verbose mode and no try-catch blocks for run time errors
 
     def __init__(self, error_mgr: FplErrorManager, root: AnyNode, theory_name: str, namespace=""):
         """
