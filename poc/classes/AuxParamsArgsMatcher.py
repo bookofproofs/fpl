@@ -91,9 +91,13 @@ class AuxParamsArgsMatcher:
                 # the argument's type is a derived class of the parameter's type.
                 if AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
                     if AuxBits.is_inbuilt_object(type_param.type_pattern):
-                        return
+                        # every object is derived from the inbuilt object
+                        return True
+                    elif AuxBits.is_inbuilt_object(type_arg.type_pattern):
+                        # the inbuilt object is never a derived object
+                        return False
                     else:
-                        return type_arg.is_of_type(type_param)
+                        raise NotImplementedError()
 
         # in all other cases, return False (argument is not matching the parameter)
         return False

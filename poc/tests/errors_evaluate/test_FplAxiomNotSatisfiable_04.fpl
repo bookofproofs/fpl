@@ -1,0 +1,17 @@
+TestFplAxiomNotSatisfiable
+{
+    theory
+    {
+        axiom TestAxiom()
+        {
+            and (OtherPredicate(), not(OtherPredicate()))
+        }
+
+        predicate OtherPredicate()
+        {
+            or (true, false, false)
+        }
+    }
+}
+##############################
+FplAxiomNotSatisfiable:5:8: Axiom 'TestAxiom[]' not satisfiable

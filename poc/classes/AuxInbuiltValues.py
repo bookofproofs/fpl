@@ -1,3 +1,4 @@
+import z3
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
 from poc.classes.AuxSTType import AuxSTType
@@ -15,6 +16,7 @@ class AuxInbuiltValue:
                 self._copied_path = node.path
         self._value = None
         self._declared_type = None
+        self._expression = None
 
     def get_value(self):
         return self._value
@@ -24,6 +26,12 @@ class AuxInbuiltValue:
 
     def get_declared_type(self):
         return self._declared_type
+
+    def get_expression(self):
+        return self._expression
+
+    def set_expression(self, expression):
+        self._expression = expression
 
 
 class InbuiltValueUndefined(AuxInbuiltValue):
@@ -48,6 +56,9 @@ class InbuiltValuePredicate(AuxInbuiltValue):
         super().__init__(node)
         self.set_undetermined()
         self.set_declared_type(InbuiltPredicate(node))
+        self._satisfiable = None
+        self._satisfiability_check_done = False
+        self._model = None
 
     def set_undetermined(self):
         self._value = AuxSTConstants.undetermined
@@ -60,6 +71,23 @@ class InbuiltValuePredicate(AuxInbuiltValue):
 
     def set_to(self, value: bool):
         self._value = value
+
+    def is_satisfiable(self):
+        self._determine_satisfiability()
+        return self._satisfiable
+
+    def _determine_satisfiability(self):
+        if not self._satisfiability_check_done:
+            # determine satisfiability if the check has never been done yet
+            s = z3.Solver()
+            s.add(self._expression)
+            if s.check() == z3.sat:
+                self._satisfiable = True
+                self._model = s.model()
+            else:
+                self._satisfiable = False
+            # mark satisfiability as determined
+            self._satisfiability_check_done = True
 
 
 class InbuiltValueAtRuntime(AuxInbuiltValue):

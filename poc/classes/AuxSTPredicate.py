@@ -1,8 +1,8 @@
+import z3
 from anytree import AnyNode, search, PreOrderIter
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxPredicateState import AuxPredicateState
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.classes.AuxSTVariable import AuxSTVariable
@@ -14,7 +14,6 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
 
     def __init__(self, outline: str, i):
         super().__init__(outline, i)
-        self._predicate_state = AuxPredicateState(self)
         self._is_asserted = False
         self._is_revoked = False
         self._bound_vars_marked = False
@@ -35,7 +34,8 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
 
     def evaluate(self, sem):
         new_value = InbuiltValuePredicate(self)
-        sem.eval_stack[-1].value = new_value
+        register = sem.eval_stack[-1]
+        register.value = new_value
         if self._is_asserted:
             new_value.set_true()
             return
@@ -45,91 +45,77 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
         else:
             if self.outline == AuxSTConstants.predicate_true:
                 new_value.set_true()
+                new_value.set_expression(True)
                 return
             elif self.outline == AuxSTConstants.predicate_false:
                 new_value.set_false()
+                new_value.set_expression(False)
                 return
             elif self.outline == AuxSTConstants.predicate_negation:
                 check = EvaluateParams.evaluate_recursion(sem, self.children[0], InbuiltPredicate(self.children[0]))
+                new_value.set_expression(z3.Not(check.value.get_expression()))
                 if check.evaluation_error:
                     new_value.set_undetermined()
                 else:
                     new_value.set_to(not check.value.get_value())
                 return
             elif self.outline == AuxSTConstants.predicate_conjunction:
-                ret = True
-                for child in self.children:
-                    check = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
-                    if check.evaluation_error:
-                        new_value.set_undetermined()
-                        return
-                    else:
-                        ret = ret and check.value.get_value()
-                    if not ret:
-                        # stop further conjunction with False
-                        break
-                new_value.set_to(ret)
+                expressions, bool_values, errors = self._evaluate_children(sem)
+                new_value.set_expression(z3.And(expressions))
+                if True in errors:
+                    new_value.set_undetermined()
+                else:
+                    ret = True
+                    for bool_value in bool_values:
+                        ret = ret and bool_value
+                        if not ret:
+                            break
+                    new_value.set_to(ret)
                 return
             elif self.outline == AuxSTConstants.predicate_disjunction:
-                ret = False
-                for child in self.children:
-                    check = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
-                    if check.evaluation_error:
-                        new_value.set_undetermined()
-                        return
-                    else:
-                        ret = ret or check.value.get_value()
-                    if ret:
-                        # stop further disjunction with True
-                        break
-                new_value.set_to(ret)
+                expressions, bool_values, errors = self._evaluate_children(sem)
+                new_value.set_expression(z3.Or(expressions))
+                if True in errors:
+                    new_value.set_undetermined()
+                else:
+                    ret = False
+                    for bool_value in bool_values:
+                        ret = ret or bool_value
+                        if ret:
+                            break
+                    new_value.set_to(ret)
                 return
             elif self.outline == AuxSTConstants.predicate_equivalence:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
-                                                      expected_type=InbuiltPredicate(self.children[0]))
-                if p.evaluation_error:
+                expressions, bool_values, errors = self._evaluate_children(sem)
+                new_value.set_expression(expressions[0] == expressions[1])
+                if True in errors:
                     new_value.set_undetermined()
-                    return
-                q = EvaluateParams.evaluate_recursion(sem, self.children[1],
-                                                      expected_type=InbuiltPredicate(self.children[1]))
-                if q.evaluation_error:
-                    new_value.set_undetermined()
-                    return
-                new_value.set_to(p.value.get_value() == q.value.get_value())
+                else:
+                    new_value.set_to(bool_values[0] == bool_values[1])
                 return
             elif self.outline == AuxSTConstants.predicate_exclusiveOr:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
-                                                      expected_type=InbuiltPredicate(self.children[0]))
-                if p.evaluation_error:
+                expressions, bool_values, errors = self._evaluate_children(sem)
+                new_value.set_expression(z3.Xor(expressions[0], expressions[1]))
+                if True in errors:
                     new_value.set_undetermined()
-                    return
-                q = EvaluateParams.evaluate_recursion(sem, self.children[1],
-                                                      expected_type=InbuiltPredicate(self.children[1]))
-                if q.evaluation_error:
-                    new_value.set_undetermined()
-                    return
-                new_value.set_to(p.value.get_value() and not q.value.get_value() or
-                                 (q.value.get_value() and not p.value.get_value()))
-
+                else:
+                    new_value.set_to(bool_values[0] != bool_values[1])
                 return
             elif self.outline == AuxSTConstants.predicate_implication:
-                p = EvaluateParams.evaluate_recursion(sem, self.children[0],
-                                                      expected_type=InbuiltPredicate(self.children[0]))
-                if p.evaluation_error:
+                expressions, bool_values, errors = self._evaluate_children(sem)
+                new_value.set_expression(z3.Implies(expressions[0], expressions[1]))
+                if True in errors:
                     new_value.set_undetermined()
-                    return
-                q = EvaluateParams.evaluate_recursion(sem, self.children[1],
-                                                      expected_type=InbuiltPredicate(self.children[1]))
-                if q.evaluation_error:
-                    new_value.set_undetermined()
-                    return
-                new_value.set_to(not p.value.get_value() or q.value.get_value())
+                else:
+                    new_value.set_to(not bool_values[0] or bool_values[1])
                 return
             elif self.outline == AuxSTConstants.intrinsic:
                 # we set intrinsic predicates as being undetermined per default
                 new_value.set_undetermined()
+                new_value.set_expression(z3.Bool(self.get_long_id()))
                 return
             elif self.outline == AuxSTConstants.predicate_all:
+                new_value.set_expression(z3.Bool(self.get_long_id()))
                 self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0],
                                                       expected_type=InbuiltPredicate(self.children[0]))
@@ -139,6 +125,7 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                 new_value.set_to(p.value.get_value())
                 return
             elif self.outline == AuxSTConstants.predicate_exists:
+                new_value.set_expression(z3.Bool(self.get_long_id()))
                 self._mark_bound_vars()
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0],
                                                       expected_type=InbuiltPredicate(self.children[0]))
@@ -148,17 +135,19 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                 new_value.set_to(p.value.get_value())
                 return
             elif self.outline == AuxSTConstants.pre:
+                new_value.set_expression(z3.Bool(self.get_long_id()))
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0],
                                                       expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
                     new_value.set_undetermined()
-                elif not self.check_satisfiability():
+                elif not p.value.is_satisfiable():
                     sem.error_mgr.add_error(FplPremiseNotSatisfiable(self))
                     new_value.set_false()
                 else:
                     # since the premise is satisfiable, we 'assume' it to be true for the theory to come
                     new_value.set_true()
             elif self.outline == AuxSTConstants.con:
+                new_value.set_expression(z3.Bool(self.get_long_id()))
                 p = EvaluateParams.evaluate_recursion(sem, self.children[0],
                                                       expected_type=InbuiltPredicate(self.children[0]))
                 if p.evaluation_error:
@@ -166,15 +155,24 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                 else:
                     new_value.set_to(p.value.get_value())
             elif self.outline == AuxSTConstants.undefined:
-                # the syntax allows it, but not the semantics
-                # todo: correct symbol table! sem.eval_stack[-1].value = InbuiltUndefined(self)
+                new_value.set_expression(z3.Bool(self.get_long_id()))
                 new_value.set_undetermined()
             elif self.outline == AuxSTConstants.ids:
-                # the syntax allows it, but not the semantics
-                # todo: correct symbol table! sem.eval_stack[-1].value = InbuiltUndefined(self)
+                new_value.set_expression(z3.Bool(self.get_long_id()))
                 new_value.set_undetermined()
             else:
                 raise NotImplementedError(self.outline)
+
+    def _evaluate_children(self, sem):
+        expressions = list()
+        bool_values = list()
+        errors = list()
+        for child in self.children:
+            check = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
+            expressions.append(check.value.get_expression())
+            errors.append(check.evaluation_error)
+            bool_values.append(check.value.get_value())
+        return expressions, bool_values, errors
 
     def clone(self):
         return self._copy(AuxSTPredicate(self.outline, self._i))
@@ -193,16 +191,6 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                 for var in occurs:
                     var.set_is_bound()
             self._bound_vars_marked = True
-
-    def check_satisfiability(self):
-        """
-        This method checks if the current predicate is satisfiable.
-        :return: True if this AuxSTPredicate is satisfiable, False if not
-        """
-        return self._predicate_state.is_satisfiable()
-
-    def get_state(self):
-        return self._predicate_state
 
     def get_long_id(self):
         if self._long_id is None:

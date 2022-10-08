@@ -7,7 +7,6 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxOverrideHandler import AuxOverrideHandler
 from poc.classes.AuxSelfContainment import AuxSelfContainment
 from poc.SemCheckerIdentifiers import SemCheckerIdentifiers
-from poc.SemPredicateAnalyzer import SemPredicateAnalyzer
 from poc.fplerror import FplErrorManager, FplIdentifierAlreadyDeclared, FplMalformedNamespace
 from poc.fplmessage import FplInterpreterSystemError
 
@@ -22,7 +21,6 @@ class SemanticAnalyser:
         # self-containment
         self.sc = AuxSelfContainment()
         self.sem_checker_identifiers = SemCheckerIdentifiers(self)
-        self.sem_predicate_analyzer = SemPredicateAnalyzer(self)
         # a stack to evaluate recursively the semantics of the symbol table
         self.eval_stack = list()
         # a dictionary of all nodes by id (non-global identifier)
@@ -55,14 +53,12 @@ class SemanticAnalyser:
         if AuxISourceAnalyser.verbose:
             self._check_theories()
             self.sem_checker_identifiers.analyse()
-            self.sem_predicate_analyzer.pre_process_predicates()
             self.evaluate()
         else:
             # in non-verbose mode, we handle all exceptions 'user-friendly' as not to cause the main loop to halt
             try:
                 self._check_theories()
                 self.sem_checker_identifiers.analyse()
-                self.sem_predicate_analyzer.pre_process_predicates()
                 self.evaluate()
             except Exception:  # noqa
                 # add any exceptions during the semantic analysis into the regular error list
