@@ -1,4 +1,15 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.13
+* Refactoring
+  * Creating a new class AuxEvaluationPredicate to share code between AuxSTPredicate and AuxSTProof
+  * Initial implementation of the evaluate method in AuxSTProof
+  * Completed missing (initial) implementation of get_long_id and evaluate of AuxSTProof and AuxSTProofArguments
+  * Moving the abstract evaluate method from AuxSTBuildingBlock back to AuxOutline to enforce its implementation by all derived classes  
+* Bugfix
+  * Completed missing zfrom and zto attributes of nodes typed 'AuxSTProofArgument' in the symbol table 
+  * Changed the outline of AuxSTProof nodes in the symbol table from "proofArgument" into "proof" 
+  * Eliminating unnecessary nested AuxSTProofArgument nodes in the symbol table
+  * Eliminating unnecessary nodes with outlines 'corollaries' and 'proofs' inside theorem-like statements in the symbol table 
 ## 1.9.12
 * Bugfix
   * Children of AuxSTVarSpecList with predefined types will be evaluated with the corresponding expected type.

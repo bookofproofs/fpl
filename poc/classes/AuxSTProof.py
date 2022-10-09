@@ -1,11 +1,15 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxEvaluationPredicate import AuxEvaluationPredicate
+from poc.classes.AuxInbuiltTypes import InbuiltPredicate
+from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxSTProofArguments import AuxSTProofArguments
 from poc.fplerror import FplErrorManager
-from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 
 
-class AuxSTProof(AuxSTBuildingBlock):
+class AuxSTProof(AuxSTBuildingBlock, AuxSTTypeInterface, AuxEvaluationPredicate):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.block_proof, i)
@@ -35,4 +39,13 @@ class AuxSTProof(AuxSTBuildingBlock):
 
     def evaluate(self, sem):
         self.set_sc_ready()
-        raise NotImplementedError()
+        new_value = InbuiltValuePredicate(self)
+        register = sem.eval_stack[-1]
+        register.value = new_value
+        for child in self.children:
+            if isinstance(child, AuxSTProofArguments):
+                ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
+                new_value.set_to(ret.get_value())
+            else:
+                EvaluateParams.evaluate_recursion(sem, child)
+
