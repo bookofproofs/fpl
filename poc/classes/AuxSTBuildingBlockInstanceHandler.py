@@ -13,14 +13,13 @@ class AuxSTBuildingBlockInstanceHandler:
         self._ids = dict()
         self._registers = dict()
 
-    def set_register(self, register):
-        long_id = register.node.get_long_id()
-        self._registers[long_id] = register
+    def set_register(self, identifier: str, register):
+        self._registers[identifier] = register
 
-    def get_register(self, register_id):
+    def get_register(self, register_id: str):
         return self._registers[register_id]
 
-    def has_register(self, register_id):
+    def has_register(self, register_id: str):
         return register_id in self._registers
 
     def add_instance_variable(self, var_id: str, occurrences: list, type_node):

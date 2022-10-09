@@ -88,5 +88,5 @@ class EvaluateParams:
                 )
                 register.evaluation_error = True
             # store the value of eval_params of the node in the instance of the building block
-            register.instance.set_register(register)
+            register.instance.set_register(register.node.get_long_id(), register)
         return register

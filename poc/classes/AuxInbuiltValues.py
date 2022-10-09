@@ -1,10 +1,11 @@
 import z3
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.classes.AuxSTType import AuxSTType
 
 
-class AuxInbuiltValue:
+class AuxInbuiltValue(AuxSTTypeInterface):
     def __init__(self, node):
         self._copied_path = tuple()
         if node is not None:
@@ -15,17 +16,10 @@ class AuxInbuiltValue:
             if hasattr(node, "path"):
                 self._copied_path = node.path
         self._value = None
-        self._declared_type = None
         self._expression = None
 
     def get_value(self):
         return self._value
-
-    def set_declared_type(self, declared_type):
-        self._declared_type = declared_type
-
-    def get_declared_type(self):
-        return self._declared_type
 
     def get_expression(self):
         return self._expression
@@ -33,8 +27,12 @@ class AuxInbuiltValue:
     def set_expression(self, expression):
         self._expression = expression
 
+    def get_long_id(self):
+        return str(self._value)
+
 
 class InbuiltValueUndefined(AuxInbuiltValue):
+
     def __init__(self, node):
         super().__init__(node)
         self._value = AuxSTConstants.undefined

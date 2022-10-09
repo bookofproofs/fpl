@@ -1,3 +1,4 @@
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
@@ -30,4 +31,6 @@ class AuxSTStatementReturn(AuxSTStatement, AuxSTTypeInterface):
         return self._declared_type
 
     def evaluate(self, sem):
-        raise NotImplementedError()
+        # evaluate the returned value expecting the declared type of self
+        ret = EvaluateParams.evaluate_recursion(sem, self.children[0], self.get_declared_type())
+        sem.eval_stack[-1].value = ret.value
