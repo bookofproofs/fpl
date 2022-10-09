@@ -14,6 +14,7 @@ class TypeTests(UtilTestCase):
         "test_proof_02.fpl",
         "test_proof_03.fpl",
         "test_proof_04.fpl",
+        "test_proof_05.fpl",
     ])
     def test_correct(self, use_case):
         super().syntax_analysis_correct(self.folder + "/" + use_case, self.rewrite)

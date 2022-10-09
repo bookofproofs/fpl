@@ -149,9 +149,6 @@ class AuxSTBuildingBlock(AuxST, AuxSTTypeInterface):
     def get_main_instance(self):
         return self._handlers.main_instance
 
-    def evaluate(self, sem):
-        raise NotImplementedError(str(sem.eval_stack[-1].node))
-
     def is_sc_ready(self):
         return self._sc_ready_flag
 

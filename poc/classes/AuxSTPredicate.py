@@ -3,6 +3,7 @@ from anytree import AnyNode, search, PreOrderIter
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxEvaluationPredicate import AuxEvaluationPredicate
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 from poc.classes.AuxSTVariable import AuxSTVariable
@@ -10,7 +11,7 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 from fplerror import FplPremiseNotSatisfiable
 
 
-class AuxSTPredicate(AuxST, AuxSTTypeInterface):
+class AuxSTPredicate(AuxST, AuxSTTypeInterface, AuxEvaluationPredicate):
 
     def __init__(self, outline: str, i):
         super().__init__(outline, i)
@@ -60,7 +61,7 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                     new_value.set_to(not check.value.get_value())
                 return
             elif self.outline == AuxSTConstants.predicate_conjunction:
-                expressions, bool_values, errors = self._evaluate_children(sem)
+                expressions, bool_values, errors = self.evaluate_children(sem)
                 new_value.set_expression(z3.And(expressions))
                 if True in errors:
                     new_value.set_undetermined()
@@ -73,7 +74,7 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                     new_value.set_to(ret)
                 return
             elif self.outline == AuxSTConstants.predicate_disjunction:
-                expressions, bool_values, errors = self._evaluate_children(sem)
+                expressions, bool_values, errors = self.evaluate_children(sem)
                 new_value.set_expression(z3.Or(expressions))
                 if True in errors:
                     new_value.set_undetermined()
@@ -86,7 +87,7 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                     new_value.set_to(ret)
                 return
             elif self.outline == AuxSTConstants.predicate_equivalence:
-                expressions, bool_values, errors = self._evaluate_children(sem)
+                expressions, bool_values, errors = self.evaluate_children(sem)
                 new_value.set_expression(expressions[0] == expressions[1])
                 if True in errors:
                     new_value.set_undetermined()
@@ -94,7 +95,7 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                     new_value.set_to(bool_values[0] == bool_values[1])
                 return
             elif self.outline == AuxSTConstants.predicate_exclusiveOr:
-                expressions, bool_values, errors = self._evaluate_children(sem)
+                expressions, bool_values, errors = self.evaluate_children(sem)
                 new_value.set_expression(z3.Xor(expressions[0], expressions[1]))
                 if True in errors:
                     new_value.set_undetermined()
@@ -102,7 +103,7 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
                     new_value.set_to(bool_values[0] != bool_values[1])
                 return
             elif self.outline == AuxSTConstants.predicate_implication:
-                expressions, bool_values, errors = self._evaluate_children(sem)
+                expressions, bool_values, errors = self.evaluate_children(sem)
                 new_value.set_expression(z3.Implies(expressions[0], expressions[1]))
                 if True in errors:
                     new_value.set_undetermined()
@@ -163,17 +164,6 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
             else:
                 raise NotImplementedError(self.outline)
 
-    def _evaluate_children(self, sem):
-        expressions = list()
-        bool_values = list()
-        errors = list()
-        for child in self.children:
-            check = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
-            expressions.append(check.value.get_expression())
-            errors.append(check.evaluation_error)
-            bool_values.append(check.value.get_value())
-        return expressions, bool_values, errors
-
     def clone(self):
         return self._copy(AuxSTPredicate(self.outline, self._i))
 
@@ -195,9 +185,9 @@ class AuxSTPredicate(AuxST, AuxSTTypeInterface):
     def get_long_id(self):
         if self._long_id is None:
             if self.outline in [AuxSTConstants.extDigit, AuxSTConstants.ids, AuxSTConstants.variadic_var]:
-                self._long_id = self.id
+                self._long_id = self.id + "."
             else:
-                self._long_id = self.outline
+                self._long_id = self.outline + "."
             for arg in self.children:
                 self._long_id += arg.get_long_id()
         return self._long_id

@@ -1,0 +1,45 @@
+TestNamespace
+{
+    theory
+    {
+        lemma Test()
+        {
+            pre: true
+            con: true
+        }
+
+        proof Test$1
+        {
+            1. |- qed
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTLemma(), theory=AuxSTTheory())
+│   └── AuxSTGlobal(gid='TestNamespace.Test$1', id='Test$1', reference=AuxSTProof(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='29203797e8f98640aa2018137ec2cc92', file_name='test_proof_05.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    │   └── AuxSTLemma(id='Test[]', keyword='lemma', outline='lemma', zfrom='5.8', zto='9.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.14', zto='5.20')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       ├── AuxSTPredicate(outline='pre', zfrom='7.12', zto='8.12')
+    │       │   └── AuxSTPredicate(outline='true', zfrom='7.17', zto='7.21')
+    │       └── AuxSTPredicate(outline='con', zfrom='8.12', zto='8.21')
+    │           └── AuxSTPredicate(outline='true', zfrom='8.17', zto='8.21')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    │   └── AuxSTProof(id='Test$1', outline='proof', zfrom='11.8', zto='14.9')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       └── AuxSTProofArguments(outline='arguments')
+    │           └── AuxSTProofArgument(id='1', outline='argument', zfrom='13.12', zto='14.8')
+    │               └── AuxSTProofStop(outline='argument', type='qed')
+    └── AuxSTLocalizations(outline='localizations')

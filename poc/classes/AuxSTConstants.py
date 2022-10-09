@@ -15,7 +15,7 @@ class AuxSTConstants:
     block_prop_root = "propositions"
     block_cor = "corollary"
     block_cor_root = "corollaries"
-    block_proof = "proofArgument"
+    block_proof = "proof"
     block_proof_root = "proofs"
     block_conj = "conjecture"
     block_conj_root = "conjectures"

@@ -24,10 +24,13 @@ class ContextProofArgument(AuxInterpretation):
         elif rule == "Justification":
             self.proof_argument.register_child(parsing_info.justification)  # noqa
         elif rule == "ArgumentInference":
-            self.proof_argument.register_child(parsing_info.proof_argument)  # noqa
+            for child in parsing_info.proof_argument.children:
+                child.parent = self.proof_argument
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextProofArgument(i)
+        new_info.proof_argument.zfrom = i.corrected_position('ArgumentIdentifier')
+        new_info.proof_argument.zto = i.last_positions_by_rule['ProofArgument'].pos_to_str()
         i.parse_list.append(new_info)
 

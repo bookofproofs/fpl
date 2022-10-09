@@ -52,30 +52,21 @@ class AuxSymbolTable:
     def add_theorem_to_theory(theory_node: AuxSTOutline, block):
         theorems_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSTConstants.block_thm_root)
         block.parent = theorems_node
-        AuxSTOutline(outline=AuxSTConstants.block_cor_root, parent=block)
-        AuxSTOutline(outline=AuxSTConstants.block_proof_root, parent=block)
 
     @staticmethod
     def add_proposition_to_theory(theory_node: AuxSTOutline, block):
         propositions_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSTConstants.block_prop_root)
         block.parent = propositions_node
-        AuxSTOutline(outline=AuxSTConstants.block_cor_root, parent=block)
-        AuxSTOutline(outline=AuxSTConstants.block_proof_root, parent=block)
 
     @staticmethod
     def add_lemma_to_theory(theory_node: AuxSTOutline, block):
         lemmas_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSTConstants.block_lem_root)
         block.parent = lemmas_node
-        AuxSTOutline(outline=AuxSTConstants.block_cor_root, parent=block)
-        AuxSTOutline(outline=AuxSTConstants.block_proof_root, parent=block)
 
     @staticmethod
     def add_corollary_to_theory(theory_node: AuxSTOutline, block):
         corollary_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSTConstants.block_cor_root)
         block.parent = corollary_node
-        # we allow creating corollaries of corollaries
-        AuxSTOutline(outline=AuxSTConstants.block_cor_root, parent=block)
-        AuxSTOutline(outline=AuxSTConstants.block_proof_root, parent=block)
 
     @staticmethod
     def add_proof_to_theory(theory_node: AuxSTOutline, block):
@@ -86,8 +77,6 @@ class AuxSymbolTable:
     def add_conjecture_to_theory(theory_node: AuxSTOutline, block):
         conjectures_node = AuxSymbolTable.get_child_by_outline(theory_node, AuxSTConstants.block_conj_root)
         block.parent = conjectures_node
-        AuxSTOutline(outline=AuxSTConstants.block_cor_root, parent=block)
-        AuxSTOutline(outline=AuxSTConstants.block_proof_root, parent=block)
 
     @staticmethod
     def add_class_to_theory(theory_node: AuxSTOutline, block):

@@ -56,3 +56,6 @@ class AuxSTOutline(AnyNode):
                 # there is no property node between, just fall back to the scope node
                 self._minor_scope = scope
         return self._minor_scope
+
+    def evaluate(self, sem):
+        raise NotImplementedError(str(sem.eval_stack[-1].node))
