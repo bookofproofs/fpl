@@ -1,4 +1,15 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.12
+* Bugfix
+  * Children of AuxSTVarSpecList with predefined types will be evaluated with the corresponding expected type.
+  * Completed missing predefined type (which is InbuiltPredicate) in AuxSTStatementCase, AuxStatementCaseDefault, and AuxSTStatementCaseSome
+  * Completed missing (initial) implementations of the evaluate method in AuxSTStatementCase and AuxSTStatementReturn
+  * Removed deriving AuxSTVarDec from AuxSTTypeInterface, so it does not mess up the evaluation process.
+  * Removing the unnecessary setting the declared type of AuxSTVarDec to InbuiltUndefined instances in SemCheckIdentifiers and AuxSTBuildingBlock
+  * Added deriving AuxSTSelf and AuxInbuiltValue from AuxSTTypeInterface
+  * Completed missing NotImplemented logic in the evaluation of AuxSTVariable 
+* Refactoring
+  * Unifying handling registers in AuxSTBuildingBlockInstanceHandler
 ## 1.9.11
 * Refactoring:
   * Abandoning the classes AusPredicateState and SemPredicateAnalyzer and replacing it by a z3-based implementation in AuxInbuiltValue

@@ -10,7 +10,7 @@ class AuxSTStatementIsOp(AuxSTStatement, AuxSTTypeInterface):
         super().__init__(AuxSTConstants.statement_is, i)
         self.zfrom = i.corrected_position('is')
         self.zto = i.last_positions_by_rule['IsOperator'].pos_to_str()
-        # the is operator is a predicate
+        # the is operator's type is a predicate
         self.set_declared_type(InbuiltPredicate(self))
 
     def clone(self):

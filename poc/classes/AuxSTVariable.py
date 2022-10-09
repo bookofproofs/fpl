@@ -1,4 +1,5 @@
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
@@ -14,7 +15,6 @@ class AuxSTVariable(AuxST, AuxSTTypeInterface):
         self.id = ""
         self.zto = i.last_positions_by_rule['Variable'].pos_to_str()
         self.zfrom = i.corrected_position('IdStartsWithSmallCase')
-        self._declared_type = None  # a pointer to the type in the symbol table with which this variable was declared
         self._is_bound = False
         self._is_initialized = False
 
@@ -54,7 +54,16 @@ class AuxSTVariable(AuxST, AuxSTTypeInterface):
                 else:
                     raise NotImplementedError()
         else:
-            raise NotImplementedError()
+            instance = sem.eval_stack[-1].instance
+            register = sem.eval_stack[-1]
+            register_id = self.get_long_id()
+            if not instance.has_register(register_id):
+                # if the instance of the building block does not yet have a register for this variable
+                register.value = InbuiltValueAtRuntime(self, self.get_declared_type())
+                instance.set_register(register_id, register)
+            # return the value of the variable to be the value of the register
+            sem.eval_stack.pop()
+            sem.eval_stack.append(instance.get_register(register_id))
 
     def get_long_id(self):
         if self._long_id is None:

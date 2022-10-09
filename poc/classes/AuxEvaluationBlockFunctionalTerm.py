@@ -18,14 +18,10 @@ class AuxEvaluationBlockFunctionalTerm:
         if node.constant_value() is None:
             type_pointer = None
             for child in node.children:
-                if isinstance(child, AuxSTSignature):
+                if isinstance(child, (AuxSTSignature, AuxSTVarSpecList, AuxSTProperties)):
                     EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTType):
                     type_pointer = child
-                elif isinstance(child, AuxSTVarSpecList):
-                    EvaluateParams.evaluate_recursion(sem, child)
-                elif isinstance(child, AuxSTProperties):
-                    EvaluateParams.evaluate_recursion(sem, child)
                 else:
                     raise NotImplementedError(str(type(child)))
             sem.eval_stack[-1].value = InbuiltValueAtRuntime(node, type_pointer)

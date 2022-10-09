@@ -115,7 +115,6 @@ class SemCheckerIdentifiers:
         # in the same loop we identify the vars that are bound in the signature
 
         for identifier in declared_vars:
-            declared_vars[identifier].set_declared_type(InbuiltUndefined(declared_vars[identifier]))
             if declared_vars[identifier].parent.parent == node:
                 only_inner_declared[identifier] = declared_vars[identifier]
             else:

@@ -1,4 +1,5 @@
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants
@@ -6,10 +7,10 @@ from poc.classes.AuxSTTheory import AuxSTTheory
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
 
 
-class AuxSTSelf(AuxST):
+class AuxSTSelf(AuxST, AuxSTTypeInterface):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.selfInstance, i)

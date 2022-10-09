@@ -89,8 +89,6 @@ class AuxSTBuildingBlock(AuxST, AuxSTTypeInterface):
                                            self._declared_vars[var_declaration.id].zfrom,
                                            var_declaration.id,
                                            filename))
-        # make sure, this duplicate variable declaration will also have an inbuilt type necessary for later evaluation
-        var_declaration.set_declared_type(InbuiltUndefined(var_declaration))
 
     def get_declared_vars(self):
         """
