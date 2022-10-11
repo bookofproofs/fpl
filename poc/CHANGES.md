@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.0
+* Feature
+  * Initial implementation of the evaluate method in AuxSTStatementAssert and AuxSTStatementIsOp
+  * AuxSTBuildingBlockInstanceHandler now stores all asserted predicates in the instance.   
+* Bugfix
+  * Deriving AuxSTAxiom and AuxSTClass from the missing AuxSTTypeInterface
 ## 1.9.14
 * Feature
   * Enhancing the fplsyntaxanalyzer to handle the new grammar rule ConstructorBlock according to the updated FPL grammar 1.2.0

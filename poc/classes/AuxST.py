@@ -32,7 +32,6 @@ class AuxST(AuxSTOutline):
         instance.zto = self.zto
         instance.zfrom = self.zfrom
         instance._copied_path = self.path
-        instance._declared_type = self._declared_type
         instance._i = self._i
         instance._error_mgr = self._error_mgr
         for child in self.children:

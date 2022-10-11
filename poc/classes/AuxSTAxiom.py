@@ -1,6 +1,7 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
@@ -10,7 +11,7 @@ from poc.classes.AuxSTStatementIsOp import AuxSTStatementIsOp
 from fplerror import FplAxiomNotSatisfiable
 
 
-class AuxSTAxiom(AuxSTBuildingBlock):
+class AuxSTAxiom(AuxSTBuildingBlock, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.block_axiom, i)
