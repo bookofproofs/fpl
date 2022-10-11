@@ -1,4 +1,4 @@
-class AuxSTTypeInterface:
+class AuxInterfaceSTType:
     """
     A class for elements of the symbol table that have an an outline with type
     """

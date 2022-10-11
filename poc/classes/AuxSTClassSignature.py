@@ -15,19 +15,19 @@ class AuxSTClassSignature(AuxST):
         self.zto = i.last_positions_by_rule['ClassSignature'].pos_to_str()
 
     def set_type(self, class_type):
-        if AuxBits.is_functional_term(class_type.type_pattern):
+        if class_type.is_functional_term():
             self.get_error_mgr().add_error(
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "a functional term"))
-        elif AuxBits.is_index(class_type.type_pattern):
+        elif class_type.is_index():
             self.get_error_mgr().add_error(
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "an index"))
-        elif AuxBits.is_predicate(class_type.type_pattern):
+        elif class_type.is_predicate():
             self.get_error_mgr().add_error(
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "a predicate"))
-        elif AuxBits.is_generic(class_type.type_pattern):
+        elif class_type.is_generic():
             self.get_error_mgr().add_error(
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "a generic"))
-        elif AuxBits.is_extension(class_type.type_pattern):
+        elif class_type.is_extension():
             self.get_error_mgr().add_error(
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "a user-defined syntax extension"))
 

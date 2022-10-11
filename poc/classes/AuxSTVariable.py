@@ -4,11 +4,11 @@ from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTVariable(AuxST, AuxSTTypeInterface):
+class AuxSTVariable(AuxST, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.var, i)

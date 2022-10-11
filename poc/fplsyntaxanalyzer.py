@@ -21,9 +21,8 @@ from poc.classes.ContextClassInstance import ContextClassInstance
 from poc.classes.ContextComment import ContextComment
 from poc.classes.ContextConclusionHeader import ContextConclusionHeader
 from poc.classes.ContextConstructor import ContextConstructor
+from poc.classes.ContextConstructorBlock import ContextConstructorBlock
 from poc.classes.ContextCoordInType import ContextCoordInType
-from poc.classes.ContextDefaultResult import ContextDefaultResult
-from poc.classes.ContextDefinitionClass import ContextDefinitionClass
 from poc.classes.ContextClassSignature import ContextClassSignature
 from poc.classes.ContextClosedOrOpenRange import ContextClosedOrOpenRange
 from poc.classes.ContextCompoundPredicate import ContextCompoundPredicate
@@ -35,7 +34,9 @@ from poc.classes.ContextCoord import ContextCoord
 from poc.classes.ContextCoordList import ContextCoordList
 from poc.classes.ContextCorollaryHeader import ContextCorollaryHeader
 from poc.classes.ContextCorollarySignature import ContextCorollarySignature
+from poc.classes.ContextDefaultResult import ContextDefaultResult
 from poc.classes.ContextDefinition import ContextDefinition
+from poc.classes.ContextDefinitionClass import ContextDefinitionClass
 from poc.classes.ContextDefinitionContent import ContextDefinitionContent
 from poc.classes.ContextDefinitionContentList import ContextDefinitionContentList
 from poc.classes.ContextDefinitionFunctionalTerm import ContextDefinitionFunctionalTerm
@@ -204,6 +205,7 @@ class FPLSyntaxAnalyzer:
             "conjecture": ContextKeyword.dispatch,
             "Conjunction": ContextConjunction.dispatch,
             "Constructor": ContextConstructor.dispatch,
+            "ConstructorBlock": ContextConstructorBlock.dispatch,
             "Coord": ContextCoord.dispatch,
             "CoordInType": ContextCoordInType.dispatch,
             "CoordList": ContextCoordList.dispatch,

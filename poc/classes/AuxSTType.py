@@ -1,16 +1,17 @@
 import re
+from poc.classes.AuxInterfaceSTTypePattern import AuxInterfaceSTTypePattern
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSymbolTableHelpers import AuxSymbolTableHelpers
 from poc.classes.AuxSTArgs import AuxSTArgs
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTType(AuxST):
+class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
 
     def __init__(self, i):
-        super().__init__("type", i)
+        super().__init__(AuxSTConstants.type, i)
         self.id = ""
-        self.type_pattern = -1
+        self.type_pattern = 0
         self.type_mod = ""
         self._parsing_info = None
         self._qualified_id = None
@@ -27,7 +28,7 @@ class AuxSTType(AuxST):
     def make(self):
         if self._parsing_info.paramTuple is not None:
             type_node = AuxSTType(self._i)
-            type_node = type_node.clone()
+            type_node = type_node.clone(with_params=True)
             type_node.parent = self
             for next_var_declaration in self._parsing_info.paramTuple.tuple:
                 AuxSymbolTableHelpers.add_vars_to_node(self._i, type_node, next_var_declaration)
@@ -46,10 +47,10 @@ class AuxSTType(AuxST):
             ret = ""
         return ret + self.to_string()
 
-    def clone(self):
+    def clone(self, with_params=False):
         other = self._copy(AuxSTType(self._i))
         other._qualified_id = self._qualified_id
-        if self.type_pattern == -1:
+        if with_params:
             # prevent cloning type when, in fact the type has params.
             # In this case replace the node by an AuxSTArgs node
             args = AuxSTArgs(self._i)

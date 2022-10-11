@@ -1,4 +1,15 @@
 # Changes in the FPL Parser and Interpreter
+## 1.9.14
+* Feature
+  * Enhancing the fplsyntaxanalyzer to handle the new grammar rule ConstructorBlock according to the updated FPL grammar 1.2.0
+  * This new grammar rule will enable to us to 'call' the constructor of a superclass.  
+* Bugfix
+  * Correcting a false positive FplTypeMismatch error (expected 'predicate', received 'pred')
+  * Replacing the dependency on type_pattern==-1 while cloning a type and initializing type_pattern with 0
+  * Correcting the parsing of Variable Lists 
+* Refactoring
+  * Removing code duplication between the classes AuxSTType and ContextType by creating a common new class AuxInterfaceSTTypePattern
+  * Renaming AuxSTTypeInterface into AuxInterfaceSTType
 ## 1.9.13
 * Refactoring
   * Creating a new class AuxEvaluationPredicate to share code between AuxSTPredicate and AuxSTProof

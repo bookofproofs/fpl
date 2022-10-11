@@ -5,7 +5,7 @@ from poc.fplerror import FplTemplateMisused
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTBuildingBlockInstanceHandlers import AuxSTBuildingBlockInstanceHandlers
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 """
@@ -13,7 +13,7 @@ The class AuxSTBuildingBlock is a base class for all FPL building blocks
 """
 
 
-class AuxSTBuildingBlock(AuxST, AuxSTTypeInterface):
+class AuxSTBuildingBlock(AuxST, AuxInterfaceSTType):
     def __init__(self, outline: str, i):
         super().__init__(outline, i)
         self.id = ""

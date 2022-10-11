@@ -1,4 +1,4 @@
-# fpl Version 1.1.7
+# fpl Version 1.2.0
 
 @@grammar::fpl
 @@parseinfo :: True
@@ -557,7 +557,14 @@
 
     Constructor =
         Signature { CW }*
-        InstanceBlock
+        ConstructorBlock
+        ;
+
+    ConstructorBlock =
+        LeftBrace
+        { CW }* [ PredicateWithArguments ]
+        { CW }* [ VariableSpecificationList ]
+        { CW }* RightBrace
         ;
 
     InstanceBlock =

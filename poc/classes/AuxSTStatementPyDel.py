@@ -1,9 +1,9 @@
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
-class AuxSTStatementPyDel(AuxSTStatement, AuxSTTypeInterface):
+class AuxSTStatementPyDel(AuxSTStatement, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.statement_py, i)

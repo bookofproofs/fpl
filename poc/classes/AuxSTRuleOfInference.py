@@ -4,12 +4,12 @@ from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTRuleOfInference(AuxSTBuildingBlock, AuxSTTypeInterface):
+class AuxSTRuleOfInference(AuxSTBuildingBlock, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.block_ir, i)

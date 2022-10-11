@@ -1,11 +1,11 @@
 import z3
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTType import AuxSTType
 
 
-class AuxInbuiltValue(AuxSTTypeInterface):
+class AuxInbuiltValue(AuxInterfaceSTType):
     def __init__(self, node):
         self._copied_path = tuple()
         if node is not None:
