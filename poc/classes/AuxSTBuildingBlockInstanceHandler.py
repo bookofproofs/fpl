@@ -12,6 +12,7 @@ class AuxSTBuildingBlockInstanceHandler:
         self._vars = dict()
         self._ids = dict()
         self._registers = dict()
+        self._asserted_predicates = dict()
 
     def set_register(self, identifier: str, register):
         self._registers[identifier] = register
@@ -46,3 +47,10 @@ class AuxSTBuildingBlockInstanceHandler:
         self._ids.clear()
         self._vars.clear()
         self._registers.clear()
+        self._asserted_predicates.clear()
+
+    def add_asserted_predicate(self, identifier: str, predicate_node):
+        self._asserted_predicates[identifier] = predicate_node
+
+    def get_asserted_predicate(self, identifier: str):
+        return self._asserted_predicates[identifier]

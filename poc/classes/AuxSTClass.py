@@ -1,9 +1,10 @@
 from anytree import search
-from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxBits import AuxBits
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
+from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTArgs import AuxSTArgs
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
@@ -23,7 +24,7 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTClass(AuxSTBuildingBlock):
+class AuxSTClass(AuxSTBuildingBlock, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.block_def, i)
