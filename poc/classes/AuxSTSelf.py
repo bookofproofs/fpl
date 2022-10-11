@@ -7,10 +7,10 @@ from poc.classes.AuxSTTheory import AuxSTTheory
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
-class AuxSTSelf(AuxST, AuxSTTypeInterface):
+class AuxSTSelf(AuxST, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.selfInstance, i)

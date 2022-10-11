@@ -5,6 +5,7 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
+from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
 from anytree import search
 from poc.fplerror import FplErrorManager
 
@@ -14,6 +15,7 @@ class AuxSTConstructor(AuxSTBuildingBlock):
     def __init__(self, i):
         super().__init__(AuxSTConstants.classConstructor, i)
         self.id = ""
+        self._base_class_type = None
 
     def initialize_vars(self, filename, error_mgr: FplErrorManager):
         # Note: Default constructors are omitted since they do not declare any variables
@@ -50,11 +52,18 @@ class AuxSTConstructor(AuxSTBuildingBlock):
             self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
+
         for child in self.children:
             if isinstance(child, AuxSTSignature):
                 EvaluateParams.evaluate_recursion(sem, child)
             elif isinstance(child, AuxSTVarSpecList):
                 EvaluateParams.evaluate_recursion(sem, child)
+            elif isinstance(child, AuxSTPredicateWithArgs):
+                # The semantics of any AuxSTPredicateWithArgs call inside the constructor of a class
+                # is to call the constructor of its base class. Therefore, we expect the type of the base class
+                ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=self.get_base_class_type(sem))
+                # todo: we still have to embed the variables and asserted predicates
+                # of the called base class inside the constructor's class instance
             else:
                 raise NotImplementedError(str(type(child)))
         # the value of the constructor is a wrapper object with the type of its class
@@ -66,3 +75,11 @@ class AuxSTConstructor(AuxSTBuildingBlock):
             # the type of the constructor corresponds to the type of its class
             self.set_declared_type(self.parent.parent.get_declared_type())
         return self._declared_type
+
+    def get_base_class_type(self, sem):
+        if self._base_class_type is None:
+            # determine the
+            base_class_id = self.parent.parent.class_types[0]
+            base_class = sem.classes.identify_representative(base_class_id)
+            self._base_class_type = base_class.reference.get_declared_type()
+        return self._base_class_type

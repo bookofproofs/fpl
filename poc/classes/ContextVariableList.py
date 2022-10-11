@@ -11,13 +11,13 @@ class ContextVariableList(AuxInterpretation):
         self.var_list = []
         self._i = i
         self.aggregate_previous_rules(i.parse_list,
-                                      AuxRuleDependencies.dep["VariableList"] + ["Assignee"],
+                                      AuxRuleDependencies.dep["VariableList"] + ["Assignee", "Identifier"],
                                       self.rule_aggregator)
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Variable":
             self.var_list.append(parsing_info)
-        elif rule == "Assignee":
+        elif rule in ["Assignee", "Identifier"]:
             # cast the Assignee to Variable and append it to the named variable declaration
             var = ContextVariable(self._i)
             var.var = parsing_info.predicate

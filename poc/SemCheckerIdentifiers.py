@@ -318,17 +318,17 @@ class SemCheckerIdentifiers:
                         self.analyzer.error_mgr.add_error(
                             FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
                         )
-                elif AuxBits.is_index(type_node.type_pattern):
+                elif type_node.is_index():
                     pass
-                elif AuxBits.is_predicate(type_node.type_pattern):
+                elif type_node.is_predicate():
                     pass
-                elif AuxBits.is_functional_term(type_node.type_pattern):
+                elif type_node.is_functional_term():
                     pass
-                elif AuxBits.is_generic(type_node.type_pattern):
+                elif type_node.is_generic():
                     pass
-                elif AuxBits.is_inbuilt_object(type_node.type_pattern):
+                elif type_node.is_inbuilt_object():
                     pass
-                elif AuxBits.is_extension(type_node.type_pattern):
+                elif type_node.is_extension():
                     pass
                 else:
                     raise NotImplementedError("type_pattern " + str(self.type_pattern))

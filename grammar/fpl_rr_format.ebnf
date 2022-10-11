@@ -2,7 +2,7 @@
 /* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */
 
 
-/* fpl Version 1.1.7 */
+/* fpl Version 1.2.0 */
 /* a mathematical theory written in FPL can be split between different files having */
 /* Every theory part block starts with an optional syntax extension block, followed by */
 /* optional usage of other libraries, followed by optional inference rules, */
@@ -345,7 +345,12 @@ regular_expression '/((?!:end).)*/'
 /* Constructors */
     Constructor ::=
         Signature ( CW )*
-        InstanceBlock
+        ConstructorBlock
+    ConstructorBlock ::=
+        LeftBrace
+        ( CW )* (PredicateWithArguments)?
+        ( CW )* (VariableSpecificationList)?
+        ( CW )* RightBrace
     InstanceBlock ::=
         LeftBrace
         ( CW )* (VariableSpecificationList)?
@@ -381,9 +386,10 @@ regular_expression '/((?!:end).)*/'
         )
     EntityWithCoord ::=
         Entity
-        LeftBracket
-        (IW)? ( Range | CoordList )
-        (IW)? RightBracket
+        (
+            ClosedOrOpenRange
+        |   LeftBracket (IW)? CoordList (IW)? RightBracket
+        )
     CoordList ::=
         Coord ( (IW)? Comma (IW)? Coord )*
     Entity ::=

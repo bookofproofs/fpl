@@ -11,11 +11,11 @@ TestTypes
         {
             DerivedStructure()
             {
-                TestStructure()
+                self:=TestStructure()
             }
         }
     }
 }
 
 ##############################
-should not trigger FplTypeMismatch
+FplTypeMismatch:14:22: Type mismatch: expected 'DerivedStructure', received 'TestStructure' in this context

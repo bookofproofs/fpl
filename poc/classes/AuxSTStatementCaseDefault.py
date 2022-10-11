@@ -1,10 +1,10 @@
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
-class AuxSTStatementCaseDefault(AuxSTStatement, AuxSTTypeInterface):
+class AuxSTStatementCaseDefault(AuxSTStatement, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.statement_case_default, i)

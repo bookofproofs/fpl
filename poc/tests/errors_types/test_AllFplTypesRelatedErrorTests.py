@@ -15,6 +15,7 @@ class AllTypesRelatedErrorTests(UtilTestCase):
         ("test_FplTypeNotAllowed_01.fpl", "SE0200"),
         ("test_FplTypeNotAllowed_02.fpl", "SE0200"),
         ("test_FplTypeNotAllowed_03.fpl", "SE0200"),
+        ("test_FplTypeMismatch_01.fpl", "SE0250"),
     ])
     def test_errors(self, use_case, diagnose_id):
         super().semantical_analysis_detects_fpl_error(self.folder + "/" + use_case, diagnose_id)

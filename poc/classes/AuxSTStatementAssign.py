@@ -1,7 +1,7 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
 class AuxSTStatementAssign(AuxSTStatement):
@@ -16,7 +16,7 @@ class AuxSTStatementAssign(AuxSTStatement):
 
     def evaluate(self, sem):
         # first, establish the type of the assignee
-        if isinstance(self.children[0], AuxSTTypeInterface):
+        if isinstance(self.children[0], AuxInterfaceSTType):
             assignee_type = self.children[0].get_declared_type()
         else:
             raise NotImplementedError(str(type(self.children[0])))

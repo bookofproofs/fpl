@@ -2,10 +2,10 @@ from poc.classes.AuxEvaluationPredicate import AuxEvaluationPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
-class AuxSTProofStop(AuxSTOutline, AuxSTTypeInterface, AuxEvaluationPredicate):
+class AuxSTProofStop(AuxSTOutline, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def __init__(self):
         super().__init__(None, AuxSTConstants.proofArgument)

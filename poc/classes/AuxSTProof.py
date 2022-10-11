@@ -4,12 +4,12 @@ from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTProofArguments import AuxSTProofArguments
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTProof(AuxSTBuildingBlock, AuxSTTypeInterface, AuxEvaluationPredicate):
+class AuxSTProof(AuxSTBuildingBlock, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.block_proof, i)

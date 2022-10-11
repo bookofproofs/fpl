@@ -9,14 +9,14 @@ from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTVariable import AuxSTVariable
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from fplerror import FplIdentifierNotDeclared, FplWrongArguments, FplPredicateRecursion, FplVariableNotInitialized
 
 
-class AuxSTPredicateWithArgs(AuxST, AuxSTTypeInterface):
+class AuxSTPredicateWithArgs(AuxST, AuxInterfaceSTType):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.predicate_with_arguments, i)
@@ -90,7 +90,7 @@ class AuxSTPredicateWithArgs(AuxST, AuxSTTypeInterface):
             else:
                 raise NotImplementedError()
             if not self.get_scope().is_sc_ready():
-                if AuxBits.is_predicate(propagated_expected_type.type_pattern):
+                if propagated_expected_type.is_predicate():
                     sem.sc.add_reference(self.reference, self.get_scope(), AuxReferenceType.logical)
                 else:
                     sem.sc.add_reference(self.reference, self.get_scope(), AuxReferenceType.semantical)

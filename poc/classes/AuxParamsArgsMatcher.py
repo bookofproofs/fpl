@@ -64,22 +64,22 @@ class AuxParamsArgsMatcher:
             return False
 
         # check consistency of types of the argument and the parameter it has to match
-        if AuxBits.is_predicate(type_arg.type_pattern) and AuxBits.is_predicate(type_param.type_pattern):
+        if type_arg.is_predicate() and type_param.is_predicate():
             return True
-        elif AuxBits.is_functional_term(type_arg.type_pattern) and AuxBits.is_functional_term(type_param.type_pattern):
+        elif type_arg.is_functional_term() and type_param.is_functional_term():
             return True
-        elif AuxBits.is_generic(type_arg.type_pattern) and AuxBits.is_generic(type_param.type_pattern):
+        elif type_arg.is_generic() and type_param.is_generic():
             if type_param.get_scope().id == type_arg.get_scope().id:
                 return type_param.id == type_arg.id
             else:
                 # return true even if the names of the generic types are not the same if the
                 # scope they are declared in are not the same
                 return True
-        elif AuxBits.is_generic(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
+        elif type_arg.is_generic() and type_param.is_object():
             return True
-        elif AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_generic(type_param.type_pattern):
+        elif type_arg.is_object() and type_param.is_generic():
             return True
-        elif AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
+        elif type_arg.is_object() and type_param.is_object():
             if type_param.id == type_arg.id:
                 # if after the proceedings checks the ids are equal, we have a match
                 return True
@@ -89,11 +89,11 @@ class AuxParamsArgsMatcher:
                 # with different IDs are still compatible, for instance due to class inheritance.
                 # The parameter has to 'accept' an argument if
                 # the argument's type is a derived class of the parameter's type.
-                if AuxBits.is_object(type_arg.type_pattern) and AuxBits.is_object(type_param.type_pattern):
-                    if AuxBits.is_inbuilt_object(type_param.type_pattern):
+                if type_arg.is_object() and type_param.is_object():
+                    if type_param.is_inbuilt_object():
                         # every object is derived from the inbuilt object
                         return True
-                    elif AuxBits.is_inbuilt_object(type_arg.type_pattern):
+                    elif type_arg.is_inbuilt_object():
                         # the inbuilt object is never a derived object
                         return False
                     else:

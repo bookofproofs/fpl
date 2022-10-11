@@ -20,6 +20,7 @@ class InbuiltUndefined(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
         self.id = AuxSTConstants.undefined
+        self.type_pattern |= AuxBits.inbuiltBit
         # the inbuilt undefined is a type of itself
 
 
@@ -27,21 +28,24 @@ class InbuiltPredicate(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
         self.id = AuxSTConstants.predicate
-        self.type_pattern = AuxBits.predicateBit
+        self.type_pattern |= AuxBits.inbuiltBit
+        self.type_pattern |= AuxBits.predicateBit
 
 
 class InbuiltFunctionalTerm(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
         self.id = AuxSTConstants.functionalTerm
-        self.type_pattern = AuxBits.functionalTermBit
+        self.type_pattern |= AuxBits.inbuiltBit
+        self.type_pattern |= AuxBits.functionalTermBit
 
 
 class InbuiltIndex(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
         self.id = AuxSTConstants.index_value
-        self.type_pattern = AuxBits.indexBit
+        self.type_pattern |= AuxBits.indexBit
+        self.type_pattern |= AuxBits.inbuiltBit
 
 
 class InbuiltGeneric(AuxInbuiltType):

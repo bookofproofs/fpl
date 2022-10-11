@@ -23,8 +23,11 @@ class ContextConstructor(AuxInterpretation):
         if rule == "Signature":
             self.building_block.register_child(parsing_info.symbol_signature)
             self.building_block.id = parsing_info.symbol_signature.to_string()
-        elif rule == "InstanceBlock":
-            self.building_block.register_child(parsing_info.variable_spec)  # noqa
+        elif rule == "ConstructorBlock":
+            if parsing_info.predicate_with_args is not None:
+                self.building_block.register_child(parsing_info.predicate_with_args)  # noqa
+            if parsing_info.variable_spec is not None:
+                self.building_block.register_child(parsing_info.variable_spec)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

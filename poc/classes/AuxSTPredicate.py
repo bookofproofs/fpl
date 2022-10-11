@@ -5,13 +5,13 @@ from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxEvaluationPredicate import AuxEvaluationPredicate
 from poc.classes.AuxST import AuxST
-from poc.classes.AuxSTTypeInterface import AuxSTTypeInterface
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTVariable import AuxSTVariable
 from poc.classes.AuxSTConstants import AuxSTConstants
 from fplerror import FplPremiseNotSatisfiable
 
 
-class AuxSTPredicate(AuxST, AuxSTTypeInterface, AuxEvaluationPredicate):
+class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def __init__(self, outline: str, i):
         super().__init__(outline, i)

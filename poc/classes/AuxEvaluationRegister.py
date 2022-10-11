@@ -1,3 +1,5 @@
+from poc.classes.AuxBits import AuxBits
+
 """
 The class AuxEvaluationRegister stores all context-sensitive information for a symbol table node being 
 semantically evaluated. 
@@ -35,4 +37,7 @@ class AuxEvaluationRegister:
         True, if the type of the returned value is different from the type of the expected_value
         :return: Boolean value
         """
-        return self.expected_type.id != self.value.get_declared_type().id
+        type_of_value = self.value.get_declared_type()
+        if self.expected_type.is_inbuilt() and type_of_value.is_inbuilt():
+            return not (self.expected_type.is_predicate() and type_of_value.is_predicate())
+        return self.expected_type.id != type_of_value.id

@@ -1,3 +1,4 @@
+from poc.classes.AuxInterfaceSTTypePattern import AuxInterfaceSTTypePattern
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
@@ -5,12 +6,12 @@ from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxHighlightTag import AuxHighlightTag
 
 
-class ContextType(AuxInterpretation):
+class ContextType(AuxInterpretation, AuxInterfaceSTTypePattern):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.type_pattern = 0
         self.id = ""
+        self.type_pattern = 0
         self._colon_read = False
         self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["Type"], self.rule_aggregator)
 
@@ -49,7 +50,7 @@ class ContextType(AuxInterpretation):
         type_info = ContextType(i)
         type_info.zto = i.last_positions_by_rule['Type'].pos_to_str()
         type_info.zfrom = i.corrected_zpos_by(type_info.zto, len(type_info.id))
-        if AuxBits.is_inbuilt(type_info.type_pattern):
+        if type_info.is_inbuilt():
             i.highlight_tags.append(AuxHighlightTag("inbuilttype", type_info.zfrom, type_info.zto))
         else:
             i.highlight_tags.append(AuxHighlightTag("type", type_info.zfrom, type_info.zto))
