@@ -1,5 +1,4 @@
 import z3
-
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement

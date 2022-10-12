@@ -74,11 +74,14 @@ class EvaluateParams:
         node.evaluate(sem)  # start recursion
         register = sem.eval_stack.pop()  # garbage-collect the stack
 
-        if expected_type is not None and \
-                expected_type.is_predicate() and \
-                register.value.get_expression() is None:
-            # create a new z3 expression if the expected type is a predicate and the does not have a z3 expression yet
-            register.value.set_expression(z3.Bool(node.get_long_id()))
+        if expected_type is not None:
+            # store the last value that we can retrieve by some recursive caller to skip nodes that have
+            # no expected type (and whose value is None)
+            sem.last_value = register.value
+            if expected_type.is_predicate() and register.value.get_expression() is None:
+                # create a new z3 expression if the expected type is a predicate and
+                # it does not have a z3 expression yet
+                register.value.set_expression(z3.Bool(node.get_long_id()))
 
         # check if there is a type mismatch
         if register.expected_type is not None:

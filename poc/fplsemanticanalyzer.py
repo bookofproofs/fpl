@@ -44,6 +44,7 @@ class SemanticAnalyser:
         self.overridden_qualified_ids = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.error_mgr)
         self.inference_rules = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.error_mgr)
         self.constructors = AuxOverrideHandler(AuxOverrideHandler.ALLOWED, self.error_mgr)
+        self.last_value = None  # this attributes stores the last value established during the evaluation process
 
     def semantic_analysis(self):
         """

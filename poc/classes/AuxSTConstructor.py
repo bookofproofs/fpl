@@ -52,7 +52,7 @@ class AuxSTConstructor(AuxSTBuildingBlock):
             self.filter_misused_templates(error_mgr, filename)
 
     def evaluate(self, sem):
-
+        new_value = InbuiltValueAtRuntime(self, self.parent.parent)
         for child in self.children:
             if isinstance(child, AuxSTSignature):
                 EvaluateParams.evaluate_recursion(sem, child)
@@ -62,12 +62,13 @@ class AuxSTConstructor(AuxSTBuildingBlock):
                 # The semantics of any AuxSTPredicateWithArgs call inside the constructor of a class
                 # is to call the constructor of its base class. Therefore, we expect the type of the base class
                 ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=self.get_base_class_type(sem))
+                new_value = ret.value
                 # todo: we still have to embed the variables and asserted predicates
                 # of the called base class inside the constructor's class instance
             else:
                 raise NotImplementedError(str(type(child)))
         # the value of the constructor is a wrapper object with the type of its class
-        sem.eval_stack[-1].value = InbuiltValueAtRuntime(self, self.parent.parent)
+        sem.eval_stack[-1].value = new_value
         self.set_sc_ready()
 
     def get_declared_type(self):

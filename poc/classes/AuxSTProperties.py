@@ -10,8 +10,7 @@ class AuxSTProperties(AuxSTOutline):
 
     def evaluate(self, sem):
         for child in self.children:
-            expected_type = child.get_declared_type()
-            EvaluateParams.evaluate_recursion(sem, child, expected_type=expected_type)
+            EvaluateParams.evaluate_recursion(sem, child, expected_type=child.get_declared_type())
 
     def get_long_id(self):
         if self._long_id is None:

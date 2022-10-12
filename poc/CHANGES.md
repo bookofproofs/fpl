@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.1
+* Bugfix
+  * Initial implementation of the evaluate method in AuxSTStatementCase, AuxSTStatementCaseDefault, and AuxSTStatementCaseSome
 ## 1.10.0
 * Feature
   * Initial implementation of the evaluate method in AuxSTStatementAssert and AuxSTStatementIsOp
