@@ -11,7 +11,6 @@ class AuxSTOutline(AnyNode):
         super().__init__()
         self.outline = outline
         self.parent = parent
-        self._declared_type = None
         self._long_id = None
         self._scope = None
         self._minor_scope = None

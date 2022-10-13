@@ -8,7 +8,8 @@ from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 class AuxSTStatementCase(AuxSTStatement, AuxInterfaceSTType):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.statement_cases, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxSTStatement.__init__(self, AuxSTConstants.statement_cases, i)
         self.zfrom = i.corrected_position('case')
         self.zto = i.last_positions_by_rule['CaseStatement'].pos_to_str()
 

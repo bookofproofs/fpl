@@ -8,7 +8,8 @@ from poc.fplerror import FplInvalidUseReturnStmt
 
 class AuxSTStatementReturn(AuxSTStatement, AuxInterfaceSTType):
     def __init__(self, i):
-        super().__init__(AuxSTConstants.statement_return, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxSTStatement.__init__(self, AuxSTConstants.statement_return, i)
         self.zfrom = i.corrected_position('ReturnHeader')
         self.zto = i.last_positions_by_rule['ReturnStatement'].pos_to_str()
 

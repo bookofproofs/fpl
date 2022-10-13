@@ -1,0 +1,49 @@
+TestEvaluationRobustnessLoop
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            myCarrierSet: tplSet
+            myOps: +Composition(myElem: *tplSetElem)
+
+            AlgebraicStructure(x: tplSet, ops: +Composition(args: *tplSetElem))
+            {
+
+                a: obj
+                arg: index
+				myOps := ops
+                myCarrierSet := x
+
+				assert is (x,Set)
+				loop arg args
+				(
+					assert is(arg,Set)
+				)
+
+
+                assert
+                    all a
+                    (
+                        impl ( is(a,tplSetElem), In(a,myCarrierSet) )
+                    )
+            }
+
+            mandatory func NthOp(n: index) -> Composition
+            {
+                return myOps$n
+            }
+
+            mandatory Set CarrierSet()
+            {
+                self:=myCarrierSet
+            }
+
+
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

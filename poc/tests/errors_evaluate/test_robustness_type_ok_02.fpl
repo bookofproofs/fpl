@@ -1,0 +1,39 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        pred IsBounded(x: Real)
+        {
+            upperBound, lowerBound: Real
+            ex upperBound, lowerBound
+            (
+                and (LowerEqual(x,upperBound), LowerEqual(lowerBound,x))
+            )
+        }
+
+        pred IsBounded(f: RealValuedFunction)
+        {
+            x: Real
+            all x
+            (
+                IsBounded(f(x))
+            )
+        }
+
+        func RiemannIntegral(from,to:Real, f: RealValuedFunction ) -> Real
+        {
+            x, result: Real
+            assert IsBounded(f)
+            result:=ZeroReal()
+            range x [from~to]
+            (
+                result:=Add(result, Mult(f(x), D(x)))
+            )
+            return result
+        }
+
+    }
+}
+##############################
+should not throw any not handled error
+

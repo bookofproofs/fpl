@@ -1,0 +1,17 @@
+TestEvaluationRobustnessSelf
+{
+    theory
+    {
+        class CartesianProduct: Set
+        {
+
+            CartesianProduct(from, to: Nat, setArray: Set[from ~ to])
+            {
+                self:=setArray
+                myLength:=to
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error

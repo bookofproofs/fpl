@@ -15,7 +15,8 @@ The class AuxSTBuildingBlock is a base class for all FPL building blocks
 
 class AuxSTBuildingBlock(AuxST, AuxInterfaceSTType):
     def __init__(self, outline: str, i):
-        super().__init__(outline, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxST.__init__(self, outline, i)
         self.id = ""
         self._relative_id = ""
         self._declared_vars = dict()

@@ -1,5 +1,7 @@
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants
@@ -7,13 +9,13 @@ from poc.classes.AuxSTTheory import AuxSTTheory
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
-from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
 class AuxSTSelf(AuxST, AuxInterfaceSTType):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.selfInstance, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxST.__init__(self, AuxSTConstants.selfInstance, i)
         self.reference = None
         self.number_ats = 0
         self.id = AuxSTConstants.selfInstance
@@ -66,6 +68,12 @@ class AuxSTSelf(AuxST, AuxInterfaceSTType):
         propagated_expected_type = sem.eval_stack[-1].expected_type
         if self.reference is None:
             self._initialize_reference()
+        if self.reference.constant_value() is None:
+            register = sem.eval_stack[-1]
+            # the value of a class is a wrapper object with its type
+            register.value = InbuiltValueAtRuntime(self, self.reference.get_declared_type())
+            self.reference.set_constant_value(register)
+
         if len(self.children) > 0:
             for child in self.children:
                 if isinstance(child, AuxSTCoords):
@@ -78,9 +86,10 @@ class AuxSTSelf(AuxST, AuxInterfaceSTType):
                     # set the value of self's evaluation to the value of the qualified identifier
                     sem.eval_stack[-1].value = check.value
                 else:
-                    raise NotImplementedError()
+                    raise NotImplementedError(type(child))
         else:
-            EvaluateParams.evaluate_recursion(sem, self.reference, expected_type=propagated_expected_type)
+            sem.eval_stack.pop()
+            sem.eval_stack.append(self.reference.constant_value())
 
     def get_long_id(self):
         if self._long_id is None:

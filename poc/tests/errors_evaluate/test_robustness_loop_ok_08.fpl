@@ -1,0 +1,38 @@
+TestEvaluationRobustnessLoop
+{
+    theory
+    {
+
+        class CartesianProduct: Set
+        {
+            mandatory pred AllTuplesIn()
+            {
+                tupleElem: Set
+                i: Nat
+
+                and
+                (
+                    is(@self,Set),
+                    all tupleElem
+                    (
+                        impl
+                        (
+                            In(tupleElem,@self),
+                            and (
+                                is(tupleElem,Tuple[myFrom~myLength]),
+                                loop i [1~myLength]
+                                (
+                                    assert In(tupleElem[i],@self[i])
+                                )
+                            )
+                        )
+                    )
+                )
+            }
+        }
+
+    }
+}
+##############################
+should not throw any not handled error
+

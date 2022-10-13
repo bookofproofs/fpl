@@ -1,0 +1,44 @@
+TestEvaluationRobustnessClass
+{
+   theory
+    {
+
+        // Schema of separation axioms
+        axiom SchemaSeparation()
+        {
+            p: pred
+            x,y: Set
+            all p, x
+            (
+                ex y
+                (
+                    Equal(y,SetBuilder(x,p))
+                )
+            )
+        }
+
+        // adds set-builder notation capability to this theory
+        // pred p indicates that p is a predicate, in which the variable u is bound and the type of u is Set
+        // moreover, p can accept even more bound variables of any type.
+        class SetBuilder: Set
+        {
+            // to support set builder notation, ex. all "even" natural numbers like SetBuilder(n: Nat, Even(n))
+            SetBuilder(x: Set, p: pred(u: Set, o: *obj))
+            {
+                assert
+                    all u
+                    (
+                        iif
+                        (
+                            In(u,self),
+                            and ( In(u,x), p(u,o) )
+                        )
+                    )
+            }
+        }
+
+     }
+}
+##############################
+should not throw any not handled error
+

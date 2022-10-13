@@ -1,0 +1,21 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+
+        function ContinuedFraction(k:Nat, arr: Int[k~]) -> Real
+        {
+            i: Nat
+            cf: Real
+            cf:=Real(arr[k])
+            i:=Succ(k)
+            return Add( cf, Div(1 , ContinuedFraction(i, arr[i~])))
+        }
+
+        // Example of defining a constant for the natural number 100 using the
+        class N100:Set{N100(){n:Nat self:=SetBuilder(SetNat(),IsGreater(n,Nat(100))) }}
+    }
+}
+##############################
+should not throw any not handled error
+

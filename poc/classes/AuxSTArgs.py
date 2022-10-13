@@ -12,6 +12,9 @@ class AuxSTArgs(AuxST):
     def clone(self):
         return self._copy(AuxSTArgs(self._i))
 
+    def evaluate(self, sem):
+        raise NotImplementedError()
+
     def get_long_id(self):
         if self._long_id is None:
             self._long_id = "("

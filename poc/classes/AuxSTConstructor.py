@@ -13,7 +13,7 @@ from poc.fplerror import FplErrorManager
 class AuxSTConstructor(AuxSTBuildingBlock):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.classConstructor, i)
+        AuxSTBuildingBlock.__init__(self, AuxSTConstants.classConstructor, i)
         self.id = ""
         self._base_class_type = None
 

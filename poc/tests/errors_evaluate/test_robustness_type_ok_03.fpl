@@ -1,0 +1,49 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        class BinaryRelation: Relation
+        {
+            optional pred LeftTotal()
+            {
+                v,w: Set
+                all v
+                (
+                    ex w
+                    (
+                        and
+                        (
+                            In(v,Domain()),
+                            In(w,CoDomain()),
+                            AreRelated(v,w,@self)
+                        )
+                    )
+                )
+            }
+
+            optional pred Total()
+            {
+                and (LeftTotal(), RightTotal())
+            }
+        }
+
+        pred AreRelated(u,v: Set, r: BinaryRelation)
+        {
+            one, two:Nat
+            one := Nat(1)
+            two := Nat(2)
+            tuple: Tuple[one~two]
+            tuple:=Tuple(u,v)
+            assert
+                and
+                (
+                    In(tuple,r),
+                    In(u,r.Domain()),
+                    In(v,r.Codomain())
+                )
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

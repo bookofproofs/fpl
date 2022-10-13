@@ -1,0 +1,13 @@
+TestEvaluationRobustnessAssert
+{
+    theory
+    {
+        func RealValuedFunction(x:Real) -> Real
+        {
+            assert is(self,Function)
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

@@ -1,0 +1,21 @@
+TestEvaluationRobustnessAxiom
+{
+    theory
+    {
+
+        pred Greater(x,y: obj)
+        {
+
+        }
+
+        axiom GreaterAB()
+        {
+            a: A
+            b: B
+            Greater(a,b)
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

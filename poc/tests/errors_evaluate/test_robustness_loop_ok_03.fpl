@@ -1,0 +1,22 @@
+TestEvaluationRobustnessLoop
+{
+    theory
+    {
+        class SetRoster: Set
+        {
+            // to support enumerating set elements, e.g. SetRoster(1,2,3)
+            SetRoster(listOfSets: *Set)
+            {
+                elem: Set
+
+                loop elem listOfSets
+                (
+                    assert In(elem, self)
+                )
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

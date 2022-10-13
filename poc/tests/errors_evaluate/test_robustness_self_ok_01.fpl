@@ -1,0 +1,20 @@
+TestEvaluationRobustnessSelf
+{
+    theory
+    {
+        class UnlimitedTupleFrom: obj
+        {
+            UnlimitedTupleFrom(from:Nat, x: tpl[from~])
+            {
+                self:=x
+            }
+
+            mandatory tpl Coord(i: Nat)
+            {
+                return self(i)
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error
