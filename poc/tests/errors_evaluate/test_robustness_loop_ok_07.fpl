@@ -1,0 +1,20 @@
+TestEvaluationRobustnessLoop
+{
+    theory
+    {
+        func Sum(arr: Nat[~]) -> Nat
+        {
+            addend, result: Nat
+            result:=Zero()
+
+            loop addend arr
+            (
+                result:=Add(result,addend)
+            )
+            return result
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

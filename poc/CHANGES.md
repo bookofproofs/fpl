@@ -1,4 +1,11 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.2
+* Bugfix:
+  * Fixing infinite recursion in AuxSTSelf evaluation
+  * Adding new unit tests to identify howe robust and complete the current implementation of the evaluate method in all classes is
+* Refactoring
+  * Moving the private attribute _declared_type from derived AuxSTOutline to AuxInterfaceSTType 
+  * Proper calls of the AuxInterfaceSTType constructor in derived classes
 ## 1.10.1
 * Bugfix
   * Initial implementation of the evaluate method in AuxSTStatementCase, AuxSTStatementCaseDefault, and AuxSTStatementCaseSome

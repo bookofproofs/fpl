@@ -6,7 +6,8 @@ from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 class AuxSTStatementPyDel(AuxSTStatement, AuxInterfaceSTType):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.statement_py, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxSTStatement.__init__(self, AuxSTConstants.statement_py, i)
         self.zfrom = i.corrected_position('py')
         self.zto = i.last_positions_by_rule['PythonDelegate'].pos_to_str()
 

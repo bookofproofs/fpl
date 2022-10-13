@@ -1,0 +1,22 @@
+TestEvaluationRobustnessRange
+{
+    theory
+    {
+        class ZeroVectorN: Tuple
+        {
+            ZeroVectorN(n: Nat, field: Field)
+            {
+                from: Nat
+                from := Nat(1)
+                i: Nat
+                range i [1~n]
+                (
+                    self[i]:=field.AdditiveGroup().NeutralElement()
+                )
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

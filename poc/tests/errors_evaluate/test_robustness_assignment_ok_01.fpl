@@ -1,0 +1,23 @@
+TestEvaluationRobustnessAssignment
+{
+    theory
+    {
+        class VectorSpaceOverField : obj
+        {
+
+            mandatory pred ScalarMulNorm()
+            {
+                u: tplVector
+                one: tplFieldElement
+                one := myField.MultiplicativeGroup().NeutralElement()
+                all u
+                (
+                    Equal( myScalarMul(one,u), u)
+                )
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

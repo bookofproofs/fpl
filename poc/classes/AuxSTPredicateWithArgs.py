@@ -1,4 +1,3 @@
-from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValueNamedUndefined, InbuiltValueUndefined, \
@@ -19,7 +18,8 @@ from fplerror import FplIdentifierNotDeclared, FplWrongArguments, FplPredicateRe
 class AuxSTPredicateWithArgs(AuxST, AuxInterfaceSTType):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.predicate_with_arguments, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxST.__init__(self, AuxSTConstants.predicate_with_arguments, i)
         self.reference = None
         self._is_bound = False
 

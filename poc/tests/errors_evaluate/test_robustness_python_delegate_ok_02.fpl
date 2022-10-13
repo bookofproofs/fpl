@@ -1,0 +1,13 @@
+TestEvaluationRobustnessPyDel
+{
+    theory
+    {
+        func Add(n,m: @extDecimal)->Nat
+        {
+            py.add(n,m)
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

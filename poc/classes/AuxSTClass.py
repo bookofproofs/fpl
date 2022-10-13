@@ -2,7 +2,6 @@ from anytree import search
 from poc.classes.AuxBits import AuxBits
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
-from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSelfContainment import AuxReferenceType
 from poc.classes.AuxSTConstants import AuxSTConstants
@@ -24,10 +23,10 @@ from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.fplerror import FplErrorManager
 
 
-class AuxSTClass(AuxSTBuildingBlock, AuxInterfaceSTType):
+class AuxSTClass(AuxSTBuildingBlock):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.block_def, i)
+        AuxSTBuildingBlock.__init__(self, AuxSTConstants.block_def, i)
         self.class_types = []
         self.def_type = AuxSTConstants.classDeclaration
         self.id = ""
@@ -134,17 +133,22 @@ class AuxSTClass(AuxSTBuildingBlock, AuxInterfaceSTType):
         if not self.is_sc_ready():
             sem.sc.add_reference(None, self.get_scope(), AuxReferenceType.semantical)
             self.set_sc_ready()
-        for child in self.children:
-            if isinstance(child, AuxSTVarSpecList):
-                EvaluateParams.evaluate_recursion(sem, child)
-            elif isinstance(child, AuxSTConstructors):
-                EvaluateParams.evaluate_recursion(sem, child)
-            elif isinstance(child, AuxSTProperties):
-                EvaluateParams.evaluate_recursion(sem, child)
-            else:
-                raise NotImplementedError(child)
-        # the value of a class is a wrapper object with its type
-        sem.eval_stack[-1].value = InbuiltValueAtRuntime(self, self)
+        if self.constant_value() is None:
+            register = sem.eval_stack[-1]
+            # the value of a class is a wrapper object with its type
+            register.value = InbuiltValueAtRuntime(self, self.get_declared_type())
+            self.set_constant_value(register)
+            for child in self.children:
+                if isinstance(child, AuxSTVarSpecList):
+                    EvaluateParams.evaluate_recursion(sem, child)
+                elif isinstance(child, AuxSTConstructors):
+                    EvaluateParams.evaluate_recursion(sem, child)
+                elif isinstance(child, AuxSTProperties):
+                    EvaluateParams.evaluate_recursion(sem, child)
+                else:
+                    raise NotImplementedError(child)
+        sem.eval_stack.pop()
+        sem.eval_stack.append(self.constant_value())
 
     def get_declared_type(self):
         """

@@ -10,7 +10,8 @@ from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 class AuxSTStatementIsOp(AuxSTStatement, AuxInterfaceSTType):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.statement_is, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxSTStatement.__init__(self, AuxSTConstants.statement_is, i)
         self.zfrom = i.corrected_position('is')
         self.zto = i.last_positions_by_rule['IsOperator'].pos_to_str()
         # the is operator's type is a predicate

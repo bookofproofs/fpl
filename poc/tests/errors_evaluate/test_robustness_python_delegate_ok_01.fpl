@@ -1,0 +1,27 @@
+TestEvaluationRobustnessPyDel
+{
+    theory
+    {
+        class Nat: obj
+        {
+            Nat(x: @extDecimal)
+            {
+                cases
+                (
+                    case Equal(x,0) :
+                        self := Zero()
+                    case Equal(x,1) :
+                        self := Succ(Zero())
+                    case Equal(x,2) :
+                        self := Succ(Succ(Zero()))
+                    else:
+                        // else case addressed using a python delegate
+                        self := Succ(py.decrement(x))
+                )
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

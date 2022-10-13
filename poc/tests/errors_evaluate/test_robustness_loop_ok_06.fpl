@@ -1,0 +1,38 @@
+TestEvaluationRobustnessLoop
+{
+    theory
+    {
+        class Tuple : obj
+        {
+            myLength: Nat
+
+            Tuple(listOfTpl: +tpl)
+            {
+                elem: tpl
+                i: Nat
+                i:= Zero()
+                loop elem listOfTpl
+                (
+                    i:=Succ(i)
+                    self[i]:=elem
+                )
+                myLength:=i
+            }
+
+            Tuple(from, length:Nat, arr: tpl[from ~ length])
+            {
+                self:=arr
+                myLength:=length
+            }
+
+            mandatory Nat Length()
+            {
+                return myLength
+            }
+
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

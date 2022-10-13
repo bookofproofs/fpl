@@ -97,7 +97,7 @@ class AuxParamsArgsMatcher:
                         # the inbuilt object is never a derived object
                         return False
                     else:
-                        raise NotImplementedError()
+                        raise NotImplementedError(type_arg)
 
         # in all other cases, return False (argument is not matching the parameter)
         return False

@@ -1,0 +1,25 @@
+TestEvaluationRobustnessLoop
+{
+    theory
+    {
+        class CartesianProduct: Set
+        {
+            CartesianProduct(setList: +Set)
+            {
+                setItem: Set
+                i: Nat
+                i:= Zero()
+                loop setItem setList
+                (
+                    i:=Succ(i)
+                    self[i]:=setItem
+                )
+                myFrom := Nat(1)
+                myLength:=i
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error
+

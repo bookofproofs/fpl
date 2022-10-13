@@ -10,7 +10,7 @@ from poc.fplerror import FplErrorManager
 class AuxSTDefinitionFunctionalTerm(AuxSTBuildingBlock):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.block_def, i)
+        AuxSTBuildingBlock.__init__(self, AuxSTConstants.block_def, i)
         self.def_type = AuxSTConstants.functionalTerm
         self.zfrom = i.corrected_position('FunctionalTermHeader')
         self.zto = i.last_positions_by_rule['DefinitionFunctionalTerm'].pos_to_str()

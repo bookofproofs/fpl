@@ -1,0 +1,24 @@
+TestEvaluationRobustnessRange
+{
+    inference
+    {
+        ProceedingResults(p: +pred)
+        {
+            proceedingResult: pred
+            premise:
+                range proceedingResult p
+                (
+                    assert proceedingResult
+                )
+            conclusion:
+                and (p)
+        }
+    }
+
+    theory
+    {
+    }
+}
+##############################
+should not throw any not handled error
+

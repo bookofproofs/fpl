@@ -1,0 +1,17 @@
+TestEvaluationRobustnessIndex
+{
+    theory
+    {
+        class AlgebraicStructure: obj
+        {
+
+            mandatory func NthOp(n: index) -> Composition
+            {
+                return myOps$n
+            }
+        }
+    }
+}
+##############################
+should not throw any not handled error
+
