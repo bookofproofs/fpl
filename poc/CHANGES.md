@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.4
+* Refactoring:
+  * Trying to unify some features of AuxSTPredicateWithArgs, AuxSTVariable, AuxSTIdentifier and AuxSTSelf by deriving them from a new class AuxInterfaceSTHasReference 
 ## 1.10.3
 * Refactoring:
   * Adding the attribute 'reference' to the AuxSTVariable node in the symbol table

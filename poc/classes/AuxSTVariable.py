@@ -1,5 +1,6 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
+from poc.classes.AuxInterfaceSTHasReference import AuxInterfaceSTHasReference
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
@@ -8,15 +9,15 @@ from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTVariable(AuxST, AuxInterfaceSTType):
+class AuxSTVariable(AuxST, AuxInterfaceSTType, AuxInterfaceSTHasReference):
 
     def __init__(self, i):
         AuxInterfaceSTType.__init__(self)
         AuxST.__init__(self, AuxSTConstants.var, i)
+        AuxInterfaceSTHasReference.__init__(self)
         self.id = ""
         self.zto = i.last_positions_by_rule['Variable'].pos_to_str()
         self.zfrom = i.corrected_position('IdStartsWithSmallCase')
-        self.reference = None
         self._is_bound = False
         self._is_initialized = False
 

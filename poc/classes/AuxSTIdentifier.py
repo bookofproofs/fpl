@@ -1,16 +1,17 @@
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
+from poc.classes.AuxInterfaceSTHasReference import AuxInterfaceSTHasReference
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTIdentifier(AuxST, AuxInterfaceSTType):
+class AuxSTIdentifier(AuxST, AuxInterfaceSTType, AuxInterfaceSTHasReference):
 
     def __init__(self, i):
         AuxInterfaceSTType.__init__(self)
         AuxST.__init__(self, AuxSTConstants.ids, i)
-        self.reference = None
+        AuxInterfaceSTHasReference.__init__(self)
         self.zto = ""
         self.zfrom = ""
         self.id = ""
