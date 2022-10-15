@@ -42,6 +42,7 @@ class AuxSTVariable(AuxST, AuxInterfaceSTType, AuxInterfaceSTHasReference):
         self._is_bound = True
 
     def evaluate(self, sem):
+        self.initialize_has_reference_calculations(sem)
         if len(self.children) > 0:
             for child in self.children:
                 if isinstance(child, AuxSTCoords):

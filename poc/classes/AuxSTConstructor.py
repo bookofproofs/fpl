@@ -5,7 +5,7 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxSTIdentifier import AuxSTIdentifier
 from anytree import search
 from poc.fplerror import FplErrorManager
 
@@ -58,8 +58,8 @@ class AuxSTConstructor(AuxSTBuildingBlock):
                 EvaluateParams.evaluate_recursion(sem, child)
             elif isinstance(child, AuxSTVarSpecList):
                 EvaluateParams.evaluate_recursion(sem, child)
-            elif isinstance(child, AuxSTPredicateWithArgs):
-                # The semantics of any AuxSTPredicateWithArgs call inside the constructor of a class
+            elif isinstance(child, AuxSTIdentifier):
+                # The semantics of any AuxSTIdentifier call inside the constructor of a class
                 # is to call the constructor of its base class. Therefore, we expect the type of the base class
                 ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=self.get_base_class_type(sem))
                 new_value = ret.value

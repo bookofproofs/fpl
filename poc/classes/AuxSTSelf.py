@@ -65,6 +65,7 @@ class AuxSTSelf(AuxST, AuxInterfaceSTType, AuxInterfaceSTHasReference):
         return self._qualified_id
 
     def evaluate(self, sem):
+        self.initialize_has_reference_calculations(sem)
         # initialize the reference of self, depending on the number of '@'
         propagated_expected_type = sem.eval_stack[-1].expected_type
         if self.reference is None:
