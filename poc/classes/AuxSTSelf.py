@@ -1,4 +1,5 @@
 from poc.classes.AuxEvaluation import EvaluateParams
+from poc.classes.AuxInterfaceSTHasReference import AuxInterfaceSTHasReference
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
@@ -11,12 +12,12 @@ from poc.classes.AuxSTRange import AuxSTRange
 from poc.classes.AuxSTQualified import AuxSTQualified
 
 
-class AuxSTSelf(AuxST, AuxInterfaceSTType):
+class AuxSTSelf(AuxST, AuxInterfaceSTType, AuxInterfaceSTHasReference):
 
     def __init__(self, i):
         AuxInterfaceSTType.__init__(self)
         AuxST.__init__(self, AuxSTConstants.selfInstance, i)
-        self.reference = None
+        AuxInterfaceSTHasReference.__init__(self)
         self.number_ats = 0
         self.id = AuxSTConstants.selfInstance
 
@@ -53,7 +54,7 @@ class AuxSTSelf(AuxST, AuxInterfaceSTType):
             self.reference = test_node
             self._declared_type = test_node.get_declared_type()
             if self._declared_type is None:
-                declared_type = InbuiltUndefined(self)
+                self._declared_type = InbuiltUndefined(self)
         # initializes the qualified id of self depending on the determined self._declared_type
         self.get_qualified_id()
 
