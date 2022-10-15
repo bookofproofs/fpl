@@ -7,5 +7,6 @@ class AuxBits:
     templateBit = 8
     inbuiltBit = 16
     extensionBit = 32
-    indexBit = 64
+    variadicBit = 64
     hasCoordBit = 128
+    integer = 256

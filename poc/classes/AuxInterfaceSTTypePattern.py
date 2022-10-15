@@ -27,8 +27,8 @@ class AuxInterfaceSTTypePattern:
     def is_extension(self):
         return (self.type_pattern & AuxBits.extensionBit) > 0
 
-    def is_index(self):
-        return (self.type_pattern & AuxBits.indexBit) > 0
+    def is_variadic(self):
+        return (self.type_pattern & AuxBits.variadicBit) > 0
 
     def has_coord(self):
         return (self.type_pattern & AuxBits.hasCoordBit) > 0

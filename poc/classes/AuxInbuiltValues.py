@@ -1,6 +1,6 @@
 import z3
 from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, InbuiltInt
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTType import AuxSTType
 
@@ -93,3 +93,12 @@ class InbuiltValueAtRuntime(AuxInbuiltValue):
         super().__init__(node)
         self._value = type_node.id
         self.set_declared_type(type_node)
+
+
+class InbuiltValueInteger(AuxInbuiltValue):
+    def __init__(self, node):
+        super().__init__(node)
+        self.set_declared_type(InbuiltInt(node))
+
+    def set_value(self, value):
+        self._value = int(value)

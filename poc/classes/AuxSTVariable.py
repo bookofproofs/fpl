@@ -11,10 +11,12 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 class AuxSTVariable(AuxST, AuxInterfaceSTType):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.var, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxST.__init__(self, AuxSTConstants.var, i)
         self.id = ""
         self.zto = i.last_positions_by_rule['Variable'].pos_to_str()
         self.zfrom = i.corrected_position('IdStartsWithSmallCase')
+        self.reference = None
         self._is_bound = False
         self._is_initialized = False
 
@@ -52,7 +54,7 @@ class AuxSTVariable(AuxST, AuxInterfaceSTType):
                     # set the value of self's evaluation to the value of the qualified identifier
                     sem.eval_stack[-1].value = check.value
                 else:
-                    raise NotImplementedError()
+                    raise NotImplementedError(type(child))
         else:
             instance = sem.eval_stack[-1].instance
             register = sem.eval_stack[-1]

@@ -15,7 +15,7 @@ class ContextIndexHeader(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self.indexType = AuxSTType(i)
         self.indexType.type_mod = None
-        self.indexType.type_pattern = AuxBits.indexBit
+        self.indexType.type_pattern = AuxBits.variadicBit
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["IndexHeader"], self.rule_aggregator)
 

@@ -25,14 +25,10 @@ class ContextPredicateWithArguments(AuxInterpretation):
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Identifier":
-            if type(parsing_info.predicate) is AuxSTSelf:
+            if isinstance(parsing_info.predicate, (AuxSTSelf, AuxSTVariable)):
                 zto = self.predicate.zto
                 self.predicate = parsing_info.predicate  # noqa
                 self.predicate.zto = zto
-            elif type(parsing_info.predicate) is AuxSTVariable:
-                self.predicate.outline = AuxSTConstants.var
-                self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
-                self.predicate.id = parsing_info.predicate.id  # noqa
             else:
                 self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
                 self.predicate.id = parsing_info.predicate.id  # noqa

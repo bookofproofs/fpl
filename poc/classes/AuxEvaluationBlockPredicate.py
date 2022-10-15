@@ -1,5 +1,6 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
+from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
@@ -37,8 +38,15 @@ class AuxEvaluationBlockPredicate:
                         node.set_constant_value(sem.eval_stack[-1])
                 elif isinstance(child, AuxSTProperties):
                     EvaluateParams.evaluate_recursion(sem, child)
+                elif isinstance(child, AuxInterfaceSTType):
+                    ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
+                    if ret.evaluation_error:
+                        new_value.set_undetermined()
+                    else:
+                        new_value.set_to(ret.value.get_value())
                 else:
-                    raise NotImplementedError(str(type(child)))
+                    EvaluateParams.evaluate_recursion(sem, child)
+                    new_value.set_undetermined()
         else:
             # replace the stack by the immutable value
             sem.eval_stack.pop()
