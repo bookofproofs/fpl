@@ -15,29 +15,51 @@ class AuxInterfaceSTHasReference:
     def __init__(self):
         self.reference = None
         self._sem = None
+        self._arity = -1
+        self._has_args = None
+        self._arg_type_list = list()
 
-    def set_sem(self, sem):
+    def initialize_has_reference_calculations(self, sem):
         self._sem = sem
+        if self._has_args is None:
+            args_found = False
+            for child in self.children:
+                if child.outline == AuxSTConstants.arg_list:
+                    self._has_args = True
+                    self._arity = len(child.children)
+                    args_found = True
+                    self._calculate_arguments()
+                    break
+            if not args_found:
+                self._has_args = False
 
-    def calculate_arguments(self):
+    def has_arguments(self):
+        return self._has_args
+
+    def get_arity(self):
+        return self._arity
+
+    def get_arg_list(self):
+        return self._arg_type_list
+
+    def _calculate_arguments(self):
         # create a list of argument types to be matched with any of the available overrides
         args = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.arg_list)
-        arg_type_list = list()
+        self._arg_type_list = list()
         for argument_node in args.children:
             if isinstance(argument_node, AuxInterfaceSTType):
-                if argument_node.outline == AuxSTConstants.predicate_with_arguments:
+                if argument_node.outline == AuxSTConstants.ids:
                     # recursive call of for a new argument being itself a predicate with arguments
                     argument_node.evaluate(self._sem)
                 elif argument_node.outline == AuxSTConstants.var:
                     if not argument_node.is_bound_or_initialized():
                         self._sem.error_mgr.add_error(FplVariableNotInitialized(argument_node))
-                arg_type_list.append(argument_node.get_declared_type())
+                self._arg_type_list.append(argument_node.get_declared_type())
             else:
                 raise NotImplementedError(str(type(argument_node)))
-        return arg_type_list
 
     def establish_reference(self, arg_list, propagated_expected_type):
-        # if the reference of this AuxSTPredicateWithArgs was never determined,
+        # if the reference of this AuxSTIdentifier was never determined,
         # we first try to determine it.
         qualified_identifier = self._get_qualified_id_helper()
         if qualified_identifier[0].isupper() or "." in qualified_identifier:
@@ -151,7 +173,3 @@ class AuxInterfaceSTHasReference:
             self.reference = InbuiltValueUndefined(self)
 
         return ret
-
-
-
-

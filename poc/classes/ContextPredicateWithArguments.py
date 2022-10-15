@@ -5,11 +5,10 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxSTIdentifier import AuxSTIdentifier
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTVariable import AuxSTVariable
-from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTArgs import AuxSTArgs
 
 
@@ -17,7 +16,7 @@ class ContextPredicateWithArguments(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicateWithArgs(i)
+        self.predicate = AuxSTIdentifier(i)
         self._args = AuxSTArgs(i)
         self._i = i
         self.aggregate_previous_rules(i.parse_list,

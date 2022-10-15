@@ -1,4 +1,11 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.5
+* Refactoring:
+  * Continuing to unify some features of AuxSTIdentifier, AuxSTVariable, AuxSTIdentifier and AuxSTSelf
+    * Replacing AuxSTPredicateWithArgs by AuxSTIdentifier in the whole symbol table 
+    * Deleting AuxSTPredicateWithArgs.py
+    * Implementing the calculation of the arity of all classes derived from AuxInterfaceSTHasReference, including AuxSTIdentifier
+    * Adjusting the evaluate method of AuxSTIdentifier to handle the case with arity >=1, arity=0 (no arguments) or arity=-1 (even no empty parentheses for arguments) 
 ## 1.10.4
 * Refactoring:
   * Trying to unify some features of AuxSTPredicateWithArgs, AuxSTVariable, AuxSTIdentifier and AuxSTSelf by deriving them from a new class AuxInterfaceSTHasReference 

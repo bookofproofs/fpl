@@ -12,7 +12,7 @@ from poc.classes.AuxSTConstructors import AuxSTConstructors
 from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxSTIdentifier import AuxSTIdentifier
 from poc.classes.AuxSTProperties import AuxSTProperties
 from poc.classes.AuxSTSelf import AuxSTSelf
 from poc.classes.AuxSTStatementAssign import AuxSTStatementAssign
@@ -95,11 +95,11 @@ class AuxSTClass(AuxSTBuildingBlock):
                     if isinstance(parent_property, AuxSTPredicateInstance):
                         old_predicate = None
                         for child in new_instance.children:
-                            if isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs)):
+                            if isinstance(child, (AuxSTPredicate, AuxSTIdentifier)):
                                 old_predicate = child
                                 break
                         AuxSymbolTable.remove_node_recursively(old_predicate)
-                        new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
+                        new_predicate = AuxSTIdentifier(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id
                         new_predicate.parent = new_instance
                         new_predicate.zfrom = parent_property.zfrom
@@ -108,7 +108,7 @@ class AuxSTClass(AuxSTBuildingBlock):
                     elif isinstance(parent_property, AuxSTClassInstance):
                         stmt = AuxSTStatementAssign(parent_property.isa()).parent = new_spec_list
                         slf = AuxSTSelf(parent_property.isa()).parent = stmt
-                        new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
+                        new_predicate = AuxSTIdentifier(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id
                         new_predicate.parent = slf
                         new_predicate.zfrom = parent_property.zfrom
@@ -117,7 +117,7 @@ class AuxSTClass(AuxSTBuildingBlock):
                     else:
                         stmt = AuxSTStatementReturn(parent_property.isa())
                         stmt.parent = new_spec_list
-                        new_predicate = AuxSTPredicateWithArgs(parent_property.isa())
+                        new_predicate = AuxSTIdentifier(parent_property.isa())
                         new_predicate.id = parent_class.id + "." + parent_property.id
                         new_predicate.parent = stmt
                         new_predicate.zfrom = parent_property.zfrom

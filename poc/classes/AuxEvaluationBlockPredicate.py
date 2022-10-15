@@ -3,7 +3,7 @@ from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxSTPredicate import AuxSTPredicate
-from poc.classes.AuxSTPredicateWithArgs import AuxSTPredicateWithArgs
+from poc.classes.AuxSTIdentifier import AuxSTIdentifier
 from poc.classes.AuxSTProperties import AuxSTProperties
 from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTVariable import AuxSTVariable
@@ -28,7 +28,7 @@ class AuxEvaluationBlockPredicate:
                     EvaluateParams.evaluate_recursion(sem, child)
                 elif isinstance(child, AuxSTVarSpecList):
                     EvaluateParams.evaluate_recursion(sem, child)
-                elif isinstance(child, (AuxSTPredicate, AuxSTPredicateWithArgs, AuxSTVariable)):
+                elif isinstance(child, (AuxSTPredicate, AuxSTIdentifier, AuxSTVariable)):
                     ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
                     if ret.evaluation_error:
                         new_value.set_undetermined()
