@@ -40,11 +40,19 @@ class InbuiltFunctionalTerm(AuxInbuiltType):
         self.type_pattern |= AuxBits.functionalTermBit
 
 
-class InbuiltIndex(AuxInbuiltType):
+class InbuiltVariableVariadic(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
-        self.id = AuxSTConstants.index_value
-        self.type_pattern |= AuxBits.indexBit
+        self.id = AuxSTConstants.variadic_var
+        self.type_pattern |= AuxBits.variadicBit
+        self.type_pattern |= AuxBits.inbuiltBit
+
+
+class InbuiltInt(AuxInbuiltType):
+    def __init__(self, node):
+        super().__init__(node)
+        self.id = AuxSTConstants.int
+        self.type_pattern |= AuxBits.integer
         self.type_pattern |= AuxBits.inbuiltBit
 
 

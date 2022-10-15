@@ -21,7 +21,7 @@ class AuxBitsTests(unittest.TestCase):
         [AuxBits.extensionBit],
         [AuxBits.predicateBit],
         [AuxBits.classBit],
-        [AuxBits.indexBit],
+        [AuxBits.variadicBit],
         [AuxBits.templateBit],
         [AuxBits.functionalTermBit],
     ])
@@ -34,7 +34,7 @@ class AuxBitsTests(unittest.TestCase):
             self.assertFalse(t.is_extension())
             self.assertFalse(t.is_predicate())
             self.assertFalse(t.is_class())
-            self.assertFalse(t.is_index())
+            self.assertFalse(t.is_variadic())
             self.assertFalse(t.is_generic())
             self.assertFalse(t.is_functional_term())
         elif pattern_int == AuxBits.inbuiltBit:
@@ -43,7 +43,7 @@ class AuxBitsTests(unittest.TestCase):
             self.assertFalse(t.is_extension())
             self.assertFalse(t.is_predicate())
             self.assertFalse(t.is_class())
-            self.assertFalse(t.is_index())
+            self.assertFalse(t.is_variadic())
             self.assertFalse(t.is_generic())
             self.assertFalse(t.is_functional_term())
         elif pattern_int == AuxBits.extensionBit:
@@ -52,7 +52,7 @@ class AuxBitsTests(unittest.TestCase):
             self.assertTrue(t.is_extension())
             self.assertFalse(t.is_predicate())
             self.assertFalse(t.is_class())
-            self.assertFalse(t.is_index())
+            self.assertFalse(t.is_variadic())
             self.assertFalse(t.is_generic())
             self.assertFalse(t.is_functional_term())
         elif pattern_int == AuxBits.predicateBit:
@@ -61,7 +61,7 @@ class AuxBitsTests(unittest.TestCase):
             self.assertFalse(t.is_extension())
             self.assertTrue(t.is_predicate())
             self.assertFalse(t.is_class())
-            self.assertFalse(t.is_index())
+            self.assertFalse(t.is_variadic())
             self.assertFalse(t.is_generic())
             self.assertFalse(t.is_functional_term())
         elif pattern_int == AuxBits.classBit:
@@ -70,16 +70,16 @@ class AuxBitsTests(unittest.TestCase):
             self.assertFalse(t.is_extension())
             self.assertFalse(t.is_predicate())
             self.assertTrue(t.is_class())
-            self.assertFalse(t.is_index())
+            self.assertFalse(t.is_variadic())
             self.assertFalse(t.is_generic())
             self.assertFalse(t.is_functional_term())
-        elif pattern_int == AuxBits.indexBit:
+        elif pattern_int == AuxBits.variadicBit:
             self.assertFalse(t.is_object())
             self.assertFalse(t.is_inbuilt())
             self.assertFalse(t.is_extension())
             self.assertFalse(t.is_predicate())
             self.assertFalse(t.is_class())
-            self.assertTrue(t.is_index())
+            self.assertTrue(t.is_variadic())
             self.assertFalse(t.is_generic())
             self.assertFalse(t.is_functional_term())
         elif pattern_int == AuxBits.templateBit:
@@ -88,7 +88,7 @@ class AuxBitsTests(unittest.TestCase):
             self.assertFalse(t.is_extension())
             self.assertFalse(t.is_predicate())
             self.assertFalse(t.is_class())
-            self.assertFalse(t.is_index())
+            self.assertFalse(t.is_variadic())
             self.assertTrue(t.is_generic())
             self.assertFalse(t.is_functional_term())
         elif pattern_int == AuxBits.functionalTermBit:
@@ -97,7 +97,7 @@ class AuxBitsTests(unittest.TestCase):
             self.assertFalse(t.is_extension())
             self.assertFalse(t.is_predicate())
             self.assertFalse(t.is_class())
-            self.assertFalse(t.is_index())
+            self.assertFalse(t.is_variadic())
             self.assertFalse(t.is_generic())
             self.assertTrue(t.is_functional_term())
 

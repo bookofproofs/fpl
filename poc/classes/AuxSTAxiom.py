@@ -7,7 +7,6 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTSignature import AuxSTSignature
-from poc.classes.AuxSTStatementIsOp import AuxSTStatementIsOp
 from fplerror import FplAxiomNotSatisfiable
 
 
@@ -42,7 +41,7 @@ class AuxSTAxiom(AuxSTBuildingBlock, AuxInterfaceSTType):
                     else:
                         # since the axiom is satisfiable, we 'assume' it to be true for the theory to come
                         new_value.set_true()
-                elif isinstance(child, AuxSTStatementIsOp):
+                elif isinstance(child, AuxInterfaceSTType):
                     # handle the 'is' statement
                     ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
                     if ret.evaluation_error:

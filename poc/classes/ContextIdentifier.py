@@ -7,15 +7,14 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSTIdentifier import AuxSTIdentifier
 
 
 class ContextIdentifier(AuxInterpretation):
 
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
-        self.predicate = AuxSTPredicate(AuxSTConstants.ids, i)
-        self.predicate.set_id("")
+        self.predicate = AuxSTIdentifier(i)
         self._i = i
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Identifier"] +
@@ -24,7 +23,7 @@ class ContextIdentifier(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "PredicateIdentifier":
             # wrap the identifier for the symbol table
-            self.predicate.set_id(parsing_info.id)
+            self.predicate.id = parsing_info.id
             self.predicate.zfrom = str(parsing_info.zfrom)
             self.predicate.zto = str(parsing_info.zto)
             self.stop_aggregation = True

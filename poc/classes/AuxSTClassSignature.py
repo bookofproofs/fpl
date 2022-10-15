@@ -18,7 +18,7 @@ class AuxSTClassSignature(AuxST):
         if class_type.is_functional_term():
             self.get_error_mgr().add_error(
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "a functional term"))
-        elif class_type.is_index():
+        elif class_type.is_variadic():
             self.get_error_mgr().add_error(
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "an index"))
         elif class_type.is_predicate():

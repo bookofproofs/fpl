@@ -15,7 +15,7 @@ from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
 from poc.fplerror import FplUnusedBoundVariable
 from poc.classes.AuxBits import AuxBits
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltIndex, InbuiltPredicate, \
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, \
     InbuiltFunctionalTerm, InbuiltExtension, InbuiltGeneric
 from poc.classes.AuxSTAxiom import AuxSTAxiom
 from poc.classes.AuxSTClass import AuxSTClass
@@ -318,7 +318,7 @@ class SemCheckerIdentifiers:
                         self.analyzer.error_mgr.add_error(
                             FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
                         )
-                elif type_node.is_index():
+                elif type_node.is_variadic():
                     pass
                 elif type_node.is_predicate():
                     pass

@@ -20,18 +20,12 @@ class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
         self._bound_vars_marked = False
         self.set_declared_type(InbuiltPredicate(self))
 
-    def set_id(self, identifier: str):
-        self.id = identifier  # noqa
-
     def assert_predicate(self):
         self._is_asserted = True
 
     def revoke_predicate(self):
         self._is_asserted = False
         self._is_revoked = True
-
-    def register_reference(self, reference: AnyNode):
-        self.reference = reference  # noqa
 
     def evaluate(self, sem):
         new_value = InbuiltValuePredicate(self)
@@ -155,12 +149,6 @@ class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
                     new_value.set_undetermined()
                 else:
                     new_value.set_to(p.value.get_value())
-            elif self.outline == AuxSTConstants.undefined:
-                new_value.set_expression(z3.Bool(self.get_long_id()))
-                new_value.set_undetermined()
-            elif self.outline == AuxSTConstants.ids:
-                new_value.set_expression(z3.Bool(self.get_long_id()))
-                new_value.set_undetermined()
             else:
                 raise NotImplementedError(self.outline)
 

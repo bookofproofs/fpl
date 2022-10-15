@@ -6,8 +6,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSTVariableVariadic import AuxSTVariableVariadic
 
 
 class ContextKeysOfVariadicVariable(AuxInterpretation):
@@ -15,7 +14,7 @@ class ContextKeysOfVariadicVariable(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self._i = i
-        self.predicate = AuxSTPredicate(AuxSTConstants.variadic_var, i)
+        self.predicate = AuxSTVariableVariadic(i)
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["KeysOfVariadicVariable"] +
                                       ["VariableList", "Identifier"], self.rule_aggregator)
@@ -23,17 +22,17 @@ class ContextKeysOfVariadicVariable(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "Variable":
             self.predicate.register_child(parsing_info.var)  # noqa
-            self.predicate.set_id(parsing_info.var.id + "$")
+            self.predicate.id = parsing_info.var.id + "$"
             self.predicate.zfrom = parsing_info.var.zfrom  # noqa
             self.predicate.zto = self._i.corrected_zpos_by(parsing_info.var.zto, -1)  # noqa
         elif rule == "VariableList":
             self.predicate.register_child(parsing_info.var_list[0].var)  # noqa
-            self.predicate.set_id(parsing_info.var_list[0].var.id + "$")
+            self.predicate.id = parsing_info.var_list[0].var.id + "$"
             self.predicate.zfrom = parsing_info.var_list[0].var.zfrom  # noqa
             self.predicate.zto = self._i.corrected_zpos_by(parsing_info.var_list[0].var.zto, -1)  # noqa
         elif rule == "Identifier":
             self.predicate.register_child(parsing_info.predicate)  # noqa
-            self.predicate.set_id(parsing_info.predicate.id + "$")
+            self.predicate.id = parsing_info.predicate.id + "$"
             self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
             self.predicate.zto = self._i.corrected_zpos_by(parsing_info.predicate.zto, -1)  # noqa
 
