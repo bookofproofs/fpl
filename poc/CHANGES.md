@@ -1,7 +1,18 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.6
+* Refactoring
+  * Continuing to unify some features of AuxSTIdentifier, AuxSTVariable, and AuxSTSelf
+  * Replacing deriving AuxSTIdentifier, AuxSTVariable, and AuxSTSelf from AuxInterfaceSTHasReference by a common base class AuxSTNodeWithReference. 
+  * Deprecating the arg_type_list and check_args as parameters of the EvaluateParams.evaluate_recursion method and replacing them by storing the input arguments into the instance of the called FPL building block 
+  * Deriving all three classes from a new class AuxSTNodeWithReference implementing a unified approach to the evaluate method.
+  * Centralizing type compatibility checks at one place via the unified AuxSTType 'accepts' method 
+  * Renamed FplPredicateRecursion error into FplIllegalRecursion since it is also applicable to non-predicates
+* Debug:
+  * AuxSTConstructor was evaluating to InbuiltValueUndefined  
+  * AuxSTConstructor calling the constructor of a base class was evaluating to the type of the base class instead of its own class
 ## 1.10.5
 * Refactoring:
-  * Continuing to unify some features of AuxSTIdentifier, AuxSTVariable, AuxSTIdentifier and AuxSTSelf
+  * Continuing to unify some features of AuxSTIdentifier, AuxSTVariable, and AuxSTSelf
     * Replacing AuxSTPredicateWithArgs by AuxSTIdentifier in the whole symbol table 
     * Deleting AuxSTPredicateWithArgs.py
     * Implementing the calculation of the arity of all classes derived from AuxInterfaceSTHasReference, including AuxSTIdentifier

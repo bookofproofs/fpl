@@ -1,4 +1,4 @@
-TestFplPredicateRecursionError
+TestFplIllegalRecursionError
 {
     theory
     {
@@ -23,4 +23,4 @@ TestFplPredicateRecursionError
 }
 
 ##############################
-FplPredicateRecursion:10:16: Cannot evaluate recursive predicates in 'Equal[2:tpl]'
+FplIllegalRecursion:10:16: Cannot apply recursion in 'Equal[2:tpl]'

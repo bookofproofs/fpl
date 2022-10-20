@@ -112,7 +112,5 @@ class SemanticAnalyser:
             # start recursive evaluation for each reference
             EvaluateParams.evaluate_recursion(self, child.reference,
                                               expected_type=expected_type,
-                                              arg_type_list=list(),
-                                              check_args=False,
                                               building_block=child.reference,
                                               instance_guid=child.reference.get_main_instance().id)

@@ -1,21 +1,12 @@
-from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
-from poc.classes.AuxInterfaceSTHasReference import AuxInterfaceSTHasReference
-from poc.classes.AuxSTCoords import AuxSTCoords
-from poc.classes.AuxSTRange import AuxSTRange
-from poc.classes.AuxSTQualified import AuxSTQualified
-from poc.classes.AuxST import AuxST
-from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
+from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxSTNodeWithReference import AuxSTNodeWithReference
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTVariable(AuxST, AuxInterfaceSTType, AuxInterfaceSTHasReference):
+class AuxSTVariable(AuxSTNodeWithReference):
 
     def __init__(self, i):
-        AuxInterfaceSTType.__init__(self)
-        AuxST.__init__(self, AuxSTConstants.var, i)
-        AuxInterfaceSTHasReference.__init__(self)
-        self.id = ""
+        AuxSTNodeWithReference.__init__(self, AuxSTConstants.var, i)
         self.zto = i.last_positions_by_rule['Variable'].pos_to_str()
         self.zfrom = i.corrected_position('IdStartsWithSmallCase')
         self._is_bound = False
@@ -41,37 +32,19 @@ class AuxSTVariable(AuxST, AuxInterfaceSTType, AuxInterfaceSTHasReference):
     def set_is_bound(self):
         self._is_bound = True
 
-    def evaluate(self, sem):
-        self.initialize_has_reference_calculations(sem)
-        if len(self.children) > 0:
-            for child in self.children:
-                if isinstance(child, AuxSTCoords):
-                    raise NotImplementedError()
-                elif isinstance(child, AuxSTRange):
-                    raise NotImplementedError()
-                elif isinstance(child, AuxSTQualified):
-                    # due to the structure of symbol table, there can be only one child of self that is AuxSTQualified
-                    propagated_expected_type = sem.eval_stack[-1].expected_type
-                    check = EvaluateParams.evaluate_recursion(sem, child, expected_type=propagated_expected_type)
-                    # set the value of self's evaluation to the value of the qualified identifier
-                    sem.eval_stack[-1].value = check.value
-                else:
-                    raise NotImplementedError(type(child))
-        else:
-            instance = sem.eval_stack[-1].instance
-            register = sem.eval_stack[-1]
-            register_id = self.get_long_id()
-            if not instance.has_register(register_id):
-                # if the instance of the building block does not yet have a register for this variable
-                register.value = InbuiltValueAtRuntime(self, self.get_declared_type())
-                instance.set_register(register_id, register)
-            # return the value of the variable to be the value of the register
-            sem.eval_stack.pop()
-            sem.eval_stack.append(instance.get_register(register_id))
-
     def get_long_id(self):
         if self._long_id is None:
             self._long_id = self.id
             for arg in self.children:
                 self._long_id += arg.get_long_id()
         return self._long_id
+
+    def get_declared_type(self):
+        if self._declared_type is None:
+            minor_scope = self.get_minor_scope()
+            declared_vars = minor_scope.get_declared_vars()
+            if self.id in declared_vars:
+                self._declared_type = declared_vars[self.id].children[0]
+            else:
+                self._declared_type = InbuiltUndefined(self)
+        return self._declared_type

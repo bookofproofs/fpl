@@ -349,13 +349,16 @@ class FplTypeNotAllowed(FplInterpreterMessage):
 
 
 class FplWrongArguments(FplInterpreterMessage):
-    def __init__(self, arguments: list(), expected_arguments: list, node):
+    def __init__(self, arguments: list, expected_arguments: list, node):
         s = node.zfrom.split(".")
         one_of = ""
         if len(expected_arguments) > 1:
-            one_of = " one of"
-        msg = "Wrong arguments {0}, expected{1} {2}".format(str(arguments), one_of, " or ".join(expected_arguments))
-
+            msg = "Wrong arguments {0}, expected one of {2}".format(str(arguments), one_of,
+                                                                    " or ".join(expected_arguments))
+        elif len(expected_arguments) == 1:
+            msg = "Wrong arguments {0}, expected {1}".format(str(arguments), str(expected_arguments[0]))
+        else:
+            raise NotImplementedError()
         super().__init__(msg.replace("'", "").replace("[", "(").replace("]", ")"),
                          s[0], s[1], node.path[1].file_name
                          )
@@ -399,12 +402,12 @@ class FplTypeMismatch(FplInterpreterMessage):
         self.diagnose_id = "SE0250"
 
 
-class FplPredicateRecursion(FplInterpreterMessage):
-    def __init__(self, node, node_recursion_occurred):
-        s = node_recursion_occurred.zfrom.split(".")
-        super().__init__("Cannot evaluate recursive predicates in '{0}'".format(node.id),
+class FplIllegalRecursion(FplInterpreterMessage):
+    def __init__(self, node):
+        s = node.zfrom.split(".")
+        super().__init__("Cannot apply recursion in '{0}'".format(node.id),
                          s[0], s[1],
-                         node_recursion_occurred.path[1].file_name)
+                         node.path[1].file_name)
         self.diagnose_id = "SE0260"
 
 

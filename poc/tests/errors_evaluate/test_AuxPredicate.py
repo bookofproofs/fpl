@@ -66,7 +66,7 @@ class AuxPredicateTests(unittest.TestCase):
         cls.sem = cls.analyzer
         cls.i.last_positions_by_rule["PredicateHeader"] = cls.aux_info
         cls.i.last_positions_by_rule["DefinitionPredicate"] = cls.aux_info
-        register = AuxEvaluationRegister(node, None, False)
+        register = AuxEvaluationRegister(node, None)
         register.building_block = AuxSTDefinitionPredicate(cls.i)
         register.instance_guid = register.building_block.get_main_instance().id
         register.instance = register.building_block.get_instance(register.instance_guid);

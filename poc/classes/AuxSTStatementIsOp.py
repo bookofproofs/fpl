@@ -26,11 +26,8 @@ class AuxSTStatementIsOp(AuxSTStatement, AuxInterfaceSTType):
         register.value = new_value
         something = self.children[0]
         is_what = self.children[1]
-        ret_something = EvaluateParams.evaluate_recursion(sem, something, expected_type=something.get_declared_type())
-        new_value.set_to(AuxSTStatementIsOp.try_establish_is_operator(ret_something.value, is_what))
+        EvaluateParams.evaluate_recursion(sem, something)
+        EvaluateParams.evaluate_recursion(sem, is_what)
+        new_value.set_to(is_what.accepts(something.get_declared_type()))
         new_value.set_expression(z3.Bool(self.get_long_id()))
 
-    @staticmethod
-    def try_establish_is_operator(something, is_what):
-        type_of_something = something.get_declared_type()
-        return (type_of_something.type_pattern & is_what.type_pattern) > 0

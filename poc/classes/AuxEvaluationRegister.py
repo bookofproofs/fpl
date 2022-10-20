@@ -7,14 +7,9 @@ semantically evaluated.
 
 
 class AuxEvaluationRegister:
-    def __init__(self, node, expected_type, check_args):
+    def __init__(self, node, expected_type):
         # Type in which this recursive call is being used (and should return a compatible type)
         self.expected_type = expected_type
-        # a list of types to be used to call the matched override (needed only for AuxSTIdentifier)
-        self.arg_type_list = list()
-        # check args is a flag indicating if arg_type_list is a representation
-        # of arguments of some AuxSTIdentifier (even if empty)
-        self.check_args = check_args
         # a possible argument error when assigning the arg_type_list to the parameters of override's signature
         self.argument_error = None
         # the returned value after recursion
@@ -31,13 +26,3 @@ class AuxEvaluationRegister:
         self.instance_guid = None
         self.instance = None
         self.is_dirty = True
-
-    def type_mismatch(self):
-        """
-        True, if the type of the returned value is different from the type of the expected_value
-        :return: Boolean value
-        """
-        type_of_value = self.value.get_declared_type()
-        if self.expected_type.is_inbuilt() and type_of_value.is_inbuilt():
-            return not (self.expected_type.is_predicate() and type_of_value.is_predicate())
-        return self.expected_type.id != type_of_value.id
