@@ -73,6 +73,7 @@ class AuxSTClass(AuxSTBuildingBlock):
         :return:
         """
         self._hip = True
+        self.get_declared_type().register_base_class(parent_class.get_declared_type().id)
         parents_properties = AuxSymbolTable.get_child_by_outline(parent_class, AuxSTConstants.properties)
         my_properties = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.properties)
         for parent_property in parents_properties.children:

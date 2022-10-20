@@ -17,11 +17,16 @@ class AuxInbuiltValue(AuxInterfaceSTType):
                 self._copied_path = node.path
         self._value = None
         self._expression = None
+        self._satisfiable = None
+        self._satisfiability_check_done = False
+        self._model = None
 
     def get_value(self):
         return self._value
 
     def get_expression(self):
+        if self._expression is None:
+            self._expression = z3.Bool(self.get_long_id())
         return self._expression
 
     def set_expression(self, expression):
@@ -29,6 +34,23 @@ class AuxInbuiltValue(AuxInterfaceSTType):
 
     def get_long_id(self):
         return str(self._value)
+
+    def is_satisfiable(self):
+        self._determine_satisfiability()
+        return self._satisfiable
+
+    def _determine_satisfiability(self):
+        if not self._satisfiability_check_done:
+            # determine satisfiability if the check has never been done yet
+            s = z3.Solver()
+            s.add(self.get_expression())
+            if s.check() == z3.sat:
+                self._satisfiable = True
+                self._model = s.model()
+            else:
+                self._satisfiable = False
+            # mark satisfiability as determined
+            self._satisfiability_check_done = True
 
 
 class InbuiltValueUndefined(AuxInbuiltValue):
@@ -54,9 +76,6 @@ class InbuiltValuePredicate(AuxInbuiltValue):
         super().__init__(node)
         self.set_undetermined()
         self.set_declared_type(InbuiltPredicate(node))
-        self._satisfiable = None
-        self._satisfiability_check_done = False
-        self._model = None
 
     def set_undetermined(self):
         self._value = AuxSTConstants.undetermined
@@ -69,23 +88,6 @@ class InbuiltValuePredicate(AuxInbuiltValue):
 
     def set_to(self, value: bool):
         self._value = value
-
-    def is_satisfiable(self):
-        self._determine_satisfiability()
-        return self._satisfiable
-
-    def _determine_satisfiability(self):
-        if not self._satisfiability_check_done:
-            # determine satisfiability if the check has never been done yet
-            s = z3.Solver()
-            s.add(self._expression)
-            if s.check() == z3.sat:
-                self._satisfiable = True
-                self._model = s.model()
-            else:
-                self._satisfiable = False
-            # mark satisfiability as determined
-            self._satisfiability_check_done = True
 
 
 class InbuiltValueAtRuntime(AuxInbuiltValue):

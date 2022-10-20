@@ -1,4 +1,3 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable

@@ -27,6 +27,7 @@ from poc.classes.AuxSTCorollary import AuxSTCorollary
 from poc.classes.AuxSTDefinitionFunctionalTerm import AuxSTDefinitionFunctionalTerm
 from poc.classes.AuxSTDefinitionPredicate import AuxSTDefinitionPredicate
 from poc.classes.AuxSTFunctionalTermInstance import AuxSTFunctionalTermInstance
+from poc.classes.AuxSTIdentifier import AuxSTIdentifier
 from poc.classes.AuxSTLemma import AuxSTLemma
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTPredicateInstance import AuxSTPredicateInstance
@@ -294,44 +295,48 @@ class SemCheckerIdentifiers:
         :return:
         """
         for theory_node in self.analyzer.loaded_theories:
-            # by convention of the FPL syntax, all pascal-case type names are user-defined
-            # collect them
-            collect_type_references = search.findall(theory_node, filter_=lambda node: isinstance(node, AuxSTType))
-            for type_node in collect_type_references:
-                qualified_identifier = type_node.get_qualified_id()
-                if type_node.id[0].isupper():  # if the identifier starts with a Capital, we have a user-defined type
-                    if qualified_identifier in self.analyzer.classes.dictionary():
-                        pass
-                    elif qualified_identifier in self.analyzer.predicates.dictionary():
-                        pass
-                    elif qualified_identifier in self.analyzer.functional_terms.dictionary():
-                        pass
-                    elif qualified_identifier in self.analyzer.overridden_qualified_ids.dictionary():
-                        # any other found declared block is semantically not an allowed type,
-                        # we trigger the
-                        self.analyzer.error_mgr.add_error(
-                            FplTypeNotAllowed(self.analyzer.overridden_qualified_ids.get(qualified_identifier)[0],
-                                              type_node.zfrom,
-                                              theory_node.file_name)
-                        )
-                    else:
-                        self.analyzer.error_mgr.add_error(
-                            FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
-                        )
-                elif type_node.is_variadic():
+            self.__preprocess_type_nodes(theory_node)
+            self.__preprocess_identifier_nodes(theory_node)
+
+    def __preprocess_type_nodes(self, theory_node):
+        # by convention of the FPL syntax, all pascal-case type names are user-defined
+        # collect them
+        collect_type_references = search.findall(theory_node, filter_=lambda node: isinstance(node, AuxSTType))
+        for type_node in collect_type_references:
+            qualified_identifier = type_node.get_qualified_id()
+            if type_node.id[0].isupper():  # if the identifier starts with a Capital, we have a user-defined type
+                if qualified_identifier in self.analyzer.classes.dictionary():
                     pass
-                elif type_node.is_predicate():
+                elif qualified_identifier in self.analyzer.predicates.dictionary():
                     pass
-                elif type_node.is_functional_term():
+                elif qualified_identifier in self.analyzer.functional_terms.dictionary():
                     pass
-                elif type_node.is_generic():
-                    pass
-                elif type_node.is_inbuilt_object():
-                    pass
-                elif type_node.is_extension():
-                    pass
+                elif qualified_identifier in self.analyzer.overridden_qualified_ids.dictionary():
+                    # any other found declared block is semantically not an allowed type,
+                    # we trigger the
+                    self.analyzer.error_mgr.add_error(
+                        FplTypeNotAllowed(self.analyzer.overridden_qualified_ids.get(qualified_identifier)[0],
+                                          type_node.zfrom,
+                                          theory_node.file_name)
+                    )
                 else:
-                    raise NotImplementedError("type_pattern " + str(self.type_pattern))
+                    self.analyzer.error_mgr.add_error(
+                        FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
+                    )
+
+    def __preprocess_identifier_nodes(self, theory_node):
+        collect_identifiers = search.findall(theory_node, filter_=lambda node: isinstance(node, AuxSTIdentifier))
+        for identifier_node in collect_identifiers:
+            identifier_node.initialize_has_reference_calculations(self.analyzer)
+            possible_overrides = identifier_node.get_overrides()
+            if len(possible_overrides) > 0:
+                identifier_node.set_declared_type(possible_overrides[0].reference.get_declared_type())
+            else:
+                self.analyzer.error_mgr.add_error(
+                    FplIdentifierNotDeclared(identifier_node.get_override_id(), theory_node.file_name,
+                                             identifier_node.zfrom)
+                )
+                identifier_node.set_declared_type(InbuiltUndefined(identifier_node))
 
     def _check_override_consistency(self):
         """

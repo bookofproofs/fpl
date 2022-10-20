@@ -4,8 +4,8 @@ Test.Namespace
     {
         Test(x: Nat)
         {
-            pre: True
-            con: True
+            pre: true
+            con: true
         }
     }
 
@@ -14,5 +14,4 @@ Test.Namespace
 }
 
 ##############################
-
 FplIdentifierNotDeclared:5:16: Undeclared identifier 'Nat'

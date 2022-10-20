@@ -1,4 +1,5 @@
-from poc.classes.AuxInbuiltValues import InbuiltValueUndefined
+from poc.classes.AuxEvaluationRegister import AuxEvaluationRegister
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTableHelpers import AuxSymbolTableHelpers
@@ -55,14 +56,31 @@ class AuxSTSignature(AuxST):
         return new_signature
 
     def evaluate(self, sem):
-        matcher = AuxParamsArgsMatcher()
-        args_of_caller = sem.eval_stack[-1].arg_type_list
-        if sem.eval_stack[-1].check_args:
-            params_of_signature = list(self.children)
-            matcher.try_match(sem, args_of_caller, params_of_signature)
-        sem.eval_stack[-1].value = InbuiltValueUndefined(self)
+        # if the evaluate of the signature get calls, the corresponding FPL building block
+        # has already _next_input_arguments set
+        register = sem.eval_stack[-1]
+        current_building_block = register.building_block
+        current_instance = current_building_block.get_instance(register.instance_guid)
+        if current_instance.id != current_building_block.get_main_instance().id:
+            # if this is not the main instance, i.e. it was called, we have input arguments.
+            input_arguments = current_building_block.get_input_arguments()
+        else:
+            input_arguments = self._create_dummy_input_arguments(current_building_block, current_instance)
+        for reg in input_arguments:
+            current_instance.set_register(reg.node.get_long_id(), reg)
 
     def get_long_id(self):
         if self._long_id is None:
             self._long_id = "AuxSTSignature"
         return self._long_id
+
+    def _create_dummy_input_arguments(self, building_block, instance):
+        input_arguments = list()
+        for child in self.children:
+            register = AuxEvaluationRegister(child, None)
+            register.building_block = building_block
+            register.instance = instance
+            register.instance_guid = instance.id
+            register.value = InbuiltValueAtRuntime(child, child.children[0])
+            input_arguments.append(register)
+        return input_arguments

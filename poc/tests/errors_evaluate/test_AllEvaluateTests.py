@@ -21,8 +21,8 @@ class AllEvaluateTests(UtilTestCase):
         ("test_FplAxiomNotSatisfiable_03.fpl", "SE0240"),
         ("test_FplAxiomNotSatisfiable_04.fpl", "SE0240"),
         ("test_FplPremiseNotSatisfiable_01.fpl", "SE0245"),
-        ("test_FplPredicateRecursion_01.fpl", "SE0260"),
-        ("test_FplPredicateRecursion_02.fpl", "SE0260"),
+        ("test_FplIllegalRecursion_01.fpl", "SE0260"),
+        ("test_FplIllegalRecursion_02.fpl", "SE0260"),
 
     ])
     def test_errors(self, use_case, diagnose_id):

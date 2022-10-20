@@ -1,32 +1,27 @@
-import z3
 from poc.fplerror import FplTypeMismatch
 from poc.classes.AuxEvaluationRegister import AuxEvaluationRegister
-from poc.classes.AuxBits import AuxBits
 
 
 class EvaluateParams:
 
     @staticmethod
-    def evaluate_recursion(sem, node, expected_type=None, arg_type_list=None, check_args=None, building_block=None,
-                           instance_guid=None):
+    def evaluate_recursion(sem, node, expected_type=None, building_block=None, instance_guid=None):
         """
 
         :param sem:
         :param node:
         :param expected_type:
-        :param arg_type_list:
-        :param check_args:
         :param building_block:
         :param instance_guid:
         :return:
         """
         # create a new evaluation params set
-        register = AuxEvaluationRegister(node, expected_type, check_args)
+        register = AuxEvaluationRegister(node, expected_type)
 
         if building_block is None:
             EvaluateParams._propagate(sem, register)
         else:
-            EvaluateParams._create(register, building_block, instance_guid, arg_type_list)
+            EvaluateParams._create(register, building_block, instance_guid)
 
         if EvaluateParams._evaluation_necessary(register):
             register = EvaluateParams._re_evaluate(sem, node, register, expected_type)
@@ -38,15 +33,12 @@ class EvaluateParams:
         previous = sem.eval_stack[-1]
         register.building_block = previous.building_block
         register.instance_guid = previous.instance_guid
-        register.arg_type_list = previous.arg_type_list
-        register.check_args = previous.check_args
         register.instance = previous.instance
 
     @staticmethod
-    def _create(register, building_block, instance_guid, arg_type_list):
+    def _create(register, building_block, instance_guid):
         register.building_block = building_block
         register.instance_guid = instance_guid
-        register.arg_type_list = arg_type_list
         register.instance = building_block.get_instance(instance_guid)
 
     @staticmethod
@@ -78,14 +70,10 @@ class EvaluateParams:
             # store the last value that we can retrieve by some recursive caller to skip nodes that have
             # no expected type (and whose value is None)
             sem.last_value = register.value
-            if expected_type.is_predicate() and register.value.get_expression() is None:
-                # create a new z3 expression if the expected type is a predicate and
-                # it does not have a z3 expression yet
-                register.value.set_expression(z3.Bool(node.get_long_id()))
 
         # check if there is a type mismatch
         if register.expected_type is not None:
-            if register.type_mismatch():
+            if not register.expected_type.accepts(register.value.get_declared_type()):
                 sem.error_mgr.add_error(
                     FplTypeMismatch(node, register.expected_type.id, register.value.get_declared_type().id)
                 )

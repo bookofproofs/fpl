@@ -1,12 +1,12 @@
 from anytree import search
-from poc.fplerror import FplErrorManager
-from poc.fplerror import FplVariableAlreadyDeclared
-from poc.fplerror import FplTemplateMisused
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
+from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
 from poc.classes.AuxSTBuildingBlockInstanceHandlers import AuxSTBuildingBlockInstanceHandlers
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
+from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.fplerror import FplErrorManager, FplVariableAlreadyDeclared, FplTemplateMisused
 
 """
 The class AuxSTBuildingBlock is a base class for all FPL building blocks
@@ -31,6 +31,7 @@ class AuxSTBuildingBlock(AuxST, AuxInterfaceSTType):
         self._handlers = AuxSTBuildingBlockInstanceHandlers()
         # a flag that will be set to True once the very first evaluation was used to enrich the self-containment graph
         self._sc_ready_flag = False
+        self._next_input_arguments = None
 
     def set_relative_id(self, name_of_parent: str):
         if name_of_parent == "":
@@ -160,3 +161,31 @@ class AuxSTBuildingBlock(AuxST, AuxInterfaceSTType):
         if self._long_id is None:
             self._long_id = self.id
         return self._long_id
+
+    def arguments_match(self, evaluated_arguments):
+        signature_node = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.signature)
+        matcher = AuxParamsArgsMatcher()
+        match_successful = matcher.try_match(evaluated_arguments, list(signature_node.children))
+        if match_successful:
+            self._set_next_input_arguments(evaluated_arguments)
+        else:
+            if self._next_input_arguments is not None:
+                self._next_input_arguments.clear()
+            self._next_input_arguments = None
+        return match_successful
+
+    def _set_next_input_arguments(self, evaluated_arguments):
+        self._next_input_arguments = evaluated_arguments
+
+    def get_input_arguments(self):
+        return self._next_input_arguments
+
+    def get_signature_types(self):
+        signature_node = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.signature)
+        signature_types = list()
+        if signature_node is not None:
+            for child in signature_node.children:
+                signature_types.append(child.children[0].to_string2())
+        else:
+            return AuxSTConstants.classDeclaration
+        return str(signature_types)

@@ -43,7 +43,7 @@ class AuxSTOutline(AnyNode):
         :return: Minor Scope of self
         """
         if self._minor_scope is None:
-            # We use the anytree.Walker to determin if between the scope node and self there is an FPL property.
+            # We use the anytree.Walker to determine if between the scope node and self there is an FPL property.
             # If there is, we set the minor scope of self to this property, otherwise to the scope node itself.
             w = Walker()
             scope = self.get_scope()

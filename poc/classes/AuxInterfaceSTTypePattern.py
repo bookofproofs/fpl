@@ -12,6 +12,12 @@ class AuxInterfaceSTTypePattern:
     def is_inbuilt_object(self):
         return (self.type_pattern & AuxBits.objectBit) > 0 and (self.type_pattern & AuxBits.inbuiltBit) > 0
 
+    def is_inbuilt_functional_term(self):
+        return (self.type_pattern & AuxBits.functionalTermBit) > 0 and (self.type_pattern & AuxBits.inbuiltBit) > 0
+
+    def is_inbuilt_predicate(self):
+        return (self.type_pattern & AuxBits.predicateBit) > 0 and (self.type_pattern & AuxBits.inbuiltBit) > 0
+
     def is_object(self):
         return (self.type_pattern & AuxBits.objectBit) > 0
 
@@ -36,3 +42,5 @@ class AuxInterfaceSTTypePattern:
     def is_inbuilt(self):
         return (self.type_pattern & AuxBits.inbuiltBit) > 0
 
+    def is_integer(self):
+        return (self.type_pattern & AuxBits.integer) > 0
