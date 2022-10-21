@@ -1,4 +1,10 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.7
+* Refactoring
+  * Replacing AuxSTPredicate outlined as 'extDigit' with the new node type AuxSTExt in the symbol table
+  * Adjusting all affected test cases
+* Bugfix
+  * In AuxSTNodeWithReference: Variables with arity < -1 evaluate to InbuiltValueAtRuntime (bug was to InbuiltValueUndefined) 
 ## 1.10.6
 * Refactoring
   * Continuing to unify some features of AuxSTIdentifier, AuxSTVariable, and AuxSTSelf
@@ -23,10 +29,10 @@
 ## 1.10.3
 * Refactoring:
   * Adding the attribute 'reference' to the AuxSTVariable node in the symbol table
-  * Replacing AuxSTPredicateWithArgs outlined as 'var' to AuxSTVariable in the symbol table
-  * Replacing AuxSTPredicate outlined as 'undefined' to the new node type AuxSTUndefined in the symbol table
-  * Replacing AuxSTPredicate outlined as 'id' by a new node type AuxSTIdentifier in the symbol table
-  * Replacing AuxSTPredicate outlined as 'indexValue' and 'variadicVar' (nested into each other) by new node class AuxSTVariableVariadic and AuxSTInt
+  * Replacing AuxSTPredicateWithArgs outlined as 'var' with AuxSTVariable in the symbol table
+  * Replacing AuxSTPredicate outlined as 'undefined' with the new node type AuxSTUndefined in the symbol table
+  * Replacing AuxSTPredicate outlined as 'id' with a new node type AuxSTIdentifier in the symbol table
+  * Replacing AuxSTPredicate outlined as 'indexValue' and 'variadicVar' (nested into each other) with new node class AuxSTVariableVariadic and AuxSTInt
   * Initial implementation of AuxSTUndefined, AuxSTIdentifier, AuxSTVariableVariadic, and AuxSTInt
   * Renaming InbuiltIndex type to InbuiltVariableVariadic
   * Adjusting the affected test cases of the symbol table

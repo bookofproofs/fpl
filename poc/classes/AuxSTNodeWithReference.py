@@ -75,9 +75,13 @@ class AuxSTNodeWithReference(AuxST, AuxInterfaceSTType):
         else:
             if self.has_overrides():
                 # case self.has_overrides() and self.get_arity() < 0:
-                # each override will need at least 0 arguments, so we flag FplWrongArguments
-                self._flag_wrong_arguments()
-                sem.eval_stack[-1].value = InbuiltValueUndefined(self)
+                if self.outline == AuxSTConstants.var:
+                    # for variables, this case is normal
+                    sem.eval_stack[-1].value = InbuiltValueAtRuntime(self, self.get_declared_type())
+                else:
+                    # each override will need at least 0 arguments, so we flag FplWrongArguments
+                    self._flag_wrong_arguments()
+                    sem.eval_stack[-1].value = InbuiltValueUndefined(self)
             else:
                 # case not self.has_overrides() and self.get_arity() < 0:
                 if self.reference_established(list()):
@@ -118,6 +122,7 @@ class AuxSTNodeWithReference(AuxST, AuxInterfaceSTType):
             for node in self.get_overrides():
                 mismatched_overrides.append(node.reference.get_signature_types())
         self._sem.error_mgr.add_error(FplWrongArguments(arg_types, mismatched_overrides, self))
+
 
     def initialize_has_reference_calculations(self, sem):
         self._sem = sem
