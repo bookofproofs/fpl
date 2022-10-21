@@ -1,7 +1,6 @@
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
-from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.AuxSTPredicate import AuxSTPredicate
+from poc.classes.AuxSTExt import AuxSTExt
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 
 
@@ -36,10 +35,10 @@ class ContextPrimePredicate(AuxInterpretation):
             self.predicate = parsing_info.predicate  # noqa
         elif rule == "ArgumentParam":
             self.predicate = parsing_info.predicate  # noqa
-        elif rule == "extDigit":
-            self.predicate = AuxSTPredicate(AuxSTConstants.extDigit, self._i)
-            self.predicate.zto = self._i.last_positions_by_rule['extDigit'].pos_to_str()
-            self.predicate.zfrom = self._i.corrected_position('extDigit')
+        elif rule.startswith("ext"):
+            self.predicate = AuxSTExt(rule, self._i)
+            self.predicate.zto = self._i.last_positions_by_rule[rule].pos_to_str()
+            self.predicate.zfrom = self._i.corrected_position(rule)
             self.predicate.id = parsing_info.get_cst()
         self.stop_aggregation = True
 
