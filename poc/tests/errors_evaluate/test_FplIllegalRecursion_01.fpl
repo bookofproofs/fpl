@@ -10,4 +10,4 @@ TestFplIllegalRecursionError
 }
 
 ##############################
-FplIllegalRecursion:7:12: Cannot apply recursion in 'TestPredicate[]'
+FplIllegalRecursion:5:8: Cannot apply recursion in 'TestPredicate[]'
