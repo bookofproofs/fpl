@@ -123,7 +123,6 @@ class AuxSTNodeWithReference(AuxST, AuxInterfaceSTType):
                 mismatched_overrides.append(node.reference.get_signature_types())
         self._sem.error_mgr.add_error(FplWrongArguments(arg_types, mismatched_overrides, self))
 
-
     def initialize_has_reference_calculations(self, sem):
         self._sem = sem
         if self._has_args is None:

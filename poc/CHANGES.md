@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.8
+* Bugfix
+  * Correcting FplIllegalRecursion test case (expected values only)
+  * Correcting FplVariableNotInitialized false positive error when variables are bound inside a quantor and used as 'calling' arguments. 
 ## 1.10.7
 * Refactoring
   * Replacing AuxSTPredicate outlined as 'extDigit' with the new node type AuxSTExt in the symbol table

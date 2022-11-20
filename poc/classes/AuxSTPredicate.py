@@ -187,14 +187,3 @@ class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
         """
         return list(n for n in PreOrderIter(self, filter_=lambda n1: isinstance(n1, AuxSTVariable)))
 
-    def get_used_var_names_set(self):
-        """
-        Get a set of all variable names used in this predicate
-        :return: a set of these variable names
-        """
-        used_vars = self.get_used_vars()
-        s = set()
-        for var in used_vars:
-            if var.id not in s:
-                s.add(var.id)
-        return s

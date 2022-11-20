@@ -38,6 +38,7 @@ from poc.classes.AuxSTSignature import AuxSTSignature
 from poc.classes.AuxSTTheorem import AuxSTTheorem
 from poc.classes.AuxSTType import AuxSTType
 from poc.classes.AuxSymbolTable import AuxSymbolTable
+from poc.classes.AuxSTVariable import AuxSTVariable
 from anytree import search
 from poc.fplerror import FplMissingProof
 
@@ -59,8 +60,8 @@ class SemCheckerIdentifiers:
             self._check_uniqueness_identifiers(qualified_identifier)
         self._check_override_consistency()
         self._check_referencing_proof_corollary()
-        self._check_misspelled_types()
         self._check_vars()
+        self._check_misspelled_types()
 
     def _check_vars(self):
         for child in self.analyzer.globals_node.children:
@@ -190,17 +191,26 @@ class SemCheckerIdentifiers:
                    n1.get_minor_scope() == n1.get_scope() and
                    n1.outline in [AuxSTConstants.predicate_all, AuxSTConstants.predicate_exists]))
 
+        used_vars = current_node.get_used_vars()
+
         for quantor in quantor_nodes:
-            used_vars_in_quantor = quantor.get_used_var_names_set()
+            used_var_names_in_quantor = set(
+                list(n.id for n in PreOrderIter(quantor, filter_=lambda n1: isinstance(n1, AuxSTVariable))))
             for var_id in quantor.bound_vars:
                 if var_id in vars_bound_so_far:
                     self.analyzer.error_mgr.add_error(FplVariableBound(var_id, quantor, vars_bound_so_far[var_id]))
                 else:
                     # remember the quantor as a node bounding the variable
                     vars_bound_so_far[var_id] = quantor
-                    if var_id not in used_vars_in_quantor:
+                    if var_id not in used_var_names_in_quantor:
+                        # if the variable is not used in the quantor but is among is 'bound' variables,
+                        # issue the FplUnusedBoundVariable error
                         self.analyzer.error_mgr.add_error(FplUnusedBoundVariable(var_id, quantor))
-                    pass
+                    else:
+                        # otherwise mark the the used vars with this name as already bound
+                        for var in used_vars:
+                            if var.id == var_id:
+                                var.set_is_bound()
             pass
 
     def _check_for_malformed_gid(self, qualified_identifier, node):
