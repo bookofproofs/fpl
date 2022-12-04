@@ -1,0 +1,17 @@
+Test.ExtensionUndeclared
+{
+    :ext
+        extDigits : /\d+/
+    :end
+
+    theory
+    {
+        pred Test()
+        {
+            Test1(42)
+        }
+    }
+}
+
+##############################
+FplExtensionMissingClass:11:18: Extension extDigits is missing a user-defined FPL class

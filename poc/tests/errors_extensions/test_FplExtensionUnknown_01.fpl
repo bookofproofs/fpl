@@ -1,0 +1,16 @@
+Test.ExtensionUnknown
+{
+    :ext
+        extDecimal : /\d+/
+    :end
+
+    theory
+    {
+        pred Test()
+        {
+        }
+    }
+}
+
+##############################
+FplExtensionUnknown:3:8: Extension extDecimal not extended in the main FPL grammar; available ['extDigits']

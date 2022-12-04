@@ -15,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.10.8"
+        self.version = "1.10.9"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -40,6 +40,7 @@ class FplInterpreter:
             self.library_node = library_node
         # the analyzer will be initiated once the semantic_analysis method is called
         self._analyzer = None
+        self._all_extension_definitions = dict()
 
     def syntax_analysis(self, path_to_theory: str):
         self._syntax_analysis_rek(path_to_theory)
@@ -120,7 +121,7 @@ class FplInterpreter:
                             pass
 
     def _load_theory_into_symbol_table(self, fpl_file_node):
-        fpl_file_node.set_analyser(self._symbol_table_root, self._error_mgr)
+        fpl_file_node.set_analyser(self._symbol_table_root, self._error_mgr, self._all_extension_definitions)
         analyser = fpl_file_node.get_analyser()
         if AuxISourceAnalyser.verbose:
             self._parser.parse(fpl_file_node.get_file_content(), semantics=analyser, whitespace='')
@@ -143,9 +144,11 @@ class FplInterpreter:
                 self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 4,
                                               fpl_file_node.file_name))
+        self._all_extension_definitions.update(analyser.i.all_extension_definitions)
 
     def semantic_analysis(self):
-        self._analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._error_mgr)
+        self._analyzer = fplsemanticanalyzer.SemanticAnalyser(self._symbol_table_root, self._error_mgr,
+                                                              self._all_extension_definitions)
         self._analyzer.semantic_analysis()
 
     def print_self_containment_graph(self):

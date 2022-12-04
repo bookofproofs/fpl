@@ -33,7 +33,8 @@ class AuxSTConstants:
     ebnf_term = "EBNFTerm"
     ebnf_transl = "EBNFTransl"
     entity = "entity"
-    extDigit = "extDigit"
+    extDigits = "extDigits"
+    extension = "extension"
     file = "file"
     functionalTerm = "functionalTerm"
     functionalTermInstance = "functionalTermInstance"
@@ -108,3 +109,4 @@ class AuxSTConstants:
     var_decl = "var_decl"  # noqa
     var_spec = "specificationList"
     variadic_var = "variadicVar"
+    known_extensions = ["extDigits"]

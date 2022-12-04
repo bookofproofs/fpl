@@ -1,0 +1,13 @@
+Test.ExtensionUndeclared
+{
+    theory
+    {
+        pred Test()
+        {
+            Test1(42)
+        }
+    }
+}
+
+##############################
+FplExtensionUndeclared:7:18: Extension extDigits is not declared in any FPL file

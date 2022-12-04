@@ -27,7 +27,11 @@
     ExtensionHeader ::=
         Colon ext
     ExtensionContent ::=
-regular_expression '/((?!:end).)*/'
+        (IW)? ExtensionName (IW)? Colon (IW)? ExtensionRegex
+    ExtensionRegex ::=
+regular_expression '/(?!:end).*/'
+    ExtensionName ::=
+         ext IdStartsWithCap
     ExtensionTail ::=
         Colon end SW
     ext ::=
@@ -591,7 +595,7 @@ regular_expression '/((?!:end).)*/'
         | false
         | UndefinedHeader
         | ArgumentParam
-        | extDigit
+        | extDigits
         )
     QualifiedIdentifier ::=
         Identifier ( Dot PredicateWithArguments )+
@@ -848,7 +852,7 @@ regular_expression '/(\r\n\t]+/'
 /* This ensures that they will not be mixed-up with original FPL ebnf productions */
 /* that are all PascalCase as well as FPL keywords, that are all small case. */
     XId ::=
-        At ext IdStartsWithCap
+        At ExtensionName
         Variable ::=
             IdStartsWithSmallCase
     Digit ::=
@@ -900,5 +904,5 @@ regular_expression '/\"[^\"\n]*\"/'
 /* from the Proof of Concept of FPL code manually into the EBNF of the core FPL grammar. */
 /* the IsOperand choice */
 /* the PredicateOrFunctionalTerm choice */
-    extDigit ::=
+    extDigits ::=
 regular_expression '/\d+/'

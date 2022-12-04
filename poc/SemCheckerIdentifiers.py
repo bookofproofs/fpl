@@ -14,7 +14,8 @@ from poc.fplerror import FplVariableBound
 from poc.fplerror import FplUndeclaredVariable
 from poc.fplerror import FplUnusedVariable
 from poc.fplerror import FplUnusedBoundVariable
-from poc.classes.AuxBits import AuxBits
+from poc.classes.AuxSTExt import AuxSTExt
+from poc.classes.AuxSTExtension import AuxSTExtension, AuxSTExtensionHandler
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, \
     InbuiltFunctionalTerm, InbuiltExtension, InbuiltGeneric
 from poc.classes.AuxSTAxiom import AuxSTAxiom
@@ -40,7 +41,7 @@ from poc.classes.AuxSTType import AuxSTType
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTVariable import AuxSTVariable
 from anytree import search
-from poc.fplerror import FplMissingProof
+from poc.fplerror import FplMissingProof, FplExtensionUnknown, FplExtensionUndeclared, FplExtensionMissingClass
 
 
 class SemCheckerIdentifiers:
@@ -62,6 +63,34 @@ class SemCheckerIdentifiers:
         self._check_referencing_proof_corollary()
         self._check_vars()
         self._check_misspelled_types()
+        self._check_extensions()
+
+    def _check_extensions(self):
+        # identify constructors accepting an extension as a single parameter
+        for constructor_name in self.analyzer.constructors.dictionary():
+            constructors = self.analyzer.constructors.get(constructor_name)
+            for constructor_global_node in constructors:
+                constructor_node = constructor_global_node.reference
+                prefix = constructor_node.parent.parent.id + "[1:@ext"
+                if prefix in constructor_node.id and constructor_node.id.count(":") == 1:
+                    length = len(constructor_node.id)
+                    length_pr = len(prefix)
+                    extension_name = constructor_node.id[length_pr - 3:length - 1]
+                    if extension_name in self.analyzer.all_extensions:
+                        self.analyzer.all_extensions[extension_name].class_node = constructor_node.parent.parent
+
+        for extension_name in self.analyzer.all_extensions:
+            if self.analyzer.all_extensions[extension_name].class_node is not None:
+                for extension_node in self.analyzer.all_extensions[extension_name].matching_nodes:
+                    # set the declared type of the extension to the declared type of the class using
+                    # this extension in a constructor
+                    extension_node.set_class(self.analyzer.all_extensions[extension_name].class_node)
+            else:
+                for extension_node in self.analyzer.all_extensions[extension_name].matching_nodes:
+                    # set the declared type of the extension node to undefined, since there is no class
+                    # using the extension as input
+                    self.analyzer.error_mgr.add_error(FplExtensionMissingClass(extension_node))
+                    extension_node.set_declared_type(InbuiltUndefined(extension_node))
 
     def _check_vars(self):
         for child in self.analyzer.globals_node.children:
@@ -307,6 +336,19 @@ class SemCheckerIdentifiers:
         for theory_node in self.analyzer.loaded_theories:
             self.__preprocess_type_nodes(theory_node)
             self.__preprocess_identifier_nodes(theory_node)
+            self.__preprocess_extensions(theory_node)
+
+    def __preprocess_extensions(self, theory_node):
+        all_extension_nodes = search.findall(theory_node, filter_=lambda node: isinstance(node, AuxSTExt))
+        for extension_node in all_extension_nodes:
+            extension_name = extension_node.outline
+            if extension_name not in self.analyzer.all_extensions:
+                self.analyzer.error_mgr.add_error(FplExtensionUndeclared(extension_node))
+                if AuxSTConstants.undefined not in self.analyzer.all_extensions:
+                    self.analyzer.all_extensions[AuxSTConstants.undefined] = AuxSTExtensionHandler()
+                self.analyzer.all_extensions[AuxSTConstants.undefined].matching_nodes.append(extension_node)
+            else:
+                self.analyzer.all_extensions[extension_name].matching_nodes.append(extension_node)
 
     def __preprocess_type_nodes(self, theory_node):
         # by convention of the FPL syntax, all pascal-case type names are user-defined
@@ -333,6 +375,12 @@ class SemCheckerIdentifiers:
                     self.analyzer.error_mgr.add_error(
                         FplIdentifierNotDeclared(qualified_identifier, theory_node.file_name, type_node.zfrom)
                     )
+            elif qualified_identifier.startswith("@ext"):
+                extension_name = qualified_identifier[1:]
+                if extension_name not in AuxSTConstants.known_extensions:
+                    self.analyzer.error_mgr.add_error(
+                        FplExtensionUnknown(type_node, extension_name, theory_node.file_name,
+                                            AuxSTConstants.known_extensions))
 
     def __preprocess_identifier_nodes(self, theory_node):
         collect_identifiers = search.findall(theory_node, filter_=lambda node: isinstance(node, AuxSTIdentifier))

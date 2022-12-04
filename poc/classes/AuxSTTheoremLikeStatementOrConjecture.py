@@ -34,9 +34,9 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBuildingBlock):
                 elif isinstance(child, AuxSTPredicate):
                     ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
                     if child.outline == AuxSTConstants.pre:
-                        pre = ret.value
+                        pre = ret
                     elif child.outline == AuxSTConstants.con:
-                        con = ret.value
+                        con = ret
                 elif isinstance(child, AuxSTOutline):
                     if child.outline in [AuxSTConstants.block_cor_root, AuxSTConstants.block_proof_root]:
                         for sub_child in child.children:
@@ -44,8 +44,16 @@ class AuxSTTheoremLikeStatementOrConjecture(AuxSTBuildingBlock):
                 else:
                     raise NotImplementedError(str(type(child)))
 
+            if pre.evaluation_error:
+                new_value.set_undetermined()
+            elif con.evaluation_error:
+                new_value.set_undetermined()
+            else:
+                new_value.set_true()
+                new_value.set_expression(True)
+
             if len(signature.children) == 0:
-                self.set_constant_value(sem.eval_stack[-1])
+                self.set_constant_value(new_value)
         else:
             # replace the stack by the immutable value
             sem.eval_stack.pop()

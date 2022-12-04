@@ -1,7 +1,7 @@
 Fpl.Arithmetics.Peano
 {
     :ext
-        extDecimal = /\d+/;
+        extDigits : /\d+/
     :end
 
     uses Fpl.Commons, Fpl.SetTheory.ZermeloFraenkel

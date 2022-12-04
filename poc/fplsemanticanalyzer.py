@@ -13,12 +13,13 @@ from poc.fplmessage import FplInterpreterSystemError
 
 class SemanticAnalyser:
 
-    def __init__(self, symbol_table_root: AnyNode, error_mgr: FplErrorManager):
+    def __init__(self, symbol_table_root: AnyNode, error_mgr: FplErrorManager, all_extensions: dict):
         self.symbol_table_root = symbol_table_root
         self.error_mgr = error_mgr
         self.loaded_theories = AuxSymbolTable.get_theories(self.symbol_table_root)
         self.globals_node = AuxSymbolTable.get_child_by_outline(self.symbol_table_root, AuxSTConstants.globals)
         # self-containment
+        self.all_extensions = all_extensions
         self.sc = AuxSelfContainment()
         self.sem_checker_identifiers = SemCheckerIdentifiers(self)
         # a stack to evaluate recursively the semantics of the symbol table

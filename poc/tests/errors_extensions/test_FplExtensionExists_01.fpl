@@ -1,0 +1,12 @@
+Test.Extension
+{
+    :ext
+        extDecimal : /\d+/
+    :end
+
+    uses Test.Extension1
+    theory {}
+}
+
+##############################
+FplExtensionExists:3:8: Extension extDecimal already defined in test_FplExtensionExists_01a.fpl

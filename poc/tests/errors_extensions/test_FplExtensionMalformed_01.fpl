@@ -1,0 +1,11 @@
+Test.ExtensionMalformed
+{
+    :ext
+        extDecimal : [
+    :end
+
+    theory {}
+}
+
+##############################
+FplExtensionMalformed:3:8: Extension extDecimal defines an invalid regular expression

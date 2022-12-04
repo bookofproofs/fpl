@@ -26,6 +26,7 @@ class AuxISourceAnalyser:
         self.locals_node = AuxSTLocalizations(self.theory_node)
         self.last_positions_by_rule = dict()
         self.highlight_tags = list()
+        self.all_extension_definitions = dict()
 
     def set_pos(self, ast_info):
         self.last_positions_by_rule[ast_info.rule] = ast_info

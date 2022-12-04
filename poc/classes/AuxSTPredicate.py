@@ -172,7 +172,7 @@ class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def get_long_id(self):
         if self._long_id is None:
-            if self.outline in [AuxSTConstants.extDigit, AuxSTConstants.ids, AuxSTConstants.variadic_var]:
+            if self.outline in [AuxSTConstants.extDigits, AuxSTConstants.ids, AuxSTConstants.variadic_var]:
                 self._long_id = self.id + "."
             else:
                 self._long_id = self.outline + "."

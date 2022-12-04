@@ -442,3 +442,60 @@ class FplInvalidUseReturnStmt(FplInterpreterMessage):
             s[0], s[1],
             return_node.path[1].file_name)
         self.diagnose_id = "SE0290"
+
+
+class FplExtensionExists(FplInterpreterMessage):
+    def __init__(self, extension_node, file_name, other_file_name):
+        s = extension_node.zfrom.split(".")
+        msg = "Extension {0} already defined in {1}".format(extension_node.get_handler().extension_name,
+                                                            file_name)
+        super().__init__(
+            msg,
+            s[0], s[1],
+            other_file_name)
+        self.diagnose_id = "SE0300"
+
+
+class FplExtensionMalformed(FplInterpreterMessage):
+    def __init__(self, extension_node, file_name):
+        s = extension_node.zfrom.split(".")
+        msg = "Extension {0} defines an invalid regular expression".format(extension_node.get_handler().extension_name,
+                                                                           file_name)
+        super().__init__(
+            msg,
+            s[0], s[1],
+            file_name)
+        self.diagnose_id = "SE0310"
+
+
+class FplExtensionUnknown(FplInterpreterMessage):
+    def __init__(self, extension_node, extension_name, file_name, possible):
+        s = extension_node.zfrom.split(".")
+        msg = "Extension {0} not extended in the main FPL grammar; available {1}".format(extension_name, possible)
+        super().__init__(
+            msg,
+            s[0], s[1],
+            file_name)
+        self.diagnose_id = "SE0320"
+
+
+class FplExtensionUndeclared(FplInterpreterMessage):
+    def __init__(self, extension_node):
+        s = extension_node.zfrom.split(".")
+        msg = "Extension {0} is not declared in any FPL file".format(extension_node.outline)
+        super().__init__(
+            msg,
+            s[0], s[1],
+            extension_node.path[1].file_name)
+        self.diagnose_id = "SE0330"
+
+
+class FplExtensionMissingClass(FplInterpreterMessage):
+    def __init__(self, extension_node):
+        s = extension_node.zfrom.split(".")
+        msg = "Extension {0} is missing a user-defined FPL class".format(extension_node.outline)
+        super().__init__(
+            msg,
+            s[0], s[1],
+            extension_node.path[1].file_name)
+        self.diagnose_id = "SE0340"
