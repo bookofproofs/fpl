@@ -2,12 +2,11 @@ TestNamespace
 {
     theory
     {
-        class Zero: @extDigit
+        class Zero: @extDigits
         {
         }
     }
 }
 
 ##############################
-
-FplInvalidInheritance:5:29: Inheritance from '@extDigit' not possible (not a defined class but a user-defined syntax extension type)
+FplInvalidInheritance:5:30: Inheritance from '@extDigits' not possible (not a defined class but a user-defined syntax extension type)

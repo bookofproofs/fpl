@@ -45,7 +45,7 @@ class AuxSTProof(AuxSTBuildingBlock, AuxInterfaceSTType, AuxEvaluationPredicate)
         for child in self.children:
             if isinstance(child, AuxSTProofArguments):
                 ret = EvaluateParams.evaluate_recursion(sem, child, expected_type=InbuiltPredicate(child))
-                new_value.set_to(ret.get_value())
+                new_value.set_to(ret.value)
             else:
                 EvaluateParams.evaluate_recursion(sem, child)
 

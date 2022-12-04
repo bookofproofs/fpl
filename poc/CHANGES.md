@@ -1,4 +1,11 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.9
+* Bugfix
+  * Correcting the evaluation in AuxSTTheoremLikeStatementOrConjecture
+  * Reflecting the FPL grammar changes 1.2.1, including affected test cases
+* Features:
+  * Enabling a proper extension handling
+  * New Errors FplExtensionExists, FplExtensionMissingClass, FplExtensionUndeclared, FplExtensionUnknown, FplExtensionMalformed including some related unit tests
 ## 1.10.8
 * Bugfix
   * Correcting FplIllegalRecursion test case (expected values only)

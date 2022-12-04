@@ -42,7 +42,15 @@
         ;
 
     ExtensionContent =
-        /((?!:end).)*/
+        [ IW ] ExtensionName [ IW ] Colon [ IW ] ExtensionRegex
+        ;
+
+    ExtensionRegex =
+        /(?!:end).*/
+        ;
+
+    ExtensionName =
+         ext IdStartsWithCap
         ;
 
     ExtensionTail =
@@ -972,7 +980,7 @@
         | false
         | UndefinedHeader
         | ArgumentParam
-        | extDigit
+        | extDigits
         )
         ;
 
@@ -1398,7 +1406,7 @@
     # that are all PascalCase as well as FPL keywords, that are all small case.
 
     XId =
-        At ext IdStartsWithCap
+        At ExtensionName
         ;
 
     @name
@@ -1495,6 +1503,6 @@
     # note that this has to be inserted into:
     # the IsOperand choice
     # the PredicateOrFunctionalTerm choice
-    extDigit =
+    extDigits =
         /\d+/
         ;

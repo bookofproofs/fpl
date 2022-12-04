@@ -1,4 +1,7 @@
 # Changes in the FPL grammar
+## 1.2.1
+* Correction and refinement of the rule ExtensionContent 
+* Renaming the rule extDigit into extDigits
 ## 1.2.0
 * Enhancement of the syntax of constructors to allow 'calling' the super constructor 
 ## 1.1.9

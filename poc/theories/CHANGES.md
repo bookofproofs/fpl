@@ -1,4 +1,8 @@
 # Changes in the Proof of Concept Theories
+## 1.0.8
+* Bugfixes: 
+  * Changing the extension syntax in ArithmeticsNat.fpl to reflect FPL grammar 1.2.1
+  * Changing the extension name in ArithmeticsNat.fpl from extDecimal to extDigits
 ## 1.0.7
 * Bugfixes: 
   * FplPredicateRecursion error corrected in Equal predicate definition in Commons.fpl

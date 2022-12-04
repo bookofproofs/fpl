@@ -1,0 +1,11 @@
+Test.Extension1
+{
+    :ext
+        extDecimal : /\d+/
+    :end
+
+    theory {}
+}
+
+##############################
+This is an auxiliary file for the case test_FplExtensionExists_01.fpl simulating a duplicate declaration of an extension

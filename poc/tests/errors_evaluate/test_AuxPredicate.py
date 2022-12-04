@@ -62,7 +62,8 @@ class AuxPredicateTests(unittest.TestCase):
         cls._symbol_table_root = AnyNode(outline=AuxSTConstants.root)
         cls._error_mgr = FplErrorManager()
         node = AnyNode(outline=AuxSTConstants.globals, parent=cls._symbol_table_root)
-        cls.analyzer = SemanticAnalyser(cls._symbol_table_root, cls._error_mgr)
+        all_extensions = dict()
+        cls.analyzer = SemanticAnalyser(cls._symbol_table_root, cls._error_mgr, all_extensions)
         cls.sem = cls.analyzer
         cls.i.last_positions_by_rule["PredicateHeader"] = cls.aux_info
         cls.i.last_positions_by_rule["DefinitionPredicate"] = cls.aux_info

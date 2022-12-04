@@ -4,6 +4,7 @@ from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime, InbuiltValueUnde
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTCoords import AuxSTCoords
 from poc.classes.AuxSTRange import AuxSTRange
+from poc.classes.AuxSTExt import AuxSTExt
 from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
