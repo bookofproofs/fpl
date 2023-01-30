@@ -124,9 +124,7 @@ Also, the syntax should make it possible to program automated tools translating 
 
 # 2 High-Level Conceptual Design
 
-The project to develop FPL started June 14, 2020, as described in at [https://www.bookofproofs.org/branches/fpl-formal-proving-language/](https://www.bookofproofs.org/branches/fpl-formal-proving-language/).
-Originally, developing the specification was planned as a collaborative project. Unfortunately, and probably due to the pandemic,
-no community formed to work on it. Meanwhile, I could work on the project I initiated on my own. 
+The project to develop FPL started June 14, 2020. In my [research paper](https://github.com/bookofproofs/fpl/blob/master/hld/FPLHighLevelDesign.pdf),
 I identified the following High-Level Requirements for the FPL language:
 
 | No.        | Requirement for FPL         | Level  |
@@ -174,19 +172,15 @@ I identified the following High-Level Requirements for the FPL language:
 |41|Support generic types.|MUST| 
 |42|Check the self-containment (FPL interpreter)|MUST|
 
-When I started identifying these requirements, I quickly realized that it would not suffice to publish them and create a proof of concept. During my analysis, it turned out that many expert views on this subject may deviate from what I'm proposing. Therefore, I decided to publish my analysis in a 
-separate paper that *justifies* all these requirements. You can find the paper at ["Formal Proving Language (FPL)
-A Proposal How To Write and Read Proof-Based Mathematics (PBM)"](https://www.bookofproofs.org/FPLHighLevelDesign.pdf).
-
 The paper also contains a description of a proof of concept that is based on some first FPL code examples you can
-find in this repository as well as the syntax diagrams of the FPL grammar (version 1.0.0).
+find in this repository as well as the original syntax diagrams of the FPL grammar (version 1.0.0).
 
 # 3 Proof of Concept (Current State)
 
 There is a proof of concept (POC) based on the above requirements. It currently consists of the following pieces:
 
 1. The FPL grammar in an EBNF. 
-  * [Current syntax diagrams](https://www.bookofproofs.org/FPLSyntaxDiagrams.xhtml)
+  * [Current syntax diagrams](https://github.com/bookofproofs/fpl/blob/master/hld/FPLSyntaxDiagrams.xhtml)
   * [EBNF definition](https://github.com/bookofproofs/fpl/tree/master/grammar/)
 2. [FPL demo theories ](https://github.com/bookofproofs/fpl/tree/master/poc/theories/)
 3. A demo python project consisting of a parser generated using the [TatSu package](https://tatsu.readthedocs.io/en/stable/).

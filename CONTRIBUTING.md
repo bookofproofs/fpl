@@ -1,5 +1,5 @@
 # What is this project about?
-The FPL Interpreter python project is part of a greater Proof of Concept project ("poc"), covering the development of the FPL grammar, the FPL parser, the FPL interpreter, and writing mathematical theories in FPL. The concept for the poc can be found [here](https://www.bookofproofs.org/FPLHighLevelDesign.pdf). The FPL parser is based on the [tatsu package](https://tatsu.readthedocs.io/en/stable/).
+The FPL Interpreter python project is part of a greater Proof of Concept project ("poc"), covering the development of the FPL grammar, the FPL parser, the FPL interpreter, and writing mathematical theories in FPL. The concept for the poc can be found [here](https://github.com/bookofproofs/fpl/blob/master/hld/FPLHighLevelDesign.pdf). The FPL parser is based on the [tatsu package](https://tatsu.readthedocs.io/en/stable/).
 
 # In which areas can you contribute?
 
