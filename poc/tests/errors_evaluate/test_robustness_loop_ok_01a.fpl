@@ -4,11 +4,11 @@ TestEvaluationRobustnessLoop
     {
         func Sum(list: *Nat)->Nat
         {
-            result, addend: Nat
+            i: index
             result:=Zero()
-            loop addend list
+            loop i list$
             (
-                result:=Add(result,addend)
+                result:=Add(result,list$i)
             )
             return result
         }
