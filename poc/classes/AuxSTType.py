@@ -87,7 +87,7 @@ class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
     def accepts(self, other_type):
         """
         True, if the other_type is consistent with self.
-        The method is asymmetric, for instance base class types match with the types of their
+        The method is asymmetric, for instance, base class types accept the types of their
         derived classes but not vice versa.
         :return: Boolean value
         """

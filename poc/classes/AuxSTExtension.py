@@ -10,9 +10,9 @@ class AuxSTExtensionHandler:
         self.extension_name = ""
         # regex
         self.extension_regex = ""
-        # identified user-defined FPL class node for this extension
-        self.class_node = None
-        # the name of the FPL file containing the definition
+        # identified user-defined FPL constructor for this extension
+        self.constructor = None
+        # the name of the FPL file containing the definition of the extension
         self.file_name_with_definition = ""
         # nodes in the symbol table matching this extension
         self.matching_nodes = list()

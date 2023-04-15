@@ -66,8 +66,7 @@ class AuxSTConstructor(AuxSTBuildingBlock):
                     new_value = InbuiltValueUndefined(self)
                 else:
                     # todo: we still have to embed the variables and asserted predicates
-                    # of the called base class inside the constructor's class instance
-                    pass
+                    raise NotImplementedError(str(type(child)))
             else:
                 raise NotImplementedError(str(type(child)))
         # the value of the constructor is a wrapper object with the type of its class
