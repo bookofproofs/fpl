@@ -49,6 +49,7 @@ class AllEvaluateTests(UtilTestCase):
         ("test_robustness_type_ok_02.fpl", "unknown"),
         ("test_robustness_type_ok_03.fpl", "unknown"),
         ("test_robustness_loop_ok_01.fpl", "unknown"),
+        ("test_robustness_loop_ok_01a.fpl", "unknown"),
         ("test_robustness_loop_ok_02.fpl", "unknown"),
         ("test_robustness_loop_ok_03.fpl", "unknown"),
         ("test_robustness_loop_ok_04.fpl", "unknown"),

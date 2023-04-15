@@ -1,5 +1,7 @@
+from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTConstants import AuxSTConstants
+from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
 class AuxSTRange(AuxST):
@@ -30,3 +32,11 @@ class AuxSTRange(AuxST):
         if self._long_id is None:
             self._long_id = self.to_string()
         return self._long_id
+
+    def evaluate(self, sem):
+        for child in self.children:
+            if isinstance(child, AuxInterfaceSTType):
+                expected_type = child.get_declared_type()
+                EvaluateParams.evaluate_recursion(sem, child, expected_type)
+            else:
+                EvaluateParams.evaluate_recursion(sem, child)
