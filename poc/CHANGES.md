@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.10
+* Bugfix
+  * Initial implementation of the AuxSTExt evaluate method (previously NotImplementedError)
 ## 1.10.9
 * Bugfix
   * Correcting the evaluation in AuxSTTheoremLikeStatementOrConjecture

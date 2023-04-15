@@ -1,4 +1,4 @@
-Test.ExtensionUndeclared
+Test.ExtensionMissingClass
 {
     :ext
         extDigits : /\d+/

@@ -77,14 +77,14 @@ class SemCheckerIdentifiers:
                     length_pr = len(prefix)
                     extension_name = constructor_node.id[length_pr - 3:length - 1]
                     if extension_name in self.analyzer.all_extensions:
-                        self.analyzer.all_extensions[extension_name].class_node = constructor_node.parent.parent
+                        self.analyzer.all_extensions[extension_name].constructor = constructor_node
 
         for extension_name in self.analyzer.all_extensions:
-            if self.analyzer.all_extensions[extension_name].class_node is not None:
+            if self.analyzer.all_extensions[extension_name].constructor is not None:
                 for extension_node in self.analyzer.all_extensions[extension_name].matching_nodes:
                     # set the declared type of the extension to the declared type of the class using
                     # this extension in a constructor
-                    extension_node.set_class(self.analyzer.all_extensions[extension_name].class_node)
+                    extension_node.set_constructor(self.analyzer.all_extensions[extension_name].constructor)
             else:
                 for extension_node in self.analyzer.all_extensions[extension_name].matching_nodes:
                     # set the declared type of the extension node to undefined, since there is no class
