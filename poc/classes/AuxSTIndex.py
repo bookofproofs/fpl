@@ -1,11 +1,11 @@
-from poc.classes.AuxInbuiltTypes import InbuiltInt
+from poc.classes.AuxInbuiltTypes import InbuiltIndex
 from poc.classes.AuxInbuiltValues import InbuiltValueInteger
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTInt(AuxST, AuxInterfaceSTType):
+class AuxSTIndex(AuxST, AuxInterfaceSTType):
 
     def __init__(self, i):
         AuxInterfaceSTType.__init__(self)
@@ -13,7 +13,7 @@ class AuxSTInt(AuxST, AuxInterfaceSTType):
         self.zto = ""
         self.zfrom = ""
         self.id = ""
-        self.set_declared_type(InbuiltInt(self))
+        self.set_declared_type(InbuiltIndex(self))
 
     def to_string(self):
         """
@@ -23,7 +23,7 @@ class AuxSTInt(AuxST, AuxInterfaceSTType):
         return self.outline
 
     def clone(self):
-        other = self._copy(AuxSTInt(self._i))
+        other = self._copy(AuxSTIndex(self._i))
         other.id = self.id
         other._declared_type = self._declared_type
         return other

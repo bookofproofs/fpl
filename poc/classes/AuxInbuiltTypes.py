@@ -40,40 +40,16 @@ class InbuiltFunctionalTerm(AuxInbuiltType):
         self.type_pattern |= AuxBits.functionalTermBit
 
 
+class InbuiltIndex(AuxInbuiltType):
+    def __init__(self, node):
+        super().__init__(node)
+        self.id = AuxSTConstants.int
+        self.type_pattern |= AuxBits.index
+        self.type_pattern |= AuxBits.inbuiltBit
+
+
 class InbuiltVariableVariadic(AuxInbuiltType):
     def __init__(self, node):
         super().__init__(node)
         self.id = AuxSTConstants.variadic_var
         self.type_pattern |= AuxBits.variadicBit
-        self.type_pattern |= AuxBits.inbuiltBit
-
-
-class InbuiltInt(AuxInbuiltType):
-    def __init__(self, node):
-        super().__init__(node)
-        self.id = AuxSTConstants.int
-        self.type_pattern |= AuxBits.integer
-        self.type_pattern |= AuxBits.inbuiltBit
-
-
-class InbuiltGeneric(AuxInbuiltType):
-    def __init__(self, node, identifier):
-        super().__init__(node)
-        self.id = identifier
-        self.type_pattern = AuxBits.templateBit
-
-
-class InbuiltExtension(AuxInbuiltType):
-    def __init__(self, node):
-        super().__init__(node)
-        self.id = node.id
-        self.type_pattern = AuxBits.extensionBit
-
-
-class InbuiltClassInstance(AuxInbuiltType):
-    """ This class is a (multi-type) generic representation of all classes definable in FPL. """
-
-    def __init__(self, constructor):
-        super().__init__(constructor)
-        self.id = constructor.parent.parent.id
-        self.type_pattern = AuxBits.classBit

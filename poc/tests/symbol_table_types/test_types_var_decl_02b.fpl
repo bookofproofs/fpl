@@ -1,0 +1,33 @@
+TestNamespace
+{
+    theory
+    {
+        pred Test()
+        {
+            n: +object
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='7441b885bdeb3ad3e61b87566b10bbaf', file_name='test_types_var_decl_02b.fpl', namespace='TestNamespace', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='8.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTVarDec(id='n', outline='var_decl', zfrom='7.12', zto='7.22')
+    │       │       └── AuxSTType(id='object', outline='type', type_mod='+', type_pattern=17, zfrom='7.16', zto='7.22')
+    │       ├── AuxSTPredicate(outline='intrinsic', zfrom='', zto='')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

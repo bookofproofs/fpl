@@ -1,0 +1,13 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        pred Test10b(n: +function)
+        {
+            m: +function
+            m:=n
+        }
+    }
+}
+##############################
+should not throw any not handled error

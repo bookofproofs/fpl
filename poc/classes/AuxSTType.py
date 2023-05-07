@@ -115,7 +115,7 @@ class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
         if ret is not None:
             return ret
 
-        ret = self._accepts_any_int(other_type)
+        ret = self._accepts_any_index(other_type)
         if ret is not None:
             return ret
 
@@ -172,8 +172,13 @@ class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
                     # or via the assertion of the is operand
                     return other_type.is_derived_from(self)
         if self.is_object() and not other_type.is_object():
-            # an object might match some non objects
-            raise NotImplementedError()
+            # an object might match some non objects, except
+            if other_type.is_index():
+                return False
+            else:
+                pass
+                return False
+                raise NotImplementedError()
         if other_type.is_object() and not self.is_object():
             # an object might match some non objects
             raise NotImplementedError()
@@ -207,9 +212,9 @@ class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
             raise NotImplementedError()
         return None
 
-    def _accepts_any_int(self, other_type):
-        if self.is_integer() and other_type.is_integer():
-            # two integer types always match
+    def _accepts_any_index(self, other_type):
+        if self.is_index() and other_type.is_index():
+            # two index types always match
             return True
         # in all other cases return False
         return False

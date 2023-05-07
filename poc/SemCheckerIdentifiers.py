@@ -17,7 +17,7 @@ from poc.fplerror import FplUnusedBoundVariable
 from poc.classes.AuxSTExt import AuxSTExt
 from poc.classes.AuxSTExtension import AuxSTExtension, AuxSTExtensionHandler
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined, InbuiltPredicate, \
-    InbuiltFunctionalTerm, InbuiltExtension, InbuiltGeneric
+    InbuiltFunctionalTerm
 from poc.classes.AuxSTAxiom import AuxSTAxiom
 from poc.classes.AuxSTClass import AuxSTClass
 from poc.classes.AuxSTClassInstance import AuxSTClassInstance

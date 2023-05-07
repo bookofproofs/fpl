@@ -1,0 +1,12 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        pred Test08(n: index)
+        {
+
+        }
+    }
+}
+##############################
+should not throw any not handled error

@@ -1,0 +1,13 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        pred Test05a(n: *object)
+        {
+            m: *object
+            m:=n
+        }
+    }
+}
+##############################
+should not throw any not handled error

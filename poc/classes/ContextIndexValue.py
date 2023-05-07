@@ -7,7 +7,7 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSTInt import AuxSTInt
+from poc.classes.AuxSTIndex import AuxSTIndex
 from poc.classes.AuxSTVariableVariadic import AuxSTVariableVariadic
 
 
@@ -37,7 +37,7 @@ class ContextIndexValue(AuxInterpretation):
             self._sub_index = parsing_info.var  # noqa
         elif rule == "Digit":
             # remember the sub index
-            self._sub_index = AuxSTInt(self._i)
+            self._sub_index = AuxSTIndex(self._i)
             self._sub_index.zto = self._i.last_positions_by_rule['Digit'].pos_to_str()
             self._sub_index.zfrom = self._i.corrected_position('Digit')
             self._sub_index.id = parsing_info.get_cst()
