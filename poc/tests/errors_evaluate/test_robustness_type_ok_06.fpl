@@ -1,0 +1,12 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        pred Test06()
+        {
+            n1,n2,n3: predicate[hKb506(ex62n41(true))!]
+        }
+    }
+}
+##############################
+should not throw any not handled error

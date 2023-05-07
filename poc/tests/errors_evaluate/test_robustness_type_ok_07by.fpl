@@ -1,0 +1,13 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        pred Test07b(n1,n2,n3: +Nat)
+        {
+            m1,m2,m3: +Nat
+            m1:=n1
+        }
+    }
+}
+##############################
+should not throw any not handled error

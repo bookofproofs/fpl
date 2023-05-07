@@ -9,4 +9,4 @@ class AuxBits:
     extensionBit = 32
     variadicBit = 64
     hasCoordBit = 128
-    integer = 256
+    index = 256

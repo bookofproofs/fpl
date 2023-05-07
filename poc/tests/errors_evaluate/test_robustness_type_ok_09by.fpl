@@ -1,0 +1,13 @@
+TestEvaluationRobustnessType
+{
+    theory
+    {
+        pred Test09b(n: +predicate)
+        {
+            n: +predicate
+            m:=n
+        }
+    }
+}
+##############################
+should not throw any not handled error

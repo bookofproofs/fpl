@@ -1,0 +1,37 @@
+TestTypesSymbolTable
+{
+    theory
+    {
+        pred Test()
+        {
+            n1,n2,n3: *Nat
+        }
+    }
+}
+##############################
+AnyNode(outline='root')
+├── AnyNode(outline='globals')
+│   └── AuxSTGlobal(gid='TestTypesSymbolTable.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='8c2e9565d5d0a6601c3a6365e8014b66', file_name='test_types_var_decl_04a.fpl', namespace='TestTypesSymbolTable', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='8.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   ├── AuxSTVarDec(id='n1', outline='var_decl', zfrom='7.12', zto='7.26')
+    │       │   │   └── AuxSTType(id='Nat', outline='type', type_mod='*', type_pattern=1, zfrom='7.23', zto='7.26')
+    │       │   ├── AuxSTVarDec(id='n2', outline='var_decl', zfrom='7.15', zto='7.26')
+    │       │   │   └── AuxSTType(id='Nat', outline='type', type_mod='*', type_pattern=1, zfrom='7.23', zto='7.26')
+    │       │   └── AuxSTVarDec(id='n3', outline='var_decl', zfrom='7.18', zto='7.26')
+    │       │       └── AuxSTType(id='Nat', outline='type', type_mod='*', type_pattern=1, zfrom='7.23', zto='7.26')
+    │       ├── AuxSTPredicate(outline='intrinsic', zfrom='', zto='')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

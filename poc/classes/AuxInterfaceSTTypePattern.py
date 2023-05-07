@@ -3,7 +3,7 @@ from poc.classes.AuxBits import AuxBits
 
 class AuxInterfaceSTTypePattern:
     """
-    A class for elements of the logic of testing for the type of an FPL type
+    A class for the logic of testing for the type of an FPL type
     """
 
     def is_class(self):
@@ -42,5 +42,5 @@ class AuxInterfaceSTTypePattern:
     def is_inbuilt(self):
         return (self.type_pattern & AuxBits.inbuiltBit) > 0
 
-    def is_integer(self):
-        return (self.type_pattern & AuxBits.integer) > 0
+    def is_index(self):
+        return (self.type_pattern & AuxBits.index) > 0

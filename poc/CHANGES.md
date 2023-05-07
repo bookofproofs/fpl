@@ -1,4 +1,16 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.12
+* Refactoring
+  * Renaming class names with "integer" into "index" to better align with the FPL syntax 
+    * AuxSTInt -> AuxSTIndex
+    * InbuiltInt -> InbuiltIndex
+    * AuxBits.integer -> AuxBits.index
+    * AuxSTType._accepts_any_int() -> AuxSTType._accepts_any_index()
+    * AuxInterfaceSTTypePattern.is_integer() -> AuxInterfaceSTTypePattern.is_index()
+  * YAGNI: Getting rid of the types InbuiltGeneric, InbuiltExtension, InbuiltClassInstance
+* Bugfix
+  * Initial implementation of the evaluate methods in AuxSTStatementLoop, AuxSTRange (previously NotImplementedError)
+  * Additional robustness test cases inside errors_evaluate folder 
 ## 1.10.11
 * Bugfix
   * Initial implementation of the evaluate methods in AuxSTStatementLoop, AuxSTRange (previously NotImplementedError)
