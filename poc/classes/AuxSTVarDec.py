@@ -34,7 +34,7 @@ class AuxSTVarDec(AuxST):
     def has_in_scope(self, pos: str):
         """
         Checks if a position (usually of a variable) is in the scope of the variable (self)
-        :param zfrom: position
+        :param pos: position
         :return: True if yes, False if no
         """
         sp = pos.split(".")

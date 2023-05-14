@@ -4,7 +4,7 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 
 class AuxSTOutline(AnyNode):
     """
-    A class for elements of the symbol table that have an an outline
+    A class for elements of the symbol table that have an outline
     """
 
     def __init__(self, parent: AnyNode, outline: str):

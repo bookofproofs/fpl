@@ -17,9 +17,9 @@ class ContextObjectDefinitionBlock(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self._i = i
-        # specification list is optional in the grammar and we initialize it in any case
+        # specification list is optional in the grammar, and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
-        # definition content lists (properties and/or constructors) are optional in the grammar
+        # definition content lists (properties and/or constructors), are optional in the grammar,
         # and we initialize them in any case
         self.constructor_list = AuxSTConstructors()
         self.property_list = AuxSTProperties()

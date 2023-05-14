@@ -48,8 +48,6 @@ class AuxSTClass(AuxSTBuildingBlock):
         declared_vars_tuple = search.findall_by_attr(var_spec_list_node, AuxSTConstants.var_decl,
                                                      AuxSTConstants.outline)
         for var_declaration in declared_vars_tuple:
-            unique_source_code_id_of_var = var_declaration.id + '|' + str(self.zfrom)
-
             if var_declaration.id not in self._declared_vars:
                 # set the scope of the variable
                 var_declaration.initialize_scope(self.zto)
@@ -61,7 +59,7 @@ class AuxSTClass(AuxSTBuildingBlock):
 
         # The used variables might be spread across the scope of the class, including its constructors and properties.
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit
-        # The used variables of a class are, therefore, limited to the scope of the class without the scopes of
+        # The used variables of a class are, therefore, limited to the scope of the class without the scopes
         # of its sub nodes.
         self._used_vars = search.findall_by_attr(var_spec_list_node, AuxSTConstants.var, AuxSTConstants.outline)
         self.filter_misused_templates(error_mgr, filename)

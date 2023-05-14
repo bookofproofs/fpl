@@ -33,7 +33,7 @@ class AuxEvaluationBlockFunctionalTerm:
 
     def get_declared_type(self):
         if self._declared_type is None:
-            self._initialize_declared_type()
+            AuxEvaluationBlockFunctionalTerm.initialize_declared_type_of_functional_term(self)
         return self._declared_type
 
     @staticmethod

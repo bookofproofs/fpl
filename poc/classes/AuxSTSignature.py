@@ -56,8 +56,8 @@ class AuxSTSignature(AuxST):
         return new_signature
 
     def evaluate(self, sem):
-        # if the evaluate of the signature get calls, the corresponding FPL building block
-        # has already _next_input_arguments set
+        # if evaluate method of the signature get called, the corresponding FPL building block's
+        # _next_input_arguments are already set
         register = sem.eval_stack[-1]
         current_building_block = register.building_block
         current_instance = current_building_block.get_instance(register.instance_guid)

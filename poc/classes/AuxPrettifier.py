@@ -140,7 +140,7 @@ class AuxPrettifier:
                         self._replace_long_by_short("cl", ast_info.cst)
                     elif ast_info.cst in ["conclusion", "con"]:
                         self._replace_long_by_short("con", ast_info.cst)
-                        self._increase_indent()  # increase indent after an conclusion keyword
+                        self._increase_indent()  # increase indent after a conclusion keyword
                         self._append_indented("")
                     elif ast_info.cst in ["conjecture", "conj"]:
                         self._replace_long_by_short("conj", ast_info.cst, line_separator="\n\n")
@@ -173,7 +173,7 @@ class AuxPrettifier:
                             self._replace_long_by_short("pre", ast_info.cst, line_separator="", indent=False)
                         else:
                             self._replace_long_by_short("pre", ast_info.cst)
-                            self._increase_indent()  # increase indent after an premise keyword
+                            self._increase_indent()  # increase indent after a premise keyword
                             self._append_indented("")
                     elif ast_info.cst in ["postulate", "post"]:
                         self._replace_long_by_short("post", ast_info.cst, line_separator="\n\n")

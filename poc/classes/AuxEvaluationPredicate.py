@@ -3,6 +3,10 @@ from poc.classes.AuxEvaluation import EvaluateParams
 
 
 class AuxEvaluationPredicate:
+    def __init__(self):
+        # we add this attribute to the class to make it clear that this class is meant to be used as a mixin
+        self.children = list()
+
     def evaluate_children(self, sem):
         expressions = list()
         bool_values = list()

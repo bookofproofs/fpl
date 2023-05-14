@@ -6,9 +6,6 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSTConstructor import AuxSTConstructor
-from poc.classes.AuxSymbolTable import AuxSymbolTable
-from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextConstructorBlock(AuxInterpretation):

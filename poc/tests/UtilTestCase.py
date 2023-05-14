@@ -47,7 +47,6 @@ class UtilTestCase(unittest.TestCase):
     def syntax_analysis_correct_node_number(self, use_case, number_of_nodes):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
         interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
-        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
         r = interpreter.get_symbol_table_root()
         globals_node = AuxSymbolTable.get_child_by_outline(r, AuxSTConstants.globals)
@@ -71,7 +70,6 @@ class UtilTestCase(unittest.TestCase):
     def semantical_analysis_detects_no_fpl_error(self, use_case, diagnose_id):
         path_to_use_cases = os.path.join(self.path_to_usecases, use_case)
         interpreter = FplInterpreter(self.fpl_parser, path_to_use_cases)
-        result = Utils.get_code_and_expected(self.path_to_usecases, use_case)
         interpreter.syntax_analysis(path_to_use_cases)
         interpreter.semantic_analysis()
         if AuxISourceAnalyser.verbose:
@@ -87,10 +85,8 @@ class UtilTestCase(unittest.TestCase):
         try:
             self.transformer.clear()
             self.transformer.syntax_transform(self.path_to_usecases + "/" + use_case + ".fpl")
-        except FailedToken as ex:
+        except FailedToken:
             return
-        except FailedParse as ex:
-            return
-        except FailedPattern as ex:
+        except FailedParse:
             return
         self.assertFalse(True)

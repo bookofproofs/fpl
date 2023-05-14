@@ -1,5 +1,5 @@
 """
-An class für retrieving key information from context objects during the parsing process of TatSu
+A class für retrieving key information from context objects during the parsing process of TatSu
 that will be useful for the FPL Interpreter.
 """
 

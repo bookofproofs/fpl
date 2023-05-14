@@ -7,6 +7,7 @@ from poc.classes.AuxSTType import AuxSTType
 
 class AuxInbuiltValue(AuxInterfaceSTType):
     def __init__(self, node):
+        super().__init__()
         self._copied_path = tuple()
         if node is not None:
             if hasattr(node, "zfrom"):

@@ -1,6 +1,6 @@
 class AuxInterfaceSTType:
     """
-    A class for elements of the symbol table that have an an outline with type
+    A class for elements of the symbol table that have an outline with type
     """
 
     def __init__(self):

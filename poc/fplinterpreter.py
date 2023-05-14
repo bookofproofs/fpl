@@ -15,7 +15,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.10.12"
+        self.version = "1.10.13"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -112,7 +112,7 @@ class FplInterpreter:
                         # We have the case that the file was already loaded into the symbol table.
                         # Now we have to check if it had another checksum.
                         if fpl_theory_node.checksum != fpl_file_node.checksum:
-                            # the file in the root directory has been changed and
+                            # the file in the root directory has been changed, and
                             # it has to be replaced in the symbol table
                             raise NotImplementedError()
                         else:

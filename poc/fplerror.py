@@ -56,23 +56,23 @@ class FplIdentifierAlreadyDeclared(FplInterpreterMessage):
                 super().__init__("Identifier '{0}' already defined at ({1},{2})".format(identifier,
                                                                                         existing_zfrom_split[0],
                                                                                         existing_zfrom_split[1]),
-                                 zfrom_split[0],
-                                 zfrom_split[1],
+                                 int(zfrom_split[0]),
+                                 int(zfrom_split[1]),
                                  file)
             else:
                 super().__init__("Identifier '{0}' already defined at ({1},{2})".format(identifier,
                                                                                         zfrom_split[0],
                                                                                         zfrom_split[1]),
-                                 existing_zfrom_split[0],
-                                 existing_zfrom_split[1],
+                                 int(existing_zfrom_split[0]),
+                                 int(existing_zfrom_split[1]),
                                  file)
         else:
             super().__init__("Identifier '{0}' already defined at {1}({2},{3})".format(identifier,
                                                                                        existing_file,
                                                                                        zfrom_split[0],
                                                                                        zfrom_split[1]),
-                             existing_zfrom_split[0],
-                             existing_zfrom_split[1],
+                             int(existing_zfrom_split[0]),
+                             int(existing_zfrom_split[1]),
                              file)
 
         self.diagnose_id = "SE0020"
@@ -138,7 +138,7 @@ class FplUndeclaredVariable(FplInterpreterMessage):
     def __init__(self, zfrom: str, var_name: str, file_name: str):
         s = zfrom.split(".")
         super().__init__("The variable '{0}' was not declared in the current context".format(var_name),
-                         s[0], s[1], file_name)
+                         int(s[0]), int(s[1]), file_name)
         self.diagnose_id = "SE0070"
 
 
@@ -147,7 +147,7 @@ class FplUnusedVariable(FplInterpreterMessage):
         s = zfrom.split(".")
         super().__init__(
             "The variable '{0}' was not used in the current context".format(var_name),
-            s[0], s[1], file_name)
+            int(s[0]), int(s[1]), file_name)
         self.mainType = "W"  # Warning
         self.diagnose_id = "SE0075"
 
@@ -166,14 +166,14 @@ class FplVariableAlreadyDeclared(FplInterpreterMessage):
         s = zfrom.split(".")
         s_other = other_zfrom.split(".")
         super().__init__("The variable '{0}' was already declared in the current context at ({1},{2})".format(
-            var_name, s_other[0], int(s_other[1]) + 1), s[0], s[1], file_name)
+            var_name, s_other[0], int(s_other[1]) + 1), int(s[0]), int(s[1]), file_name)
         self.diagnose_id = "SE0080"
 
 
 class FplIdentifierNotDeclared(FplInterpreterMessage):
     def __init__(self, identifier: str, file_name: str, zfrom: str):
         s = zfrom.split(".")
-        super().__init__("Undeclared identifier '{0}'".format(identifier), s[0], s[1], file_name)
+        super().__init__("Undeclared identifier '{0}'".format(identifier), int(s[0]), int(s[1]), file_name)
         self.diagnose_id = "SE0090"
 
 
@@ -192,7 +192,7 @@ class FplIdentifierAmbiguous(FplInterpreterMessage):
 class FplNamespaceNotFound(FplInterpreterMessage):
     def __init__(self, namespace: str, file: str, zfrom: str):
         pos = zfrom.split(".")
-        super().__init__("Namespace '{0}' not found".format(namespace), pos[0], pos[1], file)
+        super().__init__("Namespace '{0}' not found".format(namespace), int(pos[0]), int(pos[1]), file)
         self.diagnose_id = "SE0110"
 
 
@@ -209,7 +209,7 @@ class FplTemplateMisused(FplInterpreterMessage):
     def __init__(self, template: str, zfrom: str, file_name: str):
         s = zfrom.split(".")
         super().__init__("The generic type '{0}' cannot be used in this context".format(template),
-                         s[0], s[1], file_name)
+                         int(s[0]), int(s[1]), file_name)
         self.diagnose_id = "SE0130"
 
 

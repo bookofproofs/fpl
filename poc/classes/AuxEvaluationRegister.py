@@ -1,5 +1,3 @@
-from poc.classes.AuxBits import AuxBits
-
 """
 The class AuxEvaluationRegister stores all context-sensitive information for a symbol table node being 
 semantically evaluated. 
