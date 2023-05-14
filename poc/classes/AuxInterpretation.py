@@ -11,7 +11,7 @@ class AuxInterpretation:
 
     def __init__(self, ast_info: AuxAstInfo, error_mgr: FplErrorManager):
         self._ast_info = ast_info
-        # any errors from the caller. Classes inheriting from AuxInterpretation can add to to this list own errors.
+        # any errors from the caller. Classes inheriting from AuxInterpretation can add to this list own errors.
         self._error_mgr = error_mgr  # a pointer to all the error manager of the semantics
         # internal semantical representation of the rule
         self.id = ""
@@ -20,10 +20,42 @@ class AuxInterpretation:
         self.zto.col = self.zfrom.col = ast_info.col + 1
         self.zto.line = self.zfrom.line = ast_info.line
         self.zto.pos = self.zfrom.pos = ast_info.pos + 1
-        # some rules require stopping the aggregation of sub rules from the parse list after a certain
-        # sub rule was aggregated. This flag will be set to true in the specific rule_aggregator implementation
+        # some rules require stopping the aggregation of sub-rules from the parse list after a certain
+        # sub-rule was aggregated. This flag will be set to true in the specific rule_aggregator implementation
         # of the class inheriting from AuxInterpretation
         self.stop_aggregation = False
+
+        # those attributes will be added to the class dynamically depending on the derived class
+        # we add them here to avoid warnings from the IDE
+        self.predicate = None
+        self.tuple = None
+        self.var_list = None
+        self.symbol_signature = None
+        self.var = None
+        self.type = None
+        self.value = None
+        self.rule = None
+        self.pos = None
+        self.col = None
+        self.line = None
+        self.cst = None
+        self.con = None
+        self.pre = None
+        self.variable_spec = None
+        self.varCounter = None
+        self.varRange = None
+        self.statement_list = None
+        self.building_block = None
+        self.statement = None
+        self.signature = None
+        self.cfr_list = None
+        self.bound_vars = None
+        self.var_type = None
+        self.predicate_with_args = None
+        self.localization = None
+        self.ebnf_transl = None
+        self.proof_argument = None
+        self.generalType = None
 
     def rule_name(self):
         """ name of the corresponding grammar rule """
@@ -53,7 +85,7 @@ class AuxInterpretation:
     def get_cst(self):
         """
         If the interpretation is not determined yet, the TatSu parsing context of the rule.
-        Otherwise None.
+        Otherwise, None.
         """
         return self._ast_info.cst
 

@@ -32,7 +32,7 @@ class FPLSourceTransformer:
     def _default(self, ast):
         """
         If there’s no method matching the rule’s name, TatSu will invoke this method.
-        :param ast: ast
+        :param ast: Abstract symbol tree of the parser
         :return: ast
         """
         return ast
@@ -51,7 +51,7 @@ class FPLSourceTransformer:
         In contrast to _default, this method receives the current parsing context as a parameter that contains
         valuable parsing information like the position and the cst.
         :param context: parsing context
-        :param ast: ast
+        :param ast: Abstract symbol tree of the parser
         :return: ast
         """
 

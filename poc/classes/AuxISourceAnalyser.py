@@ -1,4 +1,4 @@
-from anytree import AnyNode
+from poc.classes.AuxST import AuxSTOutline
 from poc.fplerror import FplErrorManager
 from poc.classes.AuxSTTheory import AuxSTTheory
 from poc.classes.AuxSTLocalizations import AuxSTLocalizations
@@ -11,7 +11,7 @@ Implements an interface between the classes named Context<Something> and the cla
 class AuxISourceAnalyser:
     verbose = False  # True <=> verbose mode and no try-catch blocks for run time errors
 
-    def __init__(self, error_mgr: FplErrorManager, root: AnyNode, theory_name: str, namespace=""):
+    def __init__(self, error_mgr: FplErrorManager, root: AuxSTOutline, theory_name: str, namespace=""):
         """
         Creates a new interface between the classes named Context<Something> and the class FPLSyntaxAnalyzer
         :param error_mgr: a pointer to the errors of the FPL transformer
@@ -27,6 +27,7 @@ class AuxISourceAnalyser:
         self.last_positions_by_rule = dict()
         self.highlight_tags = list()
         self.all_extension_definitions = dict()
+        self.ast_info = None
 
     def set_pos(self, ast_info):
         self.last_positions_by_rule[ast_info.rule] = ast_info

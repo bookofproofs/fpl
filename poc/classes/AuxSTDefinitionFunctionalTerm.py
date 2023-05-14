@@ -39,7 +39,7 @@ class AuxSTDefinitionFunctionalTerm(AuxSTBuildingBlock):
 
         # The used variables might be spread across the scope of the predicate definition, including its properties.
         # However, we omit those scopes because they have their own _used_vars tuples. Thus, we have to limit
-        # The used variables of a predicate definition are, therefore, limited to its scope without the scopes of
+        # The used variables of a predicate definition are, therefore, limited to its scope without the scopes
         # of its sub nodes.
         self._used_vars = ()
         for child in self.children:

@@ -18,11 +18,11 @@ class ContextPredicateDefinitionBlock(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self._i = i
-        # Predicate is optional in the grammar and we initialize it in any case
+        # Predicate is optional in the grammar, and we initialize it in any case
         self.predicate = AuxSTPredicate(AuxSTConstants.intrinsic, i)
-        # specification list is optional in the grammar and we initialize it in any case
+        # specification list is optional in the grammar, and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
-        # definition content list is optional in the grammar and we initialize it in any case
+        # definition content list is optional in the grammar, and we initialize it in any case
         self.property_list = AuxSTProperties()
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["PredicateDefinitionBlock"] +

@@ -12,7 +12,9 @@ from poc.fplerror import FplErrorManager
 class AuxSTProof(AuxSTBuildingBlock, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.block_proof, i)
+        AuxSTBuildingBlock.__init__(self, AuxSTConstants.block_proof, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxEvaluationPredicate.__init__(self)
         self.zfrom = i.corrected_position('ProofHeader')
         self.zto = i.last_positions_by_rule['Proof'].pos_to_str()
         self._referenced_theorem_like_stmt = None

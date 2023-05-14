@@ -50,7 +50,7 @@ class AuxEvaluationBlockPredicate:
         else:
             # replace the stack by the immutable value
             sem.eval_stack.pop()
-            sem.eval_stack.append( node.constant_value())
+            sem.eval_stack.append(node.constant_value())
         node.set_sc_ready()
 
     @staticmethod

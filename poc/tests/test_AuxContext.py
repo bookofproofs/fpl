@@ -41,11 +41,11 @@ class AuxContextTests(unittest.TestCase):
         sem.push_context("t2")
         sem.push_context("t3")
         sem.push_context("t4")
-        with self.assertRaises(AssertionError) as t:
+        with self.assertRaises(AssertionError):
             sem.pop_context(["t1"])
-        with self.assertRaises(AssertionError) as t:
+        with self.assertRaises(AssertionError):
             sem.pop_context(["t2"])
-        with self.assertRaises(AssertionError) as t:
+        with self.assertRaises(AssertionError):
             sem.pop_context(["t3"])
         sem.pop_context(["t4"])
         sem.pop_context(["t1", "t2", "t3"])

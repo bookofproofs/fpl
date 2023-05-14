@@ -236,7 +236,7 @@ class SemCheckerIdentifiers:
                         # issue the FplUnusedBoundVariable error
                         self.analyzer.error_mgr.add_error(FplUnusedBoundVariable(var_id, quantor))
                     else:
-                        # otherwise mark the the used vars with this name as already bound
+                        # otherwise mark the used vars with this name as already bound
                         for var in used_vars:
                             if var.id == var_id:
                                 var.set_is_bound()
@@ -303,7 +303,7 @@ class SemCheckerIdentifiers:
                     # In this case, we have to check if this an allowed override.
                     if unique_gids[block.gid].reference.get_node_type_str() != block.reference.get_node_type_str():
                         # In case we have two blocks with different types, we trigger an FplAmbiguousSignature error
-                        # unless in case of a allowed class/constructor pair
+                        # unless in case of allowed class/constructor pair
                         if not (isinstance(unique_gids[block.gid].reference, AuxSTConstructor) and
                                 isinstance(block.reference, AuxSTClass) or
                                 isinstance(unique_gids[block.gid].reference, AuxSTClass) and
@@ -399,9 +399,9 @@ class SemCheckerIdentifiers:
     def _check_override_consistency(self):
         """
         Checks if, per identifier, all list elements have the same building block type.
-        Only in this case, we can interpret them as overriding the same type of a building block.
+        Only in this case, we can interpret them as overriding the same type of building block.
         The different types will be distributed over different dictionaries of the object instance
-        depending on the type of a building block so that we will be able to access them by that type directly
+        depending on the type of building block so that we will be able to access them by that type directly
         in later steps of the semantical analysis.
         :return: None
         """
@@ -519,7 +519,7 @@ class SemCheckerIdentifiers:
                 self.analyzer.error_mgr.add_error(
                     FplProofMissingTheoremLikeStatement(referenced_identifier, global_proof_node))
             else:
-                # Remember the proof's theorem-like statement once and for ever so we do not need to look for it anymore
+                # Remember the proof's theorem-like statement once and forever so we do not need to look for it anymore
                 proof_node.set_referenced_theorem_like_stmt(
                     self.analyzer.theorem_like_statements[referenced_identifier].reference)
 

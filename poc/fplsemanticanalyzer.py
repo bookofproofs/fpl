@@ -75,7 +75,7 @@ class SemanticAnalyser:
 
     def __check_namespace_identifiers(self, theory):
         """
-        Check if all namespaces are listed only once in the the uses clause of each theory
+        Check if all namespaces are listed only once in the uses clause of each theory
         :return: None
         """
         duplicate_checker = dict()

@@ -167,7 +167,7 @@ class AuxSTNodeWithReference(AuxST, AuxInterfaceSTType):
         """
         Tries to find all possible overrides based on a PascalCase identifier, which is the FPL convention
         for user-defined identifiers. Issues the FplIdentifierNotDeclared error, if not found.
-        :return: None, internal variable self._possible_overrides will be empty if not. Otherwise it will contain a
+        :return: None, internal variable self._possible_overrides will be empty if not. Otherwise, it will contain a
         list of possible overrides.
         """
         if self._override_id not in self._sem.overridden_qualified_ids.dictionary():

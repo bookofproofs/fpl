@@ -16,7 +16,7 @@ class ContextProofBlock(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self._i = i
-        # specification list is optional in the grammar and we initialize it in any case
+        # specification list is optional in the grammar, and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         self.proof_arguments = AuxSTProofArguments()
         self.aggregate_previous_rules(i.parse_list,

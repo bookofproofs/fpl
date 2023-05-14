@@ -76,7 +76,7 @@ class AuxContext:
     def pop_context(self, pars: list, debug=None):
         """
         Pops the last context from the stack.
-        :param pars: a context (list) assumed to be at the tail of the stack. Raises an AssertionError if not
+        :param pars: a context (list) assumed to be at the tail of the stack. Raises an AssertionError
         :param debug: if not none, the current stack will be printed with this debug information
         :return: None
         """

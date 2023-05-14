@@ -18,7 +18,7 @@ class ContextPremiseConclusionBlock(AuxInterpretation):
         self._i = i
         self.pre = None
         self.con = None
-        # specification list is optional in the grammar and we initialize it in any case
+        # specification list is optional in the grammar, and we initialize it in any case
         self.variable_spec = AuxSTVarSpecList()
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["PremiseConclusionBlock"] +

@@ -158,7 +158,7 @@ class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
     def _mark_bound_vars(self):
         """
         In case this predicate is an exist or an all quantor, this method will
-        marks in the symbol table the variables bound by it inside the block of this quantor.
+        mark in the symbol table the variables bound by it inside the block of this quantor.
         For performance reasons, an auxiliary variable self._bound_vars_marked is used to prevent
         repeating this single time job when reevaluating the quantor during the semantical analysis.
         :return: None

@@ -6,7 +6,6 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
-from poc.classes.AuxSymbolTable import AuxSymbolTable
 
 
 class ContextNamespace(AuxInterpretation):
@@ -18,7 +17,7 @@ class ContextNamespace(AuxInterpretation):
         self.building_blocks = None
         self.localisations = None
         # because this is the root rule of the FPL grammar, we have to aggregate all previous rules from the
-        # parsing list using (list(AuxRuleDependencies.dep.keys())
+        # parsing list using (list(AuxRuleDependencies.dep.keys()))
         # even if (due to problems in the syntax analysis), the parsing list is not matching the children of the
         # Namespace rule.
         self.aggregate_previous_rules(i.parse_list,

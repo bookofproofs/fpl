@@ -8,7 +8,6 @@ from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTUndefined import AuxSTUndefined
-from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class ContextUndefinedHeader(AuxInterpretation):
