@@ -29,7 +29,8 @@ class AuxSTClassSignature(AuxST):
                 fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "a generic"))
         elif class_type.is_extension():
             self.get_error_mgr().add_error(
-                fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id, "a user-defined syntax extension"))
+                fplerror.FplInvalidInheritance(class_type.get_ast_info(), class_type.id,
+                                               "a user-defined syntax extension"))
 
         self.type_pattern = class_type.type_pattern
         self.type = class_type.id

@@ -9,7 +9,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTConstants import AuxSTConstants
-from poc.classes.ContextVariableSpecificationList import  ContextVariableSpecificationList
+from poc.classes.ContextVariableSpecificationList import ContextVariableSpecificationList
 
 
 class ContextAxiomBlock(AuxInterpretation):

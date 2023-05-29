@@ -1,4 +1,3 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxInbuiltValues import InbuiltValueUndefined
 from poc.classes.AuxSTNodeWithReference import AuxSTNodeWithReference
 from poc.classes.AuxSTConstants import AuxSTConstants

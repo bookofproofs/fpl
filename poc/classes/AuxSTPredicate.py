@@ -1,5 +1,5 @@
 import z3
-from anytree import AnyNode, search, PreOrderIter
+from anytree import search, PreOrderIter
 from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxEvaluation import EvaluateParams

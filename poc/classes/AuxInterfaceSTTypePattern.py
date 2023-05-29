@@ -2,6 +2,10 @@ from poc.classes.AuxBits import AuxBits
 
 
 class AuxInterfaceSTTypePattern:
+    # this attribute will be added to the class by the derived classes, and
+    # we add it here to avoid warnings from the IDE
+    type_pattern = None
+
     """
     A class for the logic of testing for the type of FPL type
     """

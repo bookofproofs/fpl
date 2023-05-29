@@ -9,7 +9,8 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
 
     def __init__(self, i):
-        super().__init__(AuxSTConstants.type, i)
+        AuxST.__init__(self, AuxSTConstants.type, i)
+        AuxInterfaceSTTypePattern.__init__(self)
         self.id = ""
         self.type_pattern = 0
         self.type_mod = ""
@@ -176,8 +177,6 @@ class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
             if other_type.is_index():
                 return False
             else:
-                pass
-                return False
                 raise NotImplementedError()
         if other_type.is_object() and not self.is_object():
             # an object might match some non objects

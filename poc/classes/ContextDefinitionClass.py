@@ -35,7 +35,8 @@ class ContextDefinitionClass(AuxInterpretation):
             self.building_block.register_child(parsing_info.variable_spec)  # noqa
 
     def provide_default_constructor(self):
-        classes_constructors = AuxSymbolTable.get_child_by_outline(self.building_block, AuxSTConstants.classConstructors)
+        classes_constructors = AuxSymbolTable.get_child_by_outline(self.building_block,
+                                                                   AuxSTConstants.classConstructors)
         any_constructor = search.findall_by_attr(classes_constructors, AuxSTConstants.classConstructor,
                                                  name="outline")
         if len(any_constructor) == 0:

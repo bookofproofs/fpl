@@ -64,7 +64,8 @@ class AuxSTNodeWithReference(AuxST, AuxInterfaceSTType):
                             ret = EvaluateParams.evaluate_recursion(sem, self.reference,
                                                                     expected_type=propagated_expected_type,
                                                                     building_block=self.reference,
-                                                                    instance_guid=self.reference.clone_main_instance().id)
+                                                                    instance_guid=self.reference.
+                                                                    clone_main_instance().id)
                             sem.eval_stack.pop()
                             sem.eval_stack.append(ret)
                     else:
@@ -252,4 +253,3 @@ class AuxSTNodeWithReference(AuxST, AuxInterfaceSTType):
                 # no matching override found
                 self._reference_established = False
         return self._reference_established
-

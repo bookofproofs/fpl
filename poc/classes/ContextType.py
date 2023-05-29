@@ -9,7 +9,8 @@ from poc.classes.AuxHighlightTag import AuxHighlightTag
 class ContextType(AuxInterpretation, AuxInterfaceSTTypePattern):
 
     def __init__(self, i: AuxISourceAnalyser):
-        super().__init__(i.ast_info, i.errors)
+        AuxInterpretation.__init__(self, i.ast_info, i.errors)
+        AuxInterfaceSTTypePattern.__init__(self)
         self.id = ""
         self.type_pattern = 0
         self._colon_read = False

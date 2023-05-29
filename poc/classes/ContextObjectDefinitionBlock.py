@@ -9,7 +9,7 @@ from poc.classes.AuxRuleDependencies import AuxRuleDependencies
 from poc.classes.AuxSTVarSpecList import AuxSTVarSpecList
 from poc.classes.AuxSTConstructors import AuxSTConstructors
 from poc.classes.AuxSTProperties import AuxSTProperties
-from poc.classes.ContextVariableSpecificationList import  ContextVariableSpecificationList
+from poc.classes.ContextVariableSpecificationList import ContextVariableSpecificationList
 
 
 class ContextObjectDefinitionBlock(AuxInterpretation):

@@ -8,6 +8,37 @@ The class AuxInterpretation is the base class of all semantical interpretations 
 
 
 class AuxInterpretation:
+    # those attributes will be added to the class dynamically depending on the derived class
+    # we add them here to avoid warnings from the IDE
+    predicate = None
+    tuple = None
+    var_list = None
+    symbol_signature = None
+    var = None
+    type = None
+    value = None
+    rule = None
+    pos = None
+    col = None
+    line = None
+    cst = None
+    con = None
+    pre = None
+    variable_spec = None
+    varCounter = None
+    varRange = None
+    statement_list = None
+    building_block = None
+    statement = None
+    signature = None
+    cfr_list = None
+    bound_vars = None
+    var_type = None
+    predicate_with_args = None
+    localization = None
+    ebnf_transl = None
+    proof_argument = None
+    generalType = None
 
     def __init__(self, ast_info: AuxAstInfo, error_mgr: FplErrorManager):
         self._ast_info = ast_info
@@ -24,38 +55,6 @@ class AuxInterpretation:
         # sub-rule was aggregated. This flag will be set to true in the specific rule_aggregator implementation
         # of the class inheriting from AuxInterpretation
         self.stop_aggregation = False
-
-        # those attributes will be added to the class dynamically depending on the derived class
-        # we add them here to avoid warnings from the IDE
-        self.predicate = None
-        self.tuple = None
-        self.var_list = None
-        self.symbol_signature = None
-        self.var = None
-        self.type = None
-        self.value = None
-        self.rule = None
-        self.pos = None
-        self.col = None
-        self.line = None
-        self.cst = None
-        self.con = None
-        self.pre = None
-        self.variable_spec = None
-        self.varCounter = None
-        self.varRange = None
-        self.statement_list = None
-        self.building_block = None
-        self.statement = None
-        self.signature = None
-        self.cfr_list = None
-        self.bound_vars = None
-        self.var_type = None
-        self.predicate_with_args = None
-        self.localization = None
-        self.ebnf_transl = None
-        self.proof_argument = None
-        self.generalType = None
 
     def rule_name(self):
         """ name of the corresponding grammar rule """

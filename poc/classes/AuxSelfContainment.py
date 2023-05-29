@@ -1,4 +1,4 @@
-from anytree import AnyNode
+from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 
 
 class AuxReferenceType:
@@ -7,7 +7,7 @@ class AuxReferenceType:
 
 
 class AuxReference:
-    def __init__(self, predecessor: AnyNode, successor: AnyNode, reference_type: AuxReferenceType):
+    def __init__(self, predecessor: AuxSTBuildingBlock, successor: AuxSTBuildingBlock, reference_type: AuxReferenceType):
         self.predecessor = predecessor
         self.successor = successor
         self.type = reference_type
@@ -19,10 +19,10 @@ class AuxReference:
     def __str__(self):
         if self.type == 1:
             # semantical inference
-            self.predecessor.id + "-s>" + self.successor.id
+            return self.predecessor.id + "-s>" + self.successor.id
         else:
             # logical inference
-            self.predecessor.id + "-l>" + self.successor.id
+            return self.predecessor.id + "-l>" + self.successor.id
 
     def __hash__(self):
         return id(self)
@@ -34,7 +34,7 @@ class AuxSelfContainment:
         self._predecessors = dict()  # lists all predecessors where the values are sets of all successors of each
         self._successors = dict()  # lists all successors where the values are sets of all predecessors of each
 
-    def add_reference(self, predecessor: AnyNode, successor: AnyNode, reference_type: AuxReferenceType):
+    def add_reference(self, predecessor: AuxSTBuildingBlock, successor: AuxSTBuildingBlock, reference_type: AuxReferenceType):
         new = AuxReference(predecessor, successor, reference_type)
         if new in self._refs:
             AssertionError("The reference " + str(new) + "already exists.")
@@ -51,10 +51,10 @@ class AuxSelfContainment:
                 self._successors[successor].add(predecessor)
 
     def collect_roots(self):
-        return self._predecessors - self._successors
+        return {k: v for k, v in self._predecessors.items() if k not in self._successors}
 
     def collect_leaves(self):
-        return self._successors - self._predecessors
+        return {k: v for k, v in self._successors.items() if k not in self._predecessors}
 
     def get_predecessors(self, node):
         ret = set()

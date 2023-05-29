@@ -286,6 +286,7 @@ class AuxPrettifier:
         """
         return self._minified
 
+    # noinspection GrazieInspection
     def _close_right_block(self, paren: str, linebreak=False):
         if linebreak:
             self._indent -= 1
@@ -334,6 +335,7 @@ class AuxPrettifier:
         else:
             self._indent -= 1
 
+    # noinspection GrazieInspection
     def _prettyfied_post_process(self):
         # remove all spaces if they are proceeded by "\t"
         length = 0
@@ -349,6 +351,7 @@ class AuxPrettifier:
         while i < len(lines) - 1:
             line = lines[i].strip()
             next_line = lines[i + 1].strip()
+            # noinspection GrazieInspection
             if line == next_line == "":
                 # replace double empty lines by single one
                 prettyfied_lines.append(lines[i])

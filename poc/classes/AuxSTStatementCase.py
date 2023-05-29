@@ -1,7 +1,6 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSTStatement import AuxSTStatement
-from poc.classes.AuxInbuiltTypes import InbuiltPredicate
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 

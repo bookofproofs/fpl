@@ -24,7 +24,7 @@ class AuxSTStatementAssert(AuxSTStatement, AuxInterfaceSTType):
         register.value = new_value
         # evaluate the predicate of the assertion statement
         assertion_predicate = self.children[0]
-        ret = EvaluateParams.evaluate_recursion(sem,self.children[0], expected_type=InbuiltPredicate(self))
+        ret = EvaluateParams.evaluate_recursion(sem, self.children[0], expected_type=InbuiltPredicate(self))
         ret.instance.add_asserted_predicate(assertion_predicate.get_long_id(), assertion_predicate)
         new_value.set_true()
         new_value.set_expression(ret.value.get_expression())

@@ -17,7 +17,7 @@ class ContextKeyword(AuxInterpretation):
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == self.keyword:
-            self.stop_aggregation
+            self.stop_aggregation = True
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
