@@ -1,8 +1,8 @@
-from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTWithId import AuxSTWithId
 from poc.classes.AuxSTConstants import AuxSTConstants
 
 
-class AuxSTVarDec(AuxST):
+class AuxSTVarDec(AuxSTWithId):
 
     def __init__(self, i):
         super().__init__(AuxSTConstants.var_decl, i)

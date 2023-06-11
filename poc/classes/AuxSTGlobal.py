@@ -10,7 +10,7 @@ class AuxSTGlobal(AnyNode):
         self.parent = parent
         self.reference = block
         self.gid = gid
-        self.id = block.get_relative_id()
+        self.id = ""
         self.theory = theory_node
         self._qualified_id = None
 

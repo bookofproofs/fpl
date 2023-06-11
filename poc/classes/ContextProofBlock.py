@@ -38,4 +38,6 @@ class ContextProofBlock(AuxInterpretation):
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextProofBlock(i)
         new_info.proof_arguments.children = reversed(new_info.proof_arguments.children)
+        new_info.proof_arguments.zfrom = new_info.proof_arguments.children[0].zfrom
+        new_info.proof_arguments.zto = new_info.proof_arguments.children[-1].zto
         i.parse_list.append(new_info)

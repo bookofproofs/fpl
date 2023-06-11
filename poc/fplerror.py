@@ -1,5 +1,4 @@
 from poc.classes.AuxAstInfo import AuxAstInfo
-from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.fplmessage import FplInterpreterMessage
 
 
@@ -392,8 +391,9 @@ class FplPremiseNotSatisfiable(FplInterpreterMessage):
 class FplTypeMismatch(FplInterpreterMessage):
     def __init__(self, node, expected, actual):
         s = node.zfrom.split(".")
-        if hasattr(node, AuxSTConstants.copied_path):
-            path = node._copied_path
+        copied_path = node.get_copied_path()
+        if len(copied_path) > 0:
+            path = copied_path
         else:
             path = node.path
         super().__init__("Type mismatch: expected '{0}', received '{1}' in this context".format(expected, actual),

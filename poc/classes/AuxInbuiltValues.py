@@ -8,14 +8,9 @@ from poc.classes.AuxSTType import AuxSTType
 class AuxInbuiltValue(AuxInterfaceSTType):
     def __init__(self, node):
         super().__init__()
-        self._copied_path = tuple()
-        if node is not None:
-            if hasattr(node, "zfrom"):
-                self.zfrom = node.zfrom
-            if hasattr(node, "zto"):
-                self.zto = node.zto
-            if hasattr(node, "path"):
-                self._copied_path = node.path
+        self._copied_path = node.path
+        self.zfrom = node.zfrom
+        self.zto = node.zto
         self._value = None
         self._expression = None
         self._satisfiable = None

@@ -1,4 +1,6 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.16
+* Refactoring (resolving further code inspection issues)
 ## 1.10.15
 * Refactoring (resolving further code inspection issues)
 ## 1.10.14

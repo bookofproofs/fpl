@@ -11,6 +11,8 @@ class AuxSTProofStop(AuxSTOutline, AuxInterfaceSTType, AuxEvaluationPredicate):
     def __init__(self):
         super().__init__(AnyNode(), AuxSTConstants.proofArgument)
         self.type = ""
+        self.zfrom = ""
+        self.zto = ""
 
     def get_long_id(self):
         if self._long_id is None:

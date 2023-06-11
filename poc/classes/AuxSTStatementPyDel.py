@@ -13,7 +13,7 @@ class AuxSTStatementPyDel(AuxSTStatement, AuxInterfaceSTType):
 
     def get_long_id(self):
         if self._long_id is None:
-            self._long_id = self._statement_type + "." + self.id
+            self._long_id = self._statement_type + "." + self.outline
             for arg in self.children:
                 self._long_id += arg.get_long_id()
         return self._long_id

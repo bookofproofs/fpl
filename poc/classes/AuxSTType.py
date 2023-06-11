@@ -71,9 +71,6 @@ class AuxSTType(AuxST, AuxInterfaceSTTypePattern):
             self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
         return self._qualified_id
 
-    def get_relative_id(self):
-        return self.id
-
     def evaluate(self, sem):
         # a separate evaluation of type nodes is not required since they are already fully represented by themselves
         # in the symbol table. We add this method anyway as an interface for the recursive evaluation of the nodes
