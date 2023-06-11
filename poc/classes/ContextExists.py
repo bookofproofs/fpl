@@ -10,7 +10,6 @@ class ContextExists(AuxInterpretation):
     def __init__(self, i: AuxISourceAnalyser):
         super().__init__(i.ast_info, i.errors)
         self.predicate = AuxSTPredicate(AuxSTConstants.predicate_exists, i)
-        self.predicate.bound_vars = []
         self.predicate.exists_number = -1  # later semantics 'at least one', can be overwritten by user
         self.aggregate_previous_rules(i.parse_list,
                                       AuxRuleDependencies.dep["Exists"] + AuxRuleDependencies.dep["ExistsTimesN"] +

@@ -11,7 +11,6 @@ class ContextAll(AuxInterpretation):
         super().__init__(i.ast_info, i.errors)
         self.predicate = AuxSTPredicate(AuxSTConstants.predicate_all, i)
         self._i = i
-        self.predicate.bound_vars = []
         self.aggregate_previous_rules(i.parse_list, AuxRuleDependencies.dep["All"],
                                       self.rule_aggregator)
 

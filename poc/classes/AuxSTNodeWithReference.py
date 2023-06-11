@@ -189,10 +189,10 @@ class AuxSTNodeWithReference(AuxSTWithId, AuxInterfaceSTType):
         args = AuxSymbolTable.get_child_by_outline(self, AuxSTConstants.arg_list)
         self._arg_list = list()
         for argument_node in args.children:
+            if argument_node.outline == AuxSTConstants.var:
+                if not argument_node.is_bound_or_initialized():
+                    self._sem.error_mgr.add_error(FplVariableNotInitialized(argument_node))
             if isinstance(argument_node, AuxInterfaceSTType):
-                if argument_node.outline == AuxSTConstants.var:
-                    if not argument_node.is_bound_or_initialized():
-                        self._sem.error_mgr.add_error(FplVariableNotInitialized(argument_node))
                 self._arg_list.append(argument_node)
             else:
                 raise NotImplementedError(str(type(argument_node)))

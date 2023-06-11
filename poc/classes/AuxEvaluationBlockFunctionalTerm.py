@@ -31,11 +31,6 @@ class AuxEvaluationBlockFunctionalTerm:
             sem.eval_stack.append(node.constant_value())
         node.set_sc_ready()
 
-    def get_declared_type(self):
-        if self._declared_type is None:
-            AuxEvaluationBlockFunctionalTerm.initialize_declared_type_of_functional_term(self)
-        return self._declared_type
-
     @staticmethod
     def initialize_declared_type_of_functional_term(functional_term):
         for child in functional_term.children:

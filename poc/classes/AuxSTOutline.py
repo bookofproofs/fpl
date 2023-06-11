@@ -14,25 +14,28 @@ class AuxSTOutline(AnyNode):
         self._long_id = None
         self._scope = None
         self._minor_scope = None
+        self._copied_path = tuple()
 
     def get_long_id(self):
         raise NotImplementedError(str(type(self)))
 
     def get_scope(self):
         """
-        Returns the Scope node of a self according to the symbol table.
+        Returns the Scope node of self according to the symbol table.
         The Scope equals the most outer FPL building block containing self in the symbol table.
         :return: Scope of self
         """
         if self._scope is None:
             if len(self.path) > 3:
                 self._scope = self.path[3]
-            elif hasattr(self, AuxSTConstants.copied_path):
-                if len(self._copied_path) > 3:
-                    self._scope = self._copied_path[3]
-                else:
-                    raise NotImplementedError()
+            elif len(self._copied_path) > 3:
+                self._scope = self._copied_path[3]
+            else:
+                raise NotImplementedError()
         return self._scope
+
+    def get_copied_path(self):
+        return self._copied_path
 
     def get_minor_scope(self):
         """

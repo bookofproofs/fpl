@@ -44,12 +44,6 @@ class AuxSTQualified(AuxST):
         # set the value of the evaluation to the value retrieved
         sem.eval_stack[-1].value = check.value
 
-    def get_declared_type(self):
-        if self._declared_type is None:
-            # the AuxSTQualified's declared type is always the type of its parent node in the symbol table
-            self.set_declared_type(self.parent.get_declared_type())
-        return self._declared_type
-
     def get_long_id(self):
         if self._long_id is None:
             self._long_id = self.to_string()

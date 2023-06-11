@@ -157,7 +157,8 @@ class AuxSymbolTable:
         global_references = AuxSymbolTable.get_child_by_outline(theory_node.parent, AuxSTConstants.globals)
         for block in all_globally_registered:
             gid = '.'.join([theory_node.namespace, block.get_relative_id()])  # noqa
-            AuxSTGlobal(global_references, gid, block, theory_node)
+            globals_child = AuxSTGlobal(global_references, gid, block, theory_node)
+            globals_child.id = block.get_relative_id()
 
     @staticmethod
     def get_library_by_filename(library_node: AnyNode, theory_file_name: str):

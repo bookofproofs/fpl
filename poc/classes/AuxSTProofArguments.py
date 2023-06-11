@@ -11,6 +11,8 @@ class AuxSTProofArguments(AuxSTOutline, AuxInterfaceSTType, AuxEvaluationPredica
 
     def __init__(self):
         super().__init__(AnyNode(), AuxSTConstants.proofArgument_root)
+        self.zfrom = ""
+        self.zto = ""
 
     def evaluate(self, sem):
         new_value = InbuiltValuePredicate(self)

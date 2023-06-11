@@ -19,6 +19,7 @@ class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
         AuxEvaluationPredicate.__init__(self)
         self._is_asserted = False
         self._is_revoked = False
+        self.bound_vars = list()
         self._bound_vars_marked = False
         self.set_declared_type(InbuiltPredicate(self))
 
