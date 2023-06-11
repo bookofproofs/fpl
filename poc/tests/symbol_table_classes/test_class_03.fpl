@@ -38,8 +38,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure', id='AlgebraicStructure', reference=AuxSTClass(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', id='AlgebraicStructure[1:tplSet,1:+Composition[1:*tplSetElem]]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='d98d79a779064fada7ea1dc3e41f8c55', file_name='test_class_03.fpl', namespace='TestNamespace', outline='theory')

@@ -63,7 +63,7 @@ class FplParserError(FplInterpreterMessage):
             self._msg = "Syntax error (pattern):"
         else:
             self.diagnose_id = "unknown"  # Unknown syntax Tatsu error
-        result = re.search("\((\d+):(\d+)\)([^:]+)", self.error_context)
+        result = re.search(r"\((\d+):(\d+)\)([^:]+)", self.error_context)
         if result is None:
             # other errors
             self._line = 1

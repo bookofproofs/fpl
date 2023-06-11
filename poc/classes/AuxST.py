@@ -1,6 +1,4 @@
-import re
 from poc.classes.AuxSTOutline import AuxSTOutline
-from poc.classes.AuxSTConstants import AuxSTConstants
 
 
 class AuxST(AuxSTOutline):
@@ -39,7 +37,4 @@ class AuxST(AuxSTOutline):
             child_clone.parent = instance
         return instance
 
-    def get_qualified_id(self):
-        if self._qualified_id is None:
-            self._qualified_id = re.sub(AuxSTConstants.qualified_re, "", self.id)
-        return self._qualified_id
+

@@ -14,8 +14,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='ef9eb327e2909cad7dc9a86d5305ca72', file_name='test_predicate_15.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

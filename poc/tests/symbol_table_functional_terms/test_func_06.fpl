@@ -17,8 +17,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:Real]', id='Exp[1:Real]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:Real].Approximation[]', id='Exp[1:Real].Approximation[]', reference=AuxSTFunctionalTermInstance(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.Exp[1:Real].Approximation1[1:Nat]', id='Exp[1:Real].Approximation1[1:Nat]', reference=AuxSTFunctionalTermInstance(), theory=AuxSTTheory())

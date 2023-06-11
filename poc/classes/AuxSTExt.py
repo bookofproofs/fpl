@@ -1,13 +1,13 @@
-from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTWithId import AuxSTWithId
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxInbuiltValues import InbuiltValueUndefined
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 
 
-class AuxSTExt(AuxST, AuxInterfaceSTType):
+class AuxSTExt(AuxSTWithId, AuxInterfaceSTType):
     def __init__(self, extension_id, i):
-        AuxST.__init__(self, extension_id, i)
+        AuxSTWithId.__init__(self, extension_id, i)
         AuxInterfaceSTType.__init__(self)
         self._constructor_node = None
 

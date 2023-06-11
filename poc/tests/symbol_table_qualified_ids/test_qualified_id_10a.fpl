@@ -18,8 +18,8 @@
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.SubNamespace.SomeOtherObject', id='SomeOtherObject', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.SubNamespace.SomeOtherObject[]', id='SomeOtherObject[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.SubNamespace.TestObject', id='TestObject', reference=AuxSTClass(), theory=AuxSTTheory())

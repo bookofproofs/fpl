@@ -25,7 +25,7 @@ class ContextQualifiedIdentifier(AuxInterpretation):
             self._current = self.predicate
             for pred in reversed(self._sub):
                 dot = AuxSTQualified(self._i)
-                dot.zfrom = self._i.corrected_zpos_by(pred.zfrom, 1)
+                dot.zfrom = AuxISourceAnalyser.corrected_zpos_by(pred.zfrom, 1)
                 dot.zto = dot.zfrom
                 dot.register_child(pred)
                 self._current.register_child(dot)

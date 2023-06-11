@@ -18,8 +18,8 @@ TestTheory
 
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestTheory.UnlimitedTupleFrom', id='UnlimitedTupleFrom', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestTheory.UnlimitedTupleFrom[1:Nat,1:tplrange[]]', id='UnlimitedTupleFrom[1:Nat,1:tplrange[]]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestTheory.UnlimitedTupleFrom.Coord[1:Nat]', id='UnlimitedTupleFrom.Coord[1:Nat]', reference=AuxSTClassInstance(), theory=AuxSTTheory())

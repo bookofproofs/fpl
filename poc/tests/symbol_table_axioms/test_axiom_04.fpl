@@ -14,8 +14,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.LH6fQw.AdoNagqiL4yV.KB[]', id='LH6fQw.AdoNagqiL4yV.KB[]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='186b455d35ea646b96719c90c742d22b', file_name='test_axiom_04.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

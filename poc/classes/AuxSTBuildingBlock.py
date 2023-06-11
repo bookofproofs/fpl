@@ -2,7 +2,7 @@ from anytree import search
 from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxParamsArgsMatcher import AuxParamsArgsMatcher
 from poc.classes.AuxSTBuildingBlockInstanceHandlers import AuxSTBuildingBlockInstanceHandlers
-from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTWithId import AuxSTWithId
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
@@ -13,10 +13,10 @@ The class AuxSTBuildingBlock is a base class for all FPL building blocks
 """
 
 
-class AuxSTBuildingBlock(AuxST, AuxInterfaceSTType):
+class AuxSTBuildingBlock(AuxSTWithId, AuxInterfaceSTType):
     def __init__(self, outline: str, i):
         AuxInterfaceSTType.__init__(self)
-        AuxST.__init__(self, outline, i)
+        AuxSTWithId.__init__(self, outline, i)
         self.id = ""
         self._relative_id = ""
         self._declared_vars = dict()

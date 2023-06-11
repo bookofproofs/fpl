@@ -14,8 +14,8 @@
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Function', id='Function', reference=AuxSTClass(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.Function[2:Set]', id='Function[2:Set]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='ec1d7c387d4b0881e622aec93f00a2c8', file_name='test_qualified_id_01.fpl', namespace='TestNamespace', outline='theory')

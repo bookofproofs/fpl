@@ -34,8 +34,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Equals[2:tpl]', id='Equals[2:tpl]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.NotEquals[2:tpl]', id='NotEquals[2:tpl]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='7305dbafc8f3247ba17b6524e2ad399c', file_name='test_predicate_13.fpl', namespace='TestNamespace', outline='theory')

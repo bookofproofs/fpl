@@ -3,7 +3,6 @@ import tatsu
 import io
 import os
 import re
-import unittest
 from poc.classes.AuxSTFplFile import AuxSTFplFile
 from poc.fplerror import FplErrorManager
 
@@ -118,18 +117,18 @@ class Utils:
         :param tree_view: tree view object
         :return: None if failure, or tuple of clicked values
         """
-        currItem = tree_view.focus()
-        if currItem == "":
+        curr_item = tree_view.focus()
+        if curr_item == "":
             # for some reason, some clicks do not focus the item but ''. In this case try to select the first one
             all_children = tree_view.get_children()
             if len(all_children) > 0:
-                currItem = tree_view.get_children()[0]
+                curr_item = tree_view.get_children()[0]
             else:
                 # return nothing
                 return None
-        tree_view.selection_set(currItem)
-        tree_view.focus(currItem)
-        item = tree_view.item(currItem)
+        tree_view.selection_set(curr_item)
+        tree_view.focus(curr_item)
+        item = tree_view.item(curr_item)
         return item['values']
 
     @staticmethod

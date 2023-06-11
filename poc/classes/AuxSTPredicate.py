@@ -14,7 +14,9 @@ from fplerror import FplPremiseNotSatisfiable
 class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def __init__(self, outline: str, i):
-        super().__init__(outline, i)
+        AuxST.__init__(self, outline, i)
+        AuxInterfaceSTType.__init__(self)
+        AuxEvaluationPredicate.__init__(self)
         self._is_asserted = False
         self._is_revoked = False
         self._bound_vars_marked = False
@@ -172,10 +174,7 @@ class AuxSTPredicate(AuxST, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def get_long_id(self):
         if self._long_id is None:
-            if self.outline in [AuxSTConstants.extDigits, AuxSTConstants.ids, AuxSTConstants.variadic_var]:
-                self._long_id = self.id + "."
-            else:
-                self._long_id = self.outline + "."
+            self._long_id = self.outline + "."
             for arg in self.children:
                 self._long_id += arg.get_long_id()
         return self._long_id

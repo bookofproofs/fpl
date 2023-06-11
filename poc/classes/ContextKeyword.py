@@ -29,7 +29,8 @@ class ContextKeyword(AuxInterpretation):
         else:
             i.parse_list.append(parsing_info)
             parsing_info.zto = i.last_positions_by_rule[parsing_info.get_cst()].pos_to_str()
-            parsing_info.zfrom = i.corrected_zpos_by(str(parsing_info.zto), len(parsing_info.get_cst()))
+            parsing_info.zfrom = AuxISourceAnalyser.corrected_zpos_by(
+                str(parsing_info.zto), len(parsing_info.get_cst()))
             if parsing_info.get_cst() in ['object', 'obj', 'predicate', 'pred', 'function', 'func']:
                 i.highlight_tags.append(AuxHighlightTag("inbuilttype", parsing_info.zfrom, parsing_info.zto))
             else:

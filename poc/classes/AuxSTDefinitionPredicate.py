@@ -1,4 +1,3 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxEvaluationBlockPredicate import AuxEvaluationBlockPredicate
 from poc.classes.AuxSTBuildingBlock import AuxSTBuildingBlock
 from poc.classes.AuxSTProperties import AuxSTProperties

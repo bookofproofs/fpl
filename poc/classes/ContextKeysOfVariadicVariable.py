@@ -24,17 +24,17 @@ class ContextKeysOfVariadicVariable(AuxInterpretation):
             self.predicate.register_child(parsing_info.var)  # noqa
             self.predicate.id = parsing_info.var.id + "$"
             self.predicate.zfrom = parsing_info.var.zfrom  # noqa
-            self.predicate.zto = self._i.corrected_zpos_by(parsing_info.var.zto, -1)  # noqa
+            self.predicate.zto = AuxISourceAnalyser.corrected_zpos_by(parsing_info.var.zto, -1)  # noqa
         elif rule == "VariableList":
             self.predicate.register_child(parsing_info.var_list[0].var)  # noqa
             self.predicate.id = parsing_info.var_list[0].var.id + "$"
             self.predicate.zfrom = parsing_info.var_list[0].var.zfrom  # noqa
-            self.predicate.zto = self._i.corrected_zpos_by(parsing_info.var_list[0].var.zto, -1)  # noqa
+            self.predicate.zto = AuxISourceAnalyser.corrected_zpos_by(parsing_info.var_list[0].var.zto, -1)  # noqa
         elif rule == "Identifier":
             self.predicate.register_child(parsing_info.predicate)  # noqa
             self.predicate.id = parsing_info.predicate.id + "$"
             self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
-            self.predicate.zto = self._i.corrected_zpos_by(parsing_info.predicate.zto, -1)  # noqa
+            self.predicate.zto = AuxISourceAnalyser.corrected_zpos_by(parsing_info.predicate.zto, -1)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):

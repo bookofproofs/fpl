@@ -1,5 +1,6 @@
 import unittest
 from parameterized import parameterized
+from poc.classes.AuxSTOutline import AuxSTOutline
 from poc.classes.AuxSTPredicate import AuxSTPredicate
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxInterpretation import AuxInterpretation
@@ -34,11 +35,19 @@ class DummyContext:
 
 
 class AuxPredicateTests(unittest.TestCase):
+    i = None
+    root = None
+    aux_info = None
+    sem = None
+    _error_mgr = None
+    analyzer = None
+    _symbol_table_root = None
+
     @classmethod
     def setUpClass(cls):
         cls.aux_info = AuxAstInfo(DummyContext(), "")
-        cls.root = AnyNode()
-        cls.i = AuxISourceAnalyser([], cls.root, "")
+        cls.root = AuxSTOutline(AnyNode(), "")
+        cls.i = AuxISourceAnalyser(FplErrorManager(), cls.root, "")
         cls.i.last_positions_by_rule["true"] = cls.aux_info
         cls.i.last_positions_by_rule["false"] = cls.aux_info
         cls.i.last_positions_by_rule["impl"] = cls.aux_info
@@ -59,9 +68,9 @@ class AuxPredicateTests(unittest.TestCase):
         cls.i.last_positions_by_rule["All"] = cls.aux_info
         cls.aux_inter = AuxInterpretation(cls.aux_info, cls.i.errors)
 
-        cls._symbol_table_root = AnyNode(outline=AuxSTConstants.root)
+        cls._symbol_table_root = AuxSTOutline(AnyNode(), AuxSTConstants.root)
         cls._error_mgr = FplErrorManager()
-        node = AnyNode(outline=AuxSTConstants.globals, parent=cls._symbol_table_root)
+        node = AuxSTOutline(cls._symbol_table_root, AuxSTConstants.globals)
         all_extensions = dict()
         cls.analyzer = SemanticAnalyser(cls._symbol_table_root, cls._error_mgr, all_extensions)
         cls.sem = cls.analyzer
@@ -70,7 +79,7 @@ class AuxPredicateTests(unittest.TestCase):
         register = AuxEvaluationRegister(node, None)
         register.building_block = AuxSTDefinitionPredicate(cls.i)
         register.instance_guid = register.building_block.get_main_instance().id
-        register.instance = register.building_block.get_instance(register.instance_guid);
+        register.instance = register.building_block.get_instance(register.instance_guid)
         cls.sem.eval_stack.append(register)
 
     @parameterized.expand([

@@ -1,3 +1,4 @@
+from anytree import AnyNode
 import z3
 from poc.classes.AuxEvaluationPredicate import AuxEvaluationPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
@@ -9,7 +10,7 @@ from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 class AuxSTProofArguments(AuxSTOutline, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def __init__(self):
-        super().__init__(None, AuxSTConstants.proofArgument_root)
+        super().__init__(AnyNode(), AuxSTConstants.proofArgument_root)
 
     def evaluate(self, sem):
         new_value = InbuiltValuePredicate(self)

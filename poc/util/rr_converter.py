@@ -16,7 +16,7 @@ def convert(input_file, output_file):
     output_lines.append("/* IT CONTAINS THE CURRENT FPL GRAMMAR TO BE USED WITH THE Railroad Diagram Generator */\n")
     output_lines.append("\n")
     output_lines.append("\n")
-    regexp = re.compile("[a-z0-9\_]+\:")
+    regexp = re.compile(r"[a-z0-9\_]+\:")
     for line in input_lines:
         # ignore tatsu grammar directives and separator input lines
         if line.strip() == ";":

@@ -27,7 +27,7 @@ class ContextVariable(AuxInterpretation):
         new_info = ContextVariable(i)
         new_info.var.id = parsing_info.get_cst()
         new_info.var.zto = i.last_positions_by_rule["Variable"].pos_to_str()
-        new_info.var.zfrom = i.corrected_zpos_by(new_info.var.zto, len(new_info.var.id))
+        new_info.var.zfrom = AuxISourceAnalyser.corrected_zpos_by(new_info.var.zto, len(new_info.var.id))
         if new_info.var.id.startswith("tpl"):
             i.highlight_tags.append(AuxHighlightTag("type", new_info.var.zfrom, new_info.var.zto))
         else:

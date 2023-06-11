@@ -13,8 +13,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Succ[1:Nat]', id='Succ[1:Nat]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.Addend[1:Nat]', id='Addend[1:Nat]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='b2111edb94c0149c3ca786477d53f4cc', file_name='test_func_02.fpl', namespace='TestNamespace', outline='theory')

@@ -18,8 +18,8 @@
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.UnitRing', id='UnitRing', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.UnitRing[1:tpl,2:BinOp]', id='UnitRing[1:tpl,2:BinOp]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.UnitRing.MultiplicativeMonoid[]', id='UnitRing.MultiplicativeMonoid[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())

@@ -29,7 +29,7 @@ class FPLSourceTransformer:
         del self._prettifier
         self._prettifier = AuxPrettifier()
 
-    def _default(self, ast):
+    def _default(self, ast):  # noqa
         """
         If there’s no method matching the rule’s name, TatSu will invoke this method.
         :param ast: Abstract symbol tree of the parser

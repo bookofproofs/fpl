@@ -1,4 +1,3 @@
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
 from poc.classes.AuxSTProofArgument import AuxSTProofArgument
 
 

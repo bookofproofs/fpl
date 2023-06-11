@@ -11,6 +11,9 @@ and will produce the same minified representation of itself
 
 class MinifyTestCase(unittest.TestCase):
     maxDiff = None
+    util = None
+    fpl_parser = None
+    transformer = None
 
     @classmethod
     def setUpClass(cls):

@@ -18,8 +18,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.ModusPonens[]', id='ModusPonens[]', reference=AuxSTRuleOfInference(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='d4dca8eb166cd11b1088ceb2656005f2', file_name='test_ir_01.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

@@ -10,8 +10,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='3eebf64e515a21d15fb16b7f8d1b8f00', file_name='test_RangesCoords_03da.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

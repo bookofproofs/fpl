@@ -16,8 +16,8 @@
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.SubNamespace.TestPredicate[]', id='TestPredicate[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.SubNamespace.TestPredicate[].SomeObject[]', id='TestPredicate[].SomeObject[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='d6edb05a60c4f625df11a21431cf94ef', file_name='test_qualified_id_14a.fpl', namespace='TestNamespace.SubNamespace', outline='theory')

@@ -9,8 +9,8 @@
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.SubNamespace.TestPredicate[]', id='TestPredicate[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='1b9967f3724c0163b0a487c0cc37d3d9', file_name='test_qualified_id_15b.fpl', namespace='TestNamespace.SubNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

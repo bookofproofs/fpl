@@ -10,6 +10,7 @@ errors.
 
 class AllSyntaxTests(UtilTestCase):
     folder = "_syntax"
+
     @parameterized.expand([
         "test_syntax_namespace_alias_ok",
         "test_syntax_proofs_ok_01",

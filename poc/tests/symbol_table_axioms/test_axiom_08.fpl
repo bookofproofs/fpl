@@ -18,8 +18,8 @@ Test.Namespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='Test.Namespace.Test[]', id='Test[]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='Test.Namespace.Test[1:obj]', id='Test[1:obj]', reference=AuxSTRuleOfInference(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='8321b76d3047363cafb32f7447c83d08', file_name='test_axiom_08.fpl', namespace='Test.Namespace', outline='theory')

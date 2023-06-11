@@ -12,8 +12,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.FirstClass', id='FirstClass', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.FirstClass[]', id='FirstClass[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.FirstClass.FirstProperty[1:obj]', id='FirstClass.FirstProperty[1:obj]', reference=AuxSTClassInstance(), theory=AuxSTTheory())

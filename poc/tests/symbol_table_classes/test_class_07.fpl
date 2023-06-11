@@ -35,8 +35,8 @@ Fpl.Arithmetics.Natural.Peano
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='Fpl.Arithmetics.Natural.Peano.Nat', id='Nat', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='Fpl.Arithmetics.Natural.Peano.Nat[1:@extDecimal]', id='Nat[1:@extDecimal]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='Fpl.Arithmetics.Natural.Peano.Nat[1:Int]', id='Nat[1:Int]', reference=AuxSTConstructor(), theory=AuxSTTheory())

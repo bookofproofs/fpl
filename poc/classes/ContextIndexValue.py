@@ -29,7 +29,7 @@ class ContextIndexValue(AuxInterpretation):
                 child.parent = self.predicate
             self.predicate.id = parsing_info.predicate.id
             # correct the position of the derivation
-            self.predicate.zto = self._i.corrected_zpos_by(parsing_info.predicate.zfrom,1) # noqa
+            self.predicate.zto = AuxISourceAnalyser.corrected_zpos_by(parsing_info.predicate.zfrom,1) # noqa
             self.predicate.zfrom = parsing_info.predicate.zfrom  # noqa
             self.stop_aggregation = True
         elif rule == "Variable":

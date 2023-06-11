@@ -28,8 +28,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.NXBLa[]', id='NXBLa[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='b57d7d1d055e7bc2fcd1fd492169db37', file_name='test_predicate_22.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')
