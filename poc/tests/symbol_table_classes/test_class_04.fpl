@@ -18,8 +18,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure', id='AlgebraicStructure', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure[]', id='AlgebraicStructure[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.AlgebraicStructure.CarrierSet[]', id='AlgebraicStructure.CarrierSet[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())

@@ -1,4 +1,6 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.15
+* Refactoring (resolving further code inspection issues)
 ## 1.10.14
 * Refactoring (resolving further code inspection issues)
 * changing author's email address in the FPL High Level Design

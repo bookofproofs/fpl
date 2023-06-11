@@ -9,8 +9,8 @@ TestTypesSymbolTable
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestTypesSymbolTable.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='8c2e9565d5d0a6601c3a6365e8014b66', file_name='test_types_var_decl_04a.fpl', namespace='TestTypesSymbolTable', outline='theory')
     ├── AuxSTOutline(outline='uses')

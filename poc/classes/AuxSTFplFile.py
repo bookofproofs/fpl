@@ -1,3 +1,4 @@
+from anytree import AnyNode
 import hashlib
 from poc.fplerror import FplErrorManager
 from poc.classes.AuxST import AuxSTOutline
@@ -8,7 +9,7 @@ from poc.fplsyntaxanalyzer import FPLSyntaxAnalyzer
 class AuxSTFplFile(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(None, AuxSTConstants.file)
+        super().__init__(AnyNode(), AuxSTConstants.file)
         self.file_name = ""
         self._fpl_source = ""
         self._md5_hash = hashlib.md5()

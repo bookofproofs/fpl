@@ -22,8 +22,8 @@ TestTheory
 
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestTheory.ZeroVectorN', id='ZeroVectorN', reference=AuxSTClass(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestTheory.ZeroVectorN[1:Nat,1:Field]', id='ZeroVectorN[1:Nat,1:Field]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='d7c30722d8bc2b2fa9128653d0656726', file_name='test_statement_range_02.fpl', namespace='TestTheory', outline='theory')

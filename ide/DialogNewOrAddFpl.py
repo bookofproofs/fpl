@@ -6,7 +6,6 @@ from ide.Settings import Settings
 from ide.Dialog import Dialog
 import re
 import os
-import io
 
 
 class DialogNewOrAddFpl(Dialog):

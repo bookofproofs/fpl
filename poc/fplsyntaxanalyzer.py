@@ -2,6 +2,7 @@ from poc.fplerror import FplErrorManager
 from poc.classes.AuxAstInfo import AuxAstInfo
 from poc.classes.AuxInterpretation import AuxInterpretation
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
+from poc.classes.AuxSTOutline import AuxSTOutline
 from poc.classes.ContextAll import ContextAll
 from poc.classes.ContextArgumentIdentifier import ContextArgumentIdentifier
 from poc.classes.ContextArgumentInference import ContextArgumentInference
@@ -144,12 +145,11 @@ from poc.classes.ContextVariableSpecificationList import ContextVariableSpecific
 from poc.classes.ContextVariableType import ContextVariableType
 from poc.classes.ContextWildcardTheoryNamespace import ContextWildcardTheoryNamespace
 from poc.fplerror import FplInterpreterMessage
-from anytree import AnyNode
 
 
 class FPLSyntaxAnalyzer:
 
-    def __init__(self, root: AnyNode, theory_name: str, error_mgr: FplErrorManager, namespace: str):
+    def __init__(self, root: AuxSTOutline, theory_name: str, error_mgr: FplErrorManager, namespace: str):
         self.i = AuxISourceAnalyser(error_mgr, root, theory_name, namespace)
         self.ast_list = []
 
@@ -453,7 +453,7 @@ class FPLSyntaxAnalyzer:
             try:
                 self.syntax_analysis_switcher(parsing_info)
             except AssertionError as err:
-                self.i.error_mgr.add_error(
+                self.i.errors.add_error(
                     FplInterpreterMessage(str(err), parsing_info.rule_line(), parsing_info.rule_col(),
                                           self.i.theory_node.theory_name))
         return ast

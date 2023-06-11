@@ -11,8 +11,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.Test[2:Other.Nat]', id='Test[2:Other.Nat]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='c44456f3c96a8b8cbf32551806085c92', file_name='test_qualified_id_aliased_02.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

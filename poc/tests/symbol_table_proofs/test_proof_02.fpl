@@ -39,8 +39,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.AddIsUnique[1:Add]', id='AddIsUnique[1:Add]', reference=AuxSTProposition(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.AddIsUnique$1', id='AddIsUnique$1', reference=AuxSTProof(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='37278bfa90d7a849bf3d3065656cd71c', file_name='test_proof_02.fpl', namespace='TestNamespace', outline='theory')

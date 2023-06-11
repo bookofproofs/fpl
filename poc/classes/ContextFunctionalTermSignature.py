@@ -22,7 +22,7 @@ class ContextFunctionalTermSignature(AuxInterpretation):
             self.stop_aggregation = True
         elif rule == "Signature":
             self.signature = parsing_info.symbol_signature  # noqa
-            self.signature.children = reversed(self.signature.children)
+            self.signature.children = reversed(self.signature.children)  # noqa
         elif rule == "Mapping":
             self.image = parsing_info.image  # noqa
 

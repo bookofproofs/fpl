@@ -30,5 +30,6 @@ class ContextIndexHeader(AuxInterpretation):
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextIndexHeader(i)
         new_info.indexType.zto = i.last_positions_by_rule['IndexHeader'].pos_to_str()
-        new_info.indexType.zfrom = i.corrected_zpos_by(new_info.indexType.zto, len(new_info.indexType.id))
+        new_info.indexType.zfrom = AuxISourceAnalyser.corrected_zpos_by(new_info.indexType.zto,
+                                                                        len(new_info.indexType.id))
         i.parse_list.append(new_info)

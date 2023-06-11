@@ -30,7 +30,7 @@ class ContextClassInstance(AuxInterpretation):
             self._var_type.id = parsing_info.id
             self._var_type.type_pattern = self._var_type.type_pattern | AuxBits.functionalTermBit
             self._var_type.type_pattern = self._var_type.type_pattern | AuxBits.inbuiltBit
-            self._var_type.zfrom = self._i.corrected_zpos_by(self._var_type.zfrom, len(self._var_type.id))
+            self._var_type.zfrom = AuxISourceAnalyser.corrected_zpos_by(self._var_type.zfrom, len(self._var_type.id))
         elif rule == "Signature":
             self.building_block.register_child(parsing_info.symbol_signature)  # noqa
             self.building_block.id = parsing_info.symbol_signature.to_string()  # noqa

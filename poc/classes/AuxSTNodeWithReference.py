@@ -1,22 +1,17 @@
 from poc.classes.AuxEvaluation import EvaluateParams
-from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime, InbuiltValueUndefined, AuxInbuiltValue, \
-    InbuiltValueNamedUndefined
-from poc.classes.AuxInbuiltTypes import InbuiltUndefined
-from poc.classes.AuxSTCoords import AuxSTCoords
-from poc.classes.AuxSTRange import AuxSTRange
-from poc.classes.AuxSTExt import AuxSTExt
+from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime, InbuiltValueUndefined, InbuiltValueNamedUndefined
 from poc.classes.AuxSTQualified import AuxSTQualified
-from poc.classes.AuxST import AuxST
+from poc.classes.AuxSTWithId import AuxSTWithId
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from fplerror import FplWrongArguments, FplIdentifierNotDeclared, FplVariableNotInitialized, FplIllegalRecursion
 
 
-class AuxSTNodeWithReference(AuxST, AuxInterfaceSTType):
+class AuxSTNodeWithReference(AuxSTWithId, AuxInterfaceSTType):
 
     def __init__(self, outline, i):
-        AuxST.__init__(self, outline, i)
+        AuxSTWithId.__init__(self, outline, i)
         AuxInterfaceSTType.__init__(self)
         self.id = ""
         self.reference = None

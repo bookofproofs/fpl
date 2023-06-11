@@ -11,6 +11,9 @@ and will produce the same minified representation of itself
 
 class PrettifyTestCase(unittest.TestCase):
     maxDiff = None
+    fpl_parser = None
+    util = None
+    transformer = None
 
     @classmethod
     def setUpClass(cls):

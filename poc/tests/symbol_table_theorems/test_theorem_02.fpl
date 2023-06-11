@@ -43,8 +43,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.AddIsUnique[1:Add]', id='AddIsUnique[1:Add]', reference=AuxSTTheorem(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.SumOfConsecutiveNumbers[]', id='SumOfConsecutiveNumbers[]', reference=AuxSTTheorem(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='7d6a6055f2f44be4888ea4bebaf38851', file_name='test_theorem_02.fpl', namespace='TestNamespace', outline='theory')

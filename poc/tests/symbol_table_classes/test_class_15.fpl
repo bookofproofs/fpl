@@ -23,8 +23,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Test', id='Test', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.Test.TestProperty130[]', id='Test.TestProperty130[]', reference=AuxSTClassInstance(), theory=AuxSTTheory())

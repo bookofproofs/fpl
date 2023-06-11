@@ -20,8 +20,8 @@
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.AreRelated[2:Set,1:BinaryRelation]', id='AreRelated[2:Set,1:BinaryRelation]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='67ef401730ab1d2635f7dc5cf8ccff9a', file_name='test_qualified_id_06.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

@@ -338,11 +338,11 @@ class FplTypeNotAllowed(FplInterpreterMessage):
             )
         else:
             super().__init__(
-                "'{0}' ({1}, found at {2}({3},{4})) not allowed as a type".format(type_node.reference.id,
-                                                                                  type_node.reference.get_node_type_str(),
-                                                                                  type_node.theory.file_name,
-                                                                                  first_s[0],
-                                                                                  str(int(first_s[1]) + 1)),
+                "'{0}' ({1}, found at {2}({3},{4}))".format(type_node.reference.id,
+                                                            type_node.reference.get_node_type_str(),
+                                                            type_node.theory.file_name,
+                                                            first_s[0],
+                                                            str(int(first_s[1]) + 1)) + " not allowed as a type",
                 second_s[0], second_s[1], file_name
             )
         self.diagnose_id = "SE0200"

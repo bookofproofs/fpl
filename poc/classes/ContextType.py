@@ -50,7 +50,7 @@ class ContextType(AuxInterpretation, AuxInterfaceSTTypePattern):
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         type_info = ContextType(i)
         type_info.zto = i.last_positions_by_rule['Type'].pos_to_str()
-        type_info.zfrom = i.corrected_zpos_by(type_info.zto, len(type_info.id))
+        type_info.zfrom = AuxISourceAnalyser.corrected_zpos_by(type_info.zto, len(type_info.id))
         if type_info.is_inbuilt():
             i.highlight_tags.append(AuxHighlightTag("inbuilttype", type_info.zfrom, type_info.zto))
         else:

@@ -94,7 +94,7 @@ class AuxSymbolTable:
         block.parent = definitions_node
 
     @staticmethod
-    def populate_global_nodes(theory_node: AuxSTOutline, error_mgr: FplErrorManager):
+    def populate_global_nodes(theory_node, error_mgr: FplErrorManager):
         all_globally_registered = tuple()
         def_nodes = AuxSymbolTable.get_child_by_outline(theory_node, AuxSTConstants.block_def_root).children
         for def_node in def_nodes:

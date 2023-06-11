@@ -8,8 +8,8 @@ Fpl.Geometry.Euclidean
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 └── AuxSTTheory(checksum='2d30a6af25ae6f3918624a395b38d12a', file_name='test_namespace_04.fpl', namespace='Fpl.Geometry.Euclidean', outline='theory')
     ├── AuxSTOutline(outline='uses')
     │   ├── AuxSTUsedTheory(id='Fpl.Commons.', modifier='*', outline='used', zfrom='3.10', zto='3.22')

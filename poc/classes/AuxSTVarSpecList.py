@@ -1,3 +1,4 @@
+from anytree import AnyNode
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTConstants import AuxSTConstants
@@ -7,7 +8,7 @@ from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 class AuxSTVarSpecList(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(None, AuxSTConstants.var_spec)
+        super().__init__(AnyNode(), AuxSTConstants.var_spec)
 
     def clone(self):  # noqa
         return AuxSTVarSpecList()

@@ -1,3 +1,4 @@
+from anytree import AnyNode
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxST import AuxSTOutline
 from poc.classes.AuxSTConstants import AuxSTConstants
@@ -6,7 +7,7 @@ from poc.classes.AuxSTConstants import AuxSTConstants
 class AuxSTProperties(AuxSTOutline):
 
     def __init__(self):
-        super().__init__(None, AuxSTConstants.properties)
+        super().__init__(AnyNode(), AuxSTConstants.properties)
 
     def evaluate(self, sem):
         for child in self.children:

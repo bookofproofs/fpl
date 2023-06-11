@@ -21,7 +21,7 @@ class ContextExists(AuxInterpretation):
             self.predicate.exists_number = int(parsing_info.get_cst())
         elif rule == "VariableList":
             for var in reversed(parsing_info.var_list):
-                self.predicate.bound_vars.append(var.var.id)
+                self.predicate.bound_vars.append(var.var.id)  # noqa
         elif rule == "ParenthesisedPredicate":
             self.predicate.register_child(parsing_info.predicate)
         elif rule == "ex":

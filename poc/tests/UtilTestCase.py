@@ -10,12 +10,15 @@ from poc.fplinterpreter import FplInterpreter
 from poc.fplsourcetransformer import FPLSourceTransformer
 from tatsu.exceptions import FailedToken
 from tatsu.exceptions import FailedParse
-from tatsu.exceptions import FailedPattern
 import os
 
 
 class UtilTestCase(unittest.TestCase):
     maxDiff = None
+    path = ""
+    util = None
+    path_to_grammar = ""
+    fpl_parser = None
 
     @classmethod
     def setUpClass(cls):
@@ -90,3 +93,7 @@ class UtilTestCase(unittest.TestCase):
         except FailedParse:
             return
         self.assertFalse(True)
+
+    @parameterized.expand([(True,)])
+    def test(self, boolean):
+        pass

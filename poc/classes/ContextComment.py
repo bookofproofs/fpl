@@ -21,5 +21,5 @@ class ContextComment(AuxInterpretation):
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextComment(i)
-        new_info.zfrom = i.corrected_zpos_by(str(parsing_info.zto), len(parsing_info.get_cst()) + 1)
+        new_info.zfrom = AuxISourceAnalyser.corrected_zpos_by(str(parsing_info.zto), len(parsing_info.get_cst()) + 1)
         i.highlight_tags.append(AuxHighlightTag("comment", new_info.zfrom, parsing_info.zto))

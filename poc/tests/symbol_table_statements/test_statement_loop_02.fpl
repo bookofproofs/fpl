@@ -16,8 +16,8 @@ TestTheory
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestTheory.Sum[1:*Nat]', id='Sum[1:*Nat]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='f2bb569f2a0d4d0d74e157eb3d47e300', file_name='test_statement_loop_02.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')

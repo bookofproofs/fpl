@@ -39,5 +39,6 @@ class ContextEntity(AuxInterpretation):
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
         new_info = ContextEntity(i)
         if type(new_info.predicate) is AuxSTSelf:
-            new_info.predicate.zfrom = i.corrected_zpos_by(new_info.predicate.zfrom, new_info.predicate.number_ats)
+            new_info.predicate.zfrom = AuxISourceAnalyser.corrected_zpos_by(new_info.predicate.zfrom,
+                                                                            new_info.predicate.number_ats)
         i.parse_list.append(new_info)

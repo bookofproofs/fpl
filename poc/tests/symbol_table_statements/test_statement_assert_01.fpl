@@ -19,8 +19,8 @@ TestTheory
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestTheory.Group', id='Group', reference=AuxSTClass(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestTheory.Group[]', id='Group[]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestTheory.Group.InverseOf[1:tplSetElem]', id='Group.InverseOf[1:tplSetElem]', reference=AuxSTFunctionalTermInstance(), theory=AuxSTTheory())

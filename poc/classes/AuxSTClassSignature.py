@@ -1,7 +1,6 @@
 from poc.classes.AuxST import AuxST
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc import fplerror
-from poc.classes.AuxBits import AuxBits
 
 
 class AuxSTClassSignature(AuxST):

@@ -19,8 +19,8 @@ TestTheory
 
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestTheory.ProceedingResults[1:+pred]', id='ProceedingResults[1:+pred]', reference=AuxSTRuleOfInference(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='9bd1faf11b06b721c16d2600e4831d53', file_name='test_statement_range_01.fpl', namespace='TestTheory', outline='theory')
     ├── AuxSTOutline(outline='uses')

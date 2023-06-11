@@ -1,5 +1,6 @@
 import tatsu
 from anytree import AnyNode, RenderTree, search
+from poc.classes.AuxSTOutline import AuxSTOutline
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTConstants import AuxSTConstants
 from poc.classes.AuxISourceAnalyser import AuxISourceAnalyser
@@ -15,7 +16,7 @@ from poc.util.fplutil import Utils
 class FplInterpreter:
 
     def __init__(self, parser, root_dir: str, library_node=None):
-        self.version = "1.10.13"
+        self.version = "1.10.15"
         sys.setrecursionlimit(3500)
         self._parser = parser
         self._error_mgr = FplErrorManager()
@@ -24,9 +25,10 @@ class FplInterpreter:
             self._theory_root_dir = abs_path
         else:
             self._theory_root_dir = os.path.dirname(abs_path)
-        self._symbol_table_root = AnyNode(outline=AuxSTConstants.root)
+        self._symbol_table_root = AuxSTOutline(AnyNode(), AuxSTConstants.root)
+        self._symbol_table_root.parent = None  # the root has no parent
         self._utils = Utils()
-        AnyNode(outline=AuxSTConstants.globals, parent=self._symbol_table_root)
+        AuxSTOutline(self._symbol_table_root, AuxSTConstants.globals)
         self.file_specific_tags = dict()
         # Used for the recursive loading of namespaces into to symbol table while syntax analysis is running
         # The syntax analysis stores in this dictionary for every namespace / FPL-combination
@@ -128,15 +130,15 @@ class FplInterpreter:
         else:
             try:
                 self._parser.parse(fpl_file_node.get_file_content(), semantics=analyser, whitespace='')
-            except tatsu.exceptions.FailedParse as ex:
+            except tatsu.exceptions.FailedParse as ex:  # noqa
                 self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 1,
                                               fpl_file_node.file_name))
-            except tatsu.exceptions.FailedToken as ex:
+            except tatsu.exceptions.FailedToken as ex:  # noqa
                 self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 2,
                                               fpl_file_node.file_name))
-            except tatsu.exceptions.FailedPattern as ex:
+            except tatsu.exceptions.FailedPattern as ex:  # noqa
                 self._error_mgr.add_error(
                     fplmessage.FplParserError(ex, "in " + fpl_file_node.file_name + ":" + str(ex), 3,
                                               fpl_file_node.file_name))

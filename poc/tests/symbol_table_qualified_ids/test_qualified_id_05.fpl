@@ -13,8 +13,8 @@
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.CommutativeGroup', id='CommutativeGroup', reference=AuxSTClass(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.CommutativeGroup[1:tpl,1:BinOp]', id='CommutativeGroup[1:tpl,1:BinOp]', reference=AuxSTConstructor(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='9bc0b0a2a5ce19963f7d22834812ba81', file_name='test_qualified_id_05.fpl', namespace='TestNamespace', outline='theory')

@@ -19,8 +19,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal]', id='Exp[1:SetReal]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsContinuous[]', id='Exp[1:SetReal].IsContinuous[]', reference=AuxSTPredicateInstance(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsIntegrable[]', id='Exp[1:SetReal].IsIntegrable[]', reference=AuxSTPredicateInstance(), theory=AuxSTTheory())

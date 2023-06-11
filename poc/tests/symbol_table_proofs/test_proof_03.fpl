@@ -41,8 +41,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem[]', id='TestTheorem[]', reference=AuxSTTheorem(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem$1[]', id='TestTheorem$1[]', reference=AuxSTCorollary(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.TestTheorem$1', id='TestTheorem$1', reference=AuxSTProof(), theory=AuxSTTheory())

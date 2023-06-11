@@ -9,8 +9,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   └── AuxSTGlobal(gid='TestNamespace.ZeroIsNat[]', id='ZeroIsNat[]', reference=AuxSTAxiom(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='4fed718d2baa501c35aed2e2c53222fd', file_name='test_axiom_01.fpl', namespace='TestNamespace', outline='theory')
     ├── AuxSTOutline(outline='uses')

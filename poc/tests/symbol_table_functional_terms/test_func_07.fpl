@@ -13,8 +13,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal]', id='Exp[1:SetReal]', reference=AuxSTDefinitionFunctionalTerm(), theory=AuxSTTheory())
 │   └── AuxSTGlobal(gid='TestNamespace.Exp[1:SetReal].IsContinuous[]', id='Exp[1:SetReal].IsContinuous[]', reference=AuxSTPredicateInstance(), theory=AuxSTTheory())
 └── AuxSTTheory(checksum='ed8b4a5d3a8182e59fdf4060095dbc28', file_name='test_func_07.fpl', namespace='TestNamespace', outline='theory')

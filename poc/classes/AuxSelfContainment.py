@@ -7,7 +7,8 @@ class AuxReferenceType:
 
 
 class AuxReference:
-    def __init__(self, predecessor: AuxSTBuildingBlock, successor: AuxSTBuildingBlock, reference_type: AuxReferenceType):
+    def __init__(self, predecessor: AuxSTBuildingBlock, successor: AuxSTBuildingBlock,
+                 reference_type: AuxReferenceType):
         self.predecessor = predecessor
         self.successor = successor
         self.type = reference_type
@@ -34,7 +35,8 @@ class AuxSelfContainment:
         self._predecessors = dict()  # lists all predecessors where the values are sets of all successors of each
         self._successors = dict()  # lists all successors where the values are sets of all predecessors of each
 
-    def add_reference(self, predecessor: AuxSTBuildingBlock, successor: AuxSTBuildingBlock, reference_type: AuxReferenceType):
+    def add_reference(self, predecessor: AuxSTBuildingBlock, successor: AuxSTBuildingBlock,
+                      reference_type: AuxReferenceType):
         new = AuxReference(predecessor, successor, reference_type)
         if new in self._refs:
             AssertionError("The reference " + str(new) + "already exists.")

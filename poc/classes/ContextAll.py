@@ -18,7 +18,7 @@ class ContextAll(AuxInterpretation):
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "VariableList":
             for var in reversed(parsing_info.var_list):
-                self.predicate.bound_vars.append(var.var.id)
+                self.predicate.bound_vars.append(var.var.id)  # noqa
         elif rule == "ParenthesisedPredicate":
             self.predicate.register_child(parsing_info.predicate)
         elif rule == "all":

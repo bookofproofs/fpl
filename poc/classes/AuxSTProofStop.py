@@ -1,3 +1,4 @@
+from anytree import AnyNode
 from poc.classes.AuxEvaluationPredicate import AuxEvaluationPredicate
 from poc.classes.AuxInbuiltValues import InbuiltValuePredicate
 from poc.classes.AuxST import AuxSTOutline
@@ -8,7 +9,7 @@ from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
 class AuxSTProofStop(AuxSTOutline, AuxInterfaceSTType, AuxEvaluationPredicate):
 
     def __init__(self):
-        super().__init__(None, AuxSTConstants.proofArgument)
+        super().__init__(AnyNode(), AuxSTConstants.proofArgument)
         self.type = ""
 
     def get_long_id(self):

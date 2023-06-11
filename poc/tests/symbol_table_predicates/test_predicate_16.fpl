@@ -27,8 +27,8 @@ TestNamespace
     }
 }
 ##############################
-AnyNode(outline='root')
-├── AnyNode(outline='globals')
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
 │   ├── AuxSTGlobal(gid='TestNamespace.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.Test[].PropTest[2:Nat]', id='Test[].PropTest[2:Nat]', reference=AuxSTPredicateInstance(), theory=AuxSTTheory())
 │   ├── AuxSTGlobal(gid='TestNamespace.Test[].PropTest1[2:Nat]', id='Test[].PropTest1[2:Nat]', reference=AuxSTFunctionalTermInstance(), theory=AuxSTTheory())

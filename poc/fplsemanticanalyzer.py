@@ -1,5 +1,5 @@
 import traceback
-from anytree import AnyNode
+from poc.classes.AuxSTOutline import AuxSTOutline
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxSymbolTable import AuxSymbolTable
 from poc.classes.AuxSTConstants import AuxSTConstants
@@ -13,7 +13,7 @@ from poc.fplmessage import FplInterpreterSystemError
 
 class SemanticAnalyser:
 
-    def __init__(self, symbol_table_root: AnyNode, error_mgr: FplErrorManager, all_extensions: dict):
+    def __init__(self, symbol_table_root: AuxSTOutline, error_mgr: FplErrorManager, all_extensions: dict):
         self.symbol_table_root = symbol_table_root
         self.error_mgr = error_mgr
         self.loaded_theories = AuxSymbolTable.get_theories(self.symbol_table_root)

@@ -22,7 +22,7 @@ class ContextVariableSpecificationList(AuxInterpretation):
 
     def rule_aggregator(self, rule: str, parsing_info: AuxInterpretation):
         if rule == "VariableSpecification":
-            ContextVariableSpecificationList.consume_variable_specification(self._i, parsing_info, self)
+            ContextVariableSpecificationList.consume_variable_specification(self._i, parsing_info, self)  # noqa
 
     @staticmethod
     def dispatch(i: AuxISourceAnalyser, parsing_info: AuxInterpretation):
