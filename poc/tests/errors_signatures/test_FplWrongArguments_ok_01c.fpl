@@ -1,0 +1,17 @@
+TestFplWrongArgumentsError
+{
+    theory
+    {
+        pred TestPredicate()
+        {
+            p: pred(c: obj)
+            x: Nat
+            // The following should not trigger FplWrongArguments since p(obj) accepts p(Nat) as a derived object
+            ex x ( p(x) )
+        }
+
+    }
+}
+
+##############################
+should not trigger FplWrongArguments

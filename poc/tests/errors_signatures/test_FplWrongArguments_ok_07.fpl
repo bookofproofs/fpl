@@ -4,16 +4,6 @@ TestTypes
     {
         pred Equal(a,b: tpl)
         {
-            p: pred
-
-			all p
-			(
-				iif
-				(
-					p(a),
-					p(b)
-				)
-			)
         }
 
 

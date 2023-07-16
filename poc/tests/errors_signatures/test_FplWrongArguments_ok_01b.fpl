@@ -2,13 +2,13 @@ TestFplWrongArgumentsError
 {
     inference
     {
-        ExistsByExample(p: pred(c: Int))
+        ExistsByExample(p: pred(c: obj))
         {
             x: Nat
             premise:
                 p(c)
             conclusion:
-                // The following should trigger FplWrongArguments since p(Nat) cannot match p(Int)
+                // The following should not trigger FplWrongArguments since p(obj) accepts p(Nat) as a derived object
                 ex x(p(x))
         }
     }
@@ -16,4 +16,4 @@ TestFplWrongArgumentsError
 }
 
 ##############################
-FplWrongArguments:12:21: Wrong arguments (Nat), expected (Int)
+should not trigger FplWrongArguments
