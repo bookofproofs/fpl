@@ -4,10 +4,9 @@ TestFplWrongArgumentsError
     {
         pred TestPredicate()
         {
-            p: pred(c: obj)
+            p: pred(c: Int)
             x: Nat
-            // The following should trigger FplWrongArguments since p(Nat) is here the same as p(undefined)
-            // and it cannot match p(obj)
+            // The following should trigger FplWrongArguments since p(Nat) cannot match p(Int)
             ex x ( p(x) )
         }
 
@@ -15,4 +14,4 @@ TestFplWrongArgumentsError
 }
 
 ##############################
-FplWrongArguments:11:19: Wrong arguments (Nat/undefined), expected (obj)
+FplWrongArguments:10:19: Wrong arguments (Nat), expected (Int)

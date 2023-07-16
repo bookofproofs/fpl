@@ -1,0 +1,40 @@
+TestTypesSymbolTable
+{
+    theory
+    {
+        pred Test()
+        {
+             p: pred(x,y,z:tpl)
+        }
+    }
+}
+##############################
+AuxSTOutline(outline='root')
+├── AuxSTOutline(outline='globals')
+│   └── AuxSTGlobal(gid='TestTypesSymbolTable.Test[]', id='Test[]', reference=AuxSTDefinitionPredicate(), theory=AuxSTTheory())
+└── AuxSTTheory(checksum='5649f22e17b906144ce64c67fb4ac2e3', file_name='test_types_var_decl_08.fpl', namespace='TestTypesSymbolTable', outline='theory')
+    ├── AuxSTOutline(outline='uses')
+    ├── AuxSTOutline(outline='axioms')
+    ├── AuxSTOutline(outline='inferenceRules')
+    ├── AuxSTOutline(outline='definitions')
+    │   └── AuxSTDefinitionPredicate(def_type='predicateDeclaration', id='Test[]', keyword='pred', outline='definition', zfrom='5.8', zto='8.9')
+    │       ├── AuxSTSignature(outline='signature', zfrom='5.13', zto='5.19')
+    │       ├── AuxSTVarSpecList(outline='specificationList')
+    │       │   └── AuxSTVarDec(id='p', outline='var_decl', zfrom='7.13', zto='7.31')
+    │       │       └── AuxSTType(id='pred', outline='type', type_mod=None, type_pattern=18, zfrom='7.16', zto='7.20')
+    │       │           └── AuxSTArgs(outline='arguments', zfrom='7.21', zto='7.31')
+    │       │               ├── AuxSTVarDec(id='x', outline='var_decl', zfrom='7.21', zto='7.30')
+    │       │               │   └── AuxSTType(id='tpl', outline='type', type_mod=None, type_pattern=9, zfrom='7.27', zto='7.30')
+    │       │               ├── AuxSTVarDec(id='y', outline='var_decl', zfrom='7.23', zto='7.30')
+    │       │               │   └── AuxSTType(id='tpl', outline='type', type_mod=None, type_pattern=9, zfrom='7.27', zto='7.30')
+    │       │               └── AuxSTVarDec(id='z', outline='var_decl', zfrom='7.25', zto='7.30')
+    │       │                   └── AuxSTType(id='tpl', outline='type', type_mod=None, type_pattern=9, zfrom='7.27', zto='7.30')
+    │       ├── AuxSTPredicate(bound_vars=[], outline='intrinsic', zfrom='', zto='')
+    │       └── AuxSTProperties(outline='properties')
+    ├── AuxSTOutline(outline='theorems')
+    ├── AuxSTOutline(outline='lemmas')
+    ├── AuxSTOutline(outline='propositions')
+    ├── AuxSTOutline(outline='conjectures')
+    ├── AuxSTOutline(outline='corollaries')
+    ├── AuxSTOutline(outline='proofs')
+    └── AuxSTLocalizations(outline='localizations')

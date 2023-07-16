@@ -27,6 +27,8 @@ class AllFplSignatureRelatedErrorTests(UtilTestCase):
     @parameterized.expand([
         ("test_FplWrongArguments_ok_01.fpl", "SE0220"),
         ("test_FplWrongArguments_ok_01a.fpl", "SE0220"),
+        ("test_FplWrongArguments_ok_01b.fpl", "SE0220"),
+        ("test_FplWrongArguments_ok_01c.fpl", "SE0220"),
         ("test_FplWrongArguments_ok_02.fpl", "SE0220"),
         ("test_FplWrongArguments_ok_03.fpl", "SE0220"),
         ("test_FplWrongArguments_ok_04.fpl", "SE0220"),

@@ -1,5 +1,7 @@
 from poc.classes.AuxEvaluation import EvaluateParams
 from poc.classes.AuxInbuiltValues import InbuiltValueAtRuntime, InbuiltValueUndefined, InbuiltValueNamedUndefined
+from poc.classes.AuxSTAnonymousBlock import AuxSTAnonymousBlock
+from poc.classes.AuxSTGlobal import AuxSTGlobal
 from poc.classes.AuxSTQualified import AuxSTQualified
 from poc.classes.AuxSTWithId import AuxSTWithId
 from poc.classes.AuxInterfaceSTType import AuxInterfaceSTType
@@ -133,7 +135,8 @@ class AuxSTNodeWithReference(AuxSTWithId, AuxInterfaceSTType):
                     break
             if not args_found:
                 self._has_args = False
-        self._find_possible_overrides()
+        if self.reference is None:
+            self._find_possible_overrides()
 
     def has_arguments(self):
         return self._has_args
@@ -156,8 +159,12 @@ class AuxSTNodeWithReference(AuxSTWithId, AuxInterfaceSTType):
     def _find_possible_overrides(self):
         self._possible_overrides = list()
         self._establish_override_id()
-        if self._override_id[0].isupper() or "." in self._override_id:
+        if self._override_id[0].isupper():
+            # user-defined PascalCase identifier
             self.__find_possible_overrides_for_pascal_case()
+        else:
+            # in-built identifier (possibly with user-defined parameters like in 'predicate(x: tpl)'
+            self.__find_possible_overrides_for_small_case()
 
     def __find_possible_overrides_for_pascal_case(self):
         """
@@ -175,14 +182,22 @@ class AuxSTNodeWithReference(AuxSTWithId, AuxInterfaceSTType):
             another_override_id = s[0] + "." + self._override_id
             if another_override_id not in self._sem.overridden_qualified_ids.dictionary():
                 # the reference of the predicate_with_args is nowhere in the FPL sourcecode declared
+                self.__set_reference(InbuiltValueNamedUndefined(self, self._override_id))
                 self._sem.error_mgr.add_error(
                     FplIdentifierNotDeclared(self._override_id, self.path[1].file_name, self.zfrom))
-                self.reference = InbuiltValueNamedUndefined(self, self._override_id)
-                self.reference.set_declared_type(self.reference.get_declared_type())
             else:
                 self._possible_overrides.extend(self._sem.overridden_qualified_ids.get(another_override_id))
         else:
             self._possible_overrides.extend(self._sem.overridden_qualified_ids.get(self._override_id))
+
+    def __find_possible_overrides_for_small_case(self):
+        anonymous_reference = AuxSTAnonymousBlock(self._i, self)
+        anonymous_override = AuxSTGlobal(self, "anonymous_" + self.id, anonymous_reference, self.ancestors[1])
+        self._possible_overrides.append(anonymous_override)
+
+    def __set_reference(self, reference_node):
+        self.reference = reference_node
+        self.reference.set_declared_type(self.reference.get_declared_type())
 
     def _calculate_arguments(self):
         # create a list of argument types to be matched with any of the available overrides

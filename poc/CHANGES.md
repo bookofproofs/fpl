@@ -1,4 +1,8 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.17
+* Bugfixes FplWrongArguments
+  * Corrected handling of anonymous building blocks (when  predicate or functional types have themselves arguments)
+  * Amended and added some test cases 
 ## 1.10.16
 * Refactoring (resolving further code inspection issues)
 ## 1.10.15
