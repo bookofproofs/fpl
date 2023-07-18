@@ -4,7 +4,7 @@ TestTypes
     {
         pred Equal(a,b: tpl)
         {
-            p: pred
+            p: pred(x: tpl)
 
 			all p
 			(

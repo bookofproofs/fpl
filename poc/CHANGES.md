@@ -1,4 +1,7 @@
 # Changes in the FPL Parser and Interpreter
+## 1.10.18
+* Bugfixes FplTypeMismatch 
+  * Corrected the recognition of identifiers containing a PascalCase that require the search for matching overrides. 
 ## 1.10.17
 * Bugfixes FplWrongArguments
   * Corrected handling of anonymous building blocks (when  predicate or functional types have themselves arguments)
