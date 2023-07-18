@@ -159,12 +159,19 @@ class AuxSTNodeWithReference(AuxSTWithId, AuxInterfaceSTType):
     def _find_possible_overrides(self):
         self._possible_overrides = list()
         self._establish_override_id()
-        if self._override_id[0].isupper():
-            # user-defined PascalCase identifier
+        if self.__contains_pascal_case_id():
+            # if the id contains a PascalCase identifier, we have to look for an override with matching parametes
             self.__find_possible_overrides_for_pascal_case()
         else:
-            # in-built identifier (possibly with user-defined parameters like in 'predicate(x: tpl)'
+            # otherwise we have an-built identifier, e.g. predicat
+            # still possibly with parametes like in 'predicate(x: tpl)'
             self.__find_possible_overrides_for_small_case()
+
+    def __contains_pascal_case_id(self):
+        # checks if self has a user-defined PascalCase identifier
+        # syntactically, either the first character is a capital letter or the identifier is qualified with a dot "."W,
+        # which means that a PascalCase identifier must follow after that
+        return self._override_id[0].isupper() or "." in self._override_id
 
     def __find_possible_overrides_for_pascal_case(self):
         """
