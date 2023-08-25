@@ -1,3 +1,6 @@
+# Important node
+This grammar branch is discontinued. For a continuation, check out the new 
+[fpl.net](https://github.com/bookofproofs/fpl.net) repository.
 # Changes in the FPL grammar
 ## 1.2.1
 * Correction and refinement of the rule ExtensionContent 
