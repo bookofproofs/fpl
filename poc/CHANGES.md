@@ -1,4 +1,9 @@
 # Changes in the FPL Parser and Interpreter
+## 1.11.1
+* A new class AuxETNode added
+## 1.11.0
+* Refactoring
+  * Basic classes for auxiliary nodes of the Evaluation Tree (AuxET* classes) added 
 ## 1.10.18
 * Bugfixes FplTypeMismatch 
   * Corrected the recognition of identifiers containing a PascalCase that require the search for matching overrides. 
