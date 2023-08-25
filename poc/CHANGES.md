@@ -1,4 +1,6 @@
 # Changes in the FPL Parser and Interpreter
+## 1.11.1
+* A new class AuxETNode added
 ## 1.11.0
 * Refactoring
   * Basic classes for auxiliary nodes of the Evaluation Tree (AuxET* classes) added 
